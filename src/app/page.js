@@ -81,10 +81,15 @@ export default function Portal() {
     if (!dni.trim()) return;
     setStep("loading");
     try {
+      const SHEET_ID = "1zUnmMzaxoYI4jwfRBJ3vfvzjo5_dPPnML5L_XIRvMFA";
+      const GID = "1569558318";
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+      const csvRes = await fetch(csvUrl);
+      const csv = await csvRes.text();
       const res = await fetch("/api/reserva", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ dni: dni.trim() }),
+        body: JSON.stringify({ dni: dni.trim(), csv }),
       });
       const result = await res.json();
       if (result.encontrado) {
@@ -166,7 +171,6 @@ export default function Portal() {
       </div>
 
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "24px 16px 60px" }}>
-
         {(step === "login" || step === "error") && (
           <div style={{ textAlign: "center", paddingTop: 60 }}>
             <div style={{ fontSize: 64, marginBottom: 16 }}>🏰</div>
