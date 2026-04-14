@@ -2,28 +2,35 @@ export async function POST(request) {
   const { dni } = await request.json();
   
   const SHEET_ID = "1zUnmMzaxoYI4jwfRBJ3vfvzjo5_dPPnML5L_XIRvMFA";
-  const API_KEY = process.env.GOOGLE_API_KEY;
+  const GID = "1569558318";
   
   try {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/A:X?key=${API_KEY}`;
-    const res = await fetch(url);
-    const data = await res.json();
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+    const csv = await res.text();
     
-    if (!data.values) {
-      return Response.json({ encontrado: false });
-    }
+    const rows = csv.split("\n").map(row => {
+      const result = [];
+      let inQuotes = false;
+      let current = "";
+      for (const char of row) {
+        if (char === '"') { inQuotes = !inQuotes; }
+        else if (char === "," && !inQuotes) { result.push(current.trim()); current = ""; }
+        else { current += char; }
+      }
+      result.push(current.trim());
+      return result;
+    });
     
-    const rows = data.values;
+    if (rows.length < 2) return Response.json({ encontrado: false });
+    
     const headers = rows[0];
-    
     const clienteRow = rows.find((row, i) => {
       if (i === 0) return false;
       return row[0]?.toString().toUpperCase().trim() === dni.toUpperCase().trim();
     });
     
-    if (!clienteRow) {
-      return Response.json({ encontrado: false });
-    }
+    if (!clienteRow) return Response.json({ encontrado: false });
     
     const cliente = {};
     headers.forEach((header, i) => {
