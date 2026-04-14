@@ -1,7 +1,14 @@
 export async function POST(request) {
-  const { csv, dni } = await request.json();
+  const { dni } = await request.json();
+  
+  const SHEET_ID = "1zUnmMzaxoYI4jwfRBJ3vfvzjo5_dPPnML5L_XIRvMFA";
+  const GID = "1569558318";
   
   try {
+    const url = `https://corsproxy.io/?https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+    const res = await fetch(url);
+    const csv = await res.text();
+    
     const rows = csv.split("\n").map(row => {
       const result = [];
       let inQuotes = false;
