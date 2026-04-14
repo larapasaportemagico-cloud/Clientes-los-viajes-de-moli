@@ -1,14 +1,7 @@
 export async function POST(request) {
-  const { dni } = await request.json();
-  
-  const SHEET_ID = "1zUnmMzaxoYI4jwfRBJ3vfvzjo5_dPPnML5L_XIRvMFA";
-  const GID = "1569558318";
+  const { csv, dni } = await request.json();
   
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-    const res = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
-    const csv = await res.text();
-    
     const rows = csv.split("\n").map(row => {
       const result = [];
       let inQuotes = false;
