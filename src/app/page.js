@@ -83,14 +83,7 @@ export default function Portal() {
     try {
       const SHEET_ID = "1zUnmMzaxoYI4jwfRBJ3vfvzjo5_dPPnML5L_XIRvMFA";
       const GID = "1569558318";
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-      const csvRes = await fetch(csvUrl);
-      const csv = await csvRes.text();
-      const res = await fetch("/api/reserva", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ dni: dni.trim(), csv }),
-      });
+      const res = await fetch(`/api/reserva?dni=${encodeURIComponent(dni.trim())}`);
       const result = await res.json();
       if (result.encontrado) {
         setCliente(result.datos);
