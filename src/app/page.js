@@ -40,6 +40,13 @@ REGLAS:
 - Blog de Lara: losviajesdemoli.com
 - Contacto: losviajesdemoli.com/contacto`;
 
+function formatFecha(val) {
+  if (!val) return "—";
+  const d = new Date(val);
+  if (isNaN(d.getTime())) return val;
+  return d.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
 function formatEuro(val) {
   if (!val || val === "0" || val === "") return "0,00 €";
   const num = parseFloat(String(val).replace(",", ".").replace("€", "").trim());
@@ -81,12 +88,10 @@ export default function Portal() {
     if (!dni.trim()) return;
     setStep("loading");
     try {
-      const SHEET_ID = "1zUnmMzaxoYI4jwfRBJ3vfvzjo5_dPPnML5L_XIRvMFA";
-      const GID = "1569558318";
       const res = await fetch(`/api/reserva?dni=${encodeURIComponent(dni.trim())}`);
       const result = await res.json();
       if (result.encontrado) {
-        setCliente(result.datos);
+        setCliente(result.reserva);
         setStep("portal");
         setChatLoading(true);
         const chatRes = await fetch("/api/chat", {
@@ -94,7 +99,7 @@ export default function Portal() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages: [{ role: "user", content: "Hola, acabo de entrar a mi portal" }],
-            system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)),
+            system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.reserva)),
           }),
         });
         const chatData = await chatRes.json();
@@ -104,8 +109,8 @@ export default function Portal() {
         setErrorMsg("No encontramos ninguna reserva con ese DNI. Verifica que sea correcto o contacta con Lara.");
         setStep("error");
       }
-    } catch {
-      setErrorMsg("Error de conexión. Inténtalo de nuevo.");
+    } catch (err) {
+      setErrorMsg("Error de conexión: " + err.message);
       setStep("error");
     }
   };
@@ -134,7 +139,7 @@ export default function Portal() {
     setChatLoading(false);
   };
 
-  const pendiente = parseFloat(String(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0").replace(",", ".").replace("€", "")) || 0;
+  const pendiente = parseFloat(String(cliente?.Pendiente || "0").replace(",", ".").replace("€", "")) || 0;
 
   const s = {
     page: { minHeight: "100vh", background: "linear-gradient(160deg, #1c1410 0%, #2d1f0e 40%, #0d1520 100%)", fontFamily: "Palatino Linotype, Palatino, serif" },
@@ -203,7 +208,7 @@ export default function Portal() {
                 <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 12, padding: "12px 18px", textAlign: "center" }}>
                   <div style={{ color: "#fca5a5", fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>⚠️ Pendiente</div>
                   <div style={{ color: "#f87171", fontSize: 22, fontWeight: 600 }}>{formatEuro(cliente.Pendiente)}</div>
-                  {cliente["Fecha_límite_pago"] && <div style={{ color: "#9d8b78", fontSize: 11, marginTop: 4 }}>Límite: {cliente["Fecha_límite_pago"]}</div>}
+                  {cliente["Fecha_límite_pago"] && <div style={{ color: "#9d8b78", fontSize: 11, marginTop: 4 }}>Límite: {formatFecha(cliente["Fecha_límite_pago"])}</div>}
                 </div>
               ) : (
                 <div style={{ background: "rgba(22,163,74,0.15)", border: "1px solid rgba(22,163,74,0.3)", borderRadius: 12, padding: "12px 18px" }}>
@@ -226,8 +231,8 @@ export default function Portal() {
                   {[
                     { icon: "🏨", label: "Hotel", val: cliente.Hotel },
                     { icon: "🍽️", label: "Plan de comidas", val: cliente["Plan de comidas"] },
-                    { icon: "📅", label: "Check-in", val: cliente["Check-in"] },
-                    { icon: "📅", label: "Check-out", val: cliente["Check-out"] },
+                    { icon: "📅", label: "Check-in", val: formatFecha(cliente["Check-in"]) },
+                    { icon: "📅", label: "Check-out", val: formatFecha(cliente["Check-out"]) },
                     { icon: "👥", label: "Personas", val: cliente["Nº personas y edad niños"] },
                     { icon: "📍", label: "Dirección", val: cliente["Dirección"] },
                   ].map((item, i) => (
@@ -279,7 +284,7 @@ export default function Portal() {
                 </div>
                 {cliente["Fecha_límite_pago"] && pendiente > 0 && (
                   <div style={{ marginTop: 16, background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 10, padding: "12px 16px", color: "#92400e", fontSize: 13 }}>
-                    ⏰ Fecha límite: <strong>{cliente["Fecha_límite_pago"]}</strong>
+                    ⏰ Fecha límite: <strong>{formatFecha(cliente["Fecha_límite_pago"])}</strong>
                   </div>
                 )}
               </div>
@@ -297,7 +302,7 @@ export default function Portal() {
                   <div key={i} style={{ ...s.card, opacity: item.val && item.val !== "0" ? 1 : 0.4 }}>
                     <div style={{ fontSize: 24, marginBottom: 8 }}>{item.icon}</div>
                     <div style={{ fontSize: 10, color: "#9d8b78", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 4 }}>{item.label}</div>
-                    <div style={{ fontSize: 15, color: "#1c1410", fontWeight: 500 }}>{item.val && item.val !== "0" ? formatEuro(item.val) : "No incluido"}</div>
+                    <div style={{ fontSize: 15, color: "#1c1410", fontWeight: 500 }}>{item.val && item.val !== "0" ? item.val : "No incluido"}</div>
                   </div>
                 ))}
               </div>
