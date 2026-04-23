@@ -1,44 +1,42 @@
-export async function POST(request) {
-  const { dni } = await request.json();
-  
-  const SHEET_ID = "1zUnmMzaxoYI4jwfRBJ3vfvzjo5_dPPnML5L_XIRvMFA";
-  const GID = "1569558318";
-  
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const dni = searchParams.get('dni')?.trim().toUpperCase();
+
+  if (!dni) {
+    return Response.json({ error: 'DNI requerido' }, { status: 400 });
+  }
+
   try {
-    const url = `https://corsproxy.io/?https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
-    const res = await fetch(url);
-    const csv = await res.text();
+    const csvUrl = `https://docs.google.com/spreadsheets/d/1zUnmMzaxoYI4jwfRBJ3vfvzjo5_dPPnML5L_XIRvMFA/export?format=csv&gid=1569558318`;
     
-    const rows = csv.split("\n").map(row => {
-      const result = [];
-      let inQuotes = false;
-      let current = "";
-      for (const char of row) {
-        if (char === '"') { inQuotes = !inQuotes; }
-        else if (char === "," && !inQuotes) { result.push(current.trim()); current = ""; }
-        else { current += char; }
-      }
-      result.push(current.trim());
-      return result;
+    const res = await fetch(csvUrl, { cache: 'no-store' });
+    if (!res.ok) throw new Error('No se pudo leer el Sheet');
+    
+    const text = await res.text();
+    const rows = text.split('\n').map(r => r.split(','));
+    const headers = rows[0].map(h => h.trim().replace(/"/g, ''));
+
+    const codigoCol = headers.findIndex(h => 
+      h.toUpperCase().includes('CODIGO') || h.toUpperCase().includes('DNI')
+    );
+
+    const match = rows.slice(1).find(row => {
+      const val = (row[codigoCol] || '').trim().replace(/"/g, '').toUpperCase();
+      return val === dni;
     });
-    
-    if (rows.length < 2) return Response.json({ encontrado: false });
-    
-    const headers = rows[0];
-    const clienteRow = rows.find((row, i) => {
-      if (i === 0) return false;
-      return row[0]?.toString().toUpperCase().trim() === dni.toUpperCase().trim();
+
+    if (!match) {
+      return Response.json({ encontrado: false });
+    }
+
+    const reserva = {};
+    headers.forEach((h, i) => {
+      reserva[h] = (match[i] || '').trim().replace(/"/g, '');
     });
-    
-    if (!clienteRow) return Response.json({ encontrado: false });
-    
-    const cliente = {};
-    headers.forEach((header, i) => {
-      cliente[header] = clienteRow[i] || "";
-    });
-    
-    return Response.json({ encontrado: true, datos: cliente });
-  } catch (e) {
-    return Response.json({ encontrado: false, error: e.message });
+
+    return Response.json({ encontrado: true, reserva });
+
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
   }
 }
