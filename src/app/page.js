@@ -97,7 +97,7 @@ export default function Portal() {
         const chatRes = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+         body: JSON.stringify({ dni: dni.trim() }),
             messages: [{ role: "user", content: "Hola, acabo de entrar a mi portal" }],
             system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.reserva)),
           }),
