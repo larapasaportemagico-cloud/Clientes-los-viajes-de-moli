@@ -1,4 +1,4 @@
-"use client";
+ "use client";
 import { useState, useRef, useEffect } from "react";
 
 const FORM_RESTAURANTES = "https://docs.google.com/forms/d/e/1FAIpQLSf1H3c9HZ5JrAHSe36ys-zjM3ZCYrj47v6QXnLXui2xrMpKeQ/viewform";
@@ -19,13 +19,12 @@ PLANES DE COMIDAS:
 - PC PREMIUM / MP PREMIUM: Alta gama con experiencias con personajes.
 
 RESTAURANTES DLP:
-- Auberge Cendrillon: Princesas. Alta cocina francesa. El más especial. Desde abril 2026 también con Mickey.
+- Auberge Cendrillon: Princesas. Alta cocina francesa. El más especial.
 - Walt's: Más elegante del parque.
 - Agrabah Café: Buffet Aladdín. Árabe/mediterránea. Muy recomendado.
 - Chez Remy: Ratatouille. Solo planes Plus o superior.
 - PYM Kitchen: Buffet Marvel.
 - The Regal View (nuevo 2026): Princesas. Disney Adventure World.
-- Plaza Gardens: Buffet. CIERRA ABRIL 2026.
 - Downtown (Hotel Marvel): Superhéroes. Muy recomendado.
 - Hunter Grill (Sequoia): Carnes a la brasa.
 - Chuck Wagon (Cheyenne): Buffet western. Económico.
@@ -39,13 +38,6 @@ REGLAS:
 - Nunca inventes precios
 - Blog de Lara: losviajesdemoli.com
 - Contacto: losviajesdemoli.com/contacto`;
-
-function formatFecha(val) {
-  if (!val) return "—";
-  const d = new Date(val);
-  if (isNaN(d.getTime())) return val;
-  return d.toLocaleDateString("es-ES", { day: "2-digit", month: "2-digit", year: "numeric" });
-}
 
 function formatEuro(val) {
   if (!val || val === "0" || val === "") return "0,00 €";
@@ -89,16 +81,21 @@ export default function Portal() {
     setStep("loading");
     try {
       const res = await fetch("/api/reserva", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ dni: dni.trim() }),
-});
-const result = await res.json();
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ dni: dni.trim() }),
+      });
+      const result = await res.json();
+      if (result.encontrado) {
+        setCliente(result.datos);
+        setStep("portal");
+        setChatLoading(true);
+        const chatRes = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({ dni: dni.trim() }),
+          body: JSON.stringify({
             messages: [{ role: "user", content: "Hola, acabo de entrar a mi portal" }],
-            system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.reserva)),
+            system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)),
           }),
         });
         const chatData = await chatRes.json();
@@ -108,8 +105,8 @@ const result = await res.json();
         setErrorMsg("No encontramos ninguna reserva con ese DNI. Verifica que sea correcto o contacta con Lara.");
         setStep("error");
       }
-    } catch (err) {
-      setErrorMsg("Error de conexión: " + err.message);
+    } catch {
+      setErrorMsg("Error de conexión. Inténtalo de nuevo.");
       setStep("error");
     }
   };
@@ -138,7 +135,7 @@ const result = await res.json();
     setChatLoading(false);
   };
 
-  const pendiente = parseFloat(String(cliente?.Pendiente || "0").replace(",", ".").replace("€", "")) || 0;
+  const pendiente = parseFloat(String(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0").replace(",", ".").replace("€", "")) || 0;
 
   const s = {
     page: { minHeight: "100vh", background: "linear-gradient(160deg, #1c1410 0%, #2d1f0e 40%, #0d1520 100%)", fontFamily: "Palatino Linotype, Palatino, serif" },
@@ -207,7 +204,7 @@ const result = await res.json();
                 <div style={{ background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 12, padding: "12px 18px", textAlign: "center" }}>
                   <div style={{ color: "#fca5a5", fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>⚠️ Pendiente</div>
                   <div style={{ color: "#f87171", fontSize: 22, fontWeight: 600 }}>{formatEuro(cliente.Pendiente)}</div>
-                  {cliente["Fecha_límite_pago"] && <div style={{ color: "#9d8b78", fontSize: 11, marginTop: 4 }}>Límite: {formatFecha(cliente["Fecha_límite_pago"])}</div>}
+                  {cliente["Fecha_límite_pago"] && <div style={{ color: "#9d8b78", fontSize: 11, marginTop: 4 }}>Límite: {cliente["Fecha_límite_pago"]}</div>}
                 </div>
               ) : (
                 <div style={{ background: "rgba(22,163,74,0.15)", border: "1px solid rgba(22,163,74,0.3)", borderRadius: 12, padding: "12px 18px" }}>
@@ -230,8 +227,8 @@ const result = await res.json();
                   {[
                     { icon: "🏨", label: "Hotel", val: cliente.Hotel },
                     { icon: "🍽️", label: "Plan de comidas", val: cliente["Plan de comidas"] },
-                    { icon: "📅", label: "Check-in", val: formatFecha(cliente["Check-in"]) },
-                    { icon: "📅", label: "Check-out", val: formatFecha(cliente["Check-out"]) },
+                    { icon: "📅", label: "Check-in", val: cliente["Check-in"] },
+                    { icon: "📅", label: "Check-out", val: cliente["Check-out"] },
                     { icon: "👥", label: "Personas", val: cliente["Nº personas y edad niños"] },
                     { icon: "📍", label: "Dirección", val: cliente["Dirección"] },
                   ].map((item, i) => (
@@ -283,7 +280,7 @@ const result = await res.json();
                 </div>
                 {cliente["Fecha_límite_pago"] && pendiente > 0 && (
                   <div style={{ marginTop: 16, background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 10, padding: "12px 16px", color: "#92400e", fontSize: 13 }}>
-                    ⏰ Fecha límite: <strong>{formatFecha(cliente["Fecha_límite_pago"])}</strong>
+                    ⏰ Fecha límite: <strong>{cliente["Fecha_límite_pago"]}</strong>
                   </div>
                 )}
               </div>
@@ -301,7 +298,7 @@ const result = await res.json();
                   <div key={i} style={{ ...s.card, opacity: item.val && item.val !== "0" ? 1 : 0.4 }}>
                     <div style={{ fontSize: 24, marginBottom: 8 }}>{item.icon}</div>
                     <div style={{ fontSize: 10, color: "#9d8b78", textTransform: "uppercase", letterSpacing: 1.5, marginBottom: 4 }}>{item.label}</div>
-                    <div style={{ fontSize: 15, color: "#1c1410", fontWeight: 500 }}>{item.val && item.val !== "0" ? item.val : "No incluido"}</div>
+                    <div style={{ fontSize: 15, color: "#1c1410", fontWeight: 500 }}>{item.val && item.val !== "0" ? formatEuro(item.val) : "No incluido"}</div>
                   </div>
                 ))}
               </div>
