@@ -88,13 +88,12 @@ export default function Portal() {
     if (!dni.trim()) return;
     setStep("loading");
     try {
-      const res = await fetch(`/api/reserva?dni=${encodeURIComponent(dni.trim())}`);
-      const result = await res.json();
-      if (result.encontrado) {
-        setCliente(result.datos);
-        setStep("portal");
-        setChatLoading(true);
-        const chatRes = await fetch("/api/chat", {
+      const res = await fetch("/api/reserva", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ dni: dni.trim() }),
+});
+const result = await res.json();
           method: "POST",
           headers: { "Content-Type": "application/json" },
          body: JSON.stringify({ dni: dni.trim() }),
