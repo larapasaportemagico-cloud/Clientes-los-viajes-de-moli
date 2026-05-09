@@ -91,7 +91,7 @@ export default function Portal() {
       const res = await fetch(`/api/reserva?dni=${encodeURIComponent(dni.trim())}`);
       const result = await res.json();
       if (result.encontrado) {
-        setCliente(result.reserva);
+        setCliente(result.datos);
         setStep("portal");
         setChatLoading(true);
         const chatRes = await fetch("/api/chat", {
