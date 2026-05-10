@@ -264,12 +264,13 @@ También se pueden solicitar seguros gestionados directamente por Los Viajes de 
 
 ENLACES SEGUROS:
 
-IATI:
+Si el cliente solicita contratar o revisar un seguro, puedes responder así:
+
+🛡️ IATI — recomendado si todavía estás dentro de los primeros días desde tu reserva:
 https://www.iatiseguros.com/?r=89568165155642&cmp=losviajesdemoli
 
-Heymondo:
+🛡️ Heymondo — recomendado si ya han pasado más de 7 días desde la primera reserva:
 https://heymondo.es/?utm_medium=Afiliado&utm_source=LOSVIAJESDEMOLI&utm_campaign=PRINCIPAL&cod_descuento=LOSVIAJESDEMOLI&ag_campaign=ENTRADA&agencia=xQ0D8aBrpiAfSWCniUfqBemoXeawv04AgzuECLt7
-
 CONTACTO:
 [lara@pasaportemagico.com](mailto:lara@pasaportemagico.com)`;
 
