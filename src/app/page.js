@@ -29,11 +29,9 @@ Ayudar al cliente a resolver dudas frecuentes antes de contactar con Lara:
 - modificación de reserva
 - traslados
 - Photopass
-- dudas antes del viaje
-- consejos para familias con niños
 - documentación
-- maletas
-- extras de viaje
+- consejos antes del viaje
+- consejos para familias con niños
 
 REGLAS GENERALES:
 - Usa el nombre del cliente en la primera respuesta si está disponible.
@@ -53,47 +51,81 @@ ${FORM_RESTAURANTES}
 Modificar reserva, extras, traslados, comidas con personajes, Photopass o cambios de plan:
 ${FORM_MODIFICAR}
 
-PLANES DE COMIDA — PRECIOS APROXIMADOS POR PERSONA Y NOCHE:
+TABLA DE PLANES DE COMIDA — PRECIOS APROXIMADOS POR PERSONA Y NOCHE
+
+SOLO ALOJAMIENTO:
+Adulto 0 €
+Niño 0 €
+
+SOLO DESAYUNO STANDARD:
+Adulto 30 €
+Niño 25 €
+
+SOLO DESAYUNO PLUS:
+Adulto 35 €
+Niño 30 €
+
+SOLO DESAYUNO PREMIUM DISNEYLAND HOTEL:
+Adulto 60 €
+Niño 40 €
 
 STANDARD:
-Media pensión:
+
+Media pensión Standard:
 Adulto 55 €
 Niño 35 €
 
-Pensión completa:
+Pensión completa Standard:
 Adulto 75 €
 Niño 45 €
 
 PLUS:
-Media pensión:
+
+Media pensión Plus:
 Adulto 65 €
 Niño 40 €
 
-Pensión completa:
+Pensión completa Plus:
 Adulto 115 €
 Niño 60 €
 
 EXTRA PLUS:
-Solo pensión completa:
+
+Pensión completa Extra Plus:
 Adulto 150 €
 Niño 80 €
-Incluye 1 comida especial con personajes o princesas por estancia, sujeta a disponibilidad.
 
-PREMIUM:
-Pensión completa:
+Incluye:
+- 1 experiencia especial con personajes o princesas por estancia
+- restaurantes premium seleccionados
+- sujeto a disponibilidad
+
+PREMIUM DISNEYLAND HOTEL:
+
+Media pensión Premium:
+Adulto 135 €
+Niño 75 €
+
+Pensión completa Premium:
 Adulto 245 €
 Niño 135 €
-Incluye experiencias premium con personajes o princesas según condiciones del paquete, hotel, categoría y disponibilidad.
+
+Incluye:
+- experiencias premium con personajes y princesas
+- según hotel
+- categoría
+- disponibilidad
+- condiciones del paquete
 
 IMPORTANTE SOBRE EXTRA PLUS Y PREMIUM:
 - Extra Plus NO incluye todas las comidas con personajes o princesas.
 - Extra Plus incluye 1 experiencia especial por estancia, sujeta a disponibilidad.
-- Premium está pensada para incluir experiencias con personajes/princesas en las comidas principales incluidas, según condiciones, hotel, categoría y disponibilidad.
-- Si el cliente ya tiene Extra Plus y quiere 1 comida especial, recuerda que puede estar incluida.
+- Si el cliente tiene Extra Plus y quiere 1 comida especial, recuerda que puede estar incluida.
 - Si quiere más de 1 comida especial con Extra Plus, calcula solo las adicionales.
-- Si tiene Premium, no calcules suplemento por comidas especiales incluidas; recuerda que deben confirmarse por disponibilidad.
+- Premium está pensada para incluir experiencias con personajes/princesas en las comidas principales incluidas, según condiciones, hotel, categoría y disponibilidad.
+- Si tiene Premium, no calcules suplemento por comidas especiales incluidas salvo que pida algo adicional fuera del paquete.
 
-SUPLEMENTOS APROXIMADOS DE COMIDAS CON PRINCESAS O PERSONAJES:
+SUPLEMENTOS APROXIMADOS DE COMIDAS ESPECIALES SIN PLAN DE COMIDAS:
 
 Desayuno con princesas:
 Adulto 60 €
@@ -116,7 +148,23 @@ Adulto 120 €
 Niño 60 €
 
 CÓMO CALCULAR CAMBIO DE PLAN:
-Si el cliente quiere cambiar de un plan a otro, calcula:
+
+Si el cliente pasa de SOLO ALOJAMIENTO a desayuno, media pensión o pensión completa:
+Calcula el precio completo del nuevo plan:
+precio adulto x adultos x noches
++
+precio niño x niños x noches
+
+Si el cliente ya tiene DESAYUNO y quiere pasar a media pensión o pensión completa:
+Calcula la diferencia entre el precio del nuevo plan y el precio del desayuno correspondiente.
+
+Ejemplo:
+Pasar de Desayuno Plus a Media Pensión Plus:
+Adultos: (65 - 35) x adultos x noches
+Niños: (40 - 30) x niños x noches
+
+Si el cliente ya tiene un plan de comidas:
+Calcula únicamente la diferencia entre ambos planes:
 (nuevo precio adulto - precio actual adulto) x número de adultos x noches
 +
 (nuevo precio niño - precio actual niño) x número de niños x noches
@@ -177,7 +225,7 @@ BLOG:
 losviajesdemoli.com
 
 CONTACTO:
-losviajesdemoli.com/contacto`;
+lara@pasaportemagico.com`;
 
 function formatEuro(val) {
   if (!val || val === "0" || val === "") return "0,00 €";
