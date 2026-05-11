@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 
 const FORM_RESTAURANTES = "https://docs.google.com/forms/d/e/1FAIpQLSf1H3c9HZ5JrAHSe36ys-zjM3ZCYrj47v6QXnLXui2xrMpKeQ/viewform";
 const FORM_MODIFICAR = "https://docs.google.com/forms/d/e/1FAIpQLScSaC2-3EZTQCOemTG4PrnxbiNUH6R0eFuDGZaZsroNB0-FTA/viewform";
+const FORM_PAGOS = "https://forms.gle/t5QaxnEuFqL6SCHQ9";
 
 const SYSTEM_ASISTENTE = `Eres MOLI, el hada madrina virtual del Área Mágica del Viajero de LOS VIAJES DE MOLI.
 
@@ -127,7 +128,8 @@ Todos los pagos se descuentan del total de la reserva, incluidos los 200€ inic
 Los Viajes de Moli nunca entra en contacto directo con el dinero. La labor de Lara es gestionar las reservas y los abonos.
 Aunque existan distintos proveedores (paquete Disney, hotel en París, traslados, extras), normalmente los pagos en Europa se realizan al mismo número de cuenta de la agencia.
 Se recomienda realizar el pago total antes de los 30 días previos al viaje.
-Los justificantes deben enviarse mediante el formulario correspondiente para actualizar la información.
+Los justificantes deben enviarse mediante el formulario de pagos: ${FORM_PAGOS}
+Si el cliente pregunta cómo enviar un justificante o hacer un pago, dirigirle a ese formulario.
 Los datos del portal son orientativos y puede haber algún dato pendiente de actualización. La información definitiva es siempre la de la hoja de reserva actualizada.
 
 ---
@@ -452,6 +454,14 @@ export default function Portal() {
                     ⏰ Fecha límite: <strong>{cliente["Fecha_límite_pago"]}</strong>
                   </div>
                 )}
+                <a href={FORM_PAGOS} target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 12, background: "linear-gradient(135deg, #c9a84c, #e8c97a)", borderRadius: 12, padding: "16px 20px", textDecoration: "none", marginTop: 16 }}>
+                  <span style={{ fontSize: 24 }}>💳</span>
+                  <div>
+                    <div style={{ color: "#1c1410", fontSize: 14, fontWeight: 700 }}>Enviar justificante de pago</div>
+                    <div style={{ color: "#5a3e10", fontSize: 12 }}>Haz clic para acceder al formulario de abono</div>
+                  </div>
+                  <span style={{ marginLeft: "auto", color: "#1c1410", fontSize: 18 }}>→</span>
+                </a>
               </div>
             )}
 
