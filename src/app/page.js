@@ -207,6 +207,34 @@ https://heymondo.es/?utm_medium=Afiliado&utm_source=LOSVIAJESDEMOLI&utm_campaign
 
 ---
 
+NOCHES EXTRA Y HOTELES:
+
+Los clientes pueden añadir noches extra en un Hotel Disney siempre que no sea en paquete con vuelos.
+Es una buena opción si los vuelos llegan en mal horario o si quieren disfrutar más días de parque al completo.
+
+HOTELES ASOCIADOS DISNEY:
+Hay hoteles asociados desde básicos hasta 4 estrellas con piscina y zonas infantiles de ocio.
+Importante tener en cuenta:
+- Comparten el mismo autobús que va muy lleno a primeras y últimas horas.
+- El servicio de autobús no comienza a tiempo para aprovechar la hora extra de apertura del parque, por lo que hay que usar Uber para trasladarse al Hotel Disney.
+- Los Uber por lo general no tienen sistemas de retención infantil. Algunos tienen alzador pero muchos no tienen nada.
+- En los hoteles asociados hay que pagar parking diario (aproximadamente 15€/día).
+- También hay que abonar las tasas turísticas por cada noche y adulto de la reserva.
+
+OTROS HOTELES EXTERNOS:
+- Hoteles externos con bus directo al parque pero con menores horarios.
+- Hoteles en Val d'Europe desde los que se puede llegar en RER.
+- Pueblos cercanos más económicos.
+
+PARA VISITAR PARÍS:
+- Hoteles céntricos de París: más caro pero más cómodo.
+- Hoteles externos cercanos al RER: opción más económica. Se llega a París por 2,50€ en 40-50 minutos.
+- Tour privado en coche de ~3h por 350€ (no incluye traslado a París): te llevan por todo París con tiempo para bajar a ver monumentos y hacerse fotos.
+  * Muy recomendable el día de llegada: recogen en el aeropuerto, trasladan las maletas, veis París cómodamente y después os dejan en el Hotel Disney.
+  * También es buena opción el día de salida si el vuelo es por la tarde-noche.
+
+---
+
 CONTACTO:
 lara@pasaportemagico.com`;
 
@@ -517,6 +545,16 @@ export default function Portal() {
                   {["¿Qué incluye mi plan?", "¿Cuánto cuesta cambiar de plan?", "¿Cuánto me falta pagar?", "¿Qué necesito para el viaje?"].map((q, i) => (
                     <button key={i} onClick={() => setChatInput(q)} style={{ background: "rgba(201,168,76,0.1)", border: "1px solid rgba(201,168,76,0.2)", borderRadius: 20, padding: "5px 12px", color: "#c9a84c", fontSize: 11, cursor: "pointer", whiteSpace: "nowrap", fontFamily: "inherit" }}>{q}</button>
                   ))}
+                </div>
+                <div style={{ padding: "10px 12px", borderTop: "1px solid rgba(255,255,255,0.05)", display: "flex", gap: 8 }}>
+                  <a href={FORM_MODIFICAR} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, padding: "10px", textDecoration: "none" }}>
+                    <span style={{ fontSize: 16 }}>✏️</span>
+                    <span style={{ color: "#f5f2ee", fontSize: 12 }}>Modificar reserva</span>
+                  </a>
+                  <a href={FORM_PAGOS} target="_blank" rel="noopener noreferrer" style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 8, background: "linear-gradient(135deg, #c9a84c, #e8c97a)", borderRadius: 10, padding: "10px", textDecoration: "none" }}>
+                    <span style={{ fontSize: 16 }}>💳</span>
+                    <span style={{ color: "#1c1410", fontSize: 12, fontWeight: 700 }}>Realizar un abono</span>
+                  </a>
                 </div>
                 <div style={{ padding: "10px 12px", borderTop: "1px solid rgba(255,255,255,0.05)", display: "flex", gap: 8 }}>
                   <input value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key === "Enter" && handleChat()} placeholder="Escribe tu pregunta..." disabled={chatLoading}
