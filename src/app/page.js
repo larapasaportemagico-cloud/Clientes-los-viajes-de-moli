@@ -435,8 +435,19 @@ export default function Portal() {
                   style={{ width: "100%", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, color: "#f5f2ee", fontSize: 18, padding: "14px 16px", outline: "none", fontFamily: "inherit", textAlign: "center", letterSpacing: 2, boxSizing: "border-box", marginBottom: 16 }} />
                 <button onClick={handleLogin} disabled={!dni.trim()} style={{ ...s.goldBtn, opacity: dni.trim() ? 1 : 0.4 }}>Ver mi reserva ✨</button>
               </div>
-              {step === "error" && <div style={{ marginTop: 16, background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 10, padding: 14, color: "#fca5a5", fontSize: 13 }}>⚠️ {errorMsg}</div>}
-              <p style={{ color: "#5a4a3a", fontSize: 12, marginTop: 20 }}>¿Problemas? <a href="https://losviajesdemoli.com/contacto/" style={{ color: "#c9a84c" }}>Contacta con Lara</a></p>
+              {step === "error" && (
+                <div style={{ marginTop: 16 }}>
+                  <div style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 10, padding: 14, color: "#fca5a5", fontSize: 13, marginBottom: 12 }}>⚠️ {errorMsg}</div>
+                  <a href="https://losviajesdemoli.com" target="_blank" rel="noopener noreferrer" style={{ display: "flex", alignItems: "center", gap: 12, background: "linear-gradient(135deg, #c9a84c, #e8c97a)", borderRadius: 12, padding: "14px 18px", textDecoration: "none" }}>
+                    <span style={{ fontSize: 22 }}>🏰</span>
+                    <div>
+                      <div style={{ color: "#1c1410", fontSize: 13, fontWeight: 700 }}>¿Aún no tienes tu viaje reservado?</div>
+                      <div style={{ color: "#5a3e10", fontSize: 12 }}>Descubre Los Viajes de Moli →</div>
+                    </div>
+                  </a>
+                </div>
+              )}
+              <p style={{ color: "#5a4a3a", fontSize: 12, marginTop: 20 }}>¿Problemas? <a href="mailto:lara@pasaportemagico.com" style={{ color: "#c9a84c" }}>Contacta con Lara</a></p>
             </div>
           </div>
         )}
