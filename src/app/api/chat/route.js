@@ -1,6 +1,5 @@
 export async function POST(request) {
   const { messages, system } = await request.json();
-
   const response = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: {
@@ -15,7 +14,6 @@ export async function POST(request) {
       messages,
     }),
   });
-
   const data = await response.json();
   return Response.json(data);
 }
