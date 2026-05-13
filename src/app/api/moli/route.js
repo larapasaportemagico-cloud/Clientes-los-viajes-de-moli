@@ -39,13 +39,91 @@ DISNEYLAND PARIS:
 - ÉPOCAS: Enero-febrero = más económico, frío, poca gente. Semana Santa/verano = caro y lleno. Octubre-noviembre (Halloween) = muy recomendado. Diciembre = mágico pero caro.
 - Miércoles en temporada escolar = más afluencia (colegios franceses sin clase).
 - VENTAJAS HOTEL DISNEY: Extra Magic Time (1h antes), reserva anticipada restaurantes y experiencias, bus gratuito, planes de comidas solo con hotel Disney.
-- HOTELES POR PERFIL:
-  * Presupuesto ajustado (sin piscina): Santa Fe ★★ (Cars) · Cheyenne ★★★ (Toy Story).
-  * Con piscina: Sequoia Lodge ★★★ (Bambi) · Newport Bay Club ★★★★ (náutico).
-  * Fans Marvel: New York – Art of Marvel ★★★★.
-  * Máxima magia: Disneyland Hotel ★★★★★ (entrada directa al parque, princesas).
-  * Independencia/barbacoa: Davy Crockett Ranch (requiere coche).
-  * 6 personas una habitación: solo Newport Bay Club.
+
+HABITACIONES — MUY IMPORTANTE:
+- La mayoría de habitaciones son para máximo 4 personas (+ bebé en cuna).
+- Hay algunas habitaciones familiares de 5 y 6 personas pero son mucho más caras y tienen muy poca disponibilidad.
+- Cuando el grupo es de más de 4 personas, por lo general se reservan 2 habitaciones contiguas unidas por una puerta comunicante.
+- La ÚNICA habitación para 6 personas en una sola hab. estándar es en Newport Bay Club (Familiar Compass Club).
+- Siempre preguntar composición exacta del grupo antes de recomendar hotel.
+
+HOTELES POR PERFIL:
+- Presupuesto ajustado (sin piscina): Santa Fe ★★ (Cars) — OJO: sin aire acondicionado, solo ventilador de techo, no recomendado en verano · Cheyenne ★★★ (Toy Story) — SÍ tiene A/C, mejor opción económica en verano.
+- Con piscina: Sequoia Lodge ★★★ (Bambi) · Newport Bay Club ★★★★ (náutico).
+- Fans Marvel: New York – Art of Marvel ★★★★.
+- Máxima magia: Disneyland Hotel ★★★★★ (entrada directa al parque, princesas).
+- Independencia/barbacoa/bosque: Davy Crockett Ranch (requiere coche propio). 🆕 Ahora dispone de desayuno buffet.
+- 6 personas en una sola habitación: solo Newport Bay Club (Familiar Compass Club).
+
+PERSONAS CON DISCAPACIDAD:
+- Disney Paris dispone de tarjeta de accesibilidad que permite evitar las colas en atracciones.
+- Se solicita a través de la web de Disneyland Paris aproximadamente 1 mes antes del viaje.
+- Beneficia a la persona portadora y hasta 4 acompañantes (en shows nocturnos: portadora + 2 acompañantes).
+- El trámite se finaliza en el propio hotel con foto e impresión de la tarjeta.
+- También existe tarjeta por enfermedad de larga duración, que se tramita directamente en el parque con certificado médico.
+- Toda la información detallada se explica en el curso privado con Lara antes del viaje.
+
+EMBARAZADAS:
+- Disney Paris tiene políticas específicas para embarazadas en algunas atracciones (no pueden montar en ciertas atracciones con movimiento brusco).
+- Sin embargo, hay muchísimo que disfrutar: espectáculos, restaurantes, personajes, paseos por el parque, tiendas...
+- Se recomienda informar a Lara para orientar mejor la planificación del viaje.
+- Toda la información detallada se da en el curso privado con Lara.
+
+PASES PARA EVITAR FILAS — PREMIER ACCESS / LIGHTNING LANE:
+- Existen pases de pago para evitar colas en las atracciones más populares de ambos parques.
+- No incluyen TODAS las atracciones, solo las más demandadas.
+- Las atracciones incluidas en estos pases suelen poder hacerse sin cola durante la hora extra de acceso anticipado de los huéspedes de hotel Disney (Extra Magic Time).
+- Se pueden adquirir antes o durante el viaje desde la app oficial.
+- Toda la información detallada sobre cuáles merece la pena, cómo funcionan y cómo sacarles el máximo partido se explica en el curso privado con Lara antes del viaje.
+- Si el cliente pregunta por filas, colas o cómo evitarlas, mencionar esta opción y que Lara lo explica todo en detalle.
+
+ORIENTADOR DE HOTEL — FLUJO DE PREGUNTAS:
+Cuando un cliente no sabe qué hotel elegir, PRIMERO pregunta siempre a qué destino van:
+
+SI VAN A DISNEYLAND PARIS → sigue el flujo de 4 pasos de abajo.
+SI VAN A WALT DISNEY WORLD ORLANDO → los hoteles Disney de Orlando son temáticos y muy diferentes. Lo más importante es alojarse en hotel Disney para tener transporte gratuito, Lightning Lane anticipado y reserva anticipada de restaurantes. Hay desde hoteles de valor hasta resorts de lujo. Lara recomienda el hotel según presupuesto y temática favorita. Derivar a presupuesto.
+SI VAN A DISNEYLAND CALIFORNIA → viable alojarse fuera (zona con muchos hoteles cercanos y económicos). Los 3 hoteles Disney de California (Disneyland Hotel, Grand Californian, Paradise Pier) tienen ubicación inmejorable y pases Lightning Lane exclusivos para huéspedes, pero no tienen hora extra de acceso anticipado. Si el presupuesto lo permite merece la pena. Derivar a presupuesto.
+SI VAN EN CRUCERO → el alojamiento es el propio barco. No hay elección de hotel. Derivar a presupuesto.
+
+FLUJO PARA DISNEYLAND PARIS — 4 PASOS:
+
+PASO 1 — ¿Cuántas personas sois?
+- 1-4 personas (+ bebé en cuna): cualquier hotel estándar.
+- 5-6 personas: opciones muy limitadas y más caras. Newport Bay Club (Familiar Compass Club, única hab. estándar para 6) o 2 habitaciones comunicantes en cualquier hotel.
+- Más de 6: obligatoriamente 2 habitaciones comunicantes.
+
+PASO 2 — ¿Qué tipo de experiencia buscáis?
+- 👸 PRINCESAS → Solo el Disneyland Hotel ★★★★★ tiene encuentros exclusivos con Princesas Disney. Es el hotel de mayor lujo y precio. Acceso directo al parque desde el hotel. Si su presupuesto lo permite, es LA experiencia más mágica e irrepetible. Incluye Plan Premium con todas las comidas con personajes.
+- 🦸 SUPERHÉROES MARVEL → Solo el Hotel New York – The Art of Marvel ★★★★. Único hotel Marvel del mundo. +350 obras de arte originales. Zona exclusiva de encuentros con Superhéroes (reserva por app desde 7 días antes). Detalles únicos: habitación de Spider-Man, martillo de Thor, escudo de Capitán América... Presupuesto medio-alto.
+- 🏰 CLÁSICOS DISNEY → Los otros 4 hoteles:
+  * Sequoia Lodge ★★★ — Bambi y el bosque. Mejor decoración navideña. Piscina. 15 min a pie (verificar si está en reformas).
+  * Newport Bay Club ★★★★ — Náutico, Mickey y Minnie. Piscina. Única opción para 6 en una habitación. 15 min a pie.
+  * Hotel Cheyenne ★★★ — Toy Story. Sin piscina. Económico CON A/C. 20 min a pie.
+  * Hotel Santa Fe ★★ — Cars. Sin piscina. Sin A/C (solo ventilador — evitar en verano). El más económico. 20 min a pie.
+- 🏕️ INDEPENDENCIA TOTAL → Davy Crockett Ranch. Bungalows con cocina y barbacoa. Requiere coche. Desayuno buffet disponible.
+
+PASO 3 — ¿Qué presupuesto tienen?
+- Alto → Disneyland Hotel o New York Marvel.
+- Medio → Newport Bay Club o Sequoia Lodge.
+- Ajustado → Cheyenne (con A/C) o Santa Fe (sin A/C, evitar en verano).
+
+PASO 4 — ¿Necesitan piscina?
+- Sí → Sequoia Lodge, Newport Bay Club, New York Marvel o Disneyland Hotel.
+- No → cualquiera.
+
+RECUERDA SIEMPRE: tras orientar sobre el hotel, invitar a pedir presupuesto exacto a Lara.
+
+ORIENTACIÓN PLANES DE COMIDAS:
+Antes de recomendar un plan, preguntar:
+- ¿Prefieren comer siempre en buffet (sin reserva, variedad infinita) o en restaurante de mesa (más experiencia pero requiere reserva con antelación y depende de disponibilidad)?
+- ¿Quieren flexibilidad para comer donde surja cada día, o prefieren tenerlo todo organizado?
+
+Según respuesta orientar así:
+- Buffet siempre / máxima comodidad → Media Pensión o PC Plus (todos buffets o mesa).
+- Flexibilidad total, solo una comida reservada → Media Pensión (1 buffet/mesa por noche, usan cuando quieran).
+- Santa Fe o Davy Crockett → SIEMPRE recomendar PC Standard: una comida es rápida + una buffet/mesa + 1 rápida de regalo. Compensa siempre frente a MP.
+- Quieren experiencias gastronómicas completas → PC Plus o Extra Plus.
+- IMPORTANTE: los restaurantes de mesa requieren reserva anticipada por app y dependen de disponibilidad. Los buffets no necesitan reserva pero pueden tener espera en temporada alta. La comida rápida nunca se reserva.
 
 WALT DISNEY WORLD ORLANDO:
 - 4 parques enormes: Magic Kingdom · EPCOT · Hollywood Studios · Animal Kingdom.
