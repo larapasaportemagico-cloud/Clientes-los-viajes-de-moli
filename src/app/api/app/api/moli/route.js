@@ -1,3 +1,9 @@
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 const SYSTEM = `Eres MOLI, el hada madrina virtual de LOS VIAJES DE MOLI (losviajesdemoli.com), agencia oficial Disney especializada en Disneyland Paris, Walt Disney World Orlando, Disneyland California y cruceros Disney.
 
 Tu misión es orientar al visitante de la web, recomendarle según su perfil y captarlo como cliente para que solicite presupuesto con Lara.
@@ -79,6 +85,11 @@ Con destino + días + personas, haz tu recomendación y añade:
 
 NUNCA: precios exactos · respuestas largas · hoteles externos en Paris.`;
 
+// Maneja peticiones OPTIONS (preflight CORS)
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: CORS_HEADERS });
+}
+
 // Límite simple anti-abuso: máximo 20 mensajes por conversación
 const MAX_MESSAGES = 20;
 
@@ -86,12 +97,10 @@ export async function POST(request) {
   try {
     const { messages } = await request.json();
 
-    // Validación básica
     if (!messages || !Array.isArray(messages)) {
-      return Response.json({ error: "Invalid request" }, { status: 400 });
+      return Response.json({ error: "Invalid request" }, { status: 400, headers: CORS_HEADERS });
     }
 
-    // Limitar longitud de conversación
     const limitedMessages = messages.slice(-MAX_MESSAGES);
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -110,9 +119,9 @@ export async function POST(request) {
     });
 
     const data = await response.json();
-    return Response.json(data);
+    return Response.json(data, { headers: CORS_HEADERS });
 
   } catch (error) {
-    return Response.json({ error: "Server error" }, { status: 500 });
+    return Response.json({ error: "Server error" }, { status: 500, headers: CORS_HEADERS });
   }
 }
