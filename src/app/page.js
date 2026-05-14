@@ -1007,10 +1007,10 @@ export default function Portal() {
             {activeTab==="pagos" && (
               <div style={s.card}>
                 <div style={{ fontSize:11, color:"#c9a84c", letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>💰 Estado de pagos</div>
-                <PagoBar pagado={cliente.Pagado} total={cliente["Total (€)"]} />
+                <PagoBar pagado={cliente.Pagado} total={cliente["Total"]} />
                 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginTop:20 }}>
                   {[
-                    { label:"Total viaje", val:cliente["Total (€)"], bg:"#f9f7f4", colorNum:"#1c1410", colorTxt:"#7a6a50" },
+                    { label:"Total viaje", val:cliente["Total"], bg:"#f9f7f4", colorNum:"#1c1410", colorTxt:"#7a6a50" },
                     { label:"Pagado", val:cliente.Pagado, bg:"#f0fdf4", colorNum:"#16a34a", colorTxt:"#15803d" },
                     { label:"Pendiente", val:cliente.Pendiente, bg: pendiente>0?"#fef2f2":"#f0fdf4", colorNum: pendiente>0?"#dc2626":"#16a34a", colorTxt: pendiente>0?"#b91c1c":"#15803d" },
                   ].map((item,i) => (
