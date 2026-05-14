@@ -423,21 +423,66 @@ function getDesayunoHotel(hotel) {
 // ═══════════════════════════════════════════════════════
 // FORMATEADORES
 // ═══════════════════════════════════════════════════════
+// ═══ HELPERS DE PAGOS — maneja texto, números y combinaciones ═══
+
+// Extrae número(s) de un valor mixto: "200", "200€", "200+150", "500 - falta recibo" → número total
+function extractNumber(val) {
+  if (!val && val !== 0) return 0;
+  const str = String(val).replace(/€/g, '').replace(/\s/g, '');
+  const nums = str.match(/\d+([.,]\d+)?/g);
+  if (!nums) return 0;
+  return nums.reduce((acc, n) => acc + parseFloat(n.replace(',', '.')), 0);
+}
+
+// ¿Contiene texto significativo además del número?
+function hasText(val) {
+  if (!val && val !== 0) return false;
+  const str = String(val).trim();
+  if (!str || str === '0') return false;
+  return str.replace(/[\d€+\-.,\s]/g, '').trim().length > 0;
+}
+
+// Formatea un número como euros
 function formatEuro(val) {
-  if (!val || val === "0" || val === "") return "0,00 €";
-  const num = parseFloat(String(val).replace(",", ".").replace("€", "").trim());
-  if (isNaN(num)) return val;
+  if (!val && val !== 0) return "0,00 €";
+  const num = extractNumber(val);
+  if (!num && !hasText(val)) return "0,00 €";
+  if (!num) return String(val);
   return num.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
 }
 
+// Renderiza valor de pago: muestra número formateado + texto visible si lo hay
+function PagoValor({ val, colorNum = "#1c1410", colorTxt = "#7a6a50", size = 18 }) {
+  if (!val && val !== 0) return <span style={{ color:"#bbb" }}>—</span>;
+  const str = String(val).trim();
+  if (!str || str === "0") return <span style={{ color:"#bbb" }}>—</span>;
+  const num = extractNumber(val);
+  const texto = hasText(val);
+  return (
+    <span>
+      {num > 0 && (
+        <strong style={{ color:colorNum, fontSize:size }}>
+          {num.toLocaleString("es-ES", { style:"currency", currency:"EUR" })}
+        </strong>
+      )}
+      {texto && (
+        <span style={{ color:colorTxt, fontSize:"0.75em", display:"block", marginTop:2, fontStyle:"italic" }}>
+          📝 {str}
+        </span>
+      )}
+      {!num && !texto && <span style={{ color:"#bbb" }}>—</span>}
+    </span>
+  );
+}
+
 function PagoBar({ pagado, total }) {
-  const p = parseFloat(String(pagado).replace(",", ".").replace("€", "")) || 0;
-  const t = parseFloat(String(total).replace(",", ".").replace("€", "")) || 1;
+  const p = extractNumber(pagado);
+  const t = extractNumber(total) || 1;
   const pct = Math.min(100, Math.round((p / t) * 100));
   return (
     <div>
       <div style={{ display:"flex", justifyContent:"space-between", fontSize:12, color:"#7a6a50", marginBottom:6 }}>
-        <span>Pagado: <strong style={{ color:"#16a34a" }}>{formatEuro(pagado)}</strong></span>
+        <span>Pagado: <strong style={{ color:"#16a34a" }}>{p.toLocaleString("es-ES",{style:"currency",currency:"EUR"})}</strong></span>
         <span>{pct}%</span>
       </div>
       <div style={{ background:"#e8e0d5", borderRadius:20, height:8 }}>
@@ -471,7 +516,7 @@ function PlanificadorRestaurantes({ cliente }) {
 
   const setPref = (group, val) => setPrefs(p => ({ ...p, [group]: val }));
 
-  const prefsCompletas = ['personajes','tematica','presupuesto','prioridad'].every(k => prefs[k]);
+  const prefsCompletas = ['personajes','reserva','estilo'].every(k => prefs[k]);
 
   const prefGroups = [
     { key:'personajes', label:'👑 ¿Queréis comer con personajes?', opts:[
@@ -479,24 +524,17 @@ function PlanificadorRestaurantes({ cliente }) {
       { val:'si-si-hay', label:'Si hay disponibilidad' },
       { val:'no', label:'No nos importa' }
     ]},
-    { key:'tematica', label:'🎭 ¿Temática favorita?', opts:[
-      { val:'princesas', label:'👸 Princesas' },
-      { val:'marvel', label:'🦸 Marvel' },
-      { val:'ratatouille', label:'🐀 Ratatouille' },
-      { val:'clasico', label:'🏰 Clásico Disney' },
-      { val:'cualquiera', label:'Cualquiera' },
+    { key:'reserva', label:'📅 ¿Preferís tener las comidas reservadas o ir libremente?', opts:[
+      { val:'reservado', label:'📋 Todo reservado y organizado' },
+      { val:'flexible', label:'🎯 Solo reservar lo especial' },
+      { val:'libre', label:'🆓 Sin reservas, total libertad' },
     ]},
-    { key:'presupuesto', label:'💰 Presupuesto extra (fuera del plan)', opts:[
-      { val:'ninguno', label:'Solo usar el plan' },
-      { val:'algo', label:'Algo (~50€ extra total)' },
-      { val:'libre', label:'Sin límite' },
+    { key:'estilo', label:'🍽️ ¿Preferís buffet o carta?', opts:[
+      { val:'buffet', label:'🥗 Buffet — variedad y sin esperas' },
+      { val:'carta', label:'📖 Carta — elegir el menú' },
+      { val:'indiferente', label:'😊 Nos da igual' },
     ]},
-    { key:'prioridad', label:'⚡ ¿Qué priorizáis?', opts:[
-      { val:'atracciones', label:'🎢 Máximas atracciones' },
-      { val:'equilibrio', label:'⚖️ Equilibrio' },
-      { val:'gastronomia', label:'🍽️ Experiencia gastronómica' },
-    ]},
-    { key:'dieta', label:'🌿 ¿Restricción alimentaria?', opts:[
+    { key:'dieta', label:'🌿 ¿Alguna restricción alimentaria?', opts:[
       { val:'ninguna', label:'Ninguna' },
       { val:'vegetariano', label:'Vegetariano/vegan' },
       { val:'alergias', label:'Alergias' },
@@ -504,7 +542,7 @@ function PlanificadorRestaurantes({ cliente }) {
     ]},
   ];
 
-  const accentColors = { personajes:'#5B2D8E', tematica:'#F5287A', presupuesto:'#2BBCD4', prioridad:'#2EC866', dieta:'#F0A500' };
+  const accentColors = { personajes:'#5B2D8E', reserva:'#F5287A', estilo:'#2BBCD4', dieta:'#F0A500' };
 
   async function generarPlan() {
     if (!prefsCompletas) return;
@@ -523,63 +561,97 @@ DATOS DE LA RESERVA:
 - Nombre: ${cliente?.Nombre}
 - Hotel: ${cliente?.Hotel}
 - Plan de comidas: ${cliente?.["Plan de comidas"] || "sin plan"}
-- Bonos disponibles: ${bonos?.desc || "Sin plan contratado"}${bonos?.extra ? ' · ' + bonos.extra : ''}
 - Fechas: ${cliente?.["Check-in"]} al ${cliente?.["Check-out"]} (${noches} noches · ${dates.length} días en parque)
 - Adultos: ${adultos} · Niños 3-11 años: ${ninos} · Bebés <3 años: ${bebes}${bebes>0?' (comen GRATIS en todos los restaurantes Disney)':''}
 - Total personas: ${totalPax}
 
-DESAYUNO: SIEMPRE en el hotel (${desayuno.rest} — ${desayuno.tipo}). No desayunar en los parques.
-CENAS EN EL HOTEL DISPONIBLES: ${desayuno.cena}. Los restaurantes de los hoteles abren para cenas a partir de las 18h aproximadamente, siendo el último turno sobre las 22:45h.
-${desayuno.nota ? `NOTA ESPECIAL HOTEL: ${desayuno.nota}` : ''}
+RESUMEN DE BONOS — explícalo así de claro:
+${(() => {
+  const plan = (cliente?.["Plan de comidas"]||'').toLowerCase();
+  const hotel = (cliente?.Hotel||'').toLowerCase();
+  const esSantaFeDavy = hotel.includes('santa fe') || hotel.includes('davy') || hotel.includes('crockett');
 
-PREFERENCIAS:
+  if (!plan || plan === 'sin plan') {
+    return 'Sin plan de comidas contratado. Paga cada comida en el momento.';
+  }
+  if (plan.includes('solo desayuno') || plan === 'desayuno') {
+    return `Solo Desayuno: ${noches} desayunos buffet en el hotel incluidos. Comidas y cenas se pagan aparte.`;
+  }
+  if (plan.includes('media') || plan === 'mp') {
+    if (esSantaFeDavy) {
+      return `Media Pensión Standard (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches} comidas o cenas de SERVICIO RÁPIDO. Total: ${noches} bonos rápidos. Bonos flexibles — úsalos cuando quieras.`;
+    }
+    return `Media Pensión Plus (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches} comidas o cenas en buffet o mesa. Total: ${noches} bonos buffet/mesa. Bonos flexibles — úsalos cuando quieras.`;
+  }
+  if (plan.includes('standard')) {
+    return `Pensión Completa Standard (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches} comidas rápidas + ${noches} comidas/cenas buffet/mesa + 1 comida rápida de REGALO. Total: ${noches+1} bonos rápidos y ${noches} bonos buffet/mesa. Bonos flexibles.`;
+  }
+  if (plan.includes('smart')) {
+    return `Pensión Completa Smart (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet/mesa + 1 de REGALO. Total: ${noches*2+1} bonos buffet/mesa. OJO: solo válido en restaurantes de Sequoia Lodge, Newport Bay Club y Disney Village.`;
+  }
+  if (plan.includes('extra plus')) {
+    return `Pensión Completa Extra Plus (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet/mesa + 1 de REGALO + 1 comida con personajes incluida por estancia. Total: ${noches*2+1} bonos buffet/mesa. Bonos flexibles.`;
+  }
+  if (plan.includes('premium')) {
+    return `Pensión Completa Premium (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet/mesa + 1 de REGALO + TODAS las comidas con personajes incluidas. Total: ${noches*2+1} bonos buffet/mesa. Bonos flexibles.`;
+  }
+  if (plan.includes('plus')) {
+    return `Pensión Completa Plus (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet/mesa + 1 de REGALO. Total: ${noches*2+1} bonos buffet/mesa. Bonos flexibles — úsalos como queráis durante toda la estancia.`;
+  }
+  return `Plan ${cliente?.["Plan de comidas"]}: ${noches} noches en ${cliente?.Hotel}. Consultar detalles con Lara.`;
+})()}
+
+DESAYUNO: SIEMPRE en el hotel (${desayuno.rest} — ${desayuno.tipo}). Nunca en el parque.
+CENAS EN EL HOTEL: ${desayuno.cena}. Abren desde ~18h, último turno ~22:45h.
+${desayuno.nota ? `NOTA HOTEL: ${desayuno.nota}` : ''}
+
+PREFERENCIAS DEL CLIENTE:
 - Personajes: ${prefs.personajes}
-- Temática: ${prefs.tematica}
-- Presupuesto extra: ${prefs.presupuesto}
-- Prioridad: ${prefs.prioridad}
+- Reservas: ${prefs.reserva}
+- Estilo: ${prefs.estilo}
 - Dieta: ${prefs.dieta || 'ninguna'}
 
 HORARIOS DEL PARQUE DÍA A DÍA (estimados):
-${diasInfo.map(d => `- ${d.fecha}: cierre ${d.cierre}${d.mierc?' — ⚠️ MIÉRCOLES (alta afluencia, colegios franceses sin clase)':d.alta?' — alta afluencia (finde/puente)':''}`).join('\n')}
+${diasInfo.map(d => `- ${d.fecha}: cierre ${d.cierre}${d.mierc?' — ⚠️ MIÉRCOLES (alta afluencia)':d.alta?' — alta afluencia':''}`).join('\n')}
 
-REGLAS CRÍTICAS DE PLANIFICACIÓN:
+REGLAS CRÍTICAS:
 
-1. DESAYUNO: SIEMPRE en el hotel ${cliente?.Hotel}. Nunca en el parque. Es el momento de cargar energía con calma.
+1. DESAYUNO: Siempre en el hotel. Nunca en el parque.
 
-2. HORARIO Y ESTRATEGIA DE CENAS:
-   - Cierre 20h: Cenar en el hotel después del cierre (~20:30-21:00). No hay tiempo para cenar en el parque.
-   - Cierre 21h: Cenar en el hotel después del cierre (~21:15-21:30). Reservar mesa antes del viaje.
-   - Cierre 22h: Viable cenar dentro del parque antes de las 20h (reservar 19:30) para volver. O cenar en hotel después del cierre.
-   - Cierre 22:40: Ideal cenar en parque a las 19:30-20:00 y volver. En verano con mucho calor: opción pausa piscina hotel 15-16h + cena 19:30 + volver al parque. Nunca más de 2h de pausa. Cuando comienza el show nocturno (~22:00-22:15): buena hora para reservar mesa a las 21:45 (15 min de margen).
+2. ESTRATEGIA DE COMIDAS Y CENAS EN EL PARQUE:
+   - Cierre 20-21h: cenar en hotel o village después del cierre. NO hay tiempo para cenar en el parque.
+   - Cierre 22h: viable cenar en parque antes de las 20h (reservar 19:30).
+   - Cierre 22:40: ideal cenar en parque 19:30-20:00 y volver. Show nocturno ~22:00 → reservar mesa a las 21:45 (15 min de margen). En verano: opción pausa piscina 15-16h + cena 19:30 + volver. Nunca más de 2h de pausa.
+   - IMPORTANTE: Los horarios de cena en hoteles y Disney Village NO dependen del horario del parque — se puede cenar allí cualquier día. Solo aplica la estrategia de horarios para cenas DENTRO del parque.
 
-3. MIÉRCOLES = ALTA AFLUENCIA:
-   - Evitar Disney Adventure World los miércoles (colas en atracciones).
-   - Aprovechar para comidas largas: Bistrot Chez Rémy, Auberge de Cendrillon, comidas con personajes.
-   - Dias de finde/puente: igual, reservar restaurantes de mesa (más tiempo entre atracciones con colas).
+3. MIÉRCOLES = ALTA AFLUENCIA: Evitar DAW, aprovechar para comidas largas con reserva.
 
-4. FLEXIBILIDAD DE BONOS:
-   - Los bonos NO caducan cada día. Distribuir libremente durante la estancia.
-   - Pueden usar 2 buffets un día y ninguno otro. Acumular para cena especial.
-   - NO obligatorio consumir el plan completo cada día.
+4. RECOMENDACIONES DE RESTAURANTES — CRITERIOS DE LARA:
+   - BUFFETS son siempre la opción más práctica: sin reserva, más rápidos, variedad infinita, perfectos para familias. Recomendar casi siempre.
+   - RESTAURANTES DE MESA: recomendar solo en casos especiales:
+     * Bistrot Chez Rémy → SIEMPRE recomendar si hay disponibilidad. Es el favorito. A la carta.
+     * Walt's An American Restaurant → ocasionalmente, para una comida especial tranquila con vistas al castillo.
+     * Steakhouse (Disney Village) → ocasionalmente para una cena especial fuera del parque.
+     * Captain Jack's → para una experiencia especial (mesas sobre el agua del canal).
+     * El resto de restaurantes de mesa → NO recomendar salvo petición expresa.
+   - LÍMITE RECOMENDADO: máximo 1 comida en mesa si el viaje es de 3 días de parque · máximo 2 si es de 4 días o más. Son comidas más lentas que restan tiempo a las atracciones. Siempre depende de lo que le guste a cada familia y de la disponibilidad.
+   - COMIDAS CON PERSONAJES: solo si el cliente lo pide o tiene plan que lo incluye.
+   - COMIDA RÁPIDA: no se reserva, perfecta para días de muchas atracciones.
 
-5. RESERVAS:
-   - Comida rápida → NO se reserva.
-   - Buffets → sin reserva pero colas en temporada alta, mejor ir a deshora.
-   - Restaurantes de mesa y personajes → RESERVAR OBLIGATORIAMENTE por la app de Disneyland Paris (desde 7 días antes, revisar desde 15 días).
+5. FLEXIBILIDAD DE BONOS: No caducan cada día. Total libertad de distribución.
 
-6. BEBÉS < 3 AÑOS:
-${bebes>0?`   - Hay ${bebes} bebé(s) < 3 años → comen GRATIS. Los buffets son ideales para BLW (variedad, sin presión). Cape Cod (Newport Bay Club) es el favorito de Lara para familias con bebés.`:'   - No hay bebés menores de 3 años.'}
+6. BEBÉS:
+${bebes>0?`   - ${bebes} bebé(s) < 3 años → GRATIS. Buffets ideales para BLW. Cape Cod es el favorito de Lara.`:'   - Sin bebés menores de 3 años.'}
 
-7. LUCKY NUGGET SALOON: Es comida rápida con mesas. El sistema descuenta bono de buffet/mesa — NO usar bono buffet. Pedir bono rápido + suplemento.
+7. LUCKY NUGGET: Pedir bono rápido + suplemento, NO bono buffet/mesa.
 
-8. RESTAURANTES NO INCLUIDOS EN PLAN: McDonald's, Rainforest Cafe, Royal Pub, Starbucks, Earl of Sandwich, Five Guys, Vapiano. SÍ incluidos: Billy Bob's y Steakhouse (Disney Village).
+8. NO incluidos en plan: McDonald's, Rainforest, Royal Pub, Starbucks, Earl of Sandwich, Five Guys, Vapiano. SÍ incluidos: Billy Bob's y Steakhouse (Village).
 
 GENERA EL PLAN:
-1. Resumen de bonos disponibles (explicado de forma clara y amigable).
-2. Desayuno recomendado (siempre en el hotel).
-3. Plan día a día: qué tipo de comida/cena recomendar cada día, a qué hora, si cenar en parque o hotel y por qué.
-4. Lista de reservas prioritarias (qué reservar YA, en orden de urgencia).
-5. Consejos específicos para esta familia.
+1. Resumen claro de bonos (ej: "3 noches = 3 desayunos en hotel + 3 comidas/cenas buffet o mesa")
+2. Plan día a día con: dónde comer, dónde cenar, si es en parque/hotel/village y por qué
+3. Qué reservar YA y en qué orden de prioridad
+4. Consejos específicos para esta familia
 
 Sé cercano, usa emojis, formato claro con ### para secciones. Responde en español.`;
 
@@ -777,7 +849,7 @@ export default function Portal() {
     setChatLoading(false);
   };
 
-  const pendiente = parseFloat(String(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0").replace(",",".").replace("€","")) || 0;
+  const pendiente = extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0");
 
   const s = {
     page: { minHeight:"100vh", background:"linear-gradient(160deg,#1c1410 0%,#2d1f0e 40%,#0d1520 100%)", fontFamily:"Palatino Linotype, Palatino, serif" },
@@ -866,7 +938,7 @@ export default function Portal() {
               {pendiente > 0 ? (
                 <div style={{ background:"rgba(239,68,68,0.15)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:12, padding:"12px 18px", textAlign:"center" }}>
                   <div style={{ color:"#fca5a5", fontSize:11, textTransform:"uppercase", letterSpacing:1, marginBottom:4 }}>⚠️ Pendiente</div>
-                  <div style={{ color:"#f87171", fontSize:22, fontWeight:600 }}>{formatEuro(cliente.Pendiente)}</div>
+                  <div style={{ color:"#f87171", fontSize:22, fontWeight:600 }}><PagoValor val={cliente.Pendiente} colorNum="#f87171" colorTxt="#fca5a5" size={22} /></div>
                   {cliente["Fecha_límite_pago"] && <div style={{ color:"#9d8b78", fontSize:11, marginTop:4 }}>Límite: {cliente["Fecha_límite_pago"]}</div>}
                 </div>
               ) : (
@@ -938,13 +1010,13 @@ export default function Portal() {
                 <PagoBar pagado={cliente.Pagado} total={cliente["Total (€)"]} />
                 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginTop:20 }}>
                   {[
-                    { label:"Total viaje", val:cliente["Total (€)"], bg:"#f9f7f4", color:"#1c1410" },
-                    { label:"Pagado", val:cliente.Pagado, bg:"#f0fdf4", color:"#16a34a" },
-                    { label:"Pendiente", val:cliente.Pendiente, bg: pendiente>0?"#fef2f2":"#f0fdf4", color: pendiente>0?"#dc2626":"#16a34a" },
+                    { label:"Total viaje", val:cliente["Total (€)"], bg:"#f9f7f4", colorNum:"#1c1410", colorTxt:"#7a6a50" },
+                    { label:"Pagado", val:cliente.Pagado, bg:"#f0fdf4", colorNum:"#16a34a", colorTxt:"#15803d" },
+                    { label:"Pendiente", val:cliente.Pendiente, bg: pendiente>0?"#fef2f2":"#f0fdf4", colorNum: pendiente>0?"#dc2626":"#16a34a", colorTxt: pendiente>0?"#b91c1c":"#15803d" },
                   ].map((item,i) => (
                     <div key={i} style={{ textAlign:"center", padding:14, background:item.bg, borderRadius:10 }}>
-                      <div style={{ fontSize:10, color:item.color, textTransform:"uppercase", letterSpacing:1, marginBottom:6 }}>{item.label}</div>
-                      <div style={{ fontSize:18, color:item.color, fontWeight:600 }}>{formatEuro(item.val)}</div>
+                      <div style={{ fontSize:10, color:item.colorNum, textTransform:"uppercase", letterSpacing:1, marginBottom:6 }}>{item.label}</div>
+                      <PagoValor val={item.val} colorNum={item.colorNum} colorTxt={item.colorTxt} size={18} />
                     </div>
                   ))}
                 </div>
