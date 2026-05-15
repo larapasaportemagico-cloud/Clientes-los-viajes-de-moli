@@ -333,10 +333,14 @@ function parsePlan(planStr) {
   const p = planStr.toLowerCase();
   if (p.includes('premium')) return 'premium';
   if (p.includes('extra plus') || p.includes('extra-plus')) return 'extra_plus';
-  if (p.includes('plus')) return 'plus';
   if (p.includes('smart')) return 'smart';
-  if (p.includes('standard') || p.includes('estándar')) return 'standard';
-  if (p.includes('media') || p.includes('mp')) return 'media';
+  if (p.includes('plus')) return 'plus';
+  if (p.includes('standard') || p.includes('estándar')) {
+    if (p.includes('media') || p.includes('mp')) return 'media_standard';
+    return 'standard';
+  }
+  if (p.includes('media') || p === 'mp') return 'media';
+  if (p.includes('solo desayuno') || p === 'desayuno') return 'desayuno';
   return null;
 }
 
@@ -347,6 +351,12 @@ function parseNoches(checkin, checkout) {
 
 function calcBonos(planTipo, noches) {
   switch(planTipo) {
+    case 'desayuno':
+      return { mesa: 0, rapido: 0, regalo: 0, tipoRegalo: null,
+        desc: `${noches} desayuno${noches>1?'s':''} buffet en el hotel` };
+    case 'media_standard':
+      return { mesa: 0, rapido: noches, regalo: 0, tipoRegalo: null,
+        desc: `${noches} bono${noches>1?'s':''} de comida rápida` };
     case 'media':
       return { mesa: noches, rapido: 0, regalo: 0, tipoRegalo: null,
         desc: `${noches} bono${noches>1?'s':''} buffet/mesa` };
@@ -355,14 +365,18 @@ function calcBonos(planTipo, noches) {
         desc: `${noches} bono${noches>1?'s':''} rápido + ${noches} bono${noches>1?'s':''} buffet/mesa + 1 rápido de regalo` };
     case 'smart':
       return { mesa: noches*2, rapido: 0, regalo: 1, tipoRegalo: 'mesa',
-        desc: `${noches*2} bonos buffet/mesa + 1 de regalo (solo hoteles Sequoia/Newport y Disney Village)` };
+        desc: `${noches*2} bonos buffet/mesa + 1 de regalo (solo Sequoia/Newport + Disney Village)` };
     case 'plus':
+      return { mesa: noches*2, rapido: 0, regalo: 1, tipoRegalo: 'mesa',
+        desc: `${noches*2} bonos buffet/mesa + 1 de regalo` };
     case 'extra_plus':
+      return { mesa: noches*2, rapido: 0, regalo: 1, tipoRegalo: 'mesa',
+        desc: `${noches*2} bonos buffet/mesa + 1 de regalo`,
+        extra: '+ 1 comida con personajes incluida por estancia' };
     case 'premium':
       return { mesa: noches*2, rapido: 0, regalo: 1, tipoRegalo: 'mesa',
         desc: `${noches*2} bonos buffet/mesa + 1 de regalo`,
-        extra: planTipo === 'extra_plus' ? '+ 1 comida con personajes incluida por estancia' :
-               planTipo === 'premium' ? '+ TODAS las comidas con personajes incluidas' : '' };
+        extra: '+ TODAS las comidas con personajes incluidas' };
     default:
       return null;
   }
@@ -693,9 +707,14 @@ Sé cercano, usa emojis, formato claro con ### para secciones. Responde en espa�
         <div style={{ ...s.card, borderLeft:'4px solid #5B2D8E' }}>
           <div style={{ fontSize:10, color:'#9d8b78', textTransform:'uppercase', letterSpacing:1.5, marginBottom:6 }}>🍽️ Tu plan de comidas</div>
           <div style={{ fontSize:13, fontWeight:700, color:'#1c1410', marginBottom:4 }}>{cliente?.["Plan de comidas"] || "Sin plan"}</div>
-          {bonos && <div style={{ fontSize:11, color:'#5B2D8E', fontWeight:600 }}>{bonos.desc}</div>}
+          {bonos && bonos.desc && bonos.desc !== '0 bonos buffet/mesa' && (
+            <div style={{ fontSize:11, color:'#5B2D8E', fontWeight:600 }}>{bonos.desc}</div>
+          )}
           {bonos?.extra && <div style={{ fontSize:11, color:'#C01060', fontWeight:600, marginTop:2 }}>✨ {bonos.extra}</div>}
-          <div style={{ fontSize:10, color:'#888', marginTop:6, lineHeight:1.4 }}>Los bonos son flexibles — úsalos como quieras durante toda la estancia</div>
+          {!bonos && <div style={{ fontSize:11, color:'#aaa' }}>Sin plan de comidas contratado</div>}
+          <div style={{ fontSize:10, color:'#888', marginTop:6, lineHeight:1.4 }}>
+            {bonos ? 'Bonos flexibles — úsalos como quieras durante toda la estancia' : 'Pagas cada comida en el momento'}
+          </div>
         </div>
         <div style={{ ...s.card, borderLeft:'4px solid #F0A500' }}>
           <div style={{ fontSize:10, color:'#9d8b78', textTransform:'uppercase', letterSpacing:1.5, marginBottom:6 }}>🌅 Desayuno · 🌙 Cena en el hotel</div>
@@ -852,11 +871,11 @@ export default function Portal() {
   const pendiente = extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0");
 
   const s = {
-    page: { minHeight:"100vh", background:"linear-gradient(160deg,#1c1410 0%,#2d1f0e 40%,#0d1520 100%)", fontFamily:"Palatino Linotype, Palatino, serif" },
-    header: { background:"rgba(28,20,16,0.95)", borderBottom:"2px solid #c9a84c", padding:"14px 24px", display:"flex", alignItems:"center", gap:12, position:"sticky", top:0, zIndex:100 },
-    logo: { width:38, height:38, background:"linear-gradient(135deg,#c9a84c,#e8c97a)", borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 },
-    card: { background:"#fff", border:"1px solid #e8e0d5", borderRadius:12, padding:"14px 16px" },
-    goldBtn: { background:"linear-gradient(135deg,#c9a84c,#e8c97a)", color:"#1c1410", border:"none", borderRadius:10, padding:"14px", fontSize:15, cursor:"pointer", fontFamily:"inherit", fontWeight:700, width:"100%" },
+    page: { minHeight:"100vh", background:"linear-gradient(160deg,#0a1628 0%,#0d2233 40%,#0a1a2e 100%)", fontFamily:"'Nunito', sans-serif" },
+    header: { background:"rgba(10,22,40,0.97)", borderBottom:"2px solid #2BBCD4", padding:"14px 24px", display:"flex", alignItems:"center", gap:12, position:"sticky", top:0, zIndex:100 },
+    logo: { width:38, height:38, background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", borderRadius:8, display:"flex", alignItems:"center", justifyContent:"center", fontSize:20 },
+    card: { background:"rgba(255,255,255,0.97)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:12, padding:"14px 16px" },
+    goldBtn: { background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", color:"white", border:"none", borderRadius:10, padding:"14px", fontSize:15, cursor:"pointer", fontFamily:"inherit", fontWeight:700, width:"100%" },
   };
 
   const tabs = [
@@ -870,16 +889,16 @@ export default function Portal() {
   return (
     <div style={s.page}>
       <div style={s.header}>
-        <div style={s.logo}>🏰</div>
+        <div style={s.logo}>🪄</div>
         <div>
-          <div style={{ color:"#c9a84c", fontSize:10, letterSpacing:3, textTransform:"uppercase" }}>Los Viajes de Moli</div>
-          <div style={{ color:"#f5f2ee", fontSize:16 }}>Portal del Viajero</div>
+          <div style={{ color:"#2BBCD4", fontSize:10, letterSpacing:3, textTransform:"uppercase", fontFamily:"'Nunito',sans-serif" }}>Los Viajes de Moli</div>
+          <div style={{ color:"#f5f2ee", fontSize:16, fontFamily:"'Fredoka One',cursive" }}>Portal del Viajero</div>
         </div>
         {cliente && (
           <div style={{ marginLeft:"auto", display:"flex", gap:10, alignItems:"center" }}>
-            <span style={{ color:"#c9a84c", fontSize:13 }}>✨ {String(cliente.Nombre||"").split(" ")[0]}</span>
+            <span style={{ color:"#2BBCD4", fontSize:13 }}>✨ {String(cliente.Nombre||"").split(" ")[0]}</span>
             <button onClick={() => { setStep("login"); setCliente(null); setDni(""); setMessages([]); }}
-              style={{ background:"transparent", border:"1px solid #3a2e20", borderRadius:8, color:"#7a6a50", padding:"6px 12px", fontSize:11, cursor:"pointer" }}>
+              style={{ background:"transparent", border:"1px solid rgba(43,188,212,0.3)", borderRadius:8, color:"#2BBCD4", padding:"6px 12px", fontSize:11, cursor:"pointer" }}>
               Salir
             </button>
           </div>
@@ -891,29 +910,29 @@ export default function Portal() {
         {(step==="login" || step==="error") && (
           <div style={{ textAlign:"center", paddingTop:60 }}>
             <div style={{ fontSize:64, marginBottom:16 }}>🏰</div>
-            <h2 style={{ color:"#f5f2ee", fontWeight:400, fontSize:26, margin:"0 0 8px" }}>Bienvenido a tu Portal</h2>
-            <p style={{ color:"#8a7a6a", fontSize:14, margin:"0 0 40px" }}>Consulta tu reserva, pagos, documentos y resuelve tus dudas</p>
+            <h2 style={{ color:"#f5f2ee", fontWeight:400, fontSize:26, margin:"0 0 8px", fontFamily:"'Fredoka One',cursive" }}>Bienvenido a tu Portal</h2>
+            <p style={{ color:"#7a9aaa", fontSize:14, margin:"0 0 40px" }}>Consulta tu reserva, pagos, documentos y resuelve tus dudas</p>
             <div style={{ maxWidth:360, margin:"0 auto" }}>
-              <div style={{ background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:16, padding:28 }}>
-                <div style={{ color:"#c9a84c", fontSize:11, letterSpacing:2, textTransform:"uppercase", marginBottom:12, textAlign:"left" }}>Tu DNI</div>
+              <div style={{ background:"rgba(43,188,212,0.08)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:16, padding:28 }}>
+                <div style={{ color:"#2BBCD4", fontSize:11, letterSpacing:2, textTransform:"uppercase", marginBottom:12, textAlign:"left", fontWeight:800 }}>Tu DNI</div>
                 <input value={dni} onChange={e => setDni(e.target.value.toUpperCase())} onKeyDown={e => e.key==="Enter" && handleLogin()}
                   placeholder="ej. 47080502S"
-                  style={{ width:"100%", background:"rgba(255,255,255,0.08)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:10, color:"#f5f2ee", fontSize:18, padding:"14px 16px", outline:"none", fontFamily:"inherit", textAlign:"center", letterSpacing:2, boxSizing:"border-box", marginBottom:16 }} />
+                  style={{ width:"100%", background:"rgba(43,188,212,0.08)", border:"1px solid rgba(43,188,212,0.3)", borderRadius:10, color:"#f5f2ee", fontSize:18, padding:"14px 16px", outline:"none", fontFamily:"inherit", textAlign:"center", letterSpacing:2, boxSizing:"border-box", marginBottom:16 }} />
                 <button onClick={handleLogin} disabled={!dni.trim()} style={{ ...s.goldBtn, opacity: dni.trim()?1:0.4 }}>Ver mi reserva ✨</button>
               </div>
               {step==="error" && (
                 <div style={{ marginTop:16 }}>
                   <div style={{ background:"rgba(239,68,68,0.1)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:10, padding:14, color:"#fca5a5", fontSize:13, marginBottom:12 }}>⚠️ {errorMsg}</div>
-                  <a href="https://losviajesdemoli.com" target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#c9a84c,#e8c97a)", borderRadius:12, padding:"14px 18px", textDecoration:"none" }}>
+                  <a href="https://losviajesdemoli.com" target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", borderRadius:12, padding:"14px 18px", textDecoration:"none" }}>
                     <span style={{ fontSize:22 }}>🏰</span>
                     <div>
-                      <div style={{ color:"#1c1410", fontSize:13, fontWeight:700 }}>¿Aún no tienes tu viaje reservado?</div>
-                      <div style={{ color:"#5a3e10", fontSize:12 }}>Descubre Los Viajes de Moli →</div>
+                      <div style={{ color:"white", fontSize:13, fontWeight:700 }}>¿Aún no tienes tu viaje reservado?</div>
+                      <div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Descubre Los Viajes de Moli →</div>
                     </div>
                   </a>
                 </div>
               )}
-              <p style={{ color:"#5a4a3a", fontSize:12, marginTop:20 }}>¿Problemas? <a href="mailto:lara@pasaportemagico.com" style={{ color:"#c9a84c" }}>Contacta con Lara</a></p>
+              <p style={{ color:"#4a6a7a", fontSize:12, marginTop:20 }}>¿Problemas? <a href="mailto:lara@pasaportemagico.com" style={{ color:"#2BBCD4" }}>Contacta con Lara</a></p>
             </div>
           </div>
         )}
@@ -921,19 +940,19 @@ export default function Portal() {
         {step==="loading" && (
           <div style={{ textAlign:"center", paddingTop:100 }}>
             <div style={{ fontSize:48, marginBottom:20 }}>✨</div>
-            <div style={{ color:"#f5f2ee", fontSize:16 }}>Buscando tu reserva...</div>
-            <div style={{ color:"#7a6a50", fontSize:13, marginTop:8 }}>Conectando con la base de datos mágica 🏰</div>
+            <div style={{ color:"#2BBCD4", fontSize:16, fontFamily:"'Fredoka One',cursive" }}>Buscando tu reserva...</div>
+            <div style={{ color:"#4a7a8a", fontSize:13, marginTop:8 }}>Conectando con la base de datos mágica 🏰</div>
           </div>
         )}
 
         {step==="portal" && cliente && (
           <div>
             {/* BIENVENIDA */}
-            <div style={{ background:"rgba(201,168,76,0.1)", border:"1px solid rgba(201,168,76,0.3)", borderRadius:16, padding:"20px 24px", marginBottom:24, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:12 }}>
+            <div style={{ background:"linear-gradient(135deg,rgba(43,188,212,0.15),rgba(91,45,142,0.15))", border:"1px solid rgba(43,188,212,0.3)", borderRadius:16, padding:"20px 24px", marginBottom:24, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:12 }}>
               <div>
-                <div style={{ color:"#c9a84c", fontSize:11, letterSpacing:2, textTransform:"uppercase", marginBottom:4 }}>¡Hola de nuevo!</div>
-                <div style={{ color:"#f5f2ee", fontSize:22 }}>{cliente.Nombre} 👋</div>
-                <div style={{ color:"#8a7a6a", fontSize:13, marginTop:4 }}>Reserva nº {cliente["Numero reserva"]}</div>
+                <div style={{ color:"#2BBCD4", fontSize:11, letterSpacing:2, textTransform:"uppercase", marginBottom:4, fontWeight:800 }}>¡Hola de nuevo!</div>
+                <div style={{ color:"#f5f2ee", fontSize:22, fontFamily:"'Fredoka One',cursive" }}>{cliente.Nombre} 👋</div>
+                <div style={{ color:"#7a9aaa", fontSize:13, marginTop:4 }}>Reserva nº {cliente["Numero reserva"]}</div>
               </div>
               {pendiente > 0 ? (
                 <div style={{ background:"rgba(239,68,68,0.15)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:12, padding:"12px 18px", textAlign:"center" }}>
@@ -942,7 +961,7 @@ export default function Portal() {
                   {cliente["Fecha_límite_pago"] && <div style={{ color:"#9d8b78", fontSize:11, marginTop:4 }}>Límite: {cliente["Fecha_límite_pago"]}</div>}
                 </div>
               ) : (
-                <div style={{ background:"rgba(22,163,74,0.15)", border:"1px solid rgba(22,163,74,0.3)", borderRadius:12, padding:"12px 18px" }}>
+                <div style={{ background:"rgba(46,200,102,0.15)", border:"1px solid rgba(46,200,102,0.3)", borderRadius:12, padding:"12px 18px" }}>
                   <div style={{ color:"#86efac", fontSize:13 }}>✅ Todo pagado</div>
                 </div>
               )}
@@ -952,7 +971,7 @@ export default function Portal() {
             <div style={{ display:"flex", gap:6, marginBottom:20, overflowX:"auto" }}>
               {tabs.map(tab => (
                 <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                  style={{ background: activeTab===tab.id ? "linear-gradient(135deg,#c9a84c,#e8c97a)" : "rgba(255,255,255,0.05)", color: activeTab===tab.id ? "#1c1410" : "#8a7a6a", border: activeTab===tab.id ? "none" : "1px solid rgba(255,255,255,0.1)", borderRadius:20, padding:"8px 18px", fontSize:13, cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap", fontWeight: activeTab===tab.id ? 700 : 400 }}>
+                  style={{ background: activeTab===tab.id ? "linear-gradient(135deg,#2BBCD4,#1A8A9E)" : "rgba(43,188,212,0.08)", color: activeTab===tab.id ? "white" : "#2BBCD4", border: activeTab===tab.id ? "none" : "1px solid rgba(43,188,212,0.2)", borderRadius:20, padding:"8px 18px", fontSize:13, cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap", fontWeight: activeTab===tab.id ? 700 : 600 }}>
                   {tab.label}
                 </button>
               ))}
@@ -988,13 +1007,13 @@ export default function Portal() {
                   </a>
                 )}
                 <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
-                  <a href={FORM_RESTAURANTES} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"14px 16px", textDecoration:"none" }}>
+                  <a href={FORM_RESTAURANTES} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:12, padding:"14px 16px", textDecoration:"none" }}>
                     <span style={{ fontSize:22 }}>🍽️</span>
-                    <div><div style={{ color:"#f5f2ee", fontSize:13 }}>Reservar restaurantes</div><div style={{ color:"#7a6a50", fontSize:11 }}>Formulario de Lara</div></div>
+                    <div><div style={{ color:"#f5f2ee", fontSize:13 }}>Reservar restaurantes</div><div style={{ color:"#4a7a8a", fontSize:11 }}>Formulario de Lara</div></div>
                   </a>
-                  <a href={FORM_MODIFICAR} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"14px 16px", textDecoration:"none" }}>
+                  <a href={FORM_MODIFICAR} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:12, padding:"14px 16px", textDecoration:"none" }}>
                     <span style={{ fontSize:22 }}>✏️</span>
-                    <div><div style={{ color:"#f5f2ee", fontSize:13 }}>Modificar reserva</div><div style={{ color:"#7a6a50", fontSize:11 }}>Traslados, extras...</div></div>
+                    <div><div style={{ color:"#f5f2ee", fontSize:13 }}>Modificar reserva</div><div style={{ color:"#4a7a8a", fontSize:11 }}>Traslados, extras...</div></div>
                   </a>
                 </div>
               </div>
@@ -1025,13 +1044,13 @@ export default function Portal() {
                     ⏰ Fecha límite: <strong>{cliente["Fecha_límite_pago"]}</strong>
                   </div>
                 )}
-                <a href={FORM_PAGOS} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#c9a84c,#e8c97a)", borderRadius:12, padding:"16px 20px", textDecoration:"none", marginTop:16 }}>
+                <a href={FORM_PAGOS} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", borderRadius:12, padding:"16px 20px", textDecoration:"none", marginTop:16 }}>
                   <span style={{ fontSize:24 }}>💳</span>
                   <div>
-                    <div style={{ color:"#1c1410", fontSize:14, fontWeight:700 }}>Enviar justificante de pago</div>
-                    <div style={{ color:"#5a3e10", fontSize:12 }}>Haz clic para acceder al formulario de abono</div>
+                    <div style={{ color:"white", fontSize:14, fontWeight:700 }}>Enviar justificante de pago</div>
+                    <div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Haz clic para acceder al formulario de abono</div>
                   </div>
-                  <span style={{ marginLeft:"auto", color:"#1c1410", fontSize:18 }}>→</span>
+                  <span style={{ marginLeft:"auto", color:"white", fontSize:18 }}>→</span>
                 </a>
               </div>
             )}
@@ -1063,48 +1082,48 @@ export default function Portal() {
 
             {/* TAB: ASISTENTE MOLI */}
             {activeTab==="asistente" && (
-              <div style={{ background:"rgba(255,255,255,0.03)", border:"1px solid rgba(255,255,255,0.08)", borderRadius:16, overflow:"hidden" }}>
-                <div style={{ padding:"14px 18px", borderBottom:"1px solid rgba(255,255,255,0.08)", display:"flex", alignItems:"center", gap:10 }}>
-                  <div style={{ width:32, height:32, borderRadius:"50%", background:"linear-gradient(135deg,#c9a84c,#e8c97a)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16 }}>🪄</div>
+              <div style={{ background:"rgba(43,188,212,0.05)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:16, overflow:"hidden" }}>
+                <div style={{ padding:"14px 18px", borderBottom:"1px solid rgba(43,188,212,0.15)", display:"flex", alignItems:"center", gap:10, background:"rgba(43,188,212,0.1)" }}>
+                  <div style={{ width:32, height:32, borderRadius:"50%", background:"linear-gradient(135deg,#2BBCD4,#5B2D8E)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16 }}>🪄</div>
                   <div>
-                    <div style={{ color:"#f5f2ee", fontSize:14 }}>Moli, tu hada madrina</div>
-                    <div style={{ color:"#4caf50", fontSize:11 }}>● Conoce tu reserva</div>
+                    <div style={{ color:"#f5f2ee", fontSize:14, fontFamily:"'Fredoka One',cursive" }}>Moli, tu hada madrina</div>
+                    <div style={{ color:"#2EC866", fontSize:11 }}>● Conoce tu reserva</div>
                   </div>
                 </div>
                 <div style={{ height:320, overflowY:"auto", padding:16 }}>
                   {messages.map((msg,i) => (
                     <div key={i} style={{ display:"flex", justifyContent: msg.role==="user"?"flex-end":"flex-start", marginBottom:12 }}>
-                      <div style={{ maxWidth:"80%", background: msg.role==="user" ? "linear-gradient(135deg,#c9a84c,#e8c97a)" : "rgba(255,255,255,0.08)", color: msg.role==="user" ? "#1c1410" : "#e8e0d4", borderRadius: msg.role==="user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", padding:"11px 15px", fontSize:13, lineHeight:1.6, whiteSpace:"pre-wrap" }}>
+                      <div style={{ maxWidth:"80%", background: msg.role==="user" ? "linear-gradient(135deg,#2BBCD4,#1A8A9E)" : "rgba(255,255,255,0.08)", color: msg.role==="user" ? "white" : "#e8e0d4", borderRadius: msg.role==="user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px", padding:"11px 15px", fontSize:13, lineHeight:1.6, whiteSpace:"pre-wrap" }}>
                         {msg.content}
                       </div>
                     </div>
                   ))}
                   {chatLoading && (
                     <div style={{ display:"flex", gap:5, padding:"8px 12px", background:"rgba(255,255,255,0.08)", borderRadius:"18px 18px 18px 4px", width:"fit-content" }}>
-                      {[0,1,2].map(i => <div key={i} style={{ width:6, height:6, borderRadius:"50%", background:"#c9a84c", animation:`bounce 1.2s ease-in-out ${i*0.2}s infinite` }} />)}
+                      {[0,1,2].map(i => <div key={i} style={{ width:6, height:6, borderRadius:"50%", background:"#2BBCD4", animation:`bounce 1.2s ease-in-out ${i*0.2}s infinite` }} />)}
                     </div>
                   )}
                   <div ref={bottomRef} />
                 </div>
-                <div style={{ padding:"8px 12px", borderTop:"1px solid rgba(255,255,255,0.05)", display:"flex", gap:6, overflowX:"auto" }}>
+                <div style={{ padding:"8px 12px", borderTop:"1px solid rgba(43,188,212,0.1)", display:"flex", gap:6, overflowX:"auto" }}>
                   {["¿Qué incluye mi plan?","¿Cuánto cuesta cambiar de plan?","¿Cuánto me falta pagar?","¿Qué necesito para el viaje?"].map((q,i) => (
-                    <button key={i} onClick={() => setChatInput(q)} style={{ background:"rgba(201,168,76,0.1)", border:"1px solid rgba(201,168,76,0.2)", borderRadius:20, padding:"5px 12px", color:"#c9a84c", fontSize:11, cursor:"pointer", whiteSpace:"nowrap", fontFamily:"inherit" }}>{q}</button>
+                    <button key={i} onClick={() => setChatInput(q)} style={{ background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:20, padding:"5px 12px", color:"#2BBCD4", fontSize:11, cursor:"pointer", whiteSpace:"nowrap", fontFamily:"inherit" }}>{q}</button>
                   ))}
                 </div>
-                <div style={{ padding:"10px 12px", borderTop:"1px solid rgba(255,255,255,0.05)", display:"flex", gap:8 }}>
-                  <a href={FORM_MODIFICAR} target="_blank" rel="noopener noreferrer" style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.15)", borderRadius:10, padding:"10px", textDecoration:"none" }}>
+                <div style={{ padding:"10px 12px", borderTop:"1px solid rgba(43,188,212,0.1)", display:"flex", gap:8 }}>
+                  <a href={FORM_MODIFICAR} target="_blank" rel="noopener noreferrer" style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:10, padding:"10px", textDecoration:"none" }}>
                     <span style={{ fontSize:16 }}>✏️</span>
                     <span style={{ color:"#f5f2ee", fontSize:12 }}>Modificar reserva</span>
                   </a>
-                  <a href={FORM_PAGOS} target="_blank" rel="noopener noreferrer" style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"linear-gradient(135deg,#c9a84c,#e8c97a)", borderRadius:10, padding:"10px", textDecoration:"none" }}>
+                  <a href={FORM_PAGOS} target="_blank" rel="noopener noreferrer" style={{ flex:1, display:"flex", alignItems:"center", justifyContent:"center", gap:8, background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", borderRadius:10, padding:"10px", textDecoration:"none" }}>
                     <span style={{ fontSize:16 }}>💳</span>
-                    <span style={{ color:"#1c1410", fontSize:12, fontWeight:700 }}>Realizar un abono</span>
+                    <span style={{ color:"white", fontSize:12, fontWeight:700 }}>Realizar un abono</span>
                   </a>
                 </div>
-                <div style={{ padding:"10px 12px", borderTop:"1px solid rgba(255,255,255,0.05)", display:"flex", gap:8 }}>
+                <div style={{ padding:"10px 12px", borderTop:"1px solid rgba(43,188,212,0.1)", display:"flex", gap:8 }}>
                   <input value={chatInput} onChange={e => setChatInput(e.target.value)} onKeyDown={e => e.key==="Enter" && handleChat()} placeholder="Escribe tu pregunta..." disabled={chatLoading}
-                    style={{ flex:1, background:"rgba(255,255,255,0.05)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:10, color:"#f5f2ee", fontSize:13, padding:"10px 14px", outline:"none", fontFamily:"inherit" }} />
-                  <button onClick={handleChat} disabled={chatLoading || !chatInput.trim()} style={{ background: chatInput.trim()&&!chatLoading ? "linear-gradient(135deg,#c9a84c,#e8c97a)" : "rgba(255,255,255,0.05)", color: chatInput.trim()&&!chatLoading ? "#1c1410" : "#5a4a3a", border:"none", borderRadius:10, width:40, height:40, fontSize:16, cursor:"pointer" }}>➤</button>
+                    style={{ flex:1, background:"rgba(43,188,212,0.08)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:10, color:"#f5f2ee", fontSize:13, padding:"10px 14px", outline:"none", fontFamily:"inherit" }} />
+                  <button onClick={handleChat} disabled={chatLoading || !chatInput.trim()} style={{ background: chatInput.trim()&&!chatLoading ? "linear-gradient(135deg,#2BBCD4,#1A8A9E)" : "rgba(43,188,212,0.1)", color: chatInput.trim()&&!chatLoading ? "white" : "#4a7a8a", border:"none", borderRadius:10, width:40, height:40, fontSize:16, cursor:"pointer" }}>➤</button>
                 </div>
               </div>
             )}
