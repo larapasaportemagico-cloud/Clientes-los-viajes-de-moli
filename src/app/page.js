@@ -525,8 +525,8 @@ function PagoValor({ val, colorNum = "#1c1410", colorTxt = "#7a6a50", size = 18 
 }
 
 function PagoBar({ pagado, total }) {
-  const p = extractNumber(pagado);
-  const t = extractNumber(total) || 1;
+  const p = Math.round((extractNumber(pagado) + Number.EPSILON) * 100) / 100;
+  const t = Math.round((extractNumber(total) + Number.EPSILON) * 100) / 100 || 1;
   const pct = Math.min(100, Math.round((p / t) * 100));
   return (
     <div>
@@ -898,7 +898,7 @@ export default function Portal() {
     setChatLoading(false);
   };
 
-  const pendiente = extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0");
+  const pendiente = Math.round((extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0") + Number.EPSILON) * 100) / 100;
 
   const s = {
     page: { minHeight:"100vh", background:"linear-gradient(160deg,#0a1628 0%,#0d2233 40%,#0a1a2e 100%)", fontFamily:"'Nunito', sans-serif" },
