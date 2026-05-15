@@ -360,48 +360,52 @@ function parsePlan(planStr, hotel) {
 }
 
 function calcBonos(planTipo, noches) {
+  const n = noches > 0 ? noches : null;
+  const porNoche = n ? `${n} ` : '';
+  const noche_s = n ? (n>1 ? `${n} noches` : `1 noche`) : 'cada noche';
+
   switch(planTipo) {
     case 'ninguno':
       return { desc: null, detalle: null };
     case 'desayuno':
       return {
         desc: `Solo desayuno`,
-        detalle: `${noches} desayuno${noches>1?'s':''} buffet en tu hotel incluido${noches>1?'s':''}. Comidas y cenas se pagan aparte.`
+        detalle: `1 desayuno buffet en tu hotel por cada noche. Comidas y cenas se pagan aparte.`
       };
     case 'mp_standard':
       return {
         desc: `Media Pensión Standard`,
-        detalle: `${noches} desayuno${noches>1?'s':''} en hotel + ${noches} comida${noches>1?'s':''} o cena${noches>1?'s':''} de servicio RÁPIDO (una por noche). Bonos flexibles — úsalos cuando quieras.`
+        detalle: `1 desayuno en hotel + 1 comida o cena de servicio RÁPIDO por cada noche. Bonos flexibles — úsalos cuando quieras.`
       };
     case 'mp_plus':
       return {
         desc: `Media Pensión Plus`,
-        detalle: `${noches} desayuno${noches>1?'s':''} en hotel + ${noches} comida${noches>1?'s':''} o cena${noches>1?'s':''} en buffet o mesa (una por noche). Bonos flexibles — úsalos cuando quieras.`
+        detalle: `1 desayuno en hotel + 1 comida o cena en buffet o mesa por cada noche. Bonos flexibles — úsalos cuando quieras.`
       };
     case 'pc_standard':
       return {
         desc: `Pensión Completa Standard`,
-        detalle: `${noches} desayunos en hotel + ${noches} comidas/cenas buffet o mesa + ${noches} comidas/cenas rápidas (dos por noche) + 1 comida rápida de REGALO de Disney. Bonos flexibles.`
+        detalle: `1 desayuno en hotel + 1 comida/cena buffet o mesa + 1 comida/cena rápida por cada noche + 1 comida rápida de REGALO de Disney. Bonos flexibles.`
       };
     case 'pc_plus':
       return {
         desc: `Pensión Completa Plus`,
-        detalle: `${noches} desayunos en hotel + ${noches*2} comidas/cenas en buffet o mesa (dos por noche) + 1 bono buffet/mesa de REGALO de Disney. Bonos flexibles.`
+        detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono buffet/mesa de REGALO de Disney. Bonos flexibles.`
       };
     case 'smart':
       return {
         desc: `Pensión Completa Smart`,
-        detalle: `${noches} desayunos en hotel + ${noches*2} comidas/cenas en buffet o mesa (dos por noche) + 1 bono de REGALO. ⚠️ Solo válido en restaurantes de tu hotel y Disney Village.`
+        detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono de REGALO. ⚠️ Solo válido en restaurantes de tu hotel y Disney Village.`
       };
     case 'extra_plus':
       return {
         desc: `Pensión Completa Extra Plus`,
-        detalle: `${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet o mesa + 1 de REGALO + 1 bebida extra/noche + 1 snack/noche + 1 comida con personajes incluida por estancia. Bonos flexibles.`
+        detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO + 1 bebida extra/noche + 1 snack/noche + 1 comida con personajes incluida por estancia. Bonos flexibles.`
       };
     case 'premium':
       return {
         desc: `Pensión Completa Premium`,
-        detalle: `${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet o mesa + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento. Solo disponible en Disneyland Hotel.`
+        detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento.`
       };
     default:
       return { desc: null, detalle: null };
