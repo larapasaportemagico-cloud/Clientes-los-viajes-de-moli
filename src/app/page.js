@@ -328,58 +328,89 @@ function formatDateEs(dateStr) {
 // ═══════════════════════════════════════════════════════
 // HELPERS PLAN DE COMIDAS
 // ═══════════════════════════════════════════════════════
-function parsePlan(planStr) {
-  if (!planStr) return null;
-  const p = planStr.toLowerCase();
+function parsePlan(planStr, hotel) {
+  if (!planStr) return 'ninguno';
+  const p = planStr.toLowerCase().trim();
+  const h = (hotel||'').toLowerCase();
+  const esSantaFeDavy = h.includes('santa fe') || h.includes('davy') || h.includes('crockett');
+
+  if (p === 'no' || p === 'ninguno' || p === 'sin plan' || p === '') return 'ninguno';
+  if (p.includes('desayuno')) return 'desayuno';
   if (p.includes('premium')) return 'premium';
   if (p.includes('extra plus') || p.includes('extra-plus')) return 'extra_plus';
   if (p.includes('smart')) return 'smart';
-  if (p.includes('plus')) return 'plus';
-  if (p.includes('standard') || p.includes('estándar')) {
-    if (p.includes('media') || p.includes('mp')) return 'media_standard';
-    return 'standard';
+  if (p.includes('plus')) {
+    // PC Plus o MP Plus
+    if (p.includes('media') || p === 'mp plus' || p.includes('mp p')) return 'mp_plus';
+    return 'pc_plus';
   }
-  if (p.includes('media') || p === 'mp') return 'media';
-  if (p.includes('solo desayuno') || p === 'desayuno') return 'desayuno';
-  return null;
+  if (p.includes('standard') || p.includes('estándar')) {
+    if (p.includes('media') || p.includes('mp')) return 'mp_standard';
+    return 'pc_standard';
+  }
+  // Solo "PC" o "Pensión Completa" sin más → si es Santa Fe/Davy = standard
+  if (p.includes('pension completa') || p.includes('pensión completa') || p === 'pc') {
+    return esSantaFeDavy ? 'pc_standard' : 'pc_plus';
+  }
+  // Solo "MP" o "Media Pensión" → si es Santa Fe/Davy = standard, sino = plus
+  if (p === 'mp' || p.includes('media p')) {
+    return esSantaFeDavy ? 'mp_standard' : 'mp_plus';
+  }
+  return 'ninguno';
+}
+
+function calcBonos(planTipo, noches) {
+  switch(planTipo) {
+    case 'ninguno':
+      return { desc: null, detalle: null };
+    case 'desayuno':
+      return {
+        desc: `Solo desayuno`,
+        detalle: `${noches} desayuno${noches>1?'s':''} buffet en tu hotel incluido${noches>1?'s':''}. Comidas y cenas se pagan aparte.`
+      };
+    case 'mp_standard':
+      return {
+        desc: `Media Pensión Standard`,
+        detalle: `${noches} desayuno${noches>1?'s':''} en hotel + ${noches} comida${noches>1?'s':''} o cena${noches>1?'s':''} de servicio RÁPIDO (una por noche). Bonos flexibles — úsalos cuando quieras.`
+      };
+    case 'mp_plus':
+      return {
+        desc: `Media Pensión Plus`,
+        detalle: `${noches} desayuno${noches>1?'s':''} en hotel + ${noches} comida${noches>1?'s':''} o cena${noches>1?'s':''} en buffet o mesa (una por noche). Bonos flexibles — úsalos cuando quieras.`
+      };
+    case 'pc_standard':
+      return {
+        desc: `Pensión Completa Standard`,
+        detalle: `${noches} desayunos en hotel + ${noches} comidas/cenas buffet o mesa + ${noches} comidas/cenas rápidas (dos por noche) + 1 comida rápida de REGALO de Disney. Bonos flexibles.`
+      };
+    case 'pc_plus':
+      return {
+        desc: `Pensión Completa Plus`,
+        detalle: `${noches} desayunos en hotel + ${noches*2} comidas/cenas en buffet o mesa (dos por noche) + 1 bono buffet/mesa de REGALO de Disney. Bonos flexibles.`
+      };
+    case 'smart':
+      return {
+        desc: `Pensión Completa Smart`,
+        detalle: `${noches} desayunos en hotel + ${noches*2} comidas/cenas en buffet o mesa (dos por noche) + 1 bono de REGALO. ⚠️ Solo válido en restaurantes de tu hotel y Disney Village.`
+      };
+    case 'extra_plus':
+      return {
+        desc: `Pensión Completa Extra Plus`,
+        detalle: `${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet o mesa + 1 de REGALO + 1 bebida extra/noche + 1 snack/noche + 1 comida con personajes incluida por estancia. Bonos flexibles.`
+      };
+    case 'premium':
+      return {
+        desc: `Pensión Completa Premium`,
+        detalle: `${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet o mesa + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento. Solo disponible en Disneyland Hotel.`
+      };
+    default:
+      return { desc: null, detalle: null };
+  }
 }
 
 function parseNoches(checkin, checkout) {
   if (!checkin || !checkout) return 0;
   return getDatesInRange(checkin, checkout).length;
-}
-
-function calcBonos(planTipo, noches) {
-  switch(planTipo) {
-    case 'desayuno':
-      return { mesa: 0, rapido: 0, regalo: 0, tipoRegalo: null,
-        desc: `${noches} desayuno${noches>1?'s':''} buffet en el hotel` };
-    case 'media_standard':
-      return { mesa: 0, rapido: noches, regalo: 0, tipoRegalo: null,
-        desc: `${noches} bono${noches>1?'s':''} de comida rápida` };
-    case 'media':
-      return { mesa: noches, rapido: 0, regalo: 0, tipoRegalo: null,
-        desc: `${noches} bono${noches>1?'s':''} buffet/mesa` };
-    case 'standard':
-      return { mesa: noches, rapido: noches, regalo: 1, tipoRegalo: 'rapido',
-        desc: `${noches} bono${noches>1?'s':''} rápido + ${noches} bono${noches>1?'s':''} buffet/mesa + 1 rápido de regalo` };
-    case 'smart':
-      return { mesa: noches*2, rapido: 0, regalo: 1, tipoRegalo: 'mesa',
-        desc: `${noches*2} bonos buffet/mesa + 1 de regalo (solo Sequoia/Newport + Disney Village)` };
-    case 'plus':
-      return { mesa: noches*2, rapido: 0, regalo: 1, tipoRegalo: 'mesa',
-        desc: `${noches*2} bonos buffet/mesa + 1 de regalo` };
-    case 'extra_plus':
-      return { mesa: noches*2, rapido: 0, regalo: 1, tipoRegalo: 'mesa',
-        desc: `${noches*2} bonos buffet/mesa + 1 de regalo`,
-        extra: '+ 1 comida con personajes incluida por estancia' };
-    case 'premium':
-      return { mesa: noches*2, rapido: 0, regalo: 1, tipoRegalo: 'mesa',
-        desc: `${noches*2} bonos buffet/mesa + 1 de regalo`,
-        extra: '+ TODAS las comidas con personajes incluidas' };
-    default:
-      return null;
-  }
 }
 
 function getDesayunoHotel(hotel) {
@@ -515,7 +546,7 @@ function PlanificadorRestaurantes({ cliente }) {
   const [plan, setPlan] = useState(null);
   const resultRef = useRef(null);
 
-  const planTipo = parsePlan(cliente?.["Plan de comidas"]);
+  const planTipo = parsePlan(cliente?.["Plan de comidas"], cliente?.Hotel);
   const noches = parseNoches(cliente?.["Check-in"], cliente?.["Check-out"]);
   const bonos = calcBonos(planTipo, noches);
   const desayuno = getDesayunoHotel(cliente?.Hotel);
@@ -704,17 +735,12 @@ Sé cercano, usa emojis, formato claro con ### para secciones. Responde en espa�
 
       {/* INFO PLAN Y DESAYUNO */}
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
-        <div style={{ ...s.card, borderLeft:'4px solid #5B2D8E' }}>
+        <div style={{ ...s.card, borderLeft:'4px solid #2BBCD4' }}>
           <div style={{ fontSize:10, color:'#9d8b78', textTransform:'uppercase', letterSpacing:1.5, marginBottom:6 }}>🍽️ Tu plan de comidas</div>
           <div style={{ fontSize:13, fontWeight:700, color:'#1c1410', marginBottom:4 }}>{cliente?.["Plan de comidas"] || "Sin plan"}</div>
-          {bonos && bonos.desc && bonos.desc !== '0 bonos buffet/mesa' && (
-            <div style={{ fontSize:11, color:'#5B2D8E', fontWeight:600 }}>{bonos.desc}</div>
-          )}
-          {bonos?.extra && <div style={{ fontSize:11, color:'#C01060', fontWeight:600, marginTop:2 }}>✨ {bonos.extra}</div>}
-          {!bonos && <div style={{ fontSize:11, color:'#aaa' }}>Sin plan de comidas contratado</div>}
-          <div style={{ fontSize:10, color:'#888', marginTop:6, lineHeight:1.4 }}>
-            {bonos ? 'Bonos flexibles — úsalos como quieras durante toda la estancia' : 'Pagas cada comida en el momento'}
-          </div>
+          {bonos?.desc && <div style={{ fontSize:11, color:'#1A8A9E', fontWeight:800, marginBottom:4 }}>{bonos.desc}</div>}
+          {bonos?.detalle && <div style={{ fontSize:11, color:'#555', lineHeight:1.5 }}>{bonos.detalle}</div>}
+          {planTipo === 'ninguno' && <div style={{ fontSize:11, color:'#aaa' }}>Sin plan contratado · Pagas cada comida en el momento</div>}
         </div>
         <div style={{ ...s.card, borderLeft:'4px solid #F0A500' }}>
           <div style={{ fontSize:10, color:'#9d8b78', textTransform:'uppercase', letterSpacing:1.5, marginBottom:6 }}>🌅 Desayuno · 🌙 Cena en el hotel</div>
@@ -933,6 +959,9 @@ export default function Portal() {
                 </div>
               )}
               <p style={{ color:"#4a6a7a", fontSize:12, marginTop:20 }}>¿Problemas? <a href="mailto:lara@pasaportemagico.com" style={{ color:"#2BBCD4" }}>Contacta con Lara</a></p>
+              <div style={{ marginTop:16, background:"rgba(43,188,212,0.06)", border:"1px solid rgba(43,188,212,0.15)", borderRadius:12, padding:"12px 14px", fontSize:11, color:"#4a7a8a", lineHeight:1.5, textAlign:"left" }}>
+                ⚠️ <strong style={{ color:"#2BBCD4" }}>Información orientativa.</strong> Los datos mostrados en este portal son una referencia de tu reserva. El precio, condiciones y detalles definitivos son siempre los reflejados en tu hoja de reserva oficial. En caso de modificaciones recientes, puede haber variaciones pendientes de actualización.
+              </div>
             </div>
           </div>
         )}
