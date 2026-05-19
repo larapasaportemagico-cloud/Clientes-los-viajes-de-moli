@@ -187,7 +187,7 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
     <div class="form-grid">
       <div class="field"><label>Nombre/s del cliente</label><input type="text" id="nombres" placeholder="Marina y Andrea"></div>
       <div class="field"><label>Nº Reserva / Localizador</label><input type="text" id="localizador" placeholder="31275327"></div>
-      <div class="field"><label>Fechas del viaje</label><input type="text" id="fechas" placeholder="12 al 14 de diciembre 2025"></div>
+
       <div class="field"><label>Hotel Disney</label>
         <select id="hotel" onchange="actualizarHotel()">
           <option value="">Selecciona hotel...</option>
@@ -211,22 +211,37 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
   <div class="section-card">
     <div class="section-title"><span>🍽️</span> Plan de comidas</div>
     <div class="form-grid">
-      <div class="field"><label>Plan contratado</label>
-        <select id="planComidas" onchange="calcularBonos()">
-          <option value="">Sin plan de comidas</option>
-          <option value="desayuno">Solo desayuno</option>
-          <option value="mp_standard">Media Pensión Standard (Santa Fe / Davy)</option>
-          <option value="mp_plus">Media Pensión Plus</option>
-          <option value="pc_standard">Pensión Completa Standard (Santa Fe / Davy)</option>
-          <option value="pc_plus">Pensión Completa Plus</option>
-          <option value="smart">Pensión Completa Smart</option>
-          <option value="extra_plus">Pensión Completa Extra Plus</option>
-          <option value="premium">Pensión Completa Premium (Disneyland Hotel)</option>
-        </select>
+      <div class="field"><label>Plan de comidas</label>
+        <input type="text" id="planComidas" placeholder="Ej: Media Pensión Plus" onchange="calcularBonos()">
       </div>
       <div class="field"><label>Noches</label><input type="number" id="noches" min="1" max="14" value="2" onchange="calcularBonos()"></div>
     </div>
     <div id="bonosPreview" class="bonos-preview"></div>
+    <div style="margin-top:14px">
+      <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:10px">🧮 Bonos totales del viaje (edita según el plan real)</div>
+      <div class="form-grid three">
+        <div class="field">
+          <label>☀️ Desayunos</label>
+          <input type="number" id="bonoDesayunos" min="0" max="30" placeholder="0">
+        </div>
+        <div class="field">
+          <label>⚡ Comidas rápidas</label>
+          <input type="number" id="bonoRapidas" min="0" max="30" placeholder="0">
+        </div>
+        <div class="field">
+          <label>🍽️ Buffet / Mesa</label>
+          <input type="number" id="bonoBuffet" min="0" max="30" placeholder="0">
+        </div>
+      </div>
+      <div class="field" style="margin-top:10px">
+        <label>🎁 Bono regalo Disney</label>
+        <select id="bonoRegalo">
+          <option value="">Sin bono regalo</option>
+          <option value="rapida">+ 1 comida rápida REGALO</option>
+          <option value="buffet">+ 1 buffet/mesa REGALO</option>
+        </select>
+      </div>
+    </div>
     <div class="field" style="margin-top:12px"><label>Comidas especiales reservadas</label><input type="text" id="comidasEspeciales" placeholder="Ej: Royal Banquet 12/12 a las 13:00 · Bistrot Chez Rémy 13/12 a las 20:00"></div>
   </div>
 
@@ -366,34 +381,42 @@ document.getElementById('photopass').addEventListener('change',function(){
 });
 
 function calcularBonos(){
-  const plan = document.getElementById('planComidas').value;
+  const planRaw = (document.getElementById('planComidas').value||'').toLowerCase().trim();
   const noches = parseInt(document.getElementById('noches').value)||2;
   const el = document.getElementById('bonosPreview');
-  if(!plan){el.style.display='none';return;}
+  if(!planRaw){el.style.display='none';return;}
 
   let desayunos=0, rapidas=0, buffetMesa=0, regalo='', extras='';
 
-  if(plan==='desayuno'){ desayunos=noches; }
-  else if(plan==='mp_standard'){ desayunos=noches; rapidas=noches; }
-  else if(plan==='mp_plus'){ desayunos=noches; buffetMesa=noches; }
-  else if(plan==='pc_standard'){ desayunos=noches; buffetMesa=noches; rapidas=noches; regalo='+ 1 rápida REGALO'; }
-  else if(plan==='pc_plus'){ desayunos=noches; buffetMesa=noches*2; regalo='+ 1 buffet/mesa REGALO'; }
-  else if(plan==='smart'){ desayunos=noches; buffetMesa=noches*2; regalo='+ 1 buffet/mesa REGALO'; extras='⚠️ Solo válido en tu hotel y Disney Village'; }
-  else if(plan==='extra_plus'){ desayunos=noches; buffetMesa=noches*2; regalo='+ 1 buffet/mesa REGALO'; extras='+ 1 comida con personajes · + bebida y snack por noche'; }
-  else if(plan==='premium'){ desayunos=noches; buffetMesa=noches*2; regalo='+ 1 buffet/mesa REGALO'; extras='✨ Todas las comidas pueden ser con personajes sin suplemento'; }
+  if(planRaw.includes('desayuno')&&!planRaw.includes('media')&&!planRaw.includes('pension')&&!planRaw.includes('pc')){ desayunos=noches; }
+  else if(planRaw.includes('standard')||planRaw.includes('estándar')){
+    desayunos=noches;
+    if(planRaw.includes('media')||planRaw.includes('mp')){ rapidas=noches; }
+    else { buffetMesa=noches; rapidas=noches; regalo='rapida'; }
+  }
+  else if(planRaw.includes('smart')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; extras='⚠️ Solo válido en tu hotel y Disney Village'; }
+  else if(planRaw.includes('extra')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; extras='+ 1 comida con personajes · + bebida y snack por noche'; }
+  else if(planRaw.includes('premium')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; extras='✨ Todas las comidas pueden ser con personajes sin suplemento'; }
+  else if(planRaw.includes('media')||planRaw.includes('mp')){ desayunos=noches; buffetMesa=noches; }
+  else if(planRaw.includes('pension')||planRaw.includes('pensión')||planRaw.includes('pc')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; }
 
-  const info = BONO_INFO[plan];
+  const info = {titulo: document.getElementById('planComidas').value, detalle:''};
   let items = '';
   if(desayunos) items+=`<div class="bono-item"><span class="bono-emoji">☀️</span><div class="bono-num">${desayunos}</div><div class="bono-label">Desayunos</div></div>`;
   if(rapidas) items+=`<div class="bono-item"><span class="bono-emoji">⚡</span><div class="bono-num">${rapidas}</div><div class="bono-label">Comida rápida</div></div>`;
   if(buffetMesa) items+=`<div class="bono-item"><span class="bono-emoji">🍽️</span><div class="bono-num">${buffetMesa}</div><div class="bono-label">Buffet / Mesa</div></div>`;
   if(regalo) items+=`<div class="bono-item"><span class="bono-emoji">🎁</span><div class="bono-num regalo">+1</div><div class="bono-label">REGALO Disney</div></div>`;
 
+  // Rellenar campos editables con los valores calculados
+  document.getElementById('bonoDesayunos').value = desayunos||'';
+  document.getElementById('bonoRapidas').value = rapidas||'';
+  document.getElementById('bonoBuffet').value = buffetMesa||'';
+  if(regalo==='+ 1 comida rápida REGALO') document.getElementById('bonoRegalo').value='rapida';
+  else if(regalo) document.getElementById('bonoRegalo').value='buffet';
+  else document.getElementById('bonoRegalo').value='';
+
   el.innerHTML = `
-    <div class="bonos-title">🍽️ ${info.titulo} — ${noches} noches</div>
-    <div class="bonos-grid">${items}</div>
-    ${extras?`<div style="margin-top:10px;font-size:.82rem;font-weight:700;color:var(--teal-d)">${extras}</div>`:''}
-    <div style="margin-top:8px;font-size:.78rem;color:var(--teal-d);opacity:.8">💡 Los bonos son flexibles — úsalos cuando quieras durante toda la estancia</div>
+    <div class="bonos-title">🍽️ ${info.titulo} — ${noches} noches · <span style="font-weight:600;opacity:.8">revisa y ajusta los bonos si hace falta</span></div>
   `;
   el.style.display='block';
 }
@@ -410,21 +433,25 @@ async function cargarCliente(){
       const d = data.datos;
       if(d.Nombre) document.getElementById('nombres').value=d.Nombre;
       if(d['Numero reserva']) document.getElementById('localizador').value=d['Numero reserva'];
-      if(d['Check-in']) document.getElementById('checkin').value=d['Check-in'];
-      if(d['Check-out']) document.getElementById('checkout').value=d['Check-out'];
+      // Parsear fecha DD/MM/YYYY a YYYY-MM-DD
+      function toInputDate(str){
+        if(!str) return '';
+        const p=str.trim().split('/');
+        if(p.length===3) return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+        return str;
+      }
+      if(d['Check-in']) document.getElementById('checkin').value=toInputDate(d['Check-in']);
+      if(d['Check-out']) document.getElementById('checkout').value=toInputDate(d['Check-out']);
       if(d['Check-in']&&d['Check-out']){
-        const ci=new Date(d['Check-in']),co=new Date(d['Check-out']);
-        const noches=Math.round((co-ci)/(1000*60*60*24));
-        document.getElementById('noches').value=noches;
-        const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-        document.getElementById('fechas').value=`${ci.getDate()} al ${co.getDate()} de ${meses[co.getMonth()]} ${co.getFullYear()}`;
+        const p1=d['Check-in'].trim().split('/'),p2=d['Check-out'].trim().split('/');
+        if(p1.length===3&&p2.length===3){
+          const d1=new Date(p1[2],p1[1]-1,p1[0]),d2=new Date(p2[2],p2[1]-1,p2[0]);
+          const n=Math.round((d2-d1)/(1000*60*60*24));
+          document.getElementById('noches').value=n||2;
+        }
       }
       if(d['Nº personas y edad niños']) document.getElementById('habitaciones').value=d['Nº personas y edad niños'];
-      if(d['Plan de comidas']){
-        const planMap={'Media Pensión Plus':'mp_plus','Media Pensión Standard':'mp_standard','Pensión Completa Plus':'pc_plus','Pensión Completa Standard':'pc_standard','Pensión Completa Smart':'smart','Pensión Completa Extra Plus':'extra_plus','Pensión Completa Premium':'premium','Solo Desayuno':'desayuno'};
-        const planKey = Object.keys(planMap).find(k=>d['Plan de comidas'].toLowerCase().includes(k.toLowerCase()));
-        if(planKey) document.getElementById('planComidas').value=planMap[planKey];
-      }
+      if(d['Plan de comidas']) document.getElementById('planComidas').value=d['Plan de comidas'];
       // hotel
       const hmap={'disneyland hotel':'disneyland','new york':'newyork','marvel':'newyork','newport':'newport','sequoia':'sequoia','cheyenne':'cheyenne','santa fe':'santafe','davy':'davy','crockett':'davy'};
       if(d.Hotel){
@@ -451,13 +478,25 @@ function showStatus(msg,type){
 function generarGuia(){
   const hotel = document.getElementById('hotel').value;
   const nombres = document.getElementById('nombres').value||'Viajeros';
-  const fechas = document.getElementById('fechas').value||'Próximamente';
+  // Formatear fechas desde checkin/checkout
+  function formatFechaEs(val){
+    if(!val) return '';
+    const p=val.split('-');
+    if(p.length===3){
+      const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+      return `${parseInt(p[2])} de ${meses[parseInt(p[1])-1]} de ${p[0]}`;
+    }
+    return val;
+  }
+  const checkinFmt = document.getElementById('checkin').value;
+  const checkoutFmt = document.getElementById('checkout').value;
+  const fechas = checkinFmt&&checkoutFmt ? `${formatFechaEs(checkinFmt)} al ${formatFechaEs(checkoutFmt)}` : 'Próximamente';
   const localizador = document.getElementById('localizador').value;
   const habitaciones = document.getElementById('habitaciones').value;
   const checkin = document.getElementById('checkin').value;
   const checkout = document.getElementById('checkout').value;
   const noches = parseInt(document.getElementById('noches').value)||2;
-  const plan = document.getElementById('planComidas').value;
+  const plan = (document.getElementById('planComidas').value||'').toLowerCase();
   const comidasEsp = document.getElementById('comidasEspeciales').value;
   const tieneTraslado = document.getElementById('tieneTraslado').checked;
   const tipoTraslado = document.getElementById('tipoTraslado').value;
@@ -476,7 +515,11 @@ function generarGuia(){
     ida:{origen:document.getElementById('v1origen').value,destino:document.getElementById('v1destino').value,numero:document.getElementById('v1numero').value,compania:document.getElementById('v1compania').value,salida:document.getElementById('v1salida').value,llegada:document.getElementById('v1llegada').value},
     vuelta:{origen:document.getElementById('v2origen').value,destino:document.getElementById('v2destino').value,numero:document.getElementById('v2numero').value,compania:document.getElementById('v2compania').value,salida:document.getElementById('v2salida').value,llegada:document.getElementById('v2llegada').value}
   };
-  const bonoInfo = BONO_INFO[plan]||BONO_INFO[''];
+  const bonoInfo = {titulo: document.getElementById('planComidas').value||'Sin plan de comidas', detalle:''};
+  const bonoDesayunos = parseInt(document.getElementById('bonoDesayunos').value)||0;
+  const bonoRapidas = parseInt(document.getElementById('bonoRapidas').value)||0;
+  const bonoBuffet = parseInt(document.getElementById('bonoBuffet').value)||0;
+  const bonoRegalo = document.getElementById('bonoRegalo').value;
   const horaExtra = HORA_EXTRA[hotel];
   const esSantaFeDavy = hotel==='santafe'||hotel==='davy';
   const esDavy = hotel==='davy';
@@ -502,8 +545,8 @@ function generarGuia(){
       <div class="g-info-item"><div class="g-info-label">Hotel</div><div class="g-info-value">${hotelNombre}</div></div>
       ${localizador?`<div class="g-info-item"><div class="g-info-label">Localizador</div><div class="g-info-value">${localizador}</div></div>`:''}
       ${habitaciones?`<div class="g-info-item"><div class="g-info-label">Habitaciones</div><div class="g-info-value">${habitaciones}</div></div>`:''}
-      ${checkin?`<div class="g-info-item"><div class="g-info-label">Check-in</div><div class="g-info-value">${checkin}</div><div class="g-info-sub">A partir de las 15:00h${hotel==='davy'?' (16:00h en Davy Crockett)':''}</div></div>`:''}
-      ${checkout?`<div class="g-info-item"><div class="g-info-label">Check-out</div><div class="g-info-value">${checkout}</div><div class="g-info-sub">Antes de las 11:00h</div></div>`:''}
+      ${checkinFmt?`<div class="g-info-item"><div class="g-info-label">Check-in</div><div class="g-info-value">${formatFechaEs(checkinFmt)}</div><div class="g-info-sub">A partir de las 15:00h${hotel==='davy'?' (16:00h)':''}</div></div>`:''}
+      ${checkoutFmt?`<div class="g-info-item"><div class="g-info-label">Check-out</div><div class="g-info-value">${formatFechaEs(checkoutFmt)}</div><div class="g-info-sub">Antes de las 11:00h</div></div>`:''}
     </div>
     ${esDavy?`<div class="g-alert"><span>⚠️</span><span><strong>Davy Crockett Ranch:</strong> No hay traslados gratuitos al parque. Imprescindible vehículo propio. Tasa turística a pagar en el hotel.</span></div>`:''}
     ${hotel==='otro'?`<div class="g-alert"><span>⚠️</span><span>Los hoteles no Disney requieren pago de <strong>tasa turística en persona</strong> al hacer check-in. No incluye hora extra ni autobús gratuito al parque.</span></div>`:''}
@@ -516,15 +559,12 @@ function generarGuia(){
       <div class="g-section-title">Plan de comidas</div>
     </div>
     ${(()=>{
-      let desayunos=0,rapidas=0,buffetMesa=0,regalo='',extras='';
-      if(plan==='desayuno'){desayunos=noches;}
-      else if(plan==='mp_standard'){desayunos=noches;rapidas=noches;}
-      else if(plan==='mp_plus'){desayunos=noches;buffetMesa=noches;}
-      else if(plan==='pc_standard'){desayunos=noches;buffetMesa=noches;rapidas=noches;regalo=true;}
-      else if(plan==='pc_plus'){desayunos=noches;buffetMesa=noches*2;regalo=true;}
-      else if(plan==='smart'){desayunos=noches;buffetMesa=noches*2;regalo=true;extras='⚠️ Solo válido en restaurantes de tu hotel y Disney Village';}
-      else if(plan==='extra_plus'){desayunos=noches;buffetMesa=noches*2;regalo=true;extras='+ 1 comida con personajes por estancia · + bebida y snack por noche';}
-      else if(plan==='premium'){desayunos=noches;buffetMesa=noches*2;regalo=true;extras='✨ Todas las comidas pueden ser con personajes sin suplemento adicional';}
+      const desayunos=bonoDesayunos,rapidas=bonoRapidas,buffetMesa=bonoBuffet;
+      const regalo=bonoRegalo;
+      let extras='';
+      if(plan==='smart') extras='⚠️ Solo válido en restaurantes de tu hotel y Disney Village';
+      else if(plan==='extra_plus') extras='+ 1 comida con personajes por estancia · + bebida y snack por noche';
+      else if(plan==='premium') extras='✨ Todas las comidas pueden ser con personajes sin suplemento adicional';
       if(!plan) return '';
       const col='border:2px solid rgba(91,45,142,.15);border-radius:14px;padding:14px 10px;text-align:center;background:white';
       const num='font-family:Fredoka One,cursive;font-size:2.2rem;line-height:1;color:#3D1A6B';
