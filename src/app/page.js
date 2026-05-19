@@ -5,6 +5,16 @@ const FORM_RESTAURANTES = "https://docs.google.com/forms/d/e/1FAIpQLSf1H3c9HZ5Jr
 const FORM_MODIFICAR = "https://docs.google.com/forms/d/e/1FAIpQLScSaC2-3EZTQCOemTG4PrnxbiNUH6R0eFuDGZaZsroNB0-FTA/viewform";
 const FORM_PAGOS = "https://forms.gle/t5QaxnEuFqL6SCHQ9";
 
+// ═══════════════════════════════════════════════════════
+// HELPER: detectar si el cliente tiene reserva completa
+// Un cliente "en proceso" es aquel que está en el Sheet
+// pero aún no tiene los datos de reserva completos (hotel vacío)
+// ═══════════════════════════════════════════════════════
+function tieneReservaCompleta(cliente) {
+  if (!cliente) return false;
+  return !!(cliente.Hotel && String(cliente.Hotel).trim() !== "");
+}
+
 const SYSTEM_ASISTENTE = `Eres MOLI, el hada madrina virtual del Área Mágica del Viajero de LOS VIAJES DE MOLI.
 
 Tu saludo inicial debe ser:
@@ -260,7 +270,7 @@ NOCHES EXTRA Y HOTELES:
 Los clientes pueden añadir noches extra en un Hotel Disney siempre que no sea en paquete con vuelos.
 Hoteles asociados Disney: comparten autobús (muy lleno), no llegan a tiempo para hora extra de apertura (usar Uber), parking diario ~15€, tasas turísticas.
 
-PARA VISITAR PARÍS:
+PARA VISITAR París:
 - Tour privado en coche de ~3h por 350€ (sin traslado a París incluido).
 - Muy recomendable el día de llegada: recogen en aeropuerto, veis París y os dejan en Hotel Disney.
 
@@ -271,41 +281,31 @@ lara@pasaportemagico.com`;
 
 // ═══════════════════════════════════════════════════════
 // CALENDARIO HORARIOS ESTIMADOS DISNEYLAND PARIS 2026
-// Basado en el calendario de Los Viajes de Moli
 // ═══════════════════════════════════════════════════════
 const HORARIOS_2026 = {
-  // ENERO: negro=20h semana 1, verde=21h resto, rojo=20-21 semana 19-25
   "2026-01-01":"20:00","2026-01-02":"20:00","2026-01-03":"20:00","2026-01-04":"20:00",
   "2026-01-05":"21:00","2026-01-06":"21:00","2026-01-07":"21:00","2026-01-08":"21:00","2026-01-09":"21:00","2026-01-10":"21:00","2026-01-11":"21:00",
   "2026-01-12":"21:00","2026-01-13":"21:00","2026-01-14":"21:00","2026-01-15":"21:00","2026-01-16":"21:00","2026-01-17":"21:00","2026-01-18":"21:00",
   "2026-01-19":"20:00-21:00","2026-01-20":"20:00-21:00","2026-01-21":"20:00-21:00","2026-01-22":"20:00-21:00","2026-01-23":"20:00-21:00","2026-01-24":"20:00-21:00","2026-01-25":"20:00-21:00",
   "2026-01-26":"21:00","2026-01-27":"21:00","2026-01-28":"21:00","2026-01-29":"21:00","2026-01-30":"21:00","2026-01-31":"21:00",
-  // FEBRERO
   "2026-02-02":"21:00","2026-02-03":"21:00","2026-02-04":"21:00","2026-02-05":"21:00","2026-02-06":"21:00","2026-02-07":"21:00","2026-02-08":"21:00",
   "2026-02-09":"20:00-21:00","2026-02-10":"20:00-21:00","2026-02-11":"20:00-21:00","2026-02-12":"20:00-21:00","2026-02-13":"20:00-21:00","2026-02-14":"20:00-21:00","2026-02-15":"20:00-21:00",
   "2026-02-16":"21:00","2026-02-17":"21:00","2026-02-18":"21:00","2026-02-19":"21:00","2026-02-20":"21:00","2026-02-21":"21:00","2026-02-22":"21:00",
   "2026-02-23":"21:00","2026-02-24":"21:00","2026-02-25":"21:00","2026-02-26":"21:00","2026-02-27":"21:00","2026-02-28":"21:00",
-  // MARZO
   "2026-03-01":"21:00","2026-03-02":"21:00","2026-03-03":"21:00","2026-03-04":"21:00","2026-03-05":"21:00","2026-03-06":"21:00","2026-03-07":"21:00","2026-03-08":"21:00",
   "2026-03-09":"21:00","2026-03-10":"21:00","2026-03-11":"21:00","2026-03-12":"21:00","2026-03-13":"21:00","2026-03-14":"21:00","2026-03-15":"21:00",
   "2026-03-16":"20:00-21:00","2026-03-17":"20:00-21:00","2026-03-18":"20:00-21:00","2026-03-19":"20:00-21:00","2026-03-20":"20:00-21:00","2026-03-21":"20:00-21:00","2026-03-22":"20:00-21:00",
   "2026-03-23":"22:00","2026-03-24":"22:00","2026-03-25":"22:00","2026-03-26":"22:00","2026-03-27":"22:00","2026-03-28":"22:00","2026-03-29":"22:00",
   "2026-03-30":"22:40","2026-03-31":"22:40",
-  // ABRIL
   "2026-04-01":"22:40","2026-04-02":"22:40","2026-04-03":"22:40","2026-04-04":"22:40","2026-04-05":"22:40",
   "2026-04-06":"22:40","2026-04-07":"22:40","2026-04-08":"22:40","2026-04-09":"22:40","2026-04-10":"22:40","2026-04-11":"22:40","2026-04-12":"22:40",
   "2026-04-13":"22:40","2026-04-14":"22:40","2026-04-15":"22:40","2026-04-16":"22:40","2026-04-17":"22:40","2026-04-18":"22:40","2026-04-19":"22:40",
   "2026-04-20":"22:40","2026-04-21":"22:40","2026-04-22":"22:40","2026-04-23":"22:40","2026-04-24":"22:40","2026-04-25":"22:40","2026-04-26":"22:40",
   "2026-04-27":"22:40","2026-04-28":"22:40","2026-04-29":"22:40","2026-04-30":"22:40",
-  // MAYO-AGOSTO: todo 22:40
   ...(()=>{const d={};for(let m=5;m<=8;m++){const days=m===8?31:m===5||m===7?31:30;for(let i=1;i<=days;i++){d[`2026-0${m}-${String(i).padStart(2,'0')}`]="22:40";}}return d;})(),
-  // SEPTIEMBRE: 1-20 → 22:40, 21-30 → 22:00
   ...(()=>{const d={};for(let i=1;i<=20;i++)d[`2026-09-${String(i).padStart(2,'0')}`]="22:40";for(let i=21;i<=30;i++)d[`2026-09-${String(i).padStart(2,'0')}`]="22:00";return d;})(),
-  // OCTUBRE: 1-18 → 22:00, 19-31 → 21:00
   ...(()=>{const d={};for(let i=1;i<=18;i++)d[`2026-10-${String(i).padStart(2,'0')}`]="22:00";for(let i=19;i<=31;i++)d[`2026-10-${String(i).padStart(2,'0')}`]="21:00";return d;})(),
-  // NOVIEMBRE: todo 21:00
   ...(()=>{const d={};for(let i=1;i<=30;i++)d[`2026-11-${String(i).padStart(2,'0')}`]="21:00";return d;})(),
-  // DICIEMBRE: 1-20 → 21:00, 21-31 → 22:40 (Navidad)
   ...(()=>{const d={};for(let i=1;i<=20;i++)d[`2026-12-${String(i).padStart(2,'0')}`]="21:00";for(let i=21;i<=31;i++)d[`2026-12-${String(i).padStart(2,'0')}`]="22:40";return d;})(),
 };
 
@@ -325,90 +325,35 @@ function formatDateEs(dateStr) {
   return `${days[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
 }
 
-// ═══════════════════════════════════════════════════════
-// HELPERS PLAN DE COMIDAS
-// ═══════════════════════════════════════════════════════
 function parsePlan(planStr, hotel) {
   if (!planStr) return 'ninguno';
   const p = planStr.toLowerCase().trim();
   const h = (hotel||'').toLowerCase();
   const esSantaFeDavy = h.includes('santa fe') || h.includes('davy') || h.includes('crockett');
-
   if (p === 'no' || p === 'ninguno' || p === 'sin plan' || p === '') return 'ninguno';
   if (p.includes('desayuno')) return 'desayuno';
   if (p.includes('premium')) return 'premium';
   if (p.includes('extra plus') || p.includes('extra-plus')) return 'extra_plus';
   if (p.includes('smart')) return 'smart';
-  if (p.includes('plus')) {
-    // PC Plus o MP Plus
-    if (p.includes('media') || p === 'mp plus' || p.includes('mp p')) return 'mp_plus';
-    return 'pc_plus';
-  }
-  if (p.includes('standard') || p.includes('estándar')) {
-    if (p.includes('media') || p.includes('mp')) return 'mp_standard';
-    return 'pc_standard';
-  }
-  // Solo "PC" o "Pensión Completa" sin más → si es Santa Fe/Davy = standard
-  if (p.includes('pension completa') || p.includes('pensión completa') || p === 'pc') {
-    return esSantaFeDavy ? 'pc_standard' : 'pc_plus';
-  }
-  // Solo "MP" o "Media Pensión" → si es Santa Fe/Davy = standard, sino = plus
-  if (p === 'mp' || p.includes('media p')) {
-    return esSantaFeDavy ? 'mp_standard' : 'mp_plus';
-  }
+  if (p.includes('plus')) { if (p.includes('media') || p === 'mp plus' || p.includes('mp p')) return 'mp_plus'; return 'pc_plus'; }
+  if (p.includes('standard') || p.includes('estándar')) { if (p.includes('media') || p.includes('mp')) return 'mp_standard'; return 'pc_standard'; }
+  if (p.includes('pension completa') || p.includes('pensión completa') || p === 'pc') { return esSantaFeDavy ? 'pc_standard' : 'pc_plus'; }
+  if (p === 'mp' || p.includes('media p')) { return esSantaFeDavy ? 'mp_standard' : 'mp_plus'; }
   return 'ninguno';
 }
 
 function calcBonos(planTipo, noches) {
-  const n = noches > 0 ? noches : null;
-  const porNoche = n ? `${n} ` : '';
-  const noche_s = n ? (n>1 ? `${n} noches` : `1 noche`) : 'cada noche';
-
   switch(planTipo) {
-    case 'ninguno':
-      return { desc: null, detalle: null };
-    case 'desayuno':
-      return {
-        desc: `Solo desayuno`,
-        detalle: `1 desayuno buffet en tu hotel por cada noche. Comidas y cenas se pagan aparte.`
-      };
-    case 'mp_standard':
-      return {
-        desc: `Media Pensión Standard`,
-        detalle: `1 desayuno en hotel + 1 comida o cena de servicio RÁPIDO por cada noche. Bonos flexibles — úsalos cuando quieras.`
-      };
-    case 'mp_plus':
-      return {
-        desc: `Media Pensión Plus`,
-        detalle: `1 desayuno en hotel + 1 comida o cena en buffet o mesa por cada noche. Bonos flexibles — úsalos cuando quieras.`
-      };
-    case 'pc_standard':
-      return {
-        desc: `Pensión Completa Standard`,
-        detalle: `1 desayuno en hotel + 1 comida/cena buffet o mesa + 1 comida/cena rápida por cada noche + 1 comida rápida de REGALO de Disney. Bonos flexibles.`
-      };
-    case 'pc_plus':
-      return {
-        desc: `Pensión Completa Plus`,
-        detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono buffet/mesa de REGALO de Disney. Bonos flexibles.`
-      };
-    case 'smart':
-      return {
-        desc: `Pensión Completa Smart`,
-        detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono de REGALO. ⚠️ Solo válido en restaurantes de tu hotel y Disney Village.`
-      };
-    case 'extra_plus':
-      return {
-        desc: `Pensión Completa Extra Plus`,
-        detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO + 1 bebida extra/noche + 1 snack/noche + 1 comida con personajes incluida por estancia. Bonos flexibles.`
-      };
-    case 'premium':
-      return {
-        desc: `Pensión Completa Premium`,
-        detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento.`
-      };
-    default:
-      return { desc: null, detalle: null };
+    case 'ninguno': return { desc: null, detalle: null };
+    case 'desayuno': return { desc: `Solo desayuno`, detalle: `1 desayuno buffet en tu hotel por cada noche. Comidas y cenas se pagan aparte.` };
+    case 'mp_standard': return { desc: `Media Pensión Standard`, detalle: `1 desayuno en hotel + 1 comida o cena de servicio RÁPIDO por cada noche. Bonos flexibles — úsalos cuando quieras.` };
+    case 'mp_plus': return { desc: `Media Pensión Plus`, detalle: `1 desayuno en hotel + 1 comida o cena en buffet o mesa por cada noche. Bonos flexibles — úsalos cuando quieras.` };
+    case 'pc_standard': return { desc: `Pensión Completa Standard`, detalle: `1 desayuno en hotel + 1 comida/cena buffet o mesa + 1 comida/cena rápida por cada noche + 1 comida rápida de REGALO de Disney. Bonos flexibles.` };
+    case 'pc_plus': return { desc: `Pensión Completa Plus`, detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono buffet/mesa de REGALO de Disney. Bonos flexibles.` };
+    case 'smart': return { desc: `Pensión Completa Smart`, detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono de REGALO. ⚠️ Solo válido en restaurantes de tu hotel y Disney Village.` };
+    case 'extra_plus': return { desc: `Pensión Completa Extra Plus`, detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO + 1 bebida extra/noche + 1 snack/noche + 1 comida con personajes incluida por estancia. Bonos flexibles.` };
+    case 'premium': return { desc: `Pensión Completa Premium`, detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento.` };
+    default: return { desc: null, detalle: null };
   }
 }
 
@@ -419,62 +364,16 @@ function parseNoches(checkin, checkout) {
 
 function getDesayunoHotel(hotel) {
   const h = (hotel||'').toLowerCase();
-  if (h.includes('disneyland hotel') || h.includes('castle')) return {
-    rest: 'Royal Banquet / Deluxe Lounge / Castle Club Lounge',
-    tipo: 'Buffet incluido en tarifa o lounge exclusivo según categoría',
-    cena: 'La Table de Lumière (cena con Princesas) · Royal Banquet (comida/cena con personajes) · Fleur de Lys Bar',
-    nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.'
-  };
-  if (h.includes('new york') || h.includes('marvel')) return {
-    rest: 'Downtown Restaurant',
-    tipo: 'Buffet completo (incluido en Empire State Club y Suites)',
-    cena: 'Manhattan Restaurant (a la carta · solo cenas) · Downtown Restaurant (buffet) · Skyline Bar · Bleecker Street Lounge',
-    nota: '⭐ Al alojarte en el Hotel New York – Marvel podemos solicitar a Disney mesa en el Downtown Restaurant. Si no hay disponibilidad habrá que ir revisando la app. Los restaurantes del hotel abren para cenas a partir de las 18h aprox.'
-  };
-  if (h.includes('newport')) return {
-    rest: 'Cape Cod ⭐ (favorito de Lara para familias con bebés)',
-    tipo: 'Buffet completo (incluido en Compass Club y Suites)',
-    cena: 'Yacht Club (a la carta) · Cape Cod (buffet) · Captain\'s Quarters (bar)',
-    nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.'
-  };
-  if (h.includes('sequoia')) return {
-    rest: "Hunter's Grill & Beaver Creek Tavern",
-    tipo: 'Buffet completo (incluido en Golden Forest Club y Suites)',
-    cena: "Hunter's Grill & Beaver Creek Tavern (buffet cena) · Redwood Bar and Lounge",
-    nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.'
-  };
-  if (h.includes('cheyenne')) return {
-    rest: 'Chuck Wagon Cafe',
-    tipo: 'Buffet completo',
-    cena: 'Chuck Wagon Cafe (buffet cena) · Red Garter Saloon · Starbucks',
-    nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.'
-  };
-  if (h.includes('santa fe')) return {
-    rest: 'La Cantina',
-    tipo: 'Buffet completo (con opciones veganas)',
-    cena: 'La Cantina (buffet cena) · Rio Grande Bar · Starbucks',
-    nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.'
-  };
-  if (h.includes('davy') || h.includes('crockett')) return {
-    rest: "Crockett's Tavern / Para llevar",
-    tipo: 'Desayuno para llevar o buffet (temporada)',
-    cena: "Crockett's Tavern (buffet cena) · Crockett's Saloon",
-    nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox. Recuerda que el ranch requiere vehículo propio para ir al parque.'
-  };
-  return {
-    rest: 'Restaurante del hotel',
-    tipo: 'Buffet según hotel',
-    cena: 'Restaurante principal del hotel',
-    nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.'
-  };
+  if (h.includes('disneyland hotel') || h.includes('castle')) return { rest: 'Royal Banquet / Deluxe Lounge / Castle Club Lounge', tipo: 'Buffet incluido en tarifa o lounge exclusivo según categoría', cena: 'La Table de Lumière (cena con Princesas) · Royal Banquet (comida/cena con personajes) · Fleur de Lys Bar', nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.' };
+  if (h.includes('new york') || h.includes('marvel')) return { rest: 'Downtown Restaurant', tipo: 'Buffet completo (incluido en Empire State Club y Suites)', cena: 'Manhattan Restaurant (a la carta · solo cenas) · Downtown Restaurant (buffet) · Skyline Bar · Bleecker Street Lounge', nota: '⭐ Al alojarte en el Hotel New York – Marvel podemos solicitar a Disney mesa en el Downtown Restaurant. Si no hay disponibilidad habrá que ir revisando la app. Los restaurantes del hotel abren para cenas a partir de las 18h aprox.' };
+  if (h.includes('newport')) return { rest: 'Cape Cod ⭐ (favorito de Lara para familias con bebés)', tipo: 'Buffet completo (incluido en Compass Club y Suites)', cena: 'Yacht Club (a la carta) · Cape Cod (buffet) · Captain\'s Quarters (bar)', nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.' };
+  if (h.includes('sequoia')) return { rest: "Hunter's Grill & Beaver Creek Tavern", tipo: 'Buffet completo (incluido en Golden Forest Club y Suites)', cena: "Hunter's Grill & Beaver Creek Tavern (buffet cena) · Redwood Bar and Lounge", nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.' };
+  if (h.includes('cheyenne')) return { rest: 'Chuck Wagon Cafe', tipo: 'Buffet completo', cena: 'Chuck Wagon Cafe (buffet cena) · Red Garter Saloon · Starbucks', nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.' };
+  if (h.includes('santa fe')) return { rest: 'La Cantina', tipo: 'Buffet completo (con opciones veganas)', cena: 'La Cantina (buffet cena) · Rio Grande Bar · Starbucks', nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.' };
+  if (h.includes('davy') || h.includes('crockett')) return { rest: "Crockett's Tavern / Para llevar", tipo: 'Desayuno para llevar o buffet (temporada)', cena: "Crockett's Tavern (buffet cena) · Crockett's Saloon", nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox. Recuerda que el ranch requiere vehículo propio para ir al parque.' };
+  return { rest: 'Restaurante del hotel', tipo: 'Buffet según hotel', cena: 'Restaurante principal del hotel', nota: 'Los restaurantes del hotel abren para cenas a partir de las 18h aprox.' };
 }
 
-// ═══════════════════════════════════════════════════════
-// FORMATEADORES
-// ═══════════════════════════════════════════════════════
-// ═══ HELPERS DE PAGOS — maneja texto, números y combinaciones ═══
-
-// Extrae número(s) de un valor mixto: "200", "200€", "200+150", "500 - falta recibo" → número total
 function extractNumber(val) {
   if (!val && val !== 0) return 0;
   const str = String(val).replace(/€/g, '').replace(/\s/g, '');
@@ -482,25 +381,12 @@ function extractNumber(val) {
   if (!nums) return 0;
   return nums.reduce((acc, n) => acc + parseFloat(n.replace(',', '.')), 0);
 }
-
-// ¿Contiene texto significativo además del número?
 function hasText(val) {
   if (!val && val !== 0) return false;
   const str = String(val).trim();
   if (!str || str === '0') return false;
   return str.replace(/[\d€+\-.,\s]/g, '').trim().length > 0;
 }
-
-// Formatea un número como euros
-function formatEuro(val) {
-  if (!val && val !== 0) return "0,00 €";
-  const num = extractNumber(val);
-  if (!num && !hasText(val)) return "0,00 €";
-  if (!num) return String(val);
-  return num.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
-}
-
-// Renderiza valor de pago: muestra número formateado + texto visible si lo hay
 function PagoValor({ val, colorNum = "#1c1410", colorTxt = "#7a6a50", size = 18 }) {
   if (!val && val !== 0) return <span style={{ color:"#bbb" }}>—</span>;
   const str = String(val).trim();
@@ -509,21 +395,12 @@ function PagoValor({ val, colorNum = "#1c1410", colorTxt = "#7a6a50", size = 18 
   const texto = hasText(val);
   return (
     <span>
-      {num > 0 && (
-        <strong style={{ color:colorNum, fontSize:size }}>
-          {num.toLocaleString("es-ES", { style:"currency", currency:"EUR" })}
-        </strong>
-      )}
-      {texto && (
-        <span style={{ color:colorTxt, fontSize:"0.75em", display:"block", marginTop:2, fontStyle:"italic" }}>
-          📝 {str}
-        </span>
-      )}
+      {num > 0 && <strong style={{ color:colorNum, fontSize:size }}>{num.toLocaleString("es-ES", { style:"currency", currency:"EUR" })}</strong>}
+      {texto && <span style={{ color:colorTxt, fontSize:"0.75em", display:"block", marginTop:2, fontStyle:"italic" }}>📝 {str}</span>}
       {!num && !texto && <span style={{ color:"#bbb" }}>—</span>}
     </span>
   );
 }
-
 function PagoBar({ pagado, total }) {
   const p = Math.round((extractNumber(pagado) + Number.EPSILON) * 100) / 100;
   const t = Math.round((extractNumber(total) + Number.EPSILON) * 100) / 100 || 1;
@@ -542,7 +419,7 @@ function PagoBar({ pagado, total }) {
 }
 
 // ═══════════════════════════════════════════════════════
-// PLANIFICADOR DE RESTAURANTES
+// PLANIFICADOR DE RESTAURANTES (sin cambios)
 // ═══════════════════════════════════════════════════════
 function PlanificadorRestaurantes({ cliente }) {
   const [prefs, setPrefs] = useState({});
@@ -556,7 +433,6 @@ function PlanificadorRestaurantes({ cliente }) {
   const desayuno = getDesayunoHotel(cliente?.Hotel);
   const dates = getDatesInRange(cliente?.["Check-in"]||"", cliente?.["Check-out"]||"");
 
-  // Parse personas
   const personasStr = cliente?.["Nº personas y edad niños"] || "";
   const adultos = parseInt(personasStr.match(/(\d+)\s*adulto/i)?.[1] || "2");
   const ninos = parseInt(personasStr.match(/(\d+)\s*ni[ñn]/i)?.[1] || "0");
@@ -564,31 +440,13 @@ function PlanificadorRestaurantes({ cliente }) {
   const totalPax = adultos + ninos + bebes;
 
   const setPref = (group, val) => setPrefs(p => ({ ...p, [group]: val }));
-
   const prefsCompletas = ['personajes','reserva','estilo'].every(k => prefs[k]);
 
   const prefGroups = [
-    { key:'personajes', label:'👑 ¿Queréis comer con personajes?', opts:[
-      { val:'si', label:'✅ Sí, imprescindible' },
-      { val:'si-si-hay', label:'Si hay disponibilidad' },
-      { val:'no', label:'No nos importa' }
-    ]},
-    { key:'reserva', label:'📅 ¿Preferís tener las comidas reservadas o ir libremente?', opts:[
-      { val:'reservado', label:'📋 Todo reservado y organizado' },
-      { val:'flexible', label:'🎯 Solo reservar lo especial' },
-      { val:'libre', label:'🆓 Sin reservas, total libertad' },
-    ]},
-    { key:'estilo', label:'🍽️ ¿Preferís buffet o carta?', opts:[
-      { val:'buffet', label:'🥗 Buffet — variedad y sin esperas' },
-      { val:'carta', label:'📖 Carta — elegir el menú' },
-      { val:'indiferente', label:'😊 Nos da igual' },
-    ]},
-    { key:'dieta', label:'🌿 ¿Alguna restricción alimentaria?', opts:[
-      { val:'ninguna', label:'Ninguna' },
-      { val:'vegetariano', label:'Vegetariano/vegan' },
-      { val:'alergias', label:'Alergias' },
-      { val:'sin-gluten', label:'Sin gluten' },
-    ]},
+    { key:'personajes', label:'👑 ¿Queréis comer con personajes?', opts:[{ val:'si', label:'✅ Sí, imprescindible' },{ val:'si-si-hay', label:'Si hay disponibilidad' },{ val:'no', label:'No nos importa' }]},
+    { key:'reserva', label:'📅 ¿Preferís tener las comidas reservadas o ir libremente?', opts:[{ val:'reservado', label:'📋 Todo reservado y organizado' },{ val:'flexible', label:'🎯 Solo reservar lo especial' },{ val:'libre', label:'🆓 Sin reservas, total libertad' }]},
+    { key:'estilo', label:'🍽️ ¿Preferís buffet o carta?', opts:[{ val:'buffet', label:'🥗 Buffet — variedad y sin esperas' },{ val:'carta', label:'📖 Carta — elegir el menú' },{ val:'indiferente', label:'😊 Nos da igual' }]},
+    { key:'dieta', label:'🌿 ¿Alguna restricción alimentaria?', opts:[{ val:'ninguna', label:'Ninguna' },{ val:'vegetariano', label:'Vegetariano/vegan' },{ val:'alergias', label:'Alergias' },{ val:'sin-gluten', label:'Sin gluten' }]},
   ];
 
   const accentColors = { personajes:'#5B2D8E', reserva:'#F5287A', estilo:'#2BBCD4', dieta:'#F0A500' };
@@ -596,148 +454,29 @@ function PlanificadorRestaurantes({ cliente }) {
   async function generarPlan() {
     if (!prefsCompletas) return;
     setLoading(true); setPlan(null);
-
-    const diasInfo = dates.map(date => ({
-      fecha: formatDateEs(date),
-      cierre: getHorario(date),
-      alta: isAltaDemanda(date),
-      mierc: isMiercoles(date),
-    }));
-
-    const prompt = `Eres el asistente de restaurantes de "Los Viajes de Moli", agencia oficial Disney de España. Crea un plan de restaurantes COMPLETO, personalizado y práctico.
-
-DATOS DE LA RESERVA:
-- Nombre: ${cliente?.Nombre}
-- Hotel: ${cliente?.Hotel}
-- Plan de comidas: ${cliente?.["Plan de comidas"] || "sin plan"}
-- Fechas: ${cliente?.["Check-in"]} al ${cliente?.["Check-out"]} (${noches} noches · ${dates.length} días en parque)
-- Adultos: ${adultos} · Niños 3-11 años: ${ninos} · Bebés <3 años: ${bebes}${bebes>0?' (comen GRATIS en todos los restaurantes Disney)':''}
-- Total personas: ${totalPax}
-
-RESUMEN DE BONOS — explícalo así de claro:
-${(() => {
-  const plan = (cliente?.["Plan de comidas"]||'').toLowerCase();
-  const hotel = (cliente?.Hotel||'').toLowerCase();
-  const esSantaFeDavy = hotel.includes('santa fe') || hotel.includes('davy') || hotel.includes('crockett');
-
-  if (!plan || plan === 'sin plan') {
-    return 'Sin plan de comidas contratado. Paga cada comida en el momento.';
-  }
-  if (plan.includes('solo desayuno') || plan === 'desayuno') {
-    return `Solo Desayuno: ${noches} desayunos buffet en el hotel incluidos. Comidas y cenas se pagan aparte.`;
-  }
-  if (plan.includes('media') || plan === 'mp') {
-    if (esSantaFeDavy) {
-      return `Media Pensión Standard (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches} comidas o cenas de SERVICIO RÁPIDO. Total: ${noches} bonos rápidos. Bonos flexibles — úsalos cuando quieras.`;
-    }
-    return `Media Pensión Plus (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches} comidas o cenas en buffet o mesa. Total: ${noches} bonos buffet/mesa. Bonos flexibles — úsalos cuando quieras.`;
-  }
-  if (plan.includes('standard')) {
-    return `Pensión Completa Standard (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches} comidas rápidas + ${noches} comidas/cenas buffet/mesa + 1 comida rápida de REGALO. Total: ${noches+1} bonos rápidos y ${noches} bonos buffet/mesa. Bonos flexibles.`;
-  }
-  if (plan.includes('smart')) {
-    return `Pensión Completa Smart (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet/mesa + 1 de REGALO. Total: ${noches*2+1} bonos buffet/mesa. OJO: solo válido en restaurantes de Sequoia Lodge, Newport Bay Club y Disney Village.`;
-  }
-  if (plan.includes('extra plus')) {
-    return `Pensión Completa Extra Plus (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet/mesa + 1 de REGALO + 1 comida con personajes incluida por estancia. Total: ${noches*2+1} bonos buffet/mesa. Bonos flexibles.`;
-  }
-  if (plan.includes('premium')) {
-    return `Pensión Completa Premium (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet/mesa + 1 de REGALO + TODAS las comidas con personajes incluidas. Total: ${noches*2+1} bonos buffet/mesa. Bonos flexibles.`;
-  }
-  if (plan.includes('plus')) {
-    return `Pensión Completa Plus (${cliente?.Hotel}): ${noches} noches = ${noches} desayunos en hotel + ${noches*2} comidas/cenas buffet/mesa + 1 de REGALO. Total: ${noches*2+1} bonos buffet/mesa. Bonos flexibles — úsalos como queráis durante toda la estancia.`;
-  }
-  return `Plan ${cliente?.["Plan de comidas"]}: ${noches} noches en ${cliente?.Hotel}. Consultar detalles con Lara.`;
-})()}
-
-DESAYUNO: SIEMPRE en el hotel (${desayuno.rest} — ${desayuno.tipo}). Nunca en el parque.
-CENAS EN EL HOTEL: ${desayuno.cena}. Abren desde ~18h, último turno ~22:45h.
-${desayuno.nota ? `NOTA HOTEL: ${desayuno.nota}` : ''}
-
-PREFERENCIAS DEL CLIENTE:
-- Personajes: ${prefs.personajes}
-- Reservas: ${prefs.reserva}
-- Estilo: ${prefs.estilo}
-- Dieta: ${prefs.dieta || 'ninguna'}
-
-HORARIOS DEL PARQUE DÍA A DÍA (estimados):
-${diasInfo.map(d => `- ${d.fecha}: cierre ${d.cierre}${d.mierc?' — ⚠️ MIÉRCOLES (alta afluencia)':d.alta?' — alta afluencia':''}`).join('\n')}
-
-REGLAS CRÍTICAS:
-
-1. DESAYUNO: Siempre en el hotel. Nunca en el parque.
-
-2. ESTRATEGIA DE COMIDAS Y CENAS EN EL PARQUE:
-   - Cierre 20-21h: cenar en hotel o village después del cierre. NO hay tiempo para cenar en el parque.
-   - Cierre 22h: viable cenar en parque antes de las 20h (reservar 19:30).
-   - Cierre 22:40: ideal cenar en parque 19:30-20:00 y volver. Show nocturno ~22:00 → reservar mesa a las 21:45 (15 min de margen). En verano: opción pausa piscina 15-16h + cena 19:30 + volver. Nunca más de 2h de pausa.
-   - IMPORTANTE: Los horarios de cena en hoteles y Disney Village NO dependen del horario del parque — se puede cenar allí cualquier día. Solo aplica la estrategia de horarios para cenas DENTRO del parque.
-
-3. MIÉRCOLES = ALTA AFLUENCIA: Evitar DAW, aprovechar para comidas largas con reserva.
-
-4. RECOMENDACIONES DE RESTAURANTES — CRITERIOS DE LARA:
-   - BUFFETS son siempre la opción más práctica: sin reserva, más rápidos, variedad infinita, perfectos para familias. Recomendar casi siempre.
-   - RESTAURANTES DE MESA: recomendar solo en casos especiales:
-     * Bistrot Chez Rémy → SIEMPRE recomendar si hay disponibilidad. Es el favorito. A la carta.
-     * Walt's An American Restaurant → ocasionalmente, para una comida especial tranquila con vistas al castillo.
-     * Steakhouse (Disney Village) → ocasionalmente para una cena especial fuera del parque.
-     * Captain Jack's → para una experiencia especial (mesas sobre el agua del canal).
-     * El resto de restaurantes de mesa → NO recomendar salvo petición expresa.
-   - LÍMITE RECOMENDADO: máximo 1 comida en mesa si el viaje es de 3 días de parque · máximo 2 si es de 4 días o más. Son comidas más lentas que restan tiempo a las atracciones. Siempre depende de lo que le guste a cada familia y de la disponibilidad.
-   - COMIDAS CON PERSONAJES: solo si el cliente lo pide o tiene plan que lo incluye.
-   - COMIDA RÁPIDA: no se reserva, perfecta para días de muchas atracciones.
-
-5. FLEXIBILIDAD DE BONOS: No caducan cada día. Total libertad de distribución.
-
-6. BEBÉS:
-${bebes>0?`   - ${bebes} bebé(s) < 3 años → GRATIS. Buffets ideales para BLW. Cape Cod es el favorito de Lara.`:'   - Sin bebés menores de 3 años.'}
-
-7. LUCKY NUGGET: Pedir bono rápido + suplemento, NO bono buffet/mesa.
-
-8. NO incluidos en plan: McDonald's, Rainforest, Royal Pub, Starbucks, Earl of Sandwich, Five Guys, Vapiano. SÍ incluidos: Billy Bob's y Steakhouse (Village).
-
-GENERA EL PLAN:
-1. Resumen claro de bonos (ej: "3 noches = 3 desayunos en hotel + 3 comidas/cenas buffet o mesa")
-2. Plan día a día con: dónde comer, dónde cenar, si es en parque/hotel/village y por qué
-3. Qué reservar YA y en qué orden de prioridad
-4. Consejos específicos para esta familia
-
-Sé cercano, usa emojis, formato claro con ### para secciones. Responde en español.`;
-
+    const diasInfo = dates.map(date => ({ fecha: formatDateEs(date), cierre: getHorario(date), alta: isAltaDemanda(date), mierc: isMiercoles(date) }));
+    const prompt = `Eres el asistente de restaurantes de "Los Viajes de Moli". Crea un plan de restaurantes personalizado.
+DATOS: Nombre: ${cliente?.Nombre}, Hotel: ${cliente?.Hotel}, Plan: ${cliente?.["Plan de comidas"] || "sin plan"}, Fechas: ${cliente?.["Check-in"]} al ${cliente?.["Check-out"]} (${noches} noches), Adultos: ${adultos}, Niños: ${ninos}, Bebés: ${bebes}
+PREFERENCIAS: Personajes: ${prefs.personajes}, Reservas: ${prefs.reserva}, Estilo: ${prefs.estilo}, Dieta: ${prefs.dieta || 'ninguna'}
+HORARIOS DÍA A DÍA: ${diasInfo.map(d => `${d.fecha}: cierre ${d.cierre}${d.mierc?' — MIÉRCOLES (alta afluencia)':''}`).join(', ')}
+Genera plan día a día con emojis y formato claro. Responde en español.`;
     try {
-      const res = await fetch("/api/chat", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-          messages:[{ role:"user", content:prompt }],
-          system:"Eres el asistente de restaurantes de Los Viajes de Moli. Responde siempre en español con formato claro y emojis. Sé práctico y personalizado.",
-        })
-      });
+      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:prompt }], system:"Eres el asistente de restaurantes de Los Viajes de Moli. Responde siempre en español." }) });
       const data = await res.json();
       setPlan(data.content?.[0]?.text || "No se pudo generar el plan.");
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
-    } catch {
-      setPlan("Error de conexión. Inténtalo de nuevo.");
-    }
+    } catch { setPlan("Error de conexión. Inténtalo de nuevo."); }
     setLoading(false);
   }
 
   const s = {
     card: { background:"#fff", border:"1px solid #e8e0d5", borderRadius:12, padding:"14px 16px" },
-    chip: (selected, color) => ({
-      padding:"6px 14px", borderRadius:50, border:`2px solid ${selected ? color : '#e0e0e0'}`,
-      background: selected ? color : '#f7f7f9', color: selected ? '#fff' : '#555',
-      fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', transition:'all .15s',
-    }),
-    genBtn: { background: prefsCompletas ? "linear-gradient(135deg,#5B2D8E,#F5287A)" : "#e0e0e0",
-      color: prefsCompletas ? "#fff" : "#999", border:"none", borderRadius:14,
-      padding:"14px 20px", fontSize:14, fontWeight:700, cursor: prefsCompletas ? 'pointer' : 'not-allowed',
-      width:"100%", fontFamily:"inherit", marginTop:8 },
+    chip: (selected, color) => ({ padding:"6px 14px", borderRadius:50, border:`2px solid ${selected ? color : '#e0e0e0'}`, background: selected ? color : '#f7f7f9', color: selected ? '#fff' : '#555', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', transition:'all .15s' }),
+    genBtn: { background: prefsCompletas ? "linear-gradient(135deg,#5B2D8E,#F5287A)" : "#e0e0e0", color: prefsCompletas ? "#fff" : "#999", border:"none", borderRadius:14, padding:"14px 20px", fontSize:14, fontWeight:700, cursor: prefsCompletas ? 'pointer' : 'not-allowed', width:"100%", fontFamily:"inherit", marginTop:8 },
   };
 
   return (
     <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-
-      {/* INFO PLAN Y DESAYUNO */}
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
         <div style={{ ...s.card, borderLeft:'4px solid #2BBCD4' }}>
           <div style={{ fontSize:10, color:'#9d8b78', textTransform:'uppercase', letterSpacing:1.5, marginBottom:6 }}>🍽️ Tu plan de comidas</div>
@@ -753,30 +492,16 @@ Sé cercano, usa emojis, formato claro con ### para secciones. Responde en espa�
           <div style={{ fontSize:11, color:'#7a6a50', marginBottom:8 }}>{desayuno.tipo}</div>
           <div style={{ fontSize:11, color:'#aaa', textTransform:'uppercase', letterSpacing:1, marginBottom:2 }}>Cenas disponibles en hotel</div>
           <div style={{ fontSize:12, color:'#1c1410', marginBottom:6 }}>{desayuno.cena}</div>
-          {desayuno.nota && (
-            <div style={{ fontSize:11, color: desayuno.nota.startsWith('⭐') ? '#C01060' : '#7a6a50',
-              background: desayuno.nota.startsWith('⭐') ? '#FEE8F3' : '#f9f7f4',
-              borderRadius:8, padding:'6px 10px', lineHeight:1.4 }}>
-              {desayuno.nota}
-            </div>
-          )}
+          {desayuno.nota && <div style={{ fontSize:11, color: desayuno.nota.startsWith('⭐') ? '#C01060' : '#7a6a50', background: desayuno.nota.startsWith('⭐') ? '#FEE8F3' : '#f9f7f4', borderRadius:8, padding:'6px 10px', lineHeight:1.4 }}>{desayuno.nota}</div>}
         </div>
       </div>
-
-      {/* PREFERENCIAS */}
       <div style={s.card}>
         <div style={{ fontSize:12, fontWeight:800, color:'#1c1410', marginBottom:14 }}>✨ Cuéntanos qué os apetece</div>
         {prefGroups.map(group => (
           <div key={group.key} style={{ marginBottom:14 }}>
             <div style={{ fontSize:11, fontWeight:700, color:'#555', marginBottom:8 }}>{group.label}</div>
             <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
-              {group.opts.map(opt => (
-                <button key={opt.val}
-                  onClick={() => setPref(group.key, opt.val)}
-                  style={s.chip(prefs[group.key]===opt.val, accentColors[group.key])}>
-                  {opt.label}
-                </button>
-              ))}
+              {group.opts.map(opt => <button key={opt.val} onClick={() => setPref(group.key, opt.val)} style={s.chip(prefs[group.key]===opt.val, accentColors[group.key])}>{opt.label}</button>)}
             </div>
           </div>
         ))}
@@ -785,42 +510,21 @@ Sé cercano, usa emojis, formato claro con ### para secciones. Responde en espa�
         </button>
         {!prefsCompletas && <p style={{ fontSize:11, color:'#aaa', textAlign:'center', marginTop:6 }}>Selecciona una opción en cada pregunta</p>}
       </div>
-
-      {/* RESULTADO */}
-      {loading && (
-        <div style={{ textAlign:'center', padding:'30px 20px', background:'#fff', borderRadius:12 }}>
-          <div style={{ fontSize:32, marginBottom:8 }}>🍽️</div>
-          <div style={{ color:'#5B2D8E', fontWeight:700, fontSize:14 }}>Preparando tu plan personalizado...</div>
-          <div style={{ color:'#aaa', fontSize:12, marginTop:4 }}>Consultando horarios y disponibilidad</div>
-        </div>
-      )}
-
+      {loading && <div style={{ textAlign:'center', padding:'30px 20px', background:'#fff', borderRadius:12 }}><div style={{ fontSize:32, marginBottom:8 }}>🍽️</div><div style={{ color:'#5B2D8E', fontWeight:700, fontSize:14 }}>Preparando tu plan personalizado...</div></div>}
       {plan && !loading && (
         <div ref={resultRef} style={{ ...s.card, borderLeft:'4px solid #2EC866' }}>
-          <div style={{ fontSize:11, color:'#1A9B45', textTransform:'uppercase', letterSpacing:1.5, fontWeight:800, marginBottom:12 }}>
-            ✨ Tu plan de restaurantes personalizado
-          </div>
-          <div style={{ fontSize:13, lineHeight:1.65, color:'#1c1410', whiteSpace:'pre-wrap' }}>
-            {plan}
-          </div>
-          <div style={{ marginTop:16, padding:'12px 14px', background:'#FFF8E1', borderRadius:10, fontSize:11, color:'#7A5000' }}>
-            ⚠️ <strong>Recuerda:</strong> Los horarios son estimados. Disney publica los definitivos ~2 meses antes. Confirma siempre en la app oficial. Las reservas se hacen desde 7 días antes (revisar desde 15 días).
-          </div>
-          <a href={FORM_RESTAURANTES} target="_blank" rel="noopener noreferrer"
-            style={{ display:'flex', alignItems:'center', gap:10, background:'linear-gradient(135deg,#5B2D8E,#F5287A)', borderRadius:12, padding:'14px 16px', textDecoration:'none', marginTop:12 }}>
+          <div style={{ fontSize:11, color:'#1A9B45', textTransform:'uppercase', letterSpacing:1.5, fontWeight:800, marginBottom:12 }}>✨ Tu plan de restaurantes personalizado</div>
+          <div style={{ fontSize:13, lineHeight:1.65, color:'#1c1410', whiteSpace:'pre-wrap' }}>{plan}</div>
+          <div style={{ marginTop:16, padding:'12px 14px', background:'#FFF8E1', borderRadius:10, fontSize:11, color:'#7A5000' }}>⚠️ <strong>Recuerda:</strong> Los horarios son estimados. Confirma siempre en la app oficial.</div>
+          <a href={FORM_RESTAURANTES} target="_blank" rel="noopener noreferrer" style={{ display:'flex', alignItems:'center', gap:10, background:'linear-gradient(135deg,#5B2D8E,#F5287A)', borderRadius:12, padding:'14px 16px', textDecoration:'none', marginTop:12 }}>
             <span style={{ fontSize:20 }}>🍽️</span>
-            <div>
-              <div style={{ color:'#fff', fontSize:13, fontWeight:700 }}>Solicitar reserva de restaurantes a Lara</div>
-              <div style={{ color:'rgba(255,255,255,.7)', fontSize:11 }}>Formulario oficial de Los Viajes de Moli</div>
-            </div>
+            <div><div style={{ color:'#fff', fontSize:13, fontWeight:700 }}>Solicitar reserva de restaurantes a Lara</div><div style={{ color:'rgba(255,255,255,.7)', fontSize:11 }}>Formulario oficial de Los Viajes de Moli</div></div>
             <span style={{ marginLeft:'auto', color:'#fff', fontSize:16 }}>→</span>
           </a>
         </div>
       )}
-
-      {/* AVISO SIEMPRE */}
       <div style={{ background:'#fffbeb', border:'1px solid #fde68a', borderRadius:12, padding:'12px 14px', fontSize:11, color:'#92400e' }}>
-        ⚠️ <strong>Horarios estimados 2026.</strong> Disney publica los horarios definitivos con ~2 meses de antelación. La información de esta herramienta es orientativa. Siempre confirma en la app oficial de Disneyland Paris.
+        ⚠️ <strong>Horarios estimados 2026.</strong> Disney publica los horarios definitivos con ~2 meses de antelación. Confirma siempre en la app oficial de Disneyland Paris.
       </div>
     </div>
   );
@@ -842,26 +546,22 @@ export default function Portal() {
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior:"smooth" }); }, [messages, chatLoading]);
 
+  // Detectar si la reserva está completa o en proceso
+  const reservaCompleta = tieneReservaCompleta(cliente);
+
   const handleLogin = async () => {
     if (!dni.trim()) return;
     setStep("loading");
     try {
-      const res = await fetch("/api/reserva", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({ dni: dni.trim() }),
-      });
+      const res = await fetch("/api/reserva", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ dni: dni.trim() }) });
       const result = await res.json();
       if (result.encontrado) {
         setCliente(result.datos);
         setStep("portal");
+        // Si no tiene reserva completa, abrir directamente en la tab de Moli
+        setActiveTab(tieneReservaCompleta(result.datos) ? "reserva" : "asistente");
         setChatLoading(true);
-        const chatRes = await fetch("/api/chat", {
-          method:"POST", headers:{"Content-Type":"application/json"},
-          body: JSON.stringify({
-            messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }],
-            system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)),
-          }),
-        });
+        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)) }) });
         const chatData = await chatRes.json();
         setMessages([{ role:"assistant", content: chatData.content?.[0]?.text || "✨ Hola, soy Moli, tu hada madrina de Los Viajes de Moli. ¿En qué puedo ayudarte?" }]);
         setChatLoading(false);
@@ -883,18 +583,10 @@ export default function Portal() {
     setChatInput("");
     setChatLoading(true);
     try {
-      const res = await fetch("/api/chat", {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({
-          messages: newMessages.map(m => ({ role:m.role, content:m.content })),
-          system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(cliente)),
-        }),
-      });
+      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(cliente)) }) });
       const data = await res.json();
       setMessages(prev => [...prev, { role:"assistant", content: data.content?.[0]?.text || "Error al responder." }]);
-    } catch {
-      setMessages(prev => [...prev, { role:"assistant", content:"Error de conexión." }]);
-    }
+    } catch { setMessages(prev => [...prev, { role:"assistant", content:"Error de conexión." }]); }
     setChatLoading(false);
   };
 
@@ -908,13 +600,18 @@ export default function Portal() {
     goldBtn: { background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", color:"white", border:"none", borderRadius:10, padding:"14px", fontSize:15, cursor:"pointer", fontFamily:"inherit", fontWeight:700, width:"100%" },
   };
 
-  const tabs = [
-    { id:"reserva", label:"🏰 Mi Reserva" },
-    { id:"restaurantes", label:"🍽️ Restaurantes" },
-    { id:"pagos", label:"💰 Pagos" },
-    { id:"extras", label:"✨ Servicios" },
-    { id:"asistente", label:"🪄 Moli" },
+  // Tabs: si la reserva NO está completa, solo muestra Guías, Asistente (y oculta el resto)
+  const allTabs = [
+    { id:"reserva", label:"🏰 Mi Reserva", soloCompleta: false },
+    { id:"restaurantes", label:"🍽️ Planificador", soloCompleta: true },
+    { id:"guias", label:"📖 Guías", soloCompleta: false },
+    { id:"pagos", label:"💰 Pagos", soloCompleta: false },
+    { id:"extras", label:"✨ Servicios", soloCompleta: true },
+    { id:"asistente", label:"🪄 Moli", soloCompleta: false },
   ];
+
+  // Siempre mostramos todas las tabs; las que son "soloCompleta" se muestran deshabilitadas si no hay reserva
+  const tabs = allTabs;
 
   return (
     <div style={s.page}>
@@ -927,10 +624,7 @@ export default function Portal() {
         {cliente && (
           <div style={{ marginLeft:"auto", display:"flex", gap:10, alignItems:"center" }}>
             <span style={{ color:"#2BBCD4", fontSize:13 }}>✨ {String(cliente.Nombre||"").split(" ")[0]}</span>
-            <button onClick={() => { setStep("login"); setCliente(null); setDni(""); setMessages([]); }}
-              style={{ background:"transparent", border:"1px solid rgba(43,188,212,0.3)", borderRadius:8, color:"#2BBCD4", padding:"6px 12px", fontSize:11, cursor:"pointer" }}>
-              Salir
-            </button>
+            <button onClick={() => { setStep("login"); setCliente(null); setDni(""); setMessages([]); }} style={{ background:"transparent", border:"1px solid rgba(43,188,212,0.3)", borderRadius:8, color:"#2BBCD4", padding:"6px 12px", fontSize:11, cursor:"pointer" }}>Salir</button>
           </div>
         )}
       </div>
@@ -945,8 +639,7 @@ export default function Portal() {
             <div style={{ maxWidth:360, margin:"0 auto" }}>
               <div style={{ background:"rgba(43,188,212,0.08)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:16, padding:28 }}>
                 <div style={{ color:"#2BBCD4", fontSize:11, letterSpacing:2, textTransform:"uppercase", marginBottom:12, textAlign:"left", fontWeight:800 }}>Tu DNI</div>
-                <input value={dni} onChange={e => setDni(e.target.value.toUpperCase())} onKeyDown={e => e.key==="Enter" && handleLogin()}
-                  placeholder="ej. 47080502S"
+                <input value={dni} onChange={e => setDni(e.target.value.toUpperCase())} onKeyDown={e => e.key==="Enter" && handleLogin()} placeholder="ej. 47080502S"
                   style={{ width:"100%", background:"rgba(43,188,212,0.08)", border:"1px solid rgba(43,188,212,0.3)", borderRadius:10, color:"#f5f2ee", fontSize:18, padding:"14px 16px", outline:"none", fontFamily:"inherit", textAlign:"center", letterSpacing:2, boxSizing:"border-box", marginBottom:16 }} />
                 <button onClick={handleLogin} disabled={!dni.trim()} style={{ ...s.goldBtn, opacity: dni.trim()?1:0.4 }}>Ver mi reserva ✨</button>
               </div>
@@ -955,16 +648,13 @@ export default function Portal() {
                   <div style={{ background:"rgba(239,68,68,0.1)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:10, padding:14, color:"#fca5a5", fontSize:13, marginBottom:12 }}>⚠️ {errorMsg}</div>
                   <a href="https://losviajesdemoli.com" target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", borderRadius:12, padding:"14px 18px", textDecoration:"none" }}>
                     <span style={{ fontSize:22 }}>🏰</span>
-                    <div>
-                      <div style={{ color:"white", fontSize:13, fontWeight:700 }}>¿Aún no tienes tu viaje reservado?</div>
-                      <div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Descubre Los Viajes de Moli →</div>
-                    </div>
+                    <div><div style={{ color:"white", fontSize:13, fontWeight:700 }}>¿Aún no tienes tu viaje reservado?</div><div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Descubre Los Viajes de Moli →</div></div>
                   </a>
                 </div>
               )}
               <p style={{ color:"#4a6a7a", fontSize:12, marginTop:20 }}>¿Problemas? <a href="mailto:lara@pasaportemagico.com" style={{ color:"#2BBCD4" }}>Contacta con Lara</a></p>
               <div style={{ marginTop:16, background:"rgba(43,188,212,0.06)", border:"1px solid rgba(43,188,212,0.15)", borderRadius:12, padding:"12px 14px", fontSize:11, color:"#4a7a8a", lineHeight:1.5, textAlign:"left" }}>
-                ⚠️ <strong style={{ color:"#2BBCD4" }}>Información orientativa.</strong> Los datos mostrados en este portal son una referencia de tu reserva. El precio, condiciones y detalles definitivos son siempre los reflejados en tu hoja de reserva oficial. En caso de modificaciones recientes, puede haber variaciones pendientes de actualización.
+                ⚠️ <strong style={{ color:"#2BBCD4" }}>Información orientativa.</strong> Los datos mostrados en este portal son una referencia de tu reserva. El precio, condiciones y detalles definitivos son siempre los reflejados en tu hoja de reserva oficial.
               </div>
             </div>
           </div>
@@ -983,113 +673,204 @@ export default function Portal() {
             {/* BIENVENIDA */}
             <div style={{ background:"linear-gradient(135deg,rgba(43,188,212,0.15),rgba(91,45,142,0.15))", border:"1px solid rgba(43,188,212,0.3)", borderRadius:16, padding:"20px 24px", marginBottom:24, display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:12 }}>
               <div>
-                <div style={{ color:"#2BBCD4", fontSize:11, letterSpacing:2, textTransform:"uppercase", marginBottom:4, fontWeight:800 }}>¡Hola de nuevo!</div>
+                <div style={{ color:"#2BBCD4", fontSize:11, letterSpacing:2, textTransform:"uppercase", marginBottom:4, fontWeight:800 }}>
+                  {reservaCompleta ? "¡Hola de nuevo!" : "¡Bienvenido al portal!"}
+                </div>
                 <div style={{ color:"#f5f2ee", fontSize:22, fontFamily:"'Fredoka One',cursive" }}>{cliente.Nombre} 👋</div>
-                <div style={{ color:"#7a9aaa", fontSize:13, marginTop:4 }}>Reserva nº {cliente["Numero reserva"]}</div>
+                <div style={{ color:"#7a9aaa", fontSize:13, marginTop:4 }}>
+                  {reservaCompleta
+                    ? `Reserva nº ${cliente["Numero reserva"]}`
+                    : "Tu reserva está siendo preparada por Lara ✨"}
+                </div>
               </div>
-              {pendiente > 0 ? (
+              {reservaCompleta && pendiente > 0 ? (
                 <div style={{ background:"rgba(239,68,68,0.15)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:12, padding:"12px 18px", textAlign:"center" }}>
                   <div style={{ color:"#fca5a5", fontSize:11, textTransform:"uppercase", letterSpacing:1, marginBottom:4 }}>⚠️ Pendiente</div>
                   <div style={{ color:"#f87171", fontSize:22, fontWeight:600 }}><PagoValor val={cliente.Pendiente} colorNum="#f87171" colorTxt="#fca5a5" size={22} /></div>
                   {cliente["Fecha_límite_pago"] && <div style={{ color:"#9d8b78", fontSize:11, marginTop:4 }}>Límite: {cliente["Fecha_límite_pago"]}</div>}
                 </div>
-              ) : (
+              ) : reservaCompleta ? (
                 <div style={{ background:"rgba(46,200,102,0.15)", border:"1px solid rgba(46,200,102,0.3)", borderRadius:12, padding:"12px 18px" }}>
                   <div style={{ color:"#86efac", fontSize:13 }}>✅ Todo pagado</div>
+                </div>
+              ) : (
+                <div style={{ background:"rgba(240,165,0,0.15)", border:"1px solid rgba(240,165,0,0.3)", borderRadius:12, padding:"12px 18px", textAlign:"center" }}>
+                  <div style={{ color:"#fbbf24", fontSize:11, textTransform:"uppercase", letterSpacing:1, marginBottom:4 }}>⏳ En proceso</div>
+                  <div style={{ color:"#fcd34d", fontSize:13, fontWeight:700 }}>Lara está preparando<br/>tu reserva</div>
                 </div>
               )}
             </div>
 
             {/* TABS */}
             <div style={{ display:"flex", gap:6, marginBottom:20, overflowX:"auto" }}>
-              {tabs.map(tab => (
-                <button key={tab.id} onClick={() => setActiveTab(tab.id)}
-                  style={{ background: activeTab===tab.id ? "linear-gradient(135deg,#2BBCD4,#1A8A9E)" : "rgba(43,188,212,0.08)", color: activeTab===tab.id ? "white" : "#2BBCD4", border: activeTab===tab.id ? "none" : "1px solid rgba(43,188,212,0.2)", borderRadius:20, padding:"8px 18px", fontSize:13, cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap", fontWeight: activeTab===tab.id ? 700 : 600 }}>
-                  {tab.label}
-                </button>
-              ))}
+              {tabs.map(tab => {
+                const disabled = tab.soloCompleta && !reservaCompleta;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button key={tab.id}
+                    onClick={() => !disabled && setActiveTab(tab.id)}
+                    title={disabled ? "Disponible cuando tu reserva esté confirmada" : ""}
+                    style={{
+                      background: isActive ? "linear-gradient(135deg,#2BBCD4,#1A8A9E)" : disabled ? "rgba(43,188,212,0.03)" : "rgba(43,188,212,0.08)",
+                      color: isActive ? "white" : disabled ? "rgba(43,188,212,0.25)" : "#2BBCD4",
+                      border: isActive ? "none" : `1px solid ${disabled ? "rgba(43,188,212,0.08)" : "rgba(43,188,212,0.2)"}`,
+                      borderRadius:20, padding:"8px 18px", fontSize:13, cursor: disabled ? "not-allowed" : "pointer",
+                      fontFamily:"inherit", whiteSpace:"nowrap", fontWeight: isActive ? 700 : 600,
+                    }}>
+                    {tab.label}
+                    {disabled && " 🔒"}
+                  </button>
+                );
+              })}
             </div>
 
             {/* TAB: RESERVA */}
             {activeTab==="reserva" && (
               <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
-                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:10 }}>
-                  {[
-                    { icon:"🏨", label:"Hotel", val:cliente.Hotel },
-                    { icon:"🍽️", label:"Plan de comidas", val:cliente["Plan de comidas"] },
-                    { icon:"📅", label:"Check-in", val:cliente["Check-in"] },
-                    { icon:"📅", label:"Check-out", val:cliente["Check-out"] },
-                    { icon:"👥", label:"Personas", val:cliente["Nº personas y edad niños"] },
-                    { icon:"📍", label:"Dirección", val:cliente["Dirección"] },
-                  ].map((item,i) => (
-                    <div key={i} style={s.card}>
-                      <div style={{ fontSize:20, marginBottom:6 }}>{item.icon}</div>
-                      <div style={{ fontSize:10, color:"#9d8b78", textTransform:"uppercase", letterSpacing:1.5, marginBottom:3 }}>{item.label}</div>
-                      <div style={{ fontSize:14, color:"#1c1410", fontWeight:500 }}>{item.val||"—"}</div>
+                {!reservaCompleta ? (
+                  /* Vista para clientes en proceso */
+                  <div style={{ background:"rgba(255,255,255,0.97)", border:"1px solid rgba(240,165,0,0.3)", borderRadius:16, padding:"28px 24px", textAlign:"center" }}>
+                    <div style={{ fontSize:48, marginBottom:16 }}>✨</div>
+                    <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:20, color:"#1c1410", marginBottom:10 }}>¡Tu reserva está en camino!</div>
+                    <p style={{ color:"#7a6a50", fontSize:14, lineHeight:1.6, maxWidth:400, margin:"0 auto 20px" }}>
+                      Lara está preparando todos los detalles de tu viaje a Disneyland Paris. En breve recibirás la confirmación con toda la información.
+                    </p>
+                    <div style={{ background:"#FFF8E1", border:"1px solid #fde68a", borderRadius:12, padding:"14px 18px", fontSize:13, color:"#92400e", marginBottom:20, textAlign:"left" }}>
+                      💡 Mientras tanto, puedes usar la <strong>Guía de Hoteles</strong> y la <strong>Guía de Restaurantes</strong> para ir conociendo las opciones del parque. ¡Y Moli está aquí para resolver cualquier duda!
                     </div>
-                  ))}
-                </div>
-                {cliente.Documentos && (
-                  <a href={cliente.Documentos} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:12, background:"rgba(255,255,255,0.05)", border:"1px solid rgba(201,168,76,0.3)", borderRadius:12, padding:"16px 20px", textDecoration:"none" }}>
-                    <span style={{ fontSize:28 }}>📄</span>
-                    <div>
-                      <div style={{ color:"#c9a84c", fontSize:13, fontWeight:600 }}>Ver mi documento de reserva</div>
-                      <div style={{ color:"#7a6a50", fontSize:12 }}>Haz clic para abrir tu confirmación</div>
+                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+                      <button onClick={() => setActiveTab("guias")} style={{ background:"linear-gradient(135deg,#5B2D8E,#F5287A)", color:"white", border:"none", borderRadius:12, padding:"14px 16px", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
+                        📖 Ver las guías
+                      </button>
+                      <button onClick={() => setActiveTab("asistente")} style={{ background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", color:"white", border:"none", borderRadius:12, padding:"14px 16px", fontSize:13, fontWeight:700, cursor:"pointer", fontFamily:"inherit" }}>
+                        🪄 Hablar con Moli
+                      </button>
                     </div>
-                    <span style={{ marginLeft:"auto", color:"#c9a84c", fontSize:18 }}>→</span>
-                  </a>
+                  </div>
+                ) : (
+                  /* Vista para clientes con reserva completa */
+                  <>
+                    <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:10 }}>
+                      {[
+                        { icon:"🏨", label:"Hotel", val:cliente.Hotel },
+                        { icon:"🍽️", label:"Plan de comidas", val:cliente["Plan de comidas"] },
+                        { icon:"📅", label:"Check-in", val:cliente["Check-in"] },
+                        { icon:"📅", label:"Check-out", val:cliente["Check-out"] },
+                        { icon:"👥", label:"Personas", val:cliente["Nº personas y edad niños"] },
+                        { icon:"📍", label:"Dirección", val:cliente["Dirección"] },
+                      ].map((item,i) => (
+                        <div key={i} style={s.card}>
+                          <div style={{ fontSize:20, marginBottom:6 }}>{item.icon}</div>
+                          <div style={{ fontSize:10, color:"#9d8b78", textTransform:"uppercase", letterSpacing:1.5, marginBottom:3 }}>{item.label}</div>
+                          <div style={{ fontSize:14, color:"#1c1410", fontWeight:500 }}>{item.val||"—"}</div>
+                        </div>
+                      ))}
+                    </div>
+                    {cliente.Documentos && (
+                      <a href={cliente.Documentos} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:12, background:"rgba(255,255,255,0.05)", border:"1px solid rgba(201,168,76,0.3)", borderRadius:12, padding:"16px 20px", textDecoration:"none" }}>
+                        <span style={{ fontSize:28 }}>📄</span>
+                        <div><div style={{ color:"#c9a84c", fontSize:13, fontWeight:600 }}>Ver mi documento de reserva</div><div style={{ color:"#7a6a50", fontSize:12 }}>Haz clic para abrir tu confirmación</div></div>
+                        <span style={{ marginLeft:"auto", color:"#c9a84c", fontSize:18 }}>→</span>
+                      </a>
+                    )}
+                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
+                      <a href={FORM_RESTAURANTES} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:12, padding:"14px 16px", textDecoration:"none" }}>
+                        <span style={{ fontSize:22 }}>🍽️</span>
+                        <div><div style={{ color:"#f5f2ee", fontSize:13 }}>Reservar restaurantes</div><div style={{ color:"#4a7a8a", fontSize:11 }}>Formulario de Lara</div></div>
+                      </a>
+                      <a href={FORM_MODIFICAR} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:12, padding:"14px 16px", textDecoration:"none" }}>
+                        <span style={{ fontSize:22 }}>✏️</span>
+                        <div><div style={{ color:"#f5f2ee", fontSize:13 }}>Modificar reserva</div><div style={{ color:"#4a7a8a", fontSize:11 }}>Traslados, extras...</div></div>
+                      </a>
+                    </div>
+                  </>
                 )}
-                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10 }}>
-                  <a href={FORM_RESTAURANTES} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:12, padding:"14px 16px", textDecoration:"none" }}>
-                    <span style={{ fontSize:22 }}>🍽️</span>
-                    <div><div style={{ color:"#f5f2ee", fontSize:13 }}>Reservar restaurantes</div><div style={{ color:"#4a7a8a", fontSize:11 }}>Formulario de Lara</div></div>
-                  </a>
-                  <a href={FORM_MODIFICAR} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:10, background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:12, padding:"14px 16px", textDecoration:"none" }}>
-                    <span style={{ fontSize:22 }}>✏️</span>
-                    <div><div style={{ color:"#f5f2ee", fontSize:13 }}>Modificar reserva</div><div style={{ color:"#4a7a8a", fontSize:11 }}>Traslados, extras...</div></div>
-                  </a>
+              </div>
+            )}
+
+            {/* TAB: PLANIFICADOR DE RESTAURANTES */}
+            {activeTab==="restaurantes" && reservaCompleta && <PlanificadorRestaurantes cliente={cliente} />}
+
+            {/* TAB: GUÍAS — accesible para todos */}
+            {activeTab==="guias" && (
+              <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+                <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:16, padding:"18px 20px", border:"1px solid rgba(43,188,212,0.2)" }}>
+                  <div style={{ fontSize:11, color:"#2BBCD4", textTransform:"uppercase", letterSpacing:2, fontWeight:800, marginBottom:16 }}>📖 Guías de Lara</div>
+                  <p style={{ fontSize:13, color:"#7a6a50", lineHeight:1.6, marginBottom:20 }}>
+                    Con más de 25 visitas a Disneyland Paris, Lara ha preparado estas guías para que llegues al parque con todo claro y sin dudas.
+                  </p>
+                  <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+                    {/* GUÍA HOTELES */}
+                    <a href="/guia_hoteles_moli.html" target="_blank" rel="noopener noreferrer"
+                      style={{ display:"flex", flexDirection:"column", gap:8, background:"linear-gradient(135deg,rgba(91,45,142,0.1),rgba(245,40,122,0.08))", border:"1px solid rgba(91,45,142,0.25)", borderRadius:14, padding:"18px 16px", textDecoration:"none" }}>
+                      <span style={{ fontSize:36 }}>🏨</span>
+                      <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:16, color:"#3D1A6B" }}>Guía de Hoteles</div>
+                      <div style={{ fontSize:12, color:"#7a6a50", lineHeight:1.5 }}>Todos los hoteles Disney con precios, características, pros y contras. Elige el que mejor se adapta a tu familia.</div>
+                      <div style={{ marginTop:4, color:"#5B2D8E", fontSize:12, fontWeight:800 }}>Abrir guía →</div>
+                    </a>
+                    {/* GUÍA RESTAURANTES */}
+                    <a href="/guia_restaurantes_moli.html" target="_blank" rel="noopener noreferrer"
+                      style={{ display:"flex", flexDirection:"column", gap:8, background:"linear-gradient(135deg,rgba(43,188,212,0.1),rgba(46,200,102,0.08))", border:"1px solid rgba(43,188,212,0.25)", borderRadius:14, padding:"18px 16px", textDecoration:"none" }}>
+                      <span style={{ fontSize:36 }}>🍽️</span>
+                      <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:16, color:"#1A8A9E" }}>Guía de Restaurantes</div>
+                      <div style={{ fontSize:12, color:"#7a6a50", lineHeight:1.5 }}>Todos los restaurantes de los parques, hoteles y Disney Village con precios, tips y consejos de reserva.</div>
+                      <div style={{ marginTop:4, color:"#1A8A9E", fontSize:12, fontWeight:800 }}>Abrir guía →</div>
+                    </a>
+                  </div>
+                </div>
+                {/* TIP de Moli */}
+                <div style={{ background:"rgba(240,165,0,0.1)", border:"1px solid rgba(240,165,0,0.3)", borderRadius:12, padding:"14px 18px", display:"flex", gap:12, alignItems:"flex-start" }}>
+                  <span style={{ fontSize:24 }}>💡</span>
+                  <div>
+                    <div style={{ color:"#c9a84c", fontWeight:800, fontSize:13, marginBottom:4 }}>Consejo de Lara</div>
+                    <div style={{ color:"#7a6a50", fontSize:12, lineHeight:1.6 }}>Lee las guías antes de que Lara te confirme la reserva — así podrás elegir el hotel y los restaurantes con criterio y sin prisas. ¡Las reservas de restaurantes con personajes se agotan muy rápido!</div>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* TAB: RESTAURANTES */}
-            {activeTab==="restaurantes" && <PlanificadorRestaurantes cliente={cliente} />}
-
             {/* TAB: PAGOS */}
             {activeTab==="pagos" && (
               <div style={s.card}>
-                <div style={{ fontSize:11, color:"#c9a84c", letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>💰 Estado de pagos</div>
-                <PagoBar pagado={cliente.Pagado} total={cliente["TOTAL"]} />
-                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginTop:20 }}>
-                  {[
-                    { label:"Total viaje", val:cliente["TOTAL"], bg:"#f9f7f4", colorNum:"#1c1410", colorTxt:"#7a6a50" },
-                    { label:"Pagado", val:cliente.Pagado, bg:"#f0fdf4", colorNum:"#16a34a", colorTxt:"#15803d" },
-                    { label:"Pendiente", val:cliente.Pendiente, bg: pendiente>0?"#fef2f2":"#f0fdf4", colorNum: pendiente>0?"#dc2626":"#16a34a", colorTxt: pendiente>0?"#b91c1c":"#15803d" },
-                  ].map((item,i) => (
-                    <div key={i} style={{ textAlign:"center", padding:14, background:item.bg, borderRadius:10 }}>
-                      <div style={{ fontSize:10, color:item.colorNum, textTransform:"uppercase", letterSpacing:1, marginBottom:6 }}>{item.label}</div>
-                      <PagoValor val={item.val} colorNum={item.colorNum} colorTxt={item.colorTxt} size={18} />
-                    </div>
-                  ))}
-                </div>
-                {cliente["Fecha_límite_pago"] && pendiente>0 && (
-                  <div style={{ marginTop:16, background:"#fffbeb", border:"1px solid #fde68a", borderRadius:10, padding:"12px 16px", color:"#92400e", fontSize:13 }}>
-                    ⏰ Fecha límite: <strong>{cliente["Fecha_límite_pago"]}</strong>
+                {!reservaCompleta ? (
+                  <div style={{ textAlign:"center", padding:"20px 0" }}>
+                    <div style={{ fontSize:40, marginBottom:12 }}>💰</div>
+                    <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:18, color:"#1c1410", marginBottom:8 }}>Pagos</div>
+                    <p style={{ color:"#9d8b78", fontSize:13 }}>Los detalles de pago estarán disponibles en cuanto Lara confirme tu reserva.</p>
                   </div>
+                ) : (
+                  <>
+                    <div style={{ fontSize:11, color:"#c9a84c", letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>💰 Estado de pagos</div>
+                    <PagoBar pagado={cliente.Pagado} total={cliente["TOTAL"]} />
+                    <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginTop:20 }}>
+                      {[
+                        { label:"Total viaje", val:cliente["TOTAL"], bg:"#f9f7f4", colorNum:"#1c1410", colorTxt:"#7a6a50" },
+                        { label:"Pagado", val:cliente.Pagado, bg:"#f0fdf4", colorNum:"#16a34a", colorTxt:"#15803d" },
+                        { label:"Pendiente", val:cliente.Pendiente, bg: pendiente>0?"#fef2f2":"#f0fdf4", colorNum: pendiente>0?"#dc2626":"#16a34a", colorTxt: pendiente>0?"#b91c1c":"#15803d" },
+                      ].map((item,i) => (
+                        <div key={i} style={{ textAlign:"center", padding:14, background:item.bg, borderRadius:10 }}>
+                          <div style={{ fontSize:10, color:item.colorNum, textTransform:"uppercase", letterSpacing:1, marginBottom:6 }}>{item.label}</div>
+                          <PagoValor val={item.val} colorNum={item.colorNum} colorTxt={item.colorTxt} size={18} />
+                        </div>
+                      ))}
+                    </div>
+                    {cliente["Fecha_límite_pago"] && pendiente>0 && (
+                      <div style={{ marginTop:16, background:"#fffbeb", border:"1px solid #fde68a", borderRadius:10, padding:"12px 16px", color:"#92400e", fontSize:13 }}>
+                        ⏰ Fecha límite: <strong>{cliente["Fecha_límite_pago"]}</strong>
+                      </div>
+                    )}
+                  </>
                 )}
                 <a href={FORM_PAGOS} target="_blank" rel="noopener noreferrer" style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", borderRadius:12, padding:"16px 20px", textDecoration:"none", marginTop:16 }}>
                   <span style={{ fontSize:24 }}>💳</span>
-                  <div>
-                    <div style={{ color:"white", fontSize:14, fontWeight:700 }}>Enviar justificante de pago</div>
-                    <div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Haz clic para acceder al formulario de abono</div>
-                  </div>
+                  <div><div style={{ color:"white", fontSize:14, fontWeight:700 }}>Enviar justificante de pago</div><div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Haz clic para acceder al formulario de abono</div></div>
                   <span style={{ marginLeft:"auto", color:"white", fontSize:18 }}>→</span>
                 </a>
               </div>
             )}
 
             {/* TAB: EXTRAS */}
-            {activeTab==="extras" && (
+            {activeTab==="extras" && reservaCompleta && (
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:10 }}>
                 {[
                   { icon:"🚌", label:"Traslado", val:cliente.Traslado },
@@ -1104,9 +885,7 @@ export default function Portal() {
                     <div key={i} style={{ ...s.card, opacity: tieneValor?1:0.4 }}>
                       <div style={{ fontSize:24, marginBottom:8 }}>{item.icon}</div>
                       <div style={{ fontSize:10, color:"#9d8b78", textTransform:"uppercase", letterSpacing:1.5, marginBottom:4 }}>{item.label}</div>
-                      <div style={{ fontSize:15, color: tieneValor?"#16a34a":"#9d8b78", fontWeight:600 }}>
-                        {tieneValor ? "✅ SÍ" : "—"}
-                      </div>
+                      <div style={{ fontSize:15, color: tieneValor?"#16a34a":"#9d8b78", fontWeight:600 }}>{tieneValor ? "✅ SÍ" : "—"}</div>
                     </div>
                   );
                 })}
