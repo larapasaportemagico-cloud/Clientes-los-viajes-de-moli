@@ -1,1 +1,1057 @@
+<!DOCTYPE html>
+<!-- saved from url=(0084)file:///C:/Users/airan/Downloads/Guia_Restaurantes_Disney_Paris_Moli_v4.html#village -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Restaurantes Disney® Paris — Los Viajes de Moli</title>
+<link href="./Guía de Restaurantes Disney® Paris — Los Viajes de Moli_files/css2" rel="stylesheet">
+<style>
+:root {
+  --purple:  #5B2D8E;
+  --purple-d:#3D1A6B;
+  --purple-l:#F0E8FA;
+  --pink:    #F5287A;
+  --pink-d:  #C01060;
+  --pink-l:  #FEE8F3;
+  --teal:    #2BBCD4;
+  --teal-d:  #1A8A9E;
+  --teal-l:  #E4F8FB;
+  --green:   #2EC866;
+  --green-d: #1A9B45;
+  --green-l: #E6FAF0;
+  --gold:    #F0A500;
+  --gold-l:  #FFF8E1;
+  --red:     #E53935;
+  --red-l:   #FFEBEE;
+  --dark:    #1A1A2E;
+  --gray:    #F7F7F9;
+  --white:   #FFFFFF;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family:'Nunito',sans-serif; background:var(--gray); color:var(--dark); }
+
+/* PORTADA */
+.cover {
+  background: linear-gradient(135deg, var(--purple-d) 0%, var(--pink-d) 60%, var(--pink) 100%);
+  min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; padding:40px 20px; position:relative; overflow:hidden;
+}
+.cover::before {
+  content:'🍽️🏰🍽️';
+  position:absolute; top:20px; left:0; right:0;
+  font-size:2.5rem; opacity:.12; letter-spacing:40px;
+}
+.cover-logo {
+  background:rgba(255,255,255,.15); border:2px solid rgba(255,255,255,.3);
+  border-radius:50px; padding:8px 28px; color:white;
+  font-size:.85rem; font-weight:800; letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:24px;
+}
+.cover h1 {
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2.4rem,7vw,5rem); color:white;
+  line-height:1.05; text-shadow:0 4px 20px rgba(0,0,0,.3); margin-bottom:12px;
+}
+.cover h1 span { color:var(--gold); }
+.cover .subtitle { color:rgba(255,255,255,.85); font-size:1.1rem; font-weight:600; margin-bottom:40px; }
+
+/* ÍNDICE PORTADA */
+.index-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:10px; width:100%; max-width:900px; margin-bottom:36px;
+}
+.index-card {
+  background:rgba(255,255,255,.12); backdrop-filter:blur(10px);
+  border:1.5px solid rgba(255,255,255,.25); border-radius:16px;
+  padding:14px 16px; text-align:left; text-decoration:none;
+  transition:transform .2s;
+}
+.index-card:hover { transform:translateY(-4px); background:rgba(255,255,255,.2); }
+.index-card .ic-emoji { font-size:1.5rem; margin-bottom:4px; display:block; }
+.index-card .ic-name { color:white; font-weight:800; font-size:.88rem; line-height:1.2; display:block; }
+.index-card .ic-sub  { color:rgba(255,255,255,.7); font-size:.75rem; display:block; margin-top:2px; }
+.cover-note { color:rgba(255,255,255,.45); font-size:.75rem; font-style:italic; }
+
+/* SECCIÓN */
+.section { max-width:980px; margin:0 auto 60px; padding:0 16px; }
+
+/* HERO */
+.zone-hero {
+  border-radius:28px; overflow:hidden; position:relative;
+  min-height:160px; display:flex; align-items:flex-end;
+  margin-top:48px; box-shadow:0 12px 40px rgba(0,0,0,.2);
+}
+.zone-hero-bg { position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(.55); }
+.zone-hero-content { position:relative; z-index:2; padding:24px 30px; width:100%; }
+.zone-hero-emoji { font-size:2.4rem; display:block; margin-bottom:4px; }
+.zone-hero h2 { font-family:'Fredoka One',cursive; font-size:clamp(1.5rem,4vw,2.2rem); color:white; text-shadow:0 2px 10px rgba(0,0,0,.4); }
+.zone-hero .tagline { color:rgba(255,255,255,.8); font-size:.9rem; font-weight:600; margin-top:4px; display:block; }
+
+/* CHIPS */
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 6px; }
+.chip {
+  display:flex; align-items:center; gap:6px;
+  padding:5px 14px; border-radius:50px;
+  font-size:.78rem; font-weight:700; border:2px solid;
+}
+
+/* GRID */
+.cards-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px; margin-top:16px;
+}
+.card { background:white; border-radius:20px; padding:20px; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+.card.full { grid-column:1/-1; }
+.card-title {
+  font-size:.8rem; font-weight:800; text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
+.card-title .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+/* TABLA RESTAURANTE */
+.rest-table { width:100%; border-collapse:collapse; font-size:.82rem; margin-top:4px; }
+.rest-table th {
+  background:var(--purple-d); color:white;
+  padding:8px 10px; text-align:left; font-size:.73rem; font-weight:800;
+}
+.rest-table th:first-child { border-radius:8px 0 0 0; }
+.rest-table th:last-child  { border-radius:0 8px 0 0; }
+.rest-table td { padding:9px 10px; border-bottom:1px solid #f0f0f0; vertical-align:top; line-height:1.4; }
+.rest-table tr:nth-child(even) td { background:#fafafa; }
+.rest-table tr:hover td { background:var(--purple-l); }
+.rest-table .rname { font-weight:800; font-size:.84rem; }
+.rest-table .rsub  { color:#777; font-size:.75rem; margin-top:1px; }
+
+/* BADGE */
+.badge {
+  display:inline-flex; align-items:center; gap:3px;
+  padding:2px 9px; border-radius:50px;
+  font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.4px;
+  white-space:nowrap;
+}
+.badge-mesa    { background:var(--purple-l); color:var(--purple-d); }
+.badge-buffet  { background:var(--pink-l); color:var(--pink-d); }
+.badge-rapida  { background:var(--teal-l); color:var(--teal-d); }
+.badge-snack   { background:var(--green-l); color:var(--green-d); }
+.badge-pers    { background:var(--gold-l); color:#7A5000; }
+
+/* PRECIO */
+.price { font-weight:800; }
+.price-€     { color:var(--green-d); }
+.price-€€    { color:var(--gold); }
+.price-€€€   { color:var(--orange, #E65100); }
+.price-€€€€  { color:var(--red); }
+
+/* BOCADILLOS */
+.speech-bubble {
+  position:relative; border-radius:20px;
+  padding:16px 20px; margin:16px 0;
+  font-size:.88rem; line-height:1.5; font-weight:600;
+}
+.speech-bubble::after {
+  content:''; position:absolute;
+  bottom:-13px; left:30px;
+  border:13px solid transparent; border-top-width:0; border-bottom-width:13px;
+}
+.sb-title { font-family:'Fredoka One',cursive; font-size:1rem; display:block; margin-bottom:5px; }
+.sb-purple { background:var(--purple-l); border:2px solid var(--purple); color:var(--purple-d); }
+.sb-purple::after { border-bottom-color:var(--purple-l); }
+.sb-pink   { background:var(--pink-l); border:2px solid var(--pink-d); color:var(--pink-d); }
+.sb-pink::after { border-bottom-color:var(--pink-l); }
+.sb-teal   { background:var(--teal-l); border:2px solid var(--teal-d); color:var(--teal-d); }
+.sb-teal::after { border-bottom-color:var(--teal-l); }
+.sb-green  { background:var(--green-l); border:2px solid var(--green-d); color:var(--green-d); }
+.sb-green::after { border-bottom-color:var(--green-l); }
+.sb-gold   { background:var(--gold-l); border:2px solid var(--gold); color:#7A5000; }
+.sb-gold::after { border-bottom-color:var(--gold-l); }
+.sb-red    { background:var(--red-l); border:2px solid var(--red); color:var(--red); }
+.sb-red::after { border-bottom-color:var(--red-l); }
+
+/* ALERTA */
+.alert {
+  background:var(--red-l); border-left:5px solid var(--red);
+  border-radius:0 14px 14px 0; padding:12px 16px;
+  font-size:.85rem; font-weight:700; color:var(--red);
+  margin:12px 0; display:flex; align-items:flex-start; gap:10px;
+}
+
+/* PLACEHOLDER IMG */
+.img-ph {
+  width:100%; height:130px; border-radius:14px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:3rem; margin-bottom:12px;
+}
+
+/* RANKING CARD */
+.ranking {
+  display:flex; flex-direction:column; gap:8px; margin-top:8px;
+}
+.rank-item {
+  display:flex; align-items:flex-start; gap:12px;
+  padding:10px 14px; border-radius:14px; background:var(--gray);
+}
+.rank-num {
+  font-family:'Fredoka One',cursive; font-size:1.3rem;
+  min-width:32px; text-align:center; line-height:1;
+}
+.rank-info { flex:1; }
+.rank-name { font-weight:800; font-size:.88rem; }
+.rank-why  { font-size:.78rem; color:#555; margin-top:2px; }
+
+/* PIE */
+footer {
+  background:var(--purple-d); color:rgba(255,255,255,.55);
+  text-align:center; padding:24px; font-size:.8rem;
+}
+footer strong { color:white; font-family:'Fredoka One',cursive; font-size:1.1rem; display:block; margin-bottom:4px; }
+
+@media(max-width:600px) {
+  .cards-grid { grid-template-columns:1fr; }
+  .index-grid { grid-template-columns:repeat(2,1fr); }
+}
+/* STICKY NAV */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--purple-d);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.3);
+}
+.sticky-nav a {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 12px;
+  border-radius: 50px;
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.2);
+  color: white;
+  font-family: 'Nunito', sans-serif;
+  font-size: .78rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .15s;
+}
+.sticky-nav a:hover { background: var(--pink); border-color: var(--pink); }
+@media(max-width:600px) {
+  .sticky-nav { gap: 3px; padding: 6px 8px; }
+  .sticky-nav a { font-size: .72rem; padding: 4px 9px; }
+}
+@media print { .sticky-nav { display: none; } .cover { min-height:auto; break-after:page; } .section { break-before:page; margin-top:0; } body { background:white; } }
+</style>
+</head>
+<body>
+
+<!-- ══ MENÚ STICKY ══════════════════════════════════════════════════════ -->
+<nav class="sticky-nav">
+  <a href="file:///C:/Users/airan/Downloads/Guia_Restaurantes_Disney_Paris_Moli_v4.html#disneyland-park">🏰 Disneyland Park</a>
+  <a href="file:///C:/Users/airan/Downloads/Guia_Restaurantes_Disney_Paris_Moli_v4.html#adventure-world">❄️ Adventure World</a>
+  <a href="file:///C:/Users/airan/Downloads/Guia_Restaurantes_Disney_Paris_Moli_v4.html#village">🛍️ Disney Village</a>
+  <a href="file:///C:/Users/airan/Downloads/Guia_Restaurantes_Disney_Paris_Moli_v4.html#personajes">👑 Con Personajes</a>
+  <a href="file:///C:/Users/airan/Downloads/Guia_Restaurantes_Disney_Paris_Moli_v4.html#snacks">🍿 Snacks</a>
+  <a href="file:///C:/Users/airan/Downloads/Guia_Restaurantes_Disney_Paris_Moli_v4.html#consejos">💡 Consejos de Lara</a>
+</nav>
+
+<!-- ══ PORTADA ══════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-logo">⭐ Los Viajes de Moli · Agente Oficial Disney®</div>
+  <h1>Guía de Restaurantes<br><span>Disney® Paris</span></h1>
+  <p class="subtitle">Temporada 2026 · 2027 — Parques, Hoteles y Disney Village</p>
+  <p class="cover-note">Documento de uso interno · Los Viajes de Moli · losviajesdemoli.com</p>
+</div>
+
+<!-- ══ LEYENDA DE PRECIOS ════════════════════════════════════════════════ -->
+<div class="section" style="margin-top:40px">
+  <div class="speech-bubble sb-purple">
+    <span class="sb-title">💰 Guía de precios por persona (adulto, sin bebida salvo indicación)</span>
+    <span class="price price-€">€</span> Comida rápida — <strong>15€–20€</strong> &nbsp;·&nbsp;
+    <span class="price price-€€">€€</span> Buffet — <strong>30€–45€</strong> &nbsp;·&nbsp;
+    <span class="price price-€€€">€€€</span> Mesa/servicio — <strong>45€–80€</strong> &nbsp;·&nbsp;
+    <span class="price price-€€€€">€€€€</span> Premium/personajes — <strong>80€–120€+</strong><br>
+    <span style="font-size:.82rem;margin-top:6px;display:block">👶 Niños menores de 3 años: GRATIS en todos los restaurantes · Niños 3-11 años: precio reducido aproximado 50-60% del adulto</span>
+  </div>
+</div>
+
+<!-- ══ 1. PARQUE DISNEYLAND ══════════════════════════════════════════════ -->
+<div class="section" id="disneyland-park">
+  <div class="zone-hero">
+    <div class="zone-hero-bg" style="background:linear-gradient(135deg,#3D1A6B,#5B2D8E,#C01060)"></div>
+    <div class="zone-hero-content">
+      <span class="zone-hero-emoji">🏰</span>
+      <h2>Parque Disneyland®</h2>
+      <span class="tagline">Main Street · Fantasyland · Adventureland · Frontierland · Discoveryland</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">📍 Dentro del parque principal</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">🎩 Mesa · Buffet · Rápido</span>
+    <span class="chip" style="color:var(--gold);border-color:var(--gold);background:var(--gold-l)">👑 Incluido en planes de comida</span>
+  </div>
+
+  <!-- MESA -->
+  <div class="cards-grid">
+    <div class="card full">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>🍽️ Restaurantes de Mesa — Servicio completo
+      </div>
+      <table class="rest-table">
+        <thead><tr>
+          <th style="width:22%">Restaurante</th>
+          <th style="width:13%">Zona</th>
+          <th style="width:10%">Tipo</th>
+          <th style="width:9%">Precio</th>
+          <th style="width:46%">Temática · Menú · Destacado</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="rname">🎩 Walt's – An American Restaurant</div><div class="rsub">⭐ El más elegante del parque</div></td>
+            <td>Main Street</td>
+            <td><span class="badge badge-mesa">Mesa</span></td>
+            <td><span class="price price-€€€">€€€</span></td>
+            <td>Homenaje a Walt Disney · Estilo victoriano · Americana moderna · <strong>Vistas al castillo desde ventana</strong> · Sopa tomate, magret, filete, crème brûlée · Ideal para una comida especial y tranquila</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🏴‍☠️ Captain Jack's – Restaurant des Pirates</div><div class="rsub">Adventureland</div></td>
+            <td>Adventureland</td>
+            <td><span class="badge badge-mesa">Mesa</span></td>
+            <td><span class="price price-€€€">€€€</span></td>
+            <td>Dentro de Piratas del Caribe · <strong>Mesas sobre el agua del canal</strong> · Caribeña · Pollo especiado, pescado coco, mousse coco · Desde 45€/adulto · Experiencia única e inmersiva</td>
+          </tr>
+          <tr>
+            <td><div class="rname">👑 Auberge de Cendrillon</div><div class="rsub">⭐ Comida con Princesas</div></td>
+            <td>Fantasyland</td>
+            <td><span class="badge badge-pers">👑 Personajes</span></td>
+            <td><span class="price price-€€€€">€€€€</span></td>
+            <td>Comedor real · Princesas Disney + Mickey desde abril 2026 · Alta cocina francesa · Crema calabaza, solomillo, pato, salmón · <strong>100€ adulto · 50€ niño</strong> (comida) · ~49€ desayuno · Suplemento con plan Standard/Plus</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TABLA ÚNICA POR ZONAS -->
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🍛 Buffets Libres
+      </div>
+      <table class="rest-table">
+        <thead><tr>
+          <th style="width:22%">Restaurante</th>
+          <th style="width:13%">Zona</th>
+          <th style="width:10%">Tipo</th>
+          <th style="width:9%">Precio</th>
+          <th style="width:46%">Temática · Menú · Destacado</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="rname">🌸 Plaza Gardens Restaurant</div><div class="rsub">⭐ Favorito familias · Con personajes</div></td>
+            <td>Main Street</td>
+            <td><span class="badge badge-buffet">Buffet</span></td>
+            <td><span class="price price-€€">€€</span></td>
+            <td>Presidencial victoriano · Internacional · Carnes, pasta, pescados, verduras, brownies · <strong>Comida y cena con personajes (suplemento)</strong> · ~45€ adulto / ~25€ niño</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🕌 Agrabah Café</div><div class="rsub">Vegano/vegetariano 🌿</div></td>
+            <td>Adventureland</td>
+            <td><span class="badge badge-buffet">Buffet</span></td>
+            <td><span class="price price-€€">€€</span></td>
+            <td>Bazar de Aladdín · Árabe y mediterránea · Hummus, falafel, tajín, cuscús, baklava · <strong>Ideal para veganos/vegetarianos</strong> · ~40€ adulto / ~22€ niño</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COMIDA RÁPIDA POR ZONAS -->
+    <div class="card full">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>🍔 Comida Rápida — Quick Service (ordenados por zona)
+      </div>
+      <table class="rest-table">
+        <thead><tr>
+          <th style="width:22%">Restaurante</th>
+          <th style="width:13%">Zona</th>
+          <th style="width:10%">Tipo</th>
+          <th style="width:9%">Precio</th>
+          <th style="width:46%">Temática · Comida</th>
+        </tr></thead>
+        <tbody>
+          <tr style="background:#f5f0ff">
+            <td colspan="5" style="padding:5px 10px;font-size:.75rem;font-weight:800;color:var(--purple-d);letter-spacing:1px">🏛️ MAIN STREET, U.S.A.</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🌵 Casey's Corner</div><div class="rsub">⭐ Clásico imprescindible</div></td>
+            <td>Main Street</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Béisbol americano · <strong>Perritos calientes</strong> temáticos con cheddar, jalapeño… · Terraza con vistas al castillo · Desde ~8€</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🥪 Market House Deli</div><div class="rsub">🥐 Croque Monsieur famoso</div></td>
+            <td>Main Street</td>
+            <td><span class="badge badge-snack">Snack/Deli</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Deli neoyorquino · <strong>Croque Monsieur jamón/queso o pavo — el snack salado más famoso del parque</strong> · Sándwiches, baguettes, ensaladas · <strong>Beignets Mickey rellenos de chocolate</strong> también disponibles aquí · ~10€ · No válido con plan de comidas</td>
+          </tr>
+          <tr style="background:#f5f0ff">
+            <td colspan="5" style="padding:5px 10px;font-size:.75rem;font-weight:800;color:var(--purple-d);letter-spacing:1px">🏰 FANTASYLAND</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🧙 Au Chalet de la Marionnette</div></td>
+            <td>Fantasyland</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Casa bávara de Pinocho · <strong>Salchicha alemana blanca</strong> · Hamburguesas, nuggets · Desde ~16€</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🐸 Toad Hall Restaurant</div></td>
+            <td>Fantasyland</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>El viento en los sauces · Fish &amp; chips, nuggets · Ambiente inglés pintoresco · Buena opción para niños selectivos</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🍝 Pizzeria Bella Notte</div></td>
+            <td>Fantasyland</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>La Dama y el Vagabundo · Pizza margarita, 4 quesos, lasaña, pasta napolitana · Desde ~16€</td>
+          </tr>
+          <tr style="background:#f5f0ff">
+            <td colspan="5" style="padding:5px 10px;font-size:.75rem;font-weight:800;color:var(--purple-d);letter-spacing:1px">🌴 ADVENTURELAND</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🦁 Hakuna Matata</div></td>
+            <td>Adventureland</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>El Rey León · Africana suave · Pollo con arroz, wok, mousse de mango · Opciones saludables · Desde ~16€</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🍕 Colonel Hathi's Pizza Outpost</div></td>
+            <td>Adventureland</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>El libro de la Selva · Pizzas Mickey, pasta, curry de lentejas, butter chicken · Terraza exterior agradable · Desde ~17€</td>
+          </tr>
+          <tr style="background:#f5f0ff">
+            <td colspan="5" style="padding:5px 10px;font-size:.75rem;font-weight:800;color:var(--purple-d);letter-spacing:1px">🤠 FRONTIERLAND</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🌴 Cowboy Cookout Barbecue</div></td>
+            <td>Frontierland</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Far West · Platos a la parrilla · Barbacoa · Ambiente rústico exterior · Buenas raciones · Desde ~17€</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🌮 Casa de Coco</div><div class="rsub">Opciones veganas 🌿</div></td>
+            <td>Frontierland</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Pixar Coco · Mexicana · Burritos, bowls, nachos · <strong>Opciones veganas disponibles</strong> · Desde ~16€</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🥩 Silver Spur Steakhouse</div><div class="rsub">A la carta · Far West</div></td>
+            <td>Frontierland</td>
+            <td><span class="badge badge-mesa">Mesa</span></td>
+            <td><span class="price price-€€€">€€€</span></td>
+            <td>Saloon del Far West · Cocina americana · Hamburguesas, costilla, pollo, ensaladas · Comanda en la puerta antes de sentarse — servicio ágil · ~45€ adulto</td>
+          </tr>
+          <tr>
+            <td><div class="rname">⚠️ Lucky Nugget Saloon</div><div class="rsub">⚠️ LEER AVISO PLAN COMIDAS</div></td>
+            <td>Frontierland</td>
+            <td><span class="badge" style="background:#FFF3E0;color:#E65100;font-size:.7rem;font-weight:800;padding:2px 8px;border-radius:50px">⚠️ Rápido en Mesa</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Saloon musical · Comida rápida servida en mesa · <strong style="color:#E53935">⚠️ ATENCIÓN: aunque es comida rápida, al tener mesas el sistema descuenta un bono de buffet/mesa si usas el plan Standard — NO es rentable.</strong> Solicita pagar con bono de comida rápida y abonar el suplemento si hay diferencia.</td>
+          </tr>
+          <tr style="background:#f5f0ff">
+            <td colspan="5" style="padding:5px 10px;font-size:.75rem;font-weight:800;color:var(--purple-d);letter-spacing:1px">🚀 DISCOVERYLAND</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🚀 Café Hyperion</div><div class="rsub">⭐ El más grande del parque</div></td>
+            <td>Discoveryland</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Julio Verne · Hamburguesas, ensaladas · <strong>El restaurante más grande del parque</strong> · Conectado al teatro Videopolis · Puedes ver espectáculos y shows mientras comes · Mobile Order · Desde ~16€</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="speech-bubble sb-red" style="margin-top:20px">
+    <span class="sb-title">⚠️ ATENCIÓN — Lucky Nugget Saloon y el plan de comidas</span>
+    El Lucky Nugget es comida rápida servida en mesa tipo saloon. <strong>El sistema lo reconoce como restaurante de mesa y descuenta un bono de buffet/mesa si pasas la MagicPass con plan Standard — eso NO es rentable.</strong><br><br>
+    💡 <strong>Consejo de Lara:</strong> Solicita al Cast Member pagar con el bono de comida rápida y abonar el suplemento si lo hay. Así aprovechas bien tu plan. 🤠
+  </div>
+
+  <div class="speech-bubble sb-gold" style="margin-top:12px">
+    <span class="sb-title">🎄 Truco de Lara — Café Hyperion en Navidad</span>
+    En temporada navideña, el teatro Videopolis acoge los <strong>espectáculos de Villancicos Disney</strong> y otros shows especiales de temporada. Aprovecha para <strong>comer en el Café Hyperion mientras disfrutas del espectáculo en directo</strong> — gratis incluido con tu entrada al parque. ¡Una experiencia mágica sin coste extra! 🎅✨
+  </div>
+
+  <div class="speech-bubble sb-teal" style="margin-top:12px">
+    <span class="sb-title">⭐ Truco de Lara para el Parque Disneyland</span>
+    Si quieres ver el desfile mientras comes, <strong>reserva mesa en Walt's y pide ventana orientada a Main Street</strong>. La vista del castillo y el desfile desde dentro es mágica. Recuerda: puedes reservar mesa hasta 2 meses antes (o desde que reservas el hotel Disney). 🏰✨
+  </div>
+</div>
+
+<!-- ══ 2. DISNEY ADVENTURE WORLD ══════════════════════════════════════════ -->
+<div class="section" id="adventure-world">
+  <div class="zone-hero">
+    <div class="zone-hero-bg" style="background:linear-gradient(135deg,#0D1B4E,#1A8A9E)"></div>
+    <div class="zone-hero-content">
+      <span class="zone-hero-emoji">❄️</span>
+      <h2>Disney Adventure World®</h2>
+      <span class="tagline">Ratatouille · Avengers · World of Frozen · The Regal View · Nordic Crowns</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--teal-d);border-color:var(--teal);background:var(--teal-l)">📍 Segundo parque Disney · Nuevo 2026</span>
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">🐀 Bistrot Chez Rémy — ¡Reserva YA!</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">👸 The Regal View — Princesas junto al lago</span>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card full">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>🍽️ Todos los restaurantes — Disney Adventure World
+      </div>
+      <table class="rest-table">
+        <thead><tr>
+          <th style="width:22%">Restaurante</th>
+          <th style="width:12%">Zona</th>
+          <th style="width:10%">Tipo</th>
+          <th style="width:9%">Precio</th>
+          <th style="width:47%">Temática · Menú · Destacado</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="rname">👸 The Regal View Restaurant &amp; Lounge</div><div class="rsub">⭐ NUEVO 2026 · Con Princesas</div></td>
+            <td>Adventure Bay</td>
+            <td><span class="badge badge-pers">👑 Personajes</span></td>
+            <td><span class="price price-€€€€">€€€€</span></td>
+            <td>🌟 <strong>NUEVO desde marzo 2026.</strong> A orillas del lago central · Vistas al espectáculo nocturno · Princesas exclusivas (Bella, Mérida, Jasmine, Aurora, Ariel, Mulán con nuevos trajes) · <strong>100€ adulto · 50€ niño</strong> (comida/cena) · 60€ adulto / 48€ niño (desayuno) · Lounge sin reserva para snacks y cócteles</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🐀 Bistrot Chez Rémy</div><div class="rsub">⭐⭐ El más demandado</div></td>
+            <td>Ratatouille</td>
+            <td><span class="badge badge-mesa">A la carta</span></td>
+            <td><span class="price price-€€€">€€€</span></td>
+            <td>🌟 <strong>EL restaurante favorito de Disney Adventure World.</strong> A escala de ratón · Cocina francesa · Menú 3 platos · Quiche, vol-au-vent, magret, crème brûlée · <strong>~40€/adulto · ~30€/niño</strong> · <strong>¡Reserva imprescindible con meses de antelación!</strong></td>
+          </tr>
+          <tr>
+            <td><div class="rname">🦸 PYM Kitchen</div><div class="rsub">Marvel · Muy visual</div></td>
+            <td>Avengers Campus</td>
+            <td><span class="badge badge-buffet">Buffet</span></td>
+            <td><span class="price price-€€">€€</span></td>
+            <td>Ant-Man · Tamaños gigantes y minúsculos · Buffet creativo · Hamburguesas enormes, sándwiches · <strong>Muy recomendado para fotos</strong></td>
+          </tr>
+          <tr>
+            <td><div class="rname">🌿 Nordic Crowns Tavern</div><div class="rsub">NUEVO 2026 · World of Frozen</div></td>
+            <td>World of Frozen</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>🆕 Nuevo con la apertura del World of Frozen · Cocina nórdica personalizable · Almuerzo y cena · Decoración con historia del Reino de Arendelle · Buena opción en la nueva zona</td>
+          </tr>
+          <tr>
+            <td><div class="rname">⚡ Stark Factory</div></td>
+            <td>Avengers Campus</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Iron Man · Burgers, wraps, bowls temáticos · Muy visual · Buena opción rápida en Avengers Campus</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🌮 Cocina de Coco</div></td>
+            <td>Worlds of Pixar</td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Pixar Coco · Mexicana · Burritos, bowls, nachos · <strong>Opciones vegetarianas y veganas</strong> · Colores vivos</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🎬 FAN-tastic Food Truck &amp; otros puestos</div></td>
+            <td>Varios</td>
+            <td><span class="badge badge-snack">Snack</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Food trucks y puestos repartidos por el parque · Snacks, bebidas, opciones rápidas entre atracciones</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="speech-bubble sb-pink" style="margin-top:16px">
+    <span class="sb-title">👸 The Regal View — El nuevo joya de Disney Adventure World</span>
+    Inaugurado el 29 de marzo de 2026 junto al nuevo lago central. Las <strong>vistas al espectáculo nocturno</strong> desde las mesas hacen que las reservas para cena sean las más codiciadas. Anna y Elsa NO están aquí (tienen su propio punto de encuentro en Arendelle). El Lounge funciona sin reserva. 🌊
+  </div>
+
+  <div class="speech-bubble sb-teal" style="margin-top:12px">
+    <span class="sb-title">💡 Bistrot Chez Rémy — El secreto de la reserva</span>
+    Es <strong>a la carta</strong>, NO buffet. El más demandado del parque. <strong>Se agota en minutos</strong> cuando abre agenda. Con paquete hotel Disney puedes reservarlo desde el primer día. Sin hotel: 2 meses antes. Cancellaciones disponibles cada día a las 9:00h en la app. 🐀
+  </div>
+</div>
+
+<!-- ══ 3. DISNEY VILLAGE ══════════════════════════════════════════════════ -->
+<div class="section" id="village">
+  <div class="zone-hero">
+    <div class="zone-hero-bg" style="background:linear-gradient(135deg,#1A9B45,#2EC866)"></div>
+    <div class="zone-hero-content">
+      <span class="zone-hero-emoji">🛍️</span>
+      <h2>Disney Village®</h2>
+      <span class="tagline">Zona comercial y de ocio — Acceso libre sin entrada al parque</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--green-d);border-color:var(--green);background:var(--green-l)">🎟️ Sin entrada al parque</span>
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">⚠️ Mayoría gestionados por terceros</span>
+    <span class="chip" style="color:var(--teal-d);border-color:var(--teal);background:var(--teal-l)">✅ Billy Bob's y Steakhouse en plan comidas</span>
+  </div>
+
+  <div class="alert">
+    <span>⚠️</span>
+    <span>La mayoría de restaurantes de Disney Village son de <strong>empresas externas</strong> y NO se pueden canjear con planes de comidas. <strong>Excepción: Billy Bob's Country Western Saloon y Steakhouse SÍ están incluidos en los planes de comidas Disney.</strong> Ideal para el día de llegada o salida.</span>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card full">
+      <div class="card-title" style="color:var(--green-d)">
+        <span class="dot" style="background:var(--green)"></span>🍽️ Restaurantes Disney Village
+      </div>
+      <table class="rest-table">
+        <thead><tr>
+          <th style="width:22%">Restaurante</th>
+          <th style="width:12%">Tipo</th>
+          <th style="width:10%">Precio</th>
+          <th style="width:56%">Descripción</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="rname">🎸 Billy Bob's Country Western Saloon</div><div class="rsub">✅ Incluido en plan de comidas</div></td>
+            <td><span class="badge badge-buffet">Buffet</span></td>
+            <td><span class="price price-€€">€€</span></td>
+            <td>🌟 <strong>¡El único de Disney Village incluido en los planes de comidas Disney!</strong> · Gran buffet libre · Ambiente country western · Shows en directo · Música en vivo · Perfecto para grupos y familias · Muy animado por las noches</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🥩 Steakhouse</div><div class="rsub">✅ Incluido en plan de comidas</div></td>
+            <td><span class="badge badge-mesa">Mesa</span></td>
+            <td><span class="price price-€€€">€€€</span></td>
+            <td>🌟 <strong>Incluido en los planes de comidas Disney.</strong> Carnes a la parrilla de calidad · Ambiente americano · A la carta · Buena opción para una cena especial fuera de los parques · Requiere reserva</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🏈 Sports Bar</div><div class="rsub">Pantallas gigantes · Bar</div></td>
+            <td><span class="badge badge-rapida">Bar/Rápido</span></td>
+            <td><span class="price price-€">€€</span></td>
+            <td>Ambiente deportivo · Pantallas gigantes con retransmisiones en directo · Hamburguesas, snacks · Ideal para adultos y fans del deporte · Sin reserva necesaria</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🦁 Rainforest Café</div></td>
+            <td><span class="badge badge-mesa">Mesa</span></td>
+            <td><span class="price price-€€">€€</span></td>
+            <td>Selva tropical · Animatrónica · Internacional · Muy popular para niños · Requiere reserva en temporada alta</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🍺 The Royal Pub</div></td>
+            <td><span class="badge badge-rapida">Bar/Pub</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Bar inglés · Snacks · Cervezas · Ideal para adultos al final del día</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🍕 Vapiano</div></td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Italiana · Pasta fresca y pizzas · Pedido en mostrador · Buena relación calidad-precio</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🥩 Five Guys</div></td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€€">€€</span></td>
+            <td>Hamburguesas premium · Personalizable al 100% · Favorito de adolescentes y adultos</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🥪 Earl of Sandwich</div></td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Sándwiches calientes · Rápido y económico · Ideal para cenar ligero</td>
+          </tr>
+          <tr>
+            <td><div class="rname">☕ Starbucks</div></td>
+            <td><span class="badge badge-snack">Cafetería</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>Cafés, frappuccinos, bollería · Punto de encuentro · Varios en el resort</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🍔 McDonald's</div></td>
+            <td><span class="badge badge-rapida">Rápido</span></td>
+            <td><span class="price price-€">€</span></td>
+            <td>El clásico de siempre · Ideal para niños muy selectivos · Disponible tarde noche</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="speech-bubble sb-gold" style="margin-top:16px">
+    <span class="sb-title">⭐ Truco de Lara — Billy Bob's y Steakhouse con el plan de comidas</span>
+    Son los únicos restaurantes de Disney Village incluidos en los planes de comidas Disney. <strong>Si llegas con plan y quieres cenar en Village</strong>: Billy Bob's para una noche animada con shows en vivo 🎸, o el Steakhouse para una cena más tranquila y especial 🥩. Ambos cubiertos por tu bono. 🤠
+  </div>
+</div>
+
+<!-- ══ 4. RESTAURANTES CON PERSONAJES ════════════════════════════════════ -->
+<div class="section" id="personajes">
+  <div class="zone-hero">
+    <div class="zone-hero-bg" style="background:linear-gradient(135deg,#C01060,#F5287A,#F0A500)"></div>
+    <div class="zone-hero-content">
+      <span class="zone-hero-emoji">👑</span>
+      <h2>Comidas con Personajes Disney</h2>
+      <span class="tagline">Las experiencias más mágicas e irrepetibles del resort</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">📱 Reserva imprescindible por App</span>
+    <span class="chip" style="color:var(--gold);border-color:var(--gold);background:var(--gold-l)">💰 Suplemento o precio especial</span>
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">✨ Canjeables con plan Plus/Premium</span>
+  </div>
+
+  <div class="speech-bubble sb-pink" style="margin-top:16px">
+    <span class="sb-title">👑 ¿Cuándo reservar las comidas con personajes?</span>
+    Si tienes <strong>paquete hotel Disney</strong>: puedes reservar desde el primer día de tu reserva (incluso con meses de antelación). Si no tienes hotel Disney: 2 meses antes de la visita. <strong>Bistrot Chez Rémy y Auberge de Cendrillon se agotan en minutos.</strong> Pon alarma y reserva a las 9:00h 🚨
+  </div>
+
+  <div class="cards-grid" style="margin-top:16px">
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>👑 Todos los restaurantes con personajes
+      </div>
+      <table class="rest-table">
+        <thead><tr>
+          <th style="width:24%">Restaurante</th>
+          <th style="width:15%">Ubicación</th>
+          <th style="width:12%">Personajes</th>
+          <th style="width:10%">Precio adulto</th>
+          <th style="width:10%">Precio niño</th>
+          <th style="width:29%">Destacado</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><div class="rname">👸 Auberge de Cendrillon</div><div class="rsub">Comida · Cena · Desayuno</div></td>
+            <td>Fantasyland</td>
+            <td>Princesas + Mickey (desde abr. 2026)</td>
+            <td><strong>100€ comida/cena<br>49€ desayuno</strong></td>
+            <td><strong>50€ comida/cena<br>39€ desayuno</strong></td>
+            <td>⭐ La experiencia más exclusiva del parque · Alta cocina francesa · Reserva urgente · Suplemento con plan de comidas</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🌸 Plaza Gardens</div><div class="rsub">Desayuno · Cena</div></td>
+            <td>Main Street</td>
+            <td>Mickey, Minnie y amigos</td>
+            <td>45€ (com.) / 80€ (cena)</td>
+            <td>25€ (com.) / 40€ (cena)</td>
+            <td>Buffet libre · Accesible con plan Plus · Buena relación calidad-precio</td>
+          </tr>
+          <tr>
+            <td><div class="rname">🌟 Royal Banquet (Disneyland Hotel)</div><div class="rsub">Comida y Cena</div></td>
+            <td>Disneyland Hotel</td>
+            <td>Mickey, Minnie y amigos con galas reales</td>
+            <td><strong>100€</strong></td>
+            <td><strong>50€</strong></td>
+            <td>Buffet premium · Incluido en Plan Premium sin suplemento · Solo huéspedes del hotel</td>
+          </tr>
+          <tr>
+            <td><div class="rname">👸 La Table de Lumière (Disneyland Hotel)</div><div class="rsub">Solo cena</div></td>
+            <td>Disneyland Hotel</td>
+            <td>Princesas y príncipes Disney</td>
+            <td><strong>120€</strong></td>
+            <td><strong>60€</strong></td>
+            <td>A la carta · Alta cocina francesa · Salón Bella y la Bestia · Incluido en Plan Premium</td>
+          </tr>
+          <tr>
+            <td><div class="rname">👸 The Regal View Restaurant</div><div class="rsub">⭐ NUEVO 2026 · Disney Adventure World</div></td>
+            <td>Adventure Bay (DAW)</td>
+            <td>Princesas (Bella, Mérida, Jasmine, Aurora, Ariel, Mulán)</td>
+            <td><strong>100€</strong> com./cena<br><strong>60€</strong> desayuno</td>
+            <td><strong>50€</strong> com./cena<br><strong>48€</strong> desayuno</td>
+            <td>🆕 Nuevo con vistas al lago · Princesas con trajes exclusivos · Lounge sin reserva · NO incluye a Anna y Elsa</td>
+          </tr>
+            <tr><td>DAW · Ratatouille</td>
+            <td>Sin personajes</td>
+            <td><strong>40€</strong></td>
+            <td><strong>30€</strong></td>
+            <td>Sin personajes pero la experiencia más inmersiva · El más demandado del resort</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="speech-bubble sb-gold" style="margin-top:16px">
+    <span class="sb-title">⭐ Plan Premium = Comidas con personajes SIN suplemento</span>
+    Con el Plan Premium <strong>todas las comidas y cenas</strong> en Royal Banquet y La Table de Lumière están incluidas <strong>sin pagar nada extra</strong>. Solo disponible en el Disneyland Hotel. Si tus clientes quieren estas experiencias, el Plan Premium es la opción más rentable. 💎
+  </div>
+</div>
+
+<!-- ══ 5. SNACKS ══════════════════════════════════════════════════════════ -->
+<div class="section" id="snacks">
+  <div class="zone-hero">
+    <div class="zone-hero-bg" style="background:linear-gradient(135deg,#1A9B45,#F0A500)"></div>
+    <div class="zone-hero-content">
+      <span class="zone-hero-emoji">🍿</span>
+      <h2>Snacks &amp; Street Food</h2>
+      <span class="tagline">Los imprescindibles que no puedes perderte en el parque</span>
+    </div>
+  </div>
+
+  <div class="cards-grid" style="margin-top:20px">
+
+    <div class="card">
+      <div class="card-title" style="color:var(--green-d)">
+        <span class="dot" style="background:var(--green)"></span>🍿 Snacks Imprescindibles
+      </div>
+      <div class="img-ph" style="background:linear-gradient(135deg,var(--gold-l),var(--green-l))">🍭</div>
+      <div class="ranking">
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--gold)">🥇</span>
+          <div class="rank-info">
+            <div class="rank-name">🍎 Manzana caramelizada Mickey</div>
+            <div class="rank-why">El snack más fotografiado · Varios carritos por Main Street · ~7€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--gold)">🥈</span>
+          <div class="rank-info">
+            <div class="rank-name">🥐 Croissant Mickey o Pain au chocolat</div>
+            <div class="rank-why">Cable Car Bake Shop · Main Street · Desayuno clásico · ~5€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--gold)">🥉</span>
+          <div class="rank-info">
+            <div class="rank-name">🧇 Gofre de Mickey</div>
+            <div class="rank-why">Victoria's Home-Style Restaurant · Main Street · Imprescindible para la foto · ~6€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--purple)">4</span>
+          <div class="rank-info">
+            <div class="rank-name">🍿 Palomitas en cubo Mickey</div>
+            <div class="rank-why">Por todo el parque · El cubo es recargable · ~9€ con cubo / ~4€ recarga</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--purple)">5</span>
+          <div class="rank-info">
+            <div class="rank-name">🌰 Churros Disney</div>
+            <div class="rank-why">Carritos en ambos parques · Clásico imprescindible · ~5€</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>🥞 Crepes &amp; Dulces
+      </div>
+      <div class="img-ph" style="background:linear-gradient(135deg,var(--teal-l),var(--pink-l))">🥞</div>
+      <div class="ranking">
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--pink-d)">🥐</span>
+          <div class="rank-info">
+            <div class="rank-name">🥞 Crêpes de Main Street</div>
+            <div class="rank-why">Dulces y salados · ~8€ · Muy buenas especialmente en temporada fría</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--pink-d)">🧁</span>
+          <div class="rank-info">
+            <div class="rank-name">🍦 Helados Mickey Premium</div>
+            <div class="rank-why">Forma de Mickey · Por todo el parque · Nata o chocolate · ~6€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--pink-d)">🥨</span>
+          <div class="rank-info">
+            <div class="rank-name">🥨 Pretzel dulce o salado</div>
+            <div class="rank-why">Frontierland · Muy saciante · ~5€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--teal-d)">🍭</span>
+          <div class="rank-info">
+            <div class="rank-name">🍭 Piruletas y dulces Disney</div>
+            <div class="rank-why">Confectionery (Main Street) · Irresistibles para niños · Desde 3€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--teal-d)">🥐</span>
+          <div class="rank-info">
+            <div class="rank-name">🥐 Croque Monsieur — Market House Deli</div>
+            <div class="rank-why">Main Street · Jamón y queso fundido tostado · El snack salado más famoso del parque · ¡Solo aquí en todo Disney! · ~10€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--teal-d)">🍩</span>
+          <div class="rank-info">
+            <div class="rank-name">🍩 Beignet Mickey relleno de chocolate</div>
+            <div class="rank-why">Market House Deli (Main Street) y otros puntos del parque · Berlina forma de Mickey rellena de Nutella o albaricoque · ~5€ · ¡Irresistible!</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--green-d)">💧</span>
+          <div class="rank-info">
+            <div class="rank-name">💧 Jarra de agua — ¡GRATIS en mesa!</div>
+            <div class="rank-why">En cualquier restaurante de mesa o buffet pide una jarra de agua del tiempo · Es GRATIS · No pidas agua mineral de botella, que cuesta ~4€ 💡</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🦸 Snacks Temáticos DAW
+      </div>
+      <div class="ranking">
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--purple)">⚡</span>
+          <div class="rank-info">
+            <div class="rank-name">⚡ Shawarma de Iron Man</div>
+            <div class="rank-why">Avengers Campus · Referencia a los Vengadores · ~9€ · Muy popular</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--purple)">🍕</span>
+          <div class="rank-info">
+            <div class="rank-name">🍕 Schwarma y snacks de Groot</div>
+            <div class="rank-why">Avengers Campus · Presentación en forma de Groot · ~8€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--teal-d)">❄️</span>
+          <div class="rank-info">
+            <div class="rank-name">❄️ Kakigori Frozen (hielo raspado)</div>
+            <div class="rank-why">Mundo de Frozen · Temporada verano · Sabores árticos · ~6€</div>
+          </div>
+        </div>
+        <div class="rank-item">
+          <span class="rank-num" style="color:var(--teal-d)">🎂</span>
+          <div class="rank-info">
+            <div class="rank-name">🎂 Cupcakes de Pixar</div>
+            <div class="rank-why">Worlds of Pixar · Decorados con personajes · ~5€ · Para la foto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>💡 Consejos para snacks
+      </div>
+      <ul style="list-style:none">
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">💧 <strong>Jarra de agua gratis:</strong> pide siempre una jarra de agua del tiempo en restaurantes de mesa o buffet · Es GRATIS · Evita pagar ~4€ por el agua mineral 💡</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🎒 <strong>Puedes entrar comida:</strong> fruta, bocadillos, snacks. Sin neveras portátiles</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🅿️ <strong>Zona de picnic:</strong> entre el aparcamiento y la entrada a los parques</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">📱 <strong>Mobile Order:</strong> pide en la app y recoge sin cola en Quick Service</li>
+        <li style="padding:7px 0;font-size:.85rem">🕐 <strong>Come a deshora:</strong> 12:30h o 15:00h para evitar esperas en restaurantes</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ 6. CONSEJOS DE LARA ════════════════════════════════════════════════ -->
+<div class="section" id="consejos">
+  <div class="zone-hero">
+    <div class="zone-hero-bg" style="background:linear-gradient(135deg,var(--purple-d),var(--pink-d))"></div>
+    <div class="zone-hero-content">
+      <span class="zone-hero-emoji">💜</span>
+      <h2>Consejos de Lara</h2>
+      <span class="tagline">Todo lo que aprenderás tras visitar Disney muchas veces</span>
+    </div>
+  </div>
+
+  <div class="cards-grid" style="margin-top:20px">
+
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>📅 Cuándo y cómo reservar
+      </div>
+      <ul style="list-style:none">
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">📱 <strong>App oficial Disneyland Paris:</strong> imprescindible para reservar · Descarga antes del viaje</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🏨 <strong>Con hotel Disney:</strong> reservas abiertas desde el primer día · Aprovéchalo</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">📆 <strong>Sin hotel Disney:</strong> 2 meses antes para la mayoría de restaurantes</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">⏰ <strong>Truco cancelaciones:</strong> mirar la app a las 9:00h · Se liberan plazas a diario</li>
+        <li style="padding:7px 0;font-size:.85rem">🚫 <strong>Sin reserva:</strong> comida rápida y buffets sin reserva · Mesa solo con cola</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🏆 Mis restaurantes favoritos por tipo
+      </div>
+      <ul style="list-style:none">
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🥇 <strong>Experiencia única:</strong> Bistrot Chez Rémy · Captain Jack's</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">👑 <strong>Con personajes:</strong> Auberge de Cendrillon · Royal Banquet</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">💰 <strong>Mejor precio:</strong> Agrabah Café · PYM Kitchen · Plaza Gardens</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🌿 <strong>Vegetariano/vegano:</strong> Agrabah Café · Cocina de Coco</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">⚡ <strong>Más rápido:</strong> Casey's Corner · Hakuna Matata · Stark Factory</li>
+        <li style="padding:7px 0;font-size:.85rem">👶 <strong>Con bebés:</strong> Buffets (la comida ilimitada es perfecta para compartir)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>💰 Ahorra dinero comiendo en Disney
+      </div>
+      <ul style="list-style:none">
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">📦 <strong>Plan de comidas:</strong> 10-15% más barato que pagar en el momento</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🥗 <strong>Buffet = infinito:</strong> repite todo lo que quieras · Perfecto para niños</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🕐 <strong>Horarios:</strong> come a las 12:30h o cena a las 21:30h · Sin esperas</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">💧 <strong>Agua gratis:</strong> pídela en cualquier mostrador del parque</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🎒 <strong>Entra snacks:</strong> fruta, galletas, bocadillos · Ahorra en meriendas</li>
+        <li style="padding:7px 0;font-size:.85rem">👧 <strong>Menú infantil:</strong> todos los restaurantes tienen · Porciones más pequeñas y económicas</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--green-d)">
+        <span class="dot" style="background:var(--green)"></span>👨‍👩‍👧 Por tipo de familia
+      </div>
+      <ul style="list-style:none">
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🧒 <strong>Niños pequeños (0-5):</strong> Buffets · Sin presiones de tiempo · Variedad</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">👧 <strong>Niñas princesas:</strong> Auberge de Cendrillon o La Table de Lumière · Magia pura</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">🦸 <strong>Fans Marvel:</strong> PYM Kitchen + Stark Factory · Avengers Campus</li>
+        <li style="padding:7px 0;border-bottom:1px dashed #f0f0f0;font-size:.85rem">👫 <strong>Pareja o luna de miel:</strong> Walt's con ventana · Captain Jack's · La Table de Lumière</li>
+        <li style="padding:7px 0;font-size:.85rem">👴👵 <strong>Abuelos:</strong> Walt's · Plaza Gardens · Tranquilidad y calidad</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="speech-bubble sb-purple" style="margin-top:20px">
+    <span class="sb-title">✨ Recuerda: los planes de comida se contratan ANTES del viaje</span>
+    Los planes de media pensión o pensión completa <strong>solo se pueden contratar antes de llegar</strong>, nunca una vez en el hotel. Y solo si tienes reserva en un hotel Disney. ¡Comunícaselo siempre a tus clientes en el momento de la reserva para que no se lo pierdan! 🍽️
+  </div>
+
+  <div class="speech-bubble sb-teal" style="margin-top:16px">
+    <span class="sb-title">📱 Mobile Order — La clave para no hacer colas</span>
+    Desde la app oficial de Disneyland Paris puedes <strong>pedir en los restaurantes de comida rápida y recoger sin esperar cola</strong>. Ideal para familias con niños que no quieren perder tiempo. Actívalo siempre en los Quick Service. ⚡
+  </div>
+</div>
+
+<!-- PIE -->
+<footer>
+  <strong>Los Viajes de Moli ✨</strong>
+  Agente Oficial Disney® · losviajesdemoli.com<br>
+  Documento de uso interno · Temporada 2026-2027 · Información actualizada may. 2026
+</footer>
+
+
+
+</body></html>
