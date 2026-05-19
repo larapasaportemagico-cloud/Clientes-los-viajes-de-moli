@@ -1,1 +1,781 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Hoteles Disney® Paris — Los Viajes de Moli</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple:  #5B2D8E;
+  --purple-d:#3D1A6B;
+  --purple-l:#F0E8FA;
+  --pink:    #F5287A;
+  --pink-d:  #C01060;
+  --pink-l:  #FEE8F3;
+  --teal:    #2BBCD4;
+  --teal-d:  #1A8A9E;
+  --teal-l:  #E4F8FB;
+  --green:   #2EC866;
+  --green-d: #1A9B45;
+  --green-l: #E6FAF0;
+  --gold:    #F0A500;
+  --gold-l:  #FFF8E1;
+  --red:     #E53935;
+  --red-l:   #FFEBEE;
+  --dark:    #1A1A2E;
+  --gray:    #F7F7F9;
+  --white:   #FFFFFF;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Nunito',sans-serif; background:var(--gray); color:var(--dark); }
 
+/* PORTADA */
+.cover {
+  background: linear-gradient(135deg, var(--purple-d) 0%, var(--pink-d) 60%, var(--pink) 100%);
+  min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center; padding:40px 20px; position:relative; overflow:hidden;
+}
+.cover::before {
+  content:'🏰✨🏰';
+  position:absolute; top:20px; left:0; right:0;
+  font-size:2.5rem; opacity:.12; letter-spacing:40px;
+}
+.cover-logo {
+  background:rgba(255,255,255,.15); border:2px solid rgba(255,255,255,.3);
+  border-radius:50px; padding:8px 28px; color:white;
+  font-size:.85rem; font-weight:800; letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:24px; display:inline-block;
+}
+.cover h1 {
+  font-family:'Fredoka One',cursive;
+  font-size:clamp(2.4rem,7vw,5rem); color:white;
+  line-height:1.05; text-shadow:0 4px 20px rgba(0,0,0,.3); margin-bottom:12px;
+}
+.cover h1 span { color:var(--gold); }
+.cover .subtitle { color:rgba(255,255,255,.85); font-size:1.1rem; font-weight:600; margin-bottom:40px; }
+
+/* ÍNDICE PORTADA */
+.index-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:10px; width:100%; max-width:900px; margin-bottom:36px;
+}
+.index-card {
+  background:rgba(255,255,255,.12); backdrop-filter:blur(10px);
+  border:1.5px solid rgba(255,255,255,.25); border-radius:16px;
+  padding:14px 16px; text-align:left; text-decoration:none;
+  transition:transform .2s;
+}
+.index-card:hover { transform:translateY(-4px); background:rgba(255,255,255,.2); }
+.index-card .ic-emoji { font-size:1.5rem; margin-bottom:4px; display:block; }
+.index-card .ic-name { color:white; font-weight:800; font-size:.88rem; line-height:1.2; display:block; }
+.index-card .ic-sub  { color:rgba(255,255,255,.7); font-size:.75rem; display:block; margin-top:2px; }
+.cover-note { color:rgba(255,255,255,.45); font-size:.75rem; font-style:italic; }
+
+/* SECCIÓN */
+.section { max-width:980px; margin:0 auto 60px; padding:0 16px; }
+
+/* HERO HOTEL */
+.hotel-hero {
+  border-radius:28px; overflow:hidden; position:relative;
+  min-height:160px; display:flex; align-items:flex-end;
+  margin-top:48px; box-shadow:0 12px 40px rgba(0,0,0,.2);
+}
+.hotel-hero-bg { position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(.55); }
+.hotel-hero-content { position:relative; z-index:2; padding:24px 30px; width:100%; }
+.hotel-hero-emoji { font-size:2.4rem; display:block; margin-bottom:4px; }
+.hotel-hero h2 { font-family:'Fredoka One',cursive; font-size:clamp(1.5rem,4vw,2.2rem); color:white; text-shadow:0 2px 10px rgba(0,0,0,.4); }
+.hotel-hero .stars { color:var(--gold); font-size:1.2rem; display:block; margin-top:4px; }
+.hotel-hero .tagline { color:rgba(255,255,255,.8); font-size:.9rem; font-weight:600; margin-top:4px; display:block; }
+
+/* CHIPS */
+.chips { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 6px; }
+.chip {
+  display:flex; align-items:center; gap:6px;
+  padding:5px 14px; border-radius:50px;
+  font-size:.78rem; font-weight:700; border:2px solid;
+}
+
+/* GRID */
+.cards-grid {
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:16px; margin-top:16px;
+}
+.card { background:white; border-radius:20px; padding:20px; box-shadow:0 2px 12px rgba(0,0,0,.06); }
+.card.full { grid-column:1/-1; }
+.card-title {
+  font-size:.8rem; font-weight:800; text-transform:uppercase;
+  letter-spacing:1px; margin-bottom:14px;
+  display:flex; align-items:center; gap:8px;
+}
+.card-title .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+/* LISTAS */
+.feat-list { list-style:none; }
+.feat-list li { padding:6px 0; border-bottom:1px dashed #f0f0f0; font-size:.85rem; line-height:1.5; }
+.feat-list li:last-child { border-bottom:none; }
+
+/* TABLA RESTAURANTES */
+.rest-table { width:100%; border-collapse:collapse; font-size:.82rem; margin-top:4px; }
+.rest-table th {
+  background:var(--purple-d); color:white;
+  padding:8px 10px; text-align:left; font-size:.73rem; font-weight:800;
+}
+.rest-table th:first-child { border-radius:8px 0 0 0; }
+.rest-table th:last-child  { border-radius:0 8px 0 0; }
+.rest-table td { padding:9px 10px; border-bottom:1px solid #f0f0f0; vertical-align:top; line-height:1.4; }
+.rest-table tr:nth-child(even) td { background:#fafafa; }
+.rest-table tr:hover td { background:var(--purple-l); }
+.rest-table .rname { font-weight:800; font-size:.84rem; }
+
+/* BADGE */
+.badge {
+  display:inline-flex; align-items:center; gap:3px;
+  padding:2px 9px; border-radius:50px;
+  font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.4px;
+  white-space:nowrap;
+}
+.badge-buffet  { background:var(--pink-l); color:var(--pink-d); }
+.badge-carta   { background:var(--purple-l); color:var(--purple-d); }
+.badge-bar     { background:var(--teal-l); color:var(--teal-d); }
+.badge-llevar  { background:var(--green-l); color:var(--green-d); }
+.badge-cafe    { background:var(--gold-l); color:#7A5000; }
+
+/* BOCADILLOS */
+.speech-bubble {
+  position:relative; border-radius:20px;
+  padding:16px 20px; margin:16px 0;
+  font-size:.88rem; line-height:1.5; font-weight:600;
+}
+.sb-title { font-family:'Fredoka One',cursive; font-size:1rem; display:block; margin-bottom:5px; }
+.sb-purple { background:var(--purple-l); border:2px solid var(--purple); color:var(--purple-d); }
+.sb-pink   { background:var(--pink-l); border:2px solid var(--pink-d); color:var(--pink-d); }
+.sb-teal   { background:var(--teal-l); border:2px solid var(--teal-d); color:var(--teal-d); }
+.sb-green  { background:var(--green-l); border:2px solid var(--green-d); color:var(--green-d); }
+.sb-gold   { background:var(--gold-l); border:2px solid var(--gold); color:#7A5000; }
+
+/* ALERTA */
+.alert {
+  background:var(--red-l); border-left:5px solid var(--red);
+  border-radius:0 14px 14px 0; padding:12px 16px;
+  font-size:.85rem; font-weight:700; color:var(--red);
+  margin:12px 0; display:flex; align-items:flex-start; gap:10px;
+}
+
+/* SERVICIOS EXCLUSIVOS */
+.vip-box {
+  background:linear-gradient(135deg,var(--purple-l),var(--pink-l));
+  border:2px solid var(--purple); border-radius:16px;
+  padding:14px 18px; margin-top:14px;
+  font-size:.85rem; font-weight:600; color:var(--purple-d);
+}
+.vip-box strong { font-family:'Fredoka One',cursive; font-size:.95rem; display:block; margin-bottom:6px; }
+
+footer {
+  background:var(--purple-d); color:rgba(255,255,255,.55);
+  text-align:center; padding:24px; font-size:.8rem;
+}
+footer strong { color:white; font-family:'Fredoka One',cursive; font-size:1.1rem; display:block; margin-bottom:4px; }
+
+@media(max-width:600px) {
+  .cards-grid { grid-template-columns:1fr; }
+  .index-grid { grid-template-columns:repeat(2,1fr); }
+}
+@media print {
+  .cover { min-height:auto; break-after:page; }
+  .section { break-before:page; margin-top:0; }
+  body { background:white; }
+}
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div class="cover">
+  <div class="cover-logo">⭐ Los Viajes de Moli · Agente Oficial Disney®</div>
+  <h1>Guía de Hoteles<br><span>Disney® Paris</span></h1>
+  <p class="subtitle">Temporada 2026 · 2027 — Todo lo que necesitas saber</p>
+
+  <div class="index-grid">
+    <a href="#disneyland-hotel" class="index-card">
+      <span class="ic-emoji">🏰</span>
+      <span class="ic-name">Disneyland Hotel</span>
+      <span class="ic-sub">★★★★★ · Entrada directa</span>
+    </a>
+    <a href="#new-york" class="index-card">
+      <span class="ic-emoji">🦸</span>
+      <span class="ic-name">New York – Marvel</span>
+      <span class="ic-sub">★★★★ · 10 min a pie</span>
+    </a>
+    <a href="#newport" class="index-card">
+      <span class="ic-emoji">⛵</span>
+      <span class="ic-name">Newport Bay Club</span>
+      <span class="ic-sub">★★★★ · 15 min a pie</span>
+    </a>
+    <a href="#sequoia" class="index-card">
+      <span class="ic-emoji">🌲</span>
+      <span class="ic-name">Sequoia Lodge</span>
+      <span class="ic-sub">★★★ · 15 min a pie</span>
+    </a>
+    <a href="#cheyenne" class="index-card">
+      <span class="ic-emoji">🤠</span>
+      <span class="ic-name">Hotel Cheyenne</span>
+      <span class="ic-sub">★★★ · 20 min a pie</span>
+    </a>
+    <a href="#santa-fe" class="index-card">
+      <span class="ic-emoji">🚗</span>
+      <span class="ic-name">Hotel Santa Fe</span>
+      <span class="ic-sub">★★ · 20 min a pie</span>
+    </a>
+    <a href="#davy" class="index-card">
+      <span class="ic-emoji">⛺</span>
+      <span class="ic-name">Davy Crockett Ranch</span>
+      <span class="ic-sub">★★★ · Solo en coche</span>
+    </a>
+  </div>
+  <p class="cover-note">Documento de uso interno · Los Viajes de Moli · losviajesdemoli.com</p>
+</div>
+
+<!-- ══ DISNEYLAND HOTEL ══════════════════════════════════════════════ -->
+<div class="section" id="disneyland-hotel">
+  <div class="hotel-hero">
+    <div class="hotel-hero-bg" style="background:linear-gradient(135deg,#3D1A6B,#5B2D8E,#C01060)"></div>
+    <div class="hotel-hero-content">
+      <span class="hotel-hero-emoji">🏰</span>
+      <h2>Disneyland® Hotel</h2>
+      <span class="stars">★★★★★</span>
+      <span class="tagline">La joya de la corona · Entrada directa al Parque Disneyland®</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">🚶 0 min — Entrada directa</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">🏠 487 habitaciones y suites</span>
+    <span class="chip" style="color:var(--teal-d);border-color:var(--teal);background:var(--teal-l)">⏰ Check-in 15h · Check-out 11h</span>
+    <span class="chip" style="color:var(--green-d);border-color:var(--green);background:var(--green-l)">🅿️ Aparcacoches GRATUITO</span>
+  </div>
+
+  <div class="speech-bubble sb-pink">
+    <span class="sb-title">👑 ¿Sabías que puedes solicitar la suite de tu princesa favorita?</span>
+    Al hacer la reserva, pide la suite temática que más te guste — Bella y la Bestia, Cenicienta, Frozen, Bella Durmiente o Rapunzel. Siempre sujeto a disponibilidad, ¡pero vale la pena pedirlo! 🌹👠❄️
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>🛏️ Habitaciones
+      </div>
+      <ul class="feat-list">
+        <li>Superior (31-40 m²) — hasta 5 personas</li>
+        <li>Deluxe (32-41 m²) — hasta 5 · <strong>Deluxe Lounge incluido</strong></li>
+        <li>Castle Club (31-43 m²) — hasta 5 · <strong>Vistas al Parque</strong></li>
+        <li style="font-size:.8rem;color:#888">Equipación: Mininevera · Café espresso · TV Ultra HD · Albornoz y zapatillas temáticos · Secador Dyson (Castle Club) · Productos Clarins</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>🏊 Crystal Pool & Spa
+      </div>
+      <ul class="feat-list">
+        <li>Piscina interior + infantil + solárium</li>
+        <li>Bañera de hidromasaje · Gimnasio · Zona yoga</li>
+        <li>Spa by Clarins (pago) — tratamientos gama alta</li>
+        <li>Spa para familias y niños desde 6 años</li>
+        <li>Salón de belleza · Manicura y pedicura</li>
+      </ul>
+      <div class="alert" style="margin-top:10px"><span>⚠️</span><span>Cerrada en fechas por mantenimiento. Confirmar siempre.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">
+        <span class="dot" style="background:var(--gold)"></span>👑 Personajes & Experiencias
+      </div>
+      <ul class="feat-list">
+        <li>Encuentro con la Realeza Disney — reservar por App 7 días antes</li>
+        <li>Castle Club Lounge: desayuno con Princesas Disney</li>
+        <li>Royal Kids Club — 2h/día GRATIS para niños 4-11 años</li>
+        <li>La Troupe Royale — espectáculo sorpresa con personajes</li>
+        <li>My Royal Dream: peluquería, maquillaje y foto (pago)</li>
+      </ul>
+    </div>
+
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🍽️ Restaurantes
+      </div>
+      <table class="rest-table">
+        <thead><tr><th>Restaurante</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="rname">La Table de Lumière</td><td><span class="badge badge-carta">A la carta</span></td><td>Cena con Príncipes y Princesas Disney · Cocina francesa · Magret, solomillo, mariscos · Abierta a todos</td></tr>
+          <tr><td class="rname">Royal Banquet</td><td><span class="badge badge-buffet">Buffet libre</span></td><td>Comida y cena con personajes · Mickey, Minnie, Pluto, Goofy, Donald, Daisy · Buffet internacional</td></tr>
+          <tr><td class="rname">Fleur de Lys Bar</td><td><span class="badge badge-bar">Bar</span></td><td>Cócteles exclusivos · Vinos de autor · Champán · Snacks · Té de tarde</td></tr>
+          <tr><td class="rname">Desayuno buffet</td><td><span class="badge badge-buffet">Buffet</span></td><td>Incluido para Castle Club y Suites en salón exclusivo · Con suplemento para resto de habitaciones</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="vip-box">
+    <strong>✨ Servicios exclusivos Castle Club y Suites</strong>
+    Recepción privada · Ascensor directo al parque · Castle Club Lounge (desayuno con Princesas + Tea Time + bebidas no alcohólicas todo el día) · Albornoz Dyson · Productos Clarins · Productos de aseo para niños 👶
+  </div>
+
+  <div class="speech-bubble sb-gold" style="margin-top:16px">
+    <span class="sb-title">⭐ Plan Premium — Solo en el Disneyland Hotel</span>
+    El Plan Premium incluye <strong>TODAS las comidas y cenas con personajes Disney</strong> en Royal Banquet y La Table de Lumière, sin ningún suplemento adicional. Una experiencia única e irrepetible que solo existe aquí. 🥂✨
+  </div>
+</div>
+
+<!-- ══ NEW YORK – MARVEL ══════════════════════════════════════════════ -->
+<div class="section" id="new-york">
+  <div class="hotel-hero">
+    <div class="hotel-hero-bg" style="background:linear-gradient(135deg,#0D1B4E,#C01060)"></div>
+    <div class="hotel-hero-content">
+      <span class="hotel-hero-emoji">🦸</span>
+      <h2>Disney Hotel New York – The Art of Marvel</h2>
+      <span class="stars">★★★★</span>
+      <span class="tagline">Manhattan + MARVEL · 10 min a pie · +350 obras de arte</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">🚶 10 min a pie / 8 min bus</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">🏠 561 habitaciones y suites</span>
+    <span class="chip" style="color:var(--teal-d);border-color:var(--teal);background:var(--teal-l)">🎨 +350 piezas de arte MARVEL</span>
+    <span class="chip" style="color:var(--gold);border-color:var(--gold);background:var(--gold-l)">🅿️ Aparcacoches pago (gratis Empire State)</span>
+  </div>
+
+  <div class="speech-bubble sb-teal">
+    <span class="sb-title">🦸 Solicita la planta de tu Superhéroe favorito</span>
+    Al reservar puedes pedir que te asignen en la planta temática de tu superhéroe preferido. Sujeto a disponibilidad, ¡pero los fans de MARVEL lo adoran! 🕷️⚡🛡️
+  </div>
+
+  <div class="speech-bubble sb-purple">
+    <span class="sb-title">🎨 Tour guiado por el hotel</span>
+    Puedes solicitar un tour por las más de 350 obras de arte MARVEL del hotel. No se garantiza que sea en español — consultar disponibilidad en el check-in.
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>🛏️ Habitaciones
+      </div>
+      <ul class="feat-list">
+        <li>Superior / con Terraza (31 m²) — hasta 4 personas</li>
+        <li><strong>Familiar Superior (51 m²) — hasta 6 · 2 baños</strong></li>
+        <li>Empire State Club (31 m²) — hasta 4 + servicios VIP</li>
+        <li style="font-size:.8rem;color:#888">Equipación: Mini nevera · Café espresso · TV HD · Bluetooth en baño · Plancha · Room service de pago</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>🏊 Metro Pool & Health Club
+      </div>
+      <ul class="feat-list">
+        <li>Piscina interior + exterior con terraza</li>
+        <li>Piscina infantil · Hidromasaje · Sauna · Baño turco</li>
+        <li>Fitness Club (gimnasio con llave habitación)</li>
+        <li>Hero Training Zone — deporte al aire libre MARVEL</li>
+      </ul>
+      <div class="alert" style="margin-top:10px"><span>⚠️</span><span>Cerrada en fechas por mantenimiento. Confirmar siempre.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">
+        <span class="dot" style="background:var(--gold)"></span>🦸 Super Hero Station
+      </div>
+      <ul class="feat-list">
+        <li>Encuentros con Superhéroes MARVEL cada mañana</li>
+        <li><strong>Reservar por App desde 7 días antes de llegada</strong></li>
+        <li>Marvel Hero Photo Stations — fotos inmersivas</li>
+        <li>Marvel Design Studio — talleres de dibujo</li>
+        <li>Jack Kirby Legacy Gallery — exposiciones MARVEL</li>
+      </ul>
+    </div>
+
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🍽️ Restaurantes
+      </div>
+      <table class="rest-table">
+        <thead><tr><th>Restaurante</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="rname">Manhattan Restaurant</td><td><span class="badge badge-carta">A la carta</span></td><td>Cocina italiana moderna · Ambiente elegante NY · Solo cenas</td></tr>
+          <tr><td class="rname">Downtown Restaurant</td><td><span class="badge badge-buffet">Buffet</span></td><td>Asiática + mediterránea + americana · 3 cocinas abiertas · Arte MARVEL en paredes</td></tr>
+          <tr><td class="rname">Skyline Bar</td><td><span class="badge badge-bar">Bar</span></td><td>Ático de Tony Stark · Martinis · Cócteles NY/MARVEL</td></tr>
+          <tr><td class="rname">Bleecker Street Lounge</td><td><span class="badge badge-bar">Bar</span></td><td>Doctor Strange · Vistas al Lago Disney · Terraza · Productos orgánicos</td></tr>
+          <tr><td class="rname">Desayuno buffet</td><td><span class="badge badge-buffet">Buffet</span></td><td>Incluido en Empire State Club y Suites en salón exclusivo</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="vip-box">
+    <strong>✨ Servicios exclusivos Empire State Club y Suites</strong>
+    Recepción privada · Aparcacoches gratuito · Empire State Lounge (desayuno buffet + aperitivos + bebidas no alcohólicas todo el día) · Albornoz y zapatillas · Bañera hidromasaje en Suites 🛁
+  </div>
+</div>
+
+<!-- ══ NEWPORT BAY CLUB ══════════════════════════════════════════════ -->
+<div class="section" id="newport">
+  <div class="hotel-hero">
+    <div class="hotel-hero-bg" style="background:linear-gradient(135deg,#0D2B5E,#1A8A9E)"></div>
+    <div class="hotel-hero-content">
+      <span class="hotel-hero-emoji">⛵</span>
+      <h2>Disney Newport Bay Club</h2>
+      <span class="stars">★★★★</span>
+      <span class="tagline">Mansión náutica de Nueva Inglaterra · Mickey y Minnie</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">🚶 15 min a pie / 8 min bus</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">🏠 1.097 habitaciones y suites</span>
+    <span class="chip" style="color:var(--teal-d);border-color:var(--teal);background:var(--teal-l)">🐭 Mickey, Minnie y amigos</span>
+  </div>
+
+  <div class="speech-bubble sb-pink">
+    <span class="sb-title">🚨 DATO CLAVE — La única habitación Disney para 6 personas</span>
+    La Hab. Familiar Compass Club (40 m²) es la <strong>ÚNICA opción en toda la red Disney París para alojar a 6 personas en una sola habitación</strong>. ¡Comunícalo siempre a familias y grupos de 6! 👨‍👩‍👧‍👦
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>🛏️ Habitaciones
+      </div>
+      <ul class="feat-list">
+        <li>Superior (27 m²) — hasta 4 · Vista Lago opcional</li>
+        <li>Familiar Superior (28-29 m²) — hasta 5 personas</li>
+        <li>Superior con Terraza (27 m²)</li>
+        <li>Compass Club (27 m²) — hasta 4 + servicios VIP</li>
+        <li><strong>Familiar Compass Club (40 m²) — hasta 6 ⭐</strong></li>
+        <li style="font-size:.8rem;color:#888">Suites: Ejecutiva · Resort · Compass Club · Presidencial · Presidencial Familiar</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>🏊 Nantucket Pool
+      </div>
+      <ul class="feat-list">
+        <li>Piscina interior climatizada + exterior con terraza</li>
+        <li>Piscina infantil · Hidromasaje · Sauna · Baño turco</li>
+        <li>Fitness Club con llave habitación</li>
+        <li>Equipo especial para huéspedes con discapacidad</li>
+      </ul>
+      <div class="alert" style="margin-top:10px"><span>⚠️</span><span>Cerrada en fechas por mantenimiento. Confirmar siempre.</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">
+        <span class="dot" style="background:var(--gold)"></span>🐭 Personajes & Ocio
+      </div>
+      <ul class="feat-list">
+        <li>Encuentros con Mickey, Minnie y sus amigos</li>
+        <li>Little Captain's Corner — zona infantil</li>
+        <li>Bay Boutique — tienda Disney</li>
+      </ul>
+    </div>
+
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🍽️ Restaurantes
+      </div>
+      <table class="rest-table">
+        <thead><tr><th>Restaurante</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="rname">Yacht Club</td><td><span class="badge badge-carta">A la carta</span></td><td>Estilo club náutico · Tierra y mar · Nueva Inglaterra + toque mediterráneo</td></tr>
+          <tr><td class="rname">Cape Cod ⭐</td><td><span class="badge badge-buffet">Buffet</span></td><td>Mediterránea e internacional · También sirve el desayuno buffet · <strong>Favorito de Lara para familias con bebés</strong></td></tr>
+          <tr><td class="rname">Captain's Quarters</td><td><span class="badge badge-bar">Bar</span></td><td>Bar elegante de estilo náutico</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="vip-box">
+    <strong>✨ Servicios exclusivos Compass Club y Suites</strong>
+    Recepción privada · Aparcacoches gratuito · Compass Club Lounge (desayuno + aperitivos + bebidas no alcohólicas) · Mini nevera · Zapatillas y albornoz · Bañera hidromasaje en Suites ⚓
+  </div>
+</div>
+
+<!-- ══ SEQUOIA LODGE ══════════════════════════════════════════════ -->
+<div class="section" id="sequoia">
+  <div class="hotel-hero">
+    <div class="hotel-hero-bg" style="background:linear-gradient(135deg,#1A4A1A,#2EC866)"></div>
+    <div class="hotel-hero-content">
+      <span class="hotel-hero-emoji">🌲</span>
+      <h2>Disney Sequoia Lodge</h2>
+      <span class="stars">★★★</span>
+      <span class="tagline">Lodge rústico entre secuoyas · Bambi · Goofy o Max</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">🚶 15 min a pie / 8 min bus</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">🏠 1.010 habitaciones</span>
+    <span class="chip" style="color:var(--green-d);border-color:var(--green);background:var(--green-l)">🦌 Bambi · Bosque de secuoyas</span>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>🛏️ Habitaciones
+      </div>
+      <ul class="feat-list">
+        <li>Estándar (27 m²) — hasta 4 · 2 camas dobles</li>
+        <li>Estándar Cerca Instalaciones — junto a piscina y recepción</li>
+        <li>Estándar Vista al Lago Disney</li>
+        <li>Golden Forest Club (27 m²) — desayuno incluido + VIP</li>
+        <li>Suite Golden Forest Club (55 m²) — hasta 4 personas</li>
+        <li style="font-size:.8rem;color:#888">Equipación: Café espresso · TV HD · A/C · Caja fuerte · Secador · Artículos de aseo</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>🏊 Quarry Pool
+      </div>
+      <ul class="feat-list">
+        <li>Piscina interior + exterior</li>
+        <li>Bañera de hidromasaje · Fitness Club</li>
+        <li>Equipo especial para movilidad reducida</li>
+        <li>Little Prairie — zona infantil interior</li>
+      </ul>
+      <div class="alert" style="margin-top:10px"><span>⚠️</span><span>Cerrada en fechas por mantenimiento.</span></div>
+    </div>
+
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🍽️ Restaurantes
+      </div>
+      <table class="rest-table">
+        <thead><tr><th>Restaurante</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="rname">Hunter's Grill & Beaver Creek Tavern</td><td><span class="badge badge-buffet">Buffet</span></td><td>Desayuno + cena buffet · Especialidades internacionales y estilo rural</td></tr>
+          <tr><td class="rname">Redwood Bar and Lounge</td><td><span class="badge badge-bar">Bar</span></td><td>Gran chimenea · Decoración piedra y madera · Parques Nacionales EE.UU.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="vip-box">
+    <strong>✨ Servicios exclusivos Golden Forest Club y Suites</strong>
+    Recepción privada · Aparcacoches gratuito · Golden Forest Lounge (desayuno buffet + aperitivos + bebidas no alcohólicas) · Desayuno incluido en precio de estancia · Mini nevera · Zapatillas y albornoz (Suites) 🌲
+  </div>
+</div>
+
+<!-- ══ HOTEL CHEYENNE ══════════════════════════════════════════════ -->
+<div class="section" id="cheyenne">
+  <div class="hotel-hero">
+    <div class="hotel-hero-bg" style="background:linear-gradient(135deg,#7A4A00,#F0A500)"></div>
+    <div class="hotel-hero-content">
+      <span class="hotel-hero-emoji">🤠</span>
+      <h2>Disney Hotel Cheyenne</h2>
+      <span class="stars">★★★</span>
+      <span class="tagline">Lejano Oeste · Toy Story · Woody y Jessie</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">🚶 20 min a pie / 8 min bus</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">🏠 1.000 habitaciones</span>
+    <span class="chip" style="color:var(--red);border-color:var(--red);background:var(--red-l)">✗ Sin piscina</span>
+  </div>
+
+  <div class="alert"><span>⚠️</span><span><strong>SIN PISCINA.</strong> Para clientes que la necesiten, recomendar Sequoia Lodge (★★★), Newport Bay Club (★★★★) o New York Hotel (★★★★).</span></div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>🛏️ Habitaciones
+      </div>
+      <ul class="feat-list">
+        <li>Estándar (21 m²) — hasta 4 · 1 doble + 1 cama nido</li>
+        <li>Estándar Cerca Instalaciones — 2 camas dobles</li>
+        <li>Adaptada (42 m², conectadas) — movilidad reducida</li>
+        <li style="font-size:.8rem;color:#888">Equipación: TV HD canales Disney · Café espresso · A/C · Caja fuerte · Secador</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">
+        <span class="dot" style="background:var(--gold)"></span>🤠 Personajes & Ocio
+      </div>
+      <ul class="feat-list">
+        <li>Encuentros con Woody o Jessie (Pixar)</li>
+        <li>Little Sheriff's Corner — zona infantil interior/exterior</li>
+        <li>Paseo en poni (temporada · de pago)</li>
+        <li>General Store — tienda Disney</li>
+      </ul>
+    </div>
+
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🍽️ Restaurantes
+      </div>
+      <table class="rest-table">
+        <thead><tr><th>Restaurante</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="rname">Chuck Wagon Cafe</td><td><span class="badge badge-buffet">Buffet</span></td><td>Desayuno buffet + cena buffet · Carnes a la barbacoa · Lejano Oeste</td></tr>
+          <tr><td class="rname">Red Garter Saloon</td><td><span class="badge badge-bar">Bar</span></td><td>Canciones country · Ambiente saloon del Far West</td></tr>
+          <tr><td class="rname">Starbucks® Coffee</td><td><span class="badge badge-cafe">Cafetería</span></td><td>Cafetería en el hotel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HOTEL SANTA FE ══════════════════════════════════════════════ -->
+<div class="section" id="santa-fe">
+  <div class="hotel-hero">
+    <div class="hotel-hero-bg" style="background:linear-gradient(135deg,#8B0000,#E53935)"></div>
+    <div class="hotel-hero-content">
+      <span class="hotel-hero-emoji">🚗</span>
+      <h2>Disney Hotel Santa Fe</h2>
+      <span class="stars">★★</span>
+      <span class="tagline">Cars · Rayo McQueen · Nuevo México</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">🚶 20 min a pie / 8 min bus</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">🏠 1.006 habitaciones</span>
+    <span class="chip" style="color:var(--red);border-color:var(--red);background:var(--red-l)">✗ Sin piscina</span>
+  </div>
+
+  <div class="alert"><span>⚠️</span><span><strong>SIN PISCINA.</strong> Para clientes que la necesiten, recomendar otro hotel Disney.</span></div>
+
+  <div class="speech-bubble sb-teal">
+    <span class="sb-title">🥤 Máquina de bebidas GRATUITA en cada edificio</span>
+    Una ventaja muy valorada: el Santa Fe tiene máquina de bebidas gratuita en cada edificio, disponible en todo momento. ¡Perfecta para familias con niños! 👶🧃
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>🛏️ Habitaciones
+      </div>
+      <ul class="feat-list">
+        <li>Estándar (21 m²) — hasta 4 · 2 camas dobles</li>
+        <li>Estándar (21 m²) — hasta 4 · 1 doble + 1 litera</li>
+        <li>Adaptada (42 m², conectadas) — movilidad reducida</li>
+        <li style="font-size:.8rem;color:#888">Equipación: TV HD canales Disney · Ventilador de techo · Hervidor (petición) · Caja fuerte · Secador</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--gold)">
+        <span class="dot" style="background:var(--gold)"></span>🚗 Personajes & Ocio
+      </div>
+      <ul class="feat-list">
+        <li>Encuentros con Personajes Disney (disponibilidad)</li>
+        <li>Zona infantil en el restaurante</li>
+        <li>Trading Post — tienda Disney</li>
+        <li>Extra Magic Time — acceso anticipado parques</li>
+      </ul>
+    </div>
+
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🍽️ Restaurantes
+      </div>
+      <table class="rest-table">
+        <thead><tr><th>Restaurante</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="rname">La Cantina</td><td><span class="badge badge-buffet">Buffet</span></td><td>Desayuno buffet (con opciones veganas) + cena buffet · Tex-mex e internacional · Mercado suroeste americano</td></tr>
+          <tr><td class="rname">Rio Grande Bar</td><td><span class="badge badge-bar">Bar</span></td><td>Bar estilo suroeste de EE.UU.</td></tr>
+          <tr><td class="rname">Starbucks® Coffee</td><td><span class="badge badge-cafe">Cafetería</span></td><td>Cafetería en el hotel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="speech-bubble sb-gold">
+    <span class="sb-title">⭐ Consejo de Lara — Plan de comidas en Santa Fe</span>
+    En el Santa Fe <strong>siempre compensa la Pensión Completa Standard</strong> frente a la Media Pensión: la diferencia de precio es mínima y además incluye <strong>1 comida rápida de regalo extra</strong>. Una de las comidas del día es rápida (perfecta para comer deprisa y seguir con las atracciones) y la otra puede ser buffet o mesa. ¡Mejor relación calidad-precio de todos los hoteles Disney! 🌟
+  </div>
+</div>
+
+<!-- ══ DAVY CROCKETT RANCH ══════════════════════════════════════════════ -->
+<div class="section" id="davy">
+  <div class="hotel-hero">
+    <div class="hotel-hero-bg" style="background:linear-gradient(135deg,#1A4A1A,#F0A500)"></div>
+    <div class="hotel-hero-content">
+      <span class="hotel-hero-emoji">⛺</span>
+      <h2>Disney Davy Crockett Ranch</h2>
+      <span class="stars">★★★</span>
+      <span class="tagline">Bungalows privados en el bosque · Resort residencial</span>
+    </div>
+  </div>
+
+  <div class="chips">
+    <span class="chip" style="color:var(--purple);border-color:var(--purple);background:var(--purple-l)">🚗 15 min en coche propio</span>
+    <span class="chip" style="color:var(--pink-d);border-color:var(--pink);background:var(--pink-l)">🏕️ Bungalows — no habitaciones</span>
+    <span class="chip" style="color:var(--green-d);border-color:var(--green);background:var(--green-l)">🐾 Se admite 1 perro (pago)</span>
+    <span class="chip" style="color:var(--teal-d);border-color:var(--teal);background:var(--teal-l)">⏰ Check-in 16:00h</span>
+  </div>
+
+  <div class="alert"><span>⚠️</span><span><strong>NO hay traslados gratuitos a los parques.</strong> Imprescindible vehículo propio o de alquiler. No válido para clientes sin coche.</span></div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-title" style="color:var(--purple)">
+        <span class="dot" style="background:var(--purple)"></span>🏕️ Bungalows
+      </div>
+      <ul class="feat-list">
+        <li>Trapper (40 m²) — 6 personas · 1 cama doble + literas</li>
+        <li>Nuevo Estándar (40 m²) — 6 personas · Donald y Daisy</li>
+        <li>Estándar Cerca Instalaciones — junto a piscina</li>
+        <li>Adaptados para movilidad reducida disponibles</li>
+        <li style="font-size:.8rem;color:#888">Cocina equipada · Barbacoa · Terraza privada · Lavadora</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="color:var(--teal-d)">
+        <span class="dot" style="background:var(--teal)"></span>🏊 Blue Springs Pool & Actividades
+      </div>
+      <ul class="feat-list">
+        <li>Piscina interior con cascada, río y tobogán + hidromasaje</li>
+        <li>Pista de tenis interior (reserva obligatoria)</li>
+        <li>Caminos de senderismo por el bosque</li>
+        <li>Lucky Raccoon — videojuegos (pago)</li>
+        <li>Minigolf (pago) · Zona infantil exterior (5-12 años)</li>
+      </ul>
+      <div class="alert" style="margin-top:10px"><span>⚠️</span><span>Piscina cerrada en fechas por mantenimiento.</span></div>
+    </div>
+
+    <div class="card full">
+      <div class="card-title" style="color:var(--pink-d)">
+        <span class="dot" style="background:var(--pink)"></span>🍽️ Restaurantes
+      </div>
+      <table class="rest-table">
+        <thead><tr><th>Restaurante</th><th>Tipo</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="rname">Desayuno para llevar</td><td><span class="badge badge-llevar">Para llevar</span></td><td>Amplia oferta dulce y salada · Zumos y bebidas calientes</td></tr>
+          <tr><td class="rname">Crockett's Tavern</td><td><span class="badge badge-buffet">Buffet</span></td><td>Buffet libre · Comida a la parrilla e internacional · Taberna de madera acogedora</td></tr>
+          <tr><td class="rname">Crockett's Saloon</td><td><span class="badge badge-bar">Bar</span></td><td>Bar rústico · Ambiente Davy Crockett</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="speech-bubble sb-green">
+    <span class="sb-title">🌿 Ideal para familias que quieren independencia total</span>
+    Cocina propia, barbacoa, terraza privada y espacio para todos. La experiencia más diferente dentro de los hoteles Disney. Perfecto para grupos de 6 personas — ¡con más libertad y privacidad que cualquier hotel! 🔥
+  </div>
+</div>
+
+<!-- PIE -->
+<footer>
+  <strong>Los Viajes de Moli ✨</strong>
+  Agente Oficial Disney® · losviajesdemoli.com<br>
+  Documento de uso interno · Temporada 2026-2027 · Información basada en fichas técnicas oficiales Disney
+</footer>
+
+</body>
+</html>
