@@ -156,9 +156,34 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
   .btn-print,.btn-back{display:none!important}
   #editor{display:none!important}
   #guia{display:block!important}
-  .g-cover{min-height:100vh;page-break-after:always}
-  .g-section{page-break-inside:avoid}
-  body{background:white}
+  body{background:white!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .g-cover{
+    min-height:100vh;page-break-after:always;
+    background:linear-gradient(135deg,#3D1A6B 0%,#C01060 55%,#F5287A 100%)!important;
+    -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important
+  }
+  .g-cover h1,.g-cover .g-nombres,.g-cover .g-fechas,.g-cover .g-gracias,.g-cover-badge,.g-cover div{
+    color:white!important;-webkit-print-color-adjust:exact!important
+  }
+  .g-cover h1 span{color:#F0A500!important}
+  .g-cover .g-nombres{color:#F0A500!important}
+  .g-section{page-break-inside:avoid;border-bottom:2px solid #F0E8FA!important}
+  .g-bubble{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .gb-purple{background:#F0E8FA!important;border-color:#5B2D8E!important;color:#3D1A6B!important}
+  .gb-pink{background:#FEE8F3!important;border-color:#C01060!important;color:#C01060!important}
+  .gb-teal{background:#E4F8FB!important;border-color:#1A8A9E!important;color:#1A8A9E!important}
+  .gb-gold{background:#FFF8E1!important;border-color:#F0A500!important;color:#7A5000!important}
+  .gb-green{background:#E6FAF0!important;border-color:#1A9B45!important;color:#1A9B45!important}
+  .g-info-item{background:#faf8ff!important;border-color:#e8e0f0!important;-webkit-print-color-adjust:exact!important}
+  .g-consejo{background:#F7F7F9!important;-webkit-print-color-adjust:exact!important}
+  .g-checklist li{background:#F7F7F9!important;-webkit-print-color-adjust:exact!important}
+  .g-alert{background:#FFEBEE!important;-webkit-print-color-adjust:exact!important}
+  .g-park-block{background:#F7F7F9!important;-webkit-print-color-adjust:exact!important}
+  .g-section-icon{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .g-table th{background:#3D1A6B!important;color:white!important;-webkit-print-color-adjust:exact!important}
+  .g-table tr:nth-child(even) td{background:#fafafa!important}
+  /* Fondo secciones alternas para separar visualmente */
+  .g-section:nth-child(even){background:#faf8ff!important}
 }
 </style>
 </head>
@@ -333,7 +358,7 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
   <div class="guia-page" id="guiaContent"></div>
 </div>
 
-<button class="btn-print" id="btnPrint" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
+<button class="btn-print" id="btnPrint" onclick="imprimirGuia()">🖨️ Imprimir / Guardar PDF</button>
 <button class="btn-back" id="btnBack" onclick="volverEditor()">← Editar</button>
 
 <script>
@@ -532,6 +557,7 @@ function generarGuia(){
     <h1>Disneyland<br><span>Paris</span></h1>
     <div class="g-nombres">${nombres}</div>
     <div class="g-fechas">📅 ${fechas}</div>
+    <div style="font-family:'Fredoka One',cursive;font-size:clamp(1.1rem,3vw,1.6rem);color:white;opacity:.9;margin:10px 0 4px;line-height:1.2">Si puedes soñarlo,<br>puedes hacerlo ✨</div>
     <div class="g-gracias">Gracias por hacerlo conmigo 💜</div>
   </div>
 
@@ -547,6 +573,10 @@ function generarGuia(){
       ${habitaciones?`<div class="g-info-item"><div class="g-info-label">Habitaciones</div><div class="g-info-value">${habitaciones}</div></div>`:''}
       ${checkinFmt?`<div class="g-info-item"><div class="g-info-label">Check-in</div><div class="g-info-value">${formatFechaEs(checkinFmt)}</div><div class="g-info-sub">A partir de las 15:00h${hotel==='davy'?' (16:00h)':''}</div></div>`:''}
       ${checkoutFmt?`<div class="g-info-item"><div class="g-info-label">Check-out</div><div class="g-info-value">${formatFechaEs(checkoutFmt)}</div><div class="g-info-sub">Antes de las 11:00h</div></div>`:''}
+    </div>
+    <div class="g-bubble gb-teal" style="margin-top:12px">
+      <strong>🛎️ Tu habitación</strong>
+      La habitación estará disponible a partir de las 15:00h. Recibirás un SMS con el número de habitación cuando esté lista. Puedes revisar su ubicación en el mapa del hotel disponible en recepción.
     </div>
     ${esDavy?`<div class="g-alert"><span>⚠️</span><span><strong>Davy Crockett Ranch:</strong> No hay traslados gratuitos al parque. Imprescindible vehículo propio. Tasa turística a pagar en el hotel.</span></div>`:''}
     ${hotel==='otro'?`<div class="g-alert"><span>⚠️</span><span>Los hoteles no Disney requieren pago de <strong>tasa turística en persona</strong> al hacer check-in. No incluye hora extra ni autobús gratuito al parque.</span></div>`:''}
@@ -587,8 +617,8 @@ function generarGuia(){
     </div>
     ${plan&&plan!==''?`
     <div class="g-bubble gb-teal">
-      <strong>☀️ Desayuno — siempre en el hotel</strong>
-      El desayuno se toma siempre en el restaurante de tu hotel. No hay desayuno en los parques. Check-in online del restaurante si lo requiere, desde la app de Disney.
+      <strong>☀️ Desayuno — siempre en el hotel (7:00 a 10:30h)</strong>
+      El desayuno se toma siempre en el restaurante de tu hotel. No hay desayuno en los parques.
     </div>
     <div class="g-bubble gb-gold">
       <strong>💡 Flexibilidad de bonos</strong>
@@ -607,7 +637,7 @@ function generarGuia(){
     </div>`:''}
     <div class="g-bubble gb-gold" style="margin-top:4px">
       <strong>⚠️ Importante — Los planes de comidas</strong>
-      Los planes solo se pueden contratar o modificar hasta 7 días antes de la llegada desde la app de Disneyland Paris o llamando al 901 51 55 55. NO se pueden comprar una vez en el hotel.
+      Los planes NO se pueden comprar una vez en el hotel. Si tienes cualquier duda sobre tu plan, contacta con Lara.
     </div>
   </div>
 
@@ -723,15 +753,15 @@ function generarGuia(){
       <div class="g-section-title">Consejos para los parques</div>
     </div>
     <div class="g-consejos">
-      <div class="g-consejo"><span class="ico">🍽️</span><div><strong>Restaurantes de comida rápida</strong> — Revisa los horarios, muchos cierran a la hora de la cena. Puedes pedir por la app Disney y recoger sin cola. Confirma siempre el email de confirmación (en algunos sitios no hay buena cobertura).</div></div>
+      <div class="g-consejo"><span class="ico">🍽️</span><div><strong>Restaurantes de comida rápida</strong> — Revisa los horarios, muchos cierran a la hora de la cena. Puedes pedir por la app Disney y recoger sin cola. Confirma siempre el email de confirmación (en algunos sitios no hay buena cobertura). Hay microondas disponibles para calentar comida propia — muy útil con bebés y alérgicos.</div></div>
       <div class="g-consejo"><span class="ico">🥗</span><div><strong>Restaurantes buffet o mesa</strong> — Muy recomendable reservar con antelación desde la app. Puedes acercarte a preguntar si hay mesas disponibles. Con niños menores de 3 años, avisa siempre de que es "baby" y no tiene plan de comidas para que no descuenten un menú por error.</div></div>
-      <div class="g-consejo"><span class="ico">🎭</span><div><strong>Desfiles</strong> — Recorren desde Fantasyland (junto a It's Small World) hasta la puerta de Main Street. El sentido es siempre alternante. Muy recomendable verlo al menos una vez en primera fila.</div></div>
+      <div class="g-consejo"><span class="ico">🎭</span><div><strong>Desfiles</strong> — Siempre comienzan en la zona de It's Small World y terminan en la entrada del parque (Main Street). En temporadas especiales hay desfiles adicionales, y en la plaza del castillo los personajes realizan bailes en los pequeños escenarios. Muy recomendable verlo al menos una vez en primera fila.</div></div>
       <div class="g-consejo"><span class="ico">🦸</span><div><strong>Premier Access</strong> — Pase sin colas para ciertas atracciones. Se puede comprar por atracción o como pase múltiple desde la app. No todas las atracciones disponen de él.</div></div>
       <div class="g-consejo"><span class="ico">🎆</span><div><strong>Espectáculo nocturno</strong> — Se reserva 7 días antes a través de la app. Recomiendo revisar desde 15 días antes a las 00:00h ya que el sistema a veces abre reservas antes de lo previsto.</div></div>
       <div class="g-consejo"><span class="ico">💧</span><div><strong>Agua gratuita</strong> — Puedes pedir jarra de agua del grifo en cualquier restaurante. Lleva botellas para rellenar en las fuentes del parque.</div></div>
       <div class="g-consejo"><span class="ico">💰</span><div><strong>Lleva algo de efectivo</strong> — A veces hay problemas tecnológicos y los datáfonos del parque no funcionan.</div></div>
       <div class="g-consejo"><span class="ico">🏨</span><div><strong>Visita los demás hoteles Disney</strong> — Aunque no te alojes en ellos, puedes visitarlos para hacer fotos con los personajes (llevan ropa diferente) y ver las decoraciones.</div></div>
-      <div class="g-consejo"><span class="ico">🅿️</span><div><strong>City Hall</strong> — Atención al cliente del parque, en Main Street al inicio. Acude aquí para cualquier problema, reclamación o incidencia con la app.</div></div>
+      <div class="g-consejo"><span class="ico">🅿️</span><div><strong>City Hall</strong> — Atención al cliente en el Parque Disneyland, en Main Street al inicio. <strong>Guest Relations</strong> — Atención al cliente en Disney Adventure World, a la entrada del parque. Acude a cualquiera de los dos para problemas, reclamaciones o incidencias con la app.</div></div>
     </div>
   </div>
 
@@ -741,15 +771,12 @@ function generarGuia(){
       <div class="g-section-icon" style="background:var(--pink-l)">👑</div>
       <div class="g-section-title">Encuentros con personajes</div>
     </div>
-    <div class="g-bubble gb-purple">
-      <strong>📱 Fila virtual</strong>
-      Puedes reservar encuentros en la app de Disney. Solo puedes reservar uno a la vez — hasta que no hayas realizado el primero no puedes reservar el siguiente. Revisa las franjas horarias disponibles: 9:45h · 14:00h · 17:00h (pueden variar).
-    </div>
     <div class="g-consejos">
+      <div class="g-consejo"><span class="ico">❄️</span><div><strong>Elsa y Anna</strong> — Encuentro a las 8:45h durante la hora extra. ¡No te lo pierdas, es uno de los más especiales!</div></div>
       <div class="g-consejo"><span class="ico">📸</span><div><strong>Siempre fotos y vídeos con tu móvil</strong> — El fotógrafo profesional solo hace un par de fotos y puede perder momentos bonitos (abrazos, risas...). Capta tú también cada momento.</div></div>
       <div class="g-consejo"><span class="ico">📖</span><div><strong>Libro de firmas</strong> — Ten siempre el libro de firmas preparado. Ojo: Buzz Lightyear y Darth Vader no firman.</div></div>
       <div class="g-consejo"><span class="ico">⏰</span><div><strong>Llega antes del horario</strong> — Si deseas mucho un personaje, haz cola antes de que abra el encuentro. El aforo es limitado y se cierra cuando se llena.</div></div>
-      <div class="g-consejo"><span class="ico">🗺️</span><div><strong>Más allá de la app</strong> — Hay zonas con personajes que no aparecen en la app (Goofy, Minnie en los hoteles...). Consulta la guía mensual que te enviamos.</div></div>
+      <div class="g-consejo"><span class="ico">📖</span><div><strong>Consulta la guía privada</strong> — Te hemos enviado una guía con ubicaciones de personajes que no aparecen en la app y consejos exclusivos para aprovechar al máximo cada día.</div></div>
     </div>
   </div>
 
@@ -839,6 +866,12 @@ function generarGuia(){
   document.getElementById('btnPrint').style.display='block';
   document.getElementById('btnBack').style.display='block';
   window.scrollTo(0,0);
+}
+
+function imprimirGuia(){
+  // Avisar si el navegador puede necesitar activar gráficos de fondo
+  const ok = confirm('Para que la portada salga con color:\n\n1. En el diálogo de impresión busca "Más ajustes" u "Opciones"\n2. Activa "Gráficos de fondo" o "Imprimir fondos"\n\n¿Continuar?');
+  if(ok) window.print();
 }
 
 function volverEditor(){
