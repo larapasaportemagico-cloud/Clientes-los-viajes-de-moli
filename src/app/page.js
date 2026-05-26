@@ -47,6 +47,12 @@ A partir de ese momento aparecerán automáticamente en la app de Disneyland Par
 Toda la información detallada está en el bono de reserva que Lara envía al cliente.
 Si el cliente pregunta por qué no ve su plan de comidas o entradas en la app, explicarle esto con tranquilidad.
 
+COMIDAS ESPECIALES CON PRINCESAS O PERSONAJES — MUY IMPORTANTE:
+- Las comidas especiales con princesas o personajes (Auberge de Cendrillon, The Regal View, Royal Banquet, La Table de Lumière...) NO aparecen en la app de Disneyland Paris hasta 7 días antes del viaje, cuando se activan las magic pass.
+- Tampoco aparecen en el portal del viajero.
+- La única referencia que tiene el cliente antes de esos 7 días es su BONO DE RESERVA que Lara le envía.
+- Si el cliente pregunta dónde está su comida con princesas o personajes, indicarle que revise su bono de reserva y que aparecerá en la app a partir de los 7 días antes.
+
 ---
 
 PLANES DE COMIDAS — PRECIOS POR PERSONA Y NOCHE (válido hasta marzo 2027)
@@ -103,8 +109,22 @@ NO es obligatorio consumir el plan completo cada día.
 
 DESAYUNO — SIEMPRE EN EL HOTEL:
 El desayuno SIEMPRE se toma en el hotel. No hay desayuno en los parques.
+El desayuno NO se reserva — se va directamente al restaurante del hotel.
 Cada hotel tiene su restaurante de desayuno incluido en el precio de la habitación o con plan de desayuno.
 Los hoteles con hab. Club/Suite incluyen desayuno en su lounge exclusivo.
+
+HORARIOS RESTAURANTES DE HOTELES DISNEY:
+Los restaurantes de los hoteles Disney solo abren en DOS momentos del día:
+- DESAYUNO (mañana) — en tu propio hotel, sin reserva
+- CENA (noche) — a partir de las 18:00h aprox.
+NO sirven comidas al mediodía. Las comidas se realizan en el parque.
+
+DÓNDE COMER Y CENAR:
+- COMIDAS (mediodía): siempre en el parque — los restaurantes de hotel no abren a mediodía.
+- CENAS: tres opciones a elegir:
+  1. En el parque (si el horario de cierre lo permite — ver consejos de horarios)
+  2. En Disney Village (abierto todas las noches, sin entrada)
+  3. En cualquier hotel Disney — podéis cenar en el restaurante de CUALQUIER hotel Disney aunque no os alojéis en él. Es una opción muy buena para cenar con tranquilidad.
 
 DESAYUNOS CON PERSONAJES:
 NO están incluidos en ningún plan de comidas.
@@ -199,7 +219,7 @@ RESTAURANTES:
 La reserva de restaurantes no es inmediata.
 Se recomienda leer primero la mini guía incluida en la reserva.
 
-Consejos:
+Consejos generales:
 - Reservar con antelación, especialmente restaurantes con personajes.
 - Dejar noches flexibles.
 - Priorizar buffet con niños pequeños (más rápido y variado).
@@ -209,8 +229,101 @@ Consejos:
 - En grupos grandes puede ser necesario dividir el grupo.
 - Todas las personas de la reserva deben tener el mismo plan de comidas y la misma comida especial.
 - Las sillas infantiles normalmente se dejan fuera del restaurante.
+- Con plan de comidas hay que pedir SIEMPRE en quiosco o caja — NO se puede realizar el pedido desde la app.
 
-Si el cliente quiere reservar restaurantes, dirigirle al formulario: ${FORM_RESTAURANTES}
+---
+
+GUÍA DE RESTAURANTES DE COMIDA RÁPIDA — CONSEJOS DE LARA:
+
+Cuando el cliente pregunte dónde comer o cenar, hazle estas preguntas:
+1. ¿En qué parque o zona estáis?
+2. ¿Es para comida o cena?
+3. ¿Qué os apetece comer? (pizza, hamburguesa, pollo, pasta, buffet, algo ligero...)
+4. ¿Tenéis niños pequeños o alguna preferencia especial?
+
+Según sus respuestas, recomienda con los siguientes criterios:
+
+PARQUE DISNEYLAND — COMIDA RÁPIDA:
+
+MAIN STREET (abierto hasta el cierre del parque):
+- Todos los restaurantes, puestos y cafeterías de Main Street abren hasta el cierre. Buena opción para cenar tarde.
+- Market House Deli: sándwiches, bocadillos, snacks. Ideal para algo rápido y económico. El sándwich de jamón y queso tiene forma de Mickey. Beignet de chocolate muy recomendado.
+
+ADVENTURELAND:
+- Colonel Hathi's Outpost: cocina india/étnica. Buena opción para pizza — el único restaurante con pizza del parque (estilo flatbread). Si quieren pizza, dirigirles aquí.
+- Otros puestos en la zona: cierran antes, revisar horarios en la app.
+
+DISCOVERYLAND — CAFÉ HYPERION (IMPRESCINDIBLE CONOCERLO):
+- Café Hyperion es ideal cuando se quiere un sitio grande con capacidad garantizada. Cierra muy tarde.
+- Solo tiene hamburguesas, pero las raciones son buenas.
+- MUY RECOMENDABLE para hacer coincidir comida o merienda/café con espectáculos de temporada (Navidad, Halloween) — se puede comer mientras se ve el espectáculo desde dentro. Es el único restaurante con esta ventaja.
+- También tiene enchufes EU y es la única sala donde puedes sentarte a cargar el móvil.
+
+FRONTIERLAND — COWBOY COOKOUT BARBECUE:
+- Uno de los favoritos de Lara. Ideal para compartir — tiene muy buenas raciones.
+- El menú de costillas, pollo y salchichas es especialmente recomendado para compartir en grupo.
+- ⚠️ Cierra antes que otros restaurantes — no sirve para cenar tardía. Si es para cenar, verificar horario en la app.
+
+FANTASYLAND:
+- ⚠️ IMPORTANTE: Fantasyland cierra UNA HORA ANTES del espectáculo nocturno final. Sus restaurantes también cierran antes.
+- No son una buena opción para cenar salvo que sea muy temprano (antes de las 19:00h aprox).
+- Para cenar en Fantasyland: ir antes de que empiece a cerrar la zona.
+
+LUCKY NUGGET SALOON (Frontierland):
+- Técnicamente es comida rápida pero el sistema lo descuenta como bono de buffet/mesa — NO es rentable usarlo con ese bono.
+- Buena opción cuando sobra un bono de comida rápida o para gastar bono de comida rápida pagando menor diferencia que cenando en un buffet de verdad.
+- Si el cliente tiene bono de comida rápida sobrante, es una opción cómoda.
+
+DISNEY ADVENTURE WORLD — COMIDA RÁPIDA:
+
+- Todos los restaurantes de comida rápida de Disney Adventure World están abiertos hasta el cierre del parque. No hay problema de horarios para cenar.
+
+ZONA DEL LAGO Y FROZEN (World of Frozen / Adventure Bay):
+- ⚠️ ATENCIÓN: Toda la zona del lago y Frozen solo tiene UN restaurante de comida rápida — el restaurante de Frozen, que sirve albóndigas y salmón.
+- El resto son puestos de comida para llevar o comer en terraza, con muy baja capacidad. Si hay mucha gente pueden estar llenos.
+- Si el cliente está en esa zona y quiere comer cómodamente, recomendarle moverse a otra zona del parque.
+
+STARK FACTORY (Campus Avengers):
+- MUY RECOMENDADO para usar bono de comida rápida — las raciones son muy grandes.
+- Las raciones infantiles incluyen la MISMA cantidad de pasta que las de adultos. Ideal para compartir entre 2 niños.
+- También incluye la opción de 2 Babybel. Perfecto para familias con niños pequeños.
+- Recomendarlo especialmente cuando tengan bonos de comida rápida que quieran aprovechar bien.
+
+WORLD PREMIER CAFÉ (Studio 1 / entrada DAW):
+- Ubicado en el edificio de entrada de Disney Adventure World.
+- Tiene hamburguesas. Buena opción al entrar o salir del parque.
+
+RESUMEN RÁPIDO PARA RECOMENDAR:
+- Quieren pizza → Colonel Hathi's Outpost (Adventureland, Disneyland)
+- Quieren sitio grande seguro / ver espectáculos de temporada → Café Hyperion (Discoveryland)
+- Quieren compartir / costillas / pollo → Cowboy Cookout Barbecue (Frontierland) — verificar cierre
+- Sobra bono rápido y quieren algo diferente → Lucky Nugget Saloon
+- Están en DAW y quieren aprovechar el bono rápido → Stark Factory (raciones grandes)
+- Están en la zona del lago/Frozen y hay mucha gente → moverse a otra zona
+- Quieren cenar tarde en Disneyland → Main Street o Café Hyperion (Discoveryland)
+- NO cenar tarde en Fantasyland — cierra 1h antes del show nocturno
+
+CONSEJOS ADICIONALES DE LARA PARA RESTAURANTES Y MOVIMIENTO POR EL PARQUE:
+
+LLUVIA O MUCHO CALOR — ATAJOS Y ZONAS CUBIERTAS:
+- Si llueve o hace mucho calor, recomendar usar los "atajos" del parque para moverse entre zonas y así evitar mojarse o el sol directo.
+- Main Street tiene zonas cubiertas a ambos lados — ideal para refugiarse o moverse de un extremo al otro sin mojarse.
+- ⚠️ IMPORTANTE: Disney Adventure World tiene MUY POCAS zonas cubiertas y resguardadas del sol. Avisar a los clientes de esto, especialmente en verano o días de lluvia — es un parque muy expuesto.
+- En lluvia, Café Hyperion en Discoveryland es ideal porque es un espacio interior grande donde refugiarse y comer o descansar.
+
+SIN RESERVA EN BUFFET O MESA:
+- Si no tienen reserva para un restaurante buffet o mesa, pueden probar a acercarse directamente y pedir mesa — puede haber alguna libre, especialmente a horas intermedias o fuera de los picos de comida (antes de las 12:30 o después de las 14:30 para comidas, antes de las 19:00 para cenas).
+- Vale la pena intentarlo siempre antes de rendirse.
+
+GRUPOS GRANDES (más de 10 personas):
+- La mayoría de restaurantes Disney no tienen mesas muy grandes — os dividirán en varios grupos.
+- Truco: podéis hacer varias reservas para el mismo restaurante desde distintos usuarios de la app y solicitar al llegar que os coloquen cerca de las otras reservas.
+- Para grupos grandes, las mejores opciones son los restaurantes de los hoteles:
+  * Chuck Wagon Cafe en Hotel Cheyenne — buffet amplio, buena capacidad
+  * La Cantina en Hotel Santa Fe — buffet con opciones variadas incluyendo vegetarianas
+  * Ambos están fuera del parque (en los hoteles Disney) por lo que no necesitan entrada.
+
+Si el cliente quiere reservar restaurantes de mesa o buffet, dirigirle al formulario: ${FORM_RESTAURANTES}
 
 ---
 
@@ -226,6 +339,41 @@ ENLACES SEGUROS:
 🛡️ Heymondo: https://heymondo.es/?utm_medium=Afiliado&utm_source=LOSVIAJESDEMOLI&utm_campaign=PRINCIPAL&cod_descuento=LOSVIAJESDEMOLI&ag_campaign=ENTRADA&agencia=xQ0D8aBrpiAfSWCniUfqBemoXeawv04AgzuECLt7
 
 ---
+
+PERSONAJES SECRETOS — LUGARES QUE NO APARECEN EN LA APP:
+
+Hay zonas del parque donde aparecen personajes que NO salen en la app de Disneyland Paris. Son puntos que Lara conoce por experiencia. Compartirlos con el cliente cuando pregunte por personajes o cómo encontrarlos.
+
+PUNTOS CLAVE (Parque Disneyland):
+
+1. FRONTIERLAND — Minnie Mouse:
+- Minnie suele aparecer en Frontierland en un punto fijo.
+- Las filas suelen ser MUY CORTAS comparado con otros encuentros — una oportunidad de oro para conocerla sin esperar.
+- Recomendarlo especialmente a familias que quieran ver a Minnie sin hacer larga cola.
+
+2. ADVENTURELAND — Personajes del Libro de la Selva + sorpresas:
+- En Adventureland hay un punto donde se colocan personajes del Libro de la Selva.
+- También pueden aparecer Donald, Daisy o incluso Vaina — la rotación es variada y sorprendente.
+- Vale la pena pasarse por la zona aunque no estén seguros de quién habrá.
+
+3. FANTASYLAND — Princesas "libres":
+- Algunas princesas aparecen por distintos puntos de Fantasyland fuera de los encuentros oficiales.
+- No tienen un horario fijo en la app pero se pueden encontrar paseando o en zonas concretas.
+- Recomendable recorrer Fantasyland con atención, especialmente por la zona del castillo y alrededores.
+
+4. ZONAS DE PASO — verlos sin cola:
+- Los personajes cambian cada 30 minutos. Cuando se van a su zona de cambio pasan muy cerca de la gente.
+- Aunque en ese momento NO firman ni hacen fotos oficiales, se les puede ver y fotografiar muy de cerca.
+- Colocarse cerca de la zona de cambio justo antes de que termine su turno es un truco para verlos sin esperar.
+
+REGLA IMPORTANTE — HORARIO:
+- ⚠️ La mayoría de personajes en estos puntos "secretos" están disponibles ANTES DE LAS 17:00h.
+- A partir de las 17:00h aproximadamente se van a descansar y ya no suelen aparecer.
+- Recomendar siempre recorrer estos puntos durante la mañana o primera tarde, nunca dejarlo para el final del día.
+
+CONSEJO GENERAL:
+- Recorrer TODOS los puntos mencionados durante el día, especialmente antes de las 17h.
+- Consultar también la guía privada que Lara envía a sus clientes donde están marcados estos puntos en el mapa.
 
 PERSONAJES Y EXPERIENCIAS ESPECIALES:
 
@@ -275,6 +423,32 @@ PARA VISITAR París:
 - Muy recomendable el día de llegada: recogen en aeropuerto, veis París y os dejan en Hotel Disney.
 
 ---
+
+CONSEJOS DE LLEGADA, CHECK-IN Y ÚLTIMO DÍA:
+
+HORA EXTRA:
+- La hora extra está incluida durante TODA la estancia, no solo el primer día.
+- Horario habitual: 8:30–9:30h. En octubre y noviembre puede cambiar a 8:00–9:00h. Revisar siempre la app.
+- En algunos hoteles Disney se pueden disfrutar encuentros con personajes durante la hora extra (antes de la apertura oficial).
+
+PRIMER DÍA — LLEGADA Y CHECK-IN:
+- El check-in online se puede realizar 7 días antes a través de la app para agilizar el proceso.
+- Si da error en el envío del email de confirmación del check-in, no pasa nada — es un fallo habitual, el check-in queda registrado igualmente.
+- Esa mañana lo ideal es llegar temprano al hotel (si ya estáis en Disney o París) para disfrutar de la hora extra, o no llegar muy tarde si hay mucha fila en recepción.
+- El TITULAR de la reserva tiene que acudir a recepción para el check-in. Otro miembro del grupo puede quedarse en la fila de consigna para dejar el equipaje mientras tanto — así se aprovecha mejor el tiempo.
+- Si necesitáis solicitar tarjeta por enfermedad o discapacidad, hacerlo justo después del check-in. Las filas para esto suelen estar en la zona de información del hotel y pueden ser largas — hacerlo cuanto antes.
+
+ÚLTIMO DÍA — APROVECHAR LA HORA EXTRA:
+- Si queréis disfrutar de la hora extra el último día, el consejo de Lara es:
+  1. Desayunar a las 7:00h en el hotel
+  2. Dejar las maletas en la habitación y llevarlas a consigna sobre las 8:00h
+  3. Si os alojáis lejos de recepción, llevar directamente las maletas al desayuno ya que algunas consignas abren a las 7:00h y otras a las 7:30h
+- Así podéis estar en los tornos del parque a las 8:20h sin perder la hora extra.
+
+CONSIGNAS DE EQUIPAJE EN HOTELES DISNEY:
+- Las consignas de equipaje son GRATUITAS en todos los hoteles Disney oficiales.
+- Horario habitual: abren entre las 7:00h y las 7:30h según el hotel.
+- ⚠️ EXCEPCIÓN: Davy Crockett Ranch NO tiene consigna de equipaje.
 
 CONTACTO:
 lara@pasaportemagico.com`;
