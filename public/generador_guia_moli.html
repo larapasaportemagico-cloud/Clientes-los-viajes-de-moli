@@ -17,30 +17,21 @@
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-height:100vh}
-
-/* ── EDITOR ── */
 #editor{max-width:780px;margin:0 auto;padding:24px 16px 60px}
 .editor-header{background:linear-gradient(135deg,var(--purple-d),var(--pink-d));border-radius:20px;padding:28px 28px 24px;margin-bottom:28px;color:white;text-align:center}
 .editor-header h1{font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:4px}
 .editor-header p{opacity:.8;font-size:.9rem}
-
 .section-card{background:white;border-radius:16px;padding:20px 22px;margin-bottom:18px;box-shadow:0 2px 12px rgba(91,45,142,.08)}
 .section-title{font-family:'Fredoka One',cursive;font-size:1.05rem;color:var(--purple-d);margin-bottom:16px;display:flex;align-items:center;gap:8px}
 .section-title span{font-size:1.3rem}
-
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-grid.three{grid-template-columns:1fr 1fr 1fr}
 .form-grid.full{grid-template-columns:1fr}
 .field{display:flex;flex-direction:column;gap:4px}
 .field label{font-size:.75rem;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:1px}
-.field input,.field select,.field textarea{
-  border:2px solid #e8e0f0;border-radius:10px;padding:9px 12px;
-  font-family:'Nunito',sans-serif;font-size:.9rem;color:var(--dark);
-  background:#faf8ff;outline:none;transition:border-color .15s
-}
+.field input,.field select,.field textarea{border:2px solid #e8e0f0;border-radius:10px;padding:9px 12px;font-family:'Nunito',sans-serif;font-size:.9rem;color:var(--dark);background:#faf8ff;outline:none;transition:border-color .15s}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple)}
 .field textarea{resize:vertical;min-height:70px}
-
 .toggle-row{display:flex;align-items:center;gap:12px;padding:10px 0}
 .toggle-label{font-weight:700;font-size:.9rem;flex:1}
 .toggle{position:relative;width:46px;height:26px;flex-shrink:0}
@@ -49,24 +40,18 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
 .toggle-slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:white;border-radius:50%;transition:.2s}
 .toggle input:checked+.toggle-slider{background:var(--purple)}
 .toggle input:checked+.toggle-slider:before{transform:translateX(20px)}
-
 .vuelo-block{background:#faf8ff;border:2px solid #e8e0f0;border-radius:12px;padding:14px;margin-bottom:10px}
 .vuelo-block h4{font-size:.82rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--purple);margin-bottom:10px}
-
 .dni-row{display:flex;gap:10px;margin-bottom:18px}
 .dni-row input{flex:1;border:2px solid var(--purple-l);border-radius:12px;padding:12px 16px;font-family:'Nunito',sans-serif;font-size:1rem;font-weight:700;letter-spacing:2px;outline:none;background:#faf8ff}
 .dni-row input:focus{border-color:var(--purple)}
 .btn-load{background:var(--purple);color:white;border:none;border-radius:12px;padding:12px 22px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;white-space:nowrap}
 .btn-load:hover{background:var(--purple-d)}
-
 .btn-generate{width:100%;background:linear-gradient(135deg,var(--purple),var(--pink));color:white;border:none;border-radius:14px;padding:16px;font-family:'Nunito',sans-serif;font-weight:900;font-size:1.1rem;cursor:pointer;margin-top:8px}
 .btn-generate:hover{opacity:.92}
-
 .status-msg{text-align:center;padding:8px;border-radius:10px;font-size:.85rem;font-weight:700;margin-bottom:14px;display:none}
 .status-ok{background:var(--green-l);color:var(--green-d);display:block}
 .status-err{background:var(--red-l);color:var(--red);display:block}
-
-/* plan de comidas chip */
 .bonos-preview{background:var(--teal-l);border:2px solid var(--teal);border-radius:12px;padding:14px 16px;margin-top:12px;display:none}
 .bonos-title{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--teal-d);margin-bottom:10px}
 .bonos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
@@ -75,14 +60,9 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
 .bono-num.regalo{color:var(--gold)}
 .bono-label{font-size:.72rem;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
 .bono-emoji{font-size:1.1rem;display:block;margin-bottom:2px}
-
 @media(max-width:560px){.form-grid,.form-grid.three{grid-template-columns:1fr}}
-
-/* ── GUÍA GENERADA ── */
 #guia{display:none}
 .guia-page{max-width:820px;margin:0 auto;padding:0 0 60px}
-
-/* portada */
 .g-cover{background:linear-gradient(135deg,var(--purple-d) 0%,var(--pink-d) 55%,var(--pink) 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 24px;position:relative;overflow:hidden;page-break-after:always}
 .g-cover::before{content:'✨🏰✨';position:absolute;top:24px;font-size:2rem;opacity:.15;letter-spacing:30px}
 .g-cover-badge{background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:50px;padding:7px 24px;color:white;font-size:.8rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;display:inline-block}
@@ -91,27 +71,19 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
 .g-cover .g-nombres{font-family:'Fredoka One',cursive;font-size:clamp(1.8rem,5vw,3rem);color:var(--gold);margin:16px 0 8px;text-shadow:0 2px 12px rgba(0,0,0,.3)}
 .g-cover .g-fechas{color:rgba(255,255,255,.85);font-size:1.1rem;font-weight:700;margin-bottom:32px}
 .g-cover .g-gracias{color:white;font-size:1.2rem;font-weight:700;opacity:.9}
-
-/* secciones */
 .g-section{padding:32px 24px;border-bottom:3px solid var(--purple-l)}
 .g-section:last-child{border-bottom:none}
 .g-section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px}
 .g-section-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
 .g-section-title{font-family:'Fredoka One',cursive;font-size:1.5rem;color:var(--purple-d)}
-
-/* tabla vuelos */
 .g-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:.85rem}
 .g-table th{background:var(--purple-d);color:white;padding:8px 10px;text-align:left;font-size:.75rem;font-weight:800}
 .g-table th:first-child{border-radius:8px 0 0 0}.g-table th:last-child{border-radius:0 8px 0 0}
 .g-table td{padding:9px 10px;border-bottom:1px solid #f0f0f0;vertical-align:top}
 .g-table tr:nth-child(even) td{background:#fafafa}
 .g-table .bold{font-weight:800}
-
-/* chips */
 .g-chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 .g-chip{padding:5px 14px;border-radius:50px;font-size:.78rem;font-weight:700;border:2px solid}
-
-/* bocadillo */
 .g-bubble{border-radius:18px;padding:16px 20px;margin:14px 0;font-size:.9rem;line-height:1.6;font-weight:600}
 .g-bubble strong{display:block;font-family:'Fredoka One',cursive;font-size:1rem;margin-bottom:4px}
 .gb-purple{background:var(--purple-l);border:2px solid var(--purple);color:var(--purple-d)}
@@ -119,52 +91,33 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
 .gb-teal{background:var(--teal-l);border:2px solid var(--teal-d);color:var(--teal-d)}
 .gb-gold{background:var(--gold-l);border:2px solid var(--gold);color:#7A5000}
 .gb-green{background:var(--green-l);border:2px solid var(--green-d);color:var(--green-d)}
-
-/* alert */
 .g-alert{background:var(--red-l);border-left:5px solid var(--red);border-radius:0 12px 12px 0;padding:11px 16px;font-size:.85rem;font-weight:700;color:var(--red);margin:10px 0;display:flex;gap:10px}
-
-/* info box */
 .g-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
 .g-info-item{background:#faf8ff;border:2px solid var(--purple-l);border-radius:14px;padding:14px 16px}
 .g-info-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#aaa;margin-bottom:4px}
 .g-info-value{font-size:.95rem;font-weight:800;color:var(--dark)}
 .g-info-sub{font-size:.78rem;color:#888;margin-top:2px}
-
-/* consejos */
 .g-consejos{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .g-consejo{display:flex;gap:12px;padding:10px 14px;border-radius:14px;background:var(--gray);font-size:.86rem;line-height:1.5}
 .g-consejo .ico{font-size:1.2rem;flex-shrink:0;margin-top:1px}
-
-/* checklist */
 .g-checklist{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .g-checklist li{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-radius:12px;background:var(--gray);font-size:.86rem;font-weight:600}
 .g-check{width:20px;height:20px;border:2.5px solid var(--purple);border-radius:6px;flex-shrink:0;margin-top:1px}
-
-/* hora extra atracciones */
 .g-atracciones{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
 .g-park-block{background:var(--gray);border-radius:14px;padding:14px 16px}
 .g-park-name{font-family:'Fredoka One',cursive;font-size:.95rem;color:var(--purple-d);margin-bottom:8px}
 .g-park-list{list-style:none;display:flex;flex-direction:column;gap:4px}
 .g-park-list li{font-size:.82rem;padding:3px 0;border-bottom:1px dashed #e0e0e0;display:flex;align-items:center;gap:6px}
 .g-park-list li::before{content:'⚡';font-size:.75rem}
-
-/* print */
 .btn-print{position:fixed;bottom:24px;right:24px;background:linear-gradient(135deg,var(--purple),var(--pink));color:white;border:none;border-radius:50px;padding:14px 24px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;box-shadow:0 4px 20px rgba(91,45,142,.4);z-index:100;display:none}
 .btn-back{position:fixed;bottom:24px;left:24px;background:white;color:var(--purple);border:2px solid var(--purple);border-radius:50px;padding:12px 20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:.9rem;cursor:pointer;z-index:100;display:none}
-
 @media print{
   .btn-print,.btn-back{display:none!important}
   #editor{display:none!important}
   #guia{display:block!important}
   body{background:white!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  .g-cover{
-    min-height:100vh;page-break-after:always;
-    background:linear-gradient(135deg,#3D1A6B 0%,#C01060 55%,#F5287A 100%)!important;
-    -webkit-print-color-adjust:exact!important;print-color-adjust:exact!important
-  }
-  .g-cover h1,.g-cover .g-nombres,.g-cover .g-fechas,.g-cover .g-gracias,.g-cover-badge,.g-cover div{
-    color:white!important;-webkit-print-color-adjust:exact!important
-  }
+  .g-cover{min-height:100vh;page-break-after:always;background:linear-gradient(135deg,#3D1A6B 0%,#C01060 55%,#F5287A 100%)!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .g-cover h1,.g-cover .g-nombres,.g-cover .g-fechas,.g-cover .g-gracias,.g-cover-badge,.g-cover div{color:white!important;-webkit-print-color-adjust:exact!important}
   .g-cover h1 span{color:#F0A500!important}
   .g-cover .g-nombres{color:#F0A500!important}
   .g-section{page-break-inside:avoid;border-bottom:2px solid #F0E8FA!important}
@@ -182,21 +135,18 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
   .g-section-icon{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   .g-table th{background:#3D1A6B!important;color:white!important;-webkit-print-color-adjust:exact!important}
   .g-table tr:nth-child(even) td{background:#fafafa!important}
-  /* Fondo secciones alternas para separar visualmente */
   .g-section:nth-child(even){background:#faf8ff!important}
 }
 </style>
 </head>
 <body>
 
-<!-- ══ EDITOR ══════════════════════════════════════ -->
 <div id="editor">
   <div class="editor-header">
     <h1>🪄 Generador de Guía de Viaje</h1>
     <p>Los Viajes de Moli · Agente Oficial Disney®</p>
   </div>
 
-  <!-- DNI -->
   <div class="section-card">
     <div class="section-title"><span>🔍</span> Cargar cliente del portal</div>
     <div class="dni-row">
@@ -206,13 +156,11 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
     <div id="statusMsg" class="status-msg"></div>
   </div>
 
-  <!-- DATOS PRINCIPALES -->
   <div class="section-card">
     <div class="section-title"><span>👤</span> Datos del viaje</div>
     <div class="form-grid">
       <div class="field"><label>Nombre/s del cliente</label><input type="text" id="nombres" placeholder="Marina y Andrea"></div>
       <div class="field"><label>Nº Reserva / Localizador</label><input type="text" id="localizador" placeholder="31275327"></div>
-
       <div class="field"><label>Hotel Disney</label>
         <select id="hotel" onchange="actualizarHotel()">
           <option value="">Selecciona hotel...</option>
@@ -232,31 +180,19 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
     </div>
   </div>
 
-  <!-- PLAN COMIDAS -->
   <div class="section-card">
     <div class="section-title"><span>🍽️</span> Plan de comidas</div>
     <div class="form-grid">
-      <div class="field"><label>Plan de comidas</label>
-        <input type="text" id="planComidas" placeholder="Ej: Media Pensión Plus" onchange="calcularBonos()">
-      </div>
+      <div class="field"><label>Plan de comidas</label><input type="text" id="planComidas" placeholder="Ej: Media Pensión Plus" onchange="calcularBonos()"></div>
       <div class="field"><label>Noches</label><input type="number" id="noches" min="1" max="14" value="2" onchange="calcularBonos()"></div>
     </div>
     <div id="bonosPreview" class="bonos-preview"></div>
     <div style="margin-top:14px">
       <div style="font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:10px">🧮 Bonos totales del viaje (edita según el plan real)</div>
       <div class="form-grid three">
-        <div class="field">
-          <label>☀️ Desayunos</label>
-          <input type="number" id="bonoDesayunos" min="0" max="30" placeholder="0">
-        </div>
-        <div class="field">
-          <label>⚡ Comidas rápidas</label>
-          <input type="number" id="bonoRapidas" min="0" max="30" placeholder="0">
-        </div>
-        <div class="field">
-          <label>🍽️ Buffet / Mesa</label>
-          <input type="number" id="bonoBuffet" min="0" max="30" placeholder="0">
-        </div>
+        <div class="field"><label>☀️ Desayunos</label><input type="number" id="bonoDesayunos" min="0" max="30" placeholder="0"></div>
+        <div class="field"><label>⚡ Comidas rápidas</label><input type="number" id="bonoRapidas" min="0" max="30" placeholder="0"></div>
+        <div class="field"><label>🍽️ Buffet / Mesa</label><input type="number" id="bonoBuffet" min="0" max="30" placeholder="0"></div>
       </div>
       <div class="field" style="margin-top:10px">
         <label>🎁 Bono regalo Disney</label>
@@ -270,7 +206,6 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
     <div class="field" style="margin-top:12px"><label>Comidas especiales reservadas</label><input type="text" id="comidasEspeciales" placeholder="Ej: Royal Banquet 12/12 a las 13:00 · Bistrot Chez Rémy 13/12 a las 20:00"></div>
   </div>
 
-  <!-- VUELOS -->
   <div class="section-card">
     <div class="section-title"><span>✈️</span> Vuelos</div>
     <div class="vuelo-block">
@@ -298,7 +233,6 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
     <div class="field"><label>Localizador vuelo (para check-in aerolínea)</label><input type="text" id="locVuelo" placeholder="RKB7WJ"></div>
   </div>
 
-  <!-- TRASLADO -->
   <div class="section-card">
     <div class="section-title"><span>🚌</span> Traslado</div>
     <div class="toggle-row">
@@ -321,7 +255,6 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
     </div>
   </div>
 
-  <!-- EXTRAS -->
   <div class="section-card">
     <div class="section-title"><span>✨</span> Extras del paquete</div>
     <div class="toggle-row">
@@ -353,7 +286,6 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
   <button class="btn-generate" onclick="generarGuia()">✨ Generar guía personalizada</button>
 </div>
 
-<!-- ══ GUÍA GENERADA ══════════════════════════════════ -->
 <div id="guia">
   <div class="guia-page" id="guiaContent"></div>
 </div>
@@ -362,8 +294,7 @@ body{font-family:'Nunito',sans-serif;background:#f0e8fa;color:var(--dark);min-he
 <button class="btn-back" id="btnBack" onclick="volverEditor()">← Editar</button>
 
 <script>
-const WEBHOOK = 'https://n8n-production-23c3.up.railway.app/webhook/a2684f59-a8ad-4c5c-8a0b-2be1b2dfda69';
-const API_RESERVA = '/api/reserva';
+const API_RESERVA = 'https://losviajesdemoli.app.n8n.cloud/webhook/a2684f59-a8ad-4c5c-8a0b-2be1b2dfda69';
 
 const HOTEL_NAMES = {
   disneyland:'Disneyland® Hotel',newyork:'Hotel New York – The Art of Marvel',
@@ -383,18 +314,6 @@ const HORA_EXTRA = {
   otro:{tiempo:null,parque:null}
 };
 
-const BONO_INFO = {
-  '':{titulo:'Sin plan de comidas',detalle:'Todas las comidas se pagan en el momento.'},
-  desayuno:{titulo:'Solo Desayuno',detalle:'Desayuno buffet en el hotel cada mañana. El resto de comidas se pagan aparte.'},
-  mp_standard:{titulo:'Media Pensión Standard',detalle:'Desayuno buffet + 1 comida/cena en restaurante de servicio rápido por noche. Bonos flexibles — úsalos cuando quieras.'},
-  mp_plus:{titulo:'Media Pensión Plus',detalle:'Desayuno buffet + 1 comida/cena en buffet o mesa por noche. Bonos flexibles.'},
-  pc_standard:{titulo:'Pensión Completa Standard',detalle:'Desayuno buffet + 1 comida/cena buffet/mesa + 1 comida/cena rápida por noche + 1 bono rápido de REGALO de Disney. Bonos flexibles.'},
-  pc_plus:{titulo:'Pensión Completa Plus',detalle:'Desayuno buffet + 2 comidas/cenas en buffet o mesa por noche + 1 bono buffet/mesa de REGALO de Disney. Bonos flexibles.'},
-  smart:{titulo:'Pensión Completa Smart',detalle:'Desayuno buffet + 2 comidas/cenas buffet o mesa por noche + 1 bono de REGALO. ⚠️ Solo válido en restaurantes de tu hotel y Disney Village.'},
-  extra_plus:{titulo:'Pensión Completa Extra Plus',detalle:'Desayuno buffet + 2 comidas/cenas buffet/mesa por noche + 1 de REGALO + 1 bebida extra/noche + 1 snack/noche + 1 comida con personajes incluida por estancia.'},
-  premium:{titulo:'Pensión Completa Premium',detalle:'Desayuno buffet + 2 comidas/cenas buffet/mesa por noche + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes sin suplemento.'}
-};
-
 function toggleTraslado(){
   document.getElementById('trasladoFields').style.display = document.getElementById('tieneTraslado').checked ? 'block':'none';
 }
@@ -410,39 +329,25 @@ function calcularBonos(){
   const noches = parseInt(document.getElementById('noches').value)||2;
   const el = document.getElementById('bonosPreview');
   if(!planRaw){el.style.display='none';return;}
-
-  let desayunos=0, rapidas=0, buffetMesa=0, regalo='', extras='';
-
+  let desayunos=0,rapidas=0,buffetMesa=0,regalo='';
   if(planRaw.includes('desayuno')&&!planRaw.includes('media')&&!planRaw.includes('pension')&&!planRaw.includes('pc')){ desayunos=noches; }
   else if(planRaw.includes('standard')||planRaw.includes('estándar')){
     desayunos=noches;
     if(planRaw.includes('media')||planRaw.includes('mp')){ rapidas=noches; }
     else { buffetMesa=noches; rapidas=noches; regalo='rapida'; }
   }
-  else if(planRaw.includes('smart')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; extras='⚠️ Solo válido en tu hotel y Disney Village'; }
-  else if(planRaw.includes('extra')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; extras='+ 1 comida con personajes · + bebida y snack por noche'; }
-  else if(planRaw.includes('premium')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; extras='✨ Todas las comidas pueden ser con personajes sin suplemento'; }
+  else if(planRaw.includes('smart')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; }
+  else if(planRaw.includes('extra')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; }
+  else if(planRaw.includes('premium')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; }
   else if(planRaw.includes('media')||planRaw.includes('mp')){ desayunos=noches; buffetMesa=noches; }
   else if(planRaw.includes('pension')||planRaw.includes('pensión')||planRaw.includes('pc')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; }
-
-  const info = {titulo: document.getElementById('planComidas').value, detalle:''};
-  let items = '';
-  if(desayunos) items+=`<div class="bono-item"><span class="bono-emoji">☀️</span><div class="bono-num">${desayunos}</div><div class="bono-label">Desayunos</div></div>`;
-  if(rapidas) items+=`<div class="bono-item"><span class="bono-emoji">⚡</span><div class="bono-num">${rapidas}</div><div class="bono-label">Comida rápida</div></div>`;
-  if(buffetMesa) items+=`<div class="bono-item"><span class="bono-emoji">🍽️</span><div class="bono-num">${buffetMesa}</div><div class="bono-label">Buffet / Mesa</div></div>`;
-  if(regalo) items+=`<div class="bono-item"><span class="bono-emoji">🎁</span><div class="bono-num regalo">+1</div><div class="bono-label">REGALO Disney</div></div>`;
-
-  // Rellenar campos editables con los valores calculados
   document.getElementById('bonoDesayunos').value = desayunos||'';
   document.getElementById('bonoRapidas').value = rapidas||'';
   document.getElementById('bonoBuffet').value = buffetMesa||'';
-  if(regalo==='+ 1 comida rápida REGALO') document.getElementById('bonoRegalo').value='rapida';
+  if(regalo==='rapida') document.getElementById('bonoRegalo').value='rapida';
   else if(regalo) document.getElementById('bonoRegalo').value='buffet';
   else document.getElementById('bonoRegalo').value='';
-
-  el.innerHTML = `
-    <div class="bonos-title">🍽️ ${info.titulo} — ${noches} noches · <span style="font-weight:600;opacity:.8">revisa y ajusta los bonos si hace falta</span></div>
-  `;
+  el.innerHTML = `<div class="bonos-title">🍽️ ${document.getElementById('planComidas').value} — ${noches} noches · <span style="font-weight:600;opacity:.8">revisa y ajusta si hace falta</span></div>`;
   el.style.display='block';
 }
 function actualizarHotel(){}
@@ -454,11 +359,12 @@ async function cargarCliente(){
   try{
     const res = await fetch(API_RESERVA,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({dni})});
     const data = await res.json();
-    if(data.encontrado){
-      const d = data.datos;
+    // n8n puede devolver array o objeto
+    const raw = Array.isArray(data) ? data[0] : data;
+    const d = raw?.json || raw;
+    if(d && d.Nombre){
       if(d.Nombre) document.getElementById('nombres').value=d.Nombre;
       if(d['Numero reserva']) document.getElementById('localizador').value=d['Numero reserva'];
-      // Parsear fecha DD/MM/YYYY a YYYY-MM-DD
       function toInputDate(str){
         if(!str) return '';
         const p=str.trim().split('/');
@@ -477,7 +383,6 @@ async function cargarCliente(){
       }
       if(d['Nº personas y edad niños']) document.getElementById('habitaciones').value=d['Nº personas y edad niños'];
       if(d['Plan de comidas']) document.getElementById('planComidas').value=d['Plan de comidas'];
-      // hotel
       const hmap={'disneyland hotel':'disneyland','new york':'newyork','marvel':'newyork','newport':'newport','sequoia':'sequoia','cheyenne':'cheyenne','santa fe':'santafe','davy':'davy','crockett':'davy'};
       if(d.Hotel){
         const hl=d.Hotel.toLowerCase();
@@ -487,7 +392,7 @@ async function cargarCliente(){
       if(d.Seguro&&d.Seguro!=='0'&&d.Seguro!==''){document.getElementById('tieneSeguro').checked=true;toggleSeguro();}
       if(d.Traslado&&d.Traslado!=='0'&&d.Traslado!==''){document.getElementById('tieneTraslado').checked=true;toggleTraslado();}
       calcularBonos();
-      showStatus(`✅ Datos de ${d.Nombre||dni} cargados correctamente`,'ok');
+      showStatus('✅ Datos de '+d.Nombre+' cargados correctamente','ok');
     } else {
       showStatus('No se encontró ningún cliente con ese DNI','err');
     }
@@ -503,23 +408,20 @@ function showStatus(msg,type){
 function generarGuia(){
   const hotel = document.getElementById('hotel').value;
   const nombres = document.getElementById('nombres').value||'Viajeros';
-  // Formatear fechas desde checkin/checkout
   function formatFechaEs(val){
     if(!val) return '';
     const p=val.split('-');
     if(p.length===3){
       const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-      return `${parseInt(p[2])} de ${meses[parseInt(p[1])-1]} de ${p[0]}`;
+      return parseInt(p[2])+' de '+meses[parseInt(p[1])-1]+' de '+p[0];
     }
     return val;
   }
   const checkinFmt = document.getElementById('checkin').value;
   const checkoutFmt = document.getElementById('checkout').value;
-  const fechas = checkinFmt&&checkoutFmt ? `${formatFechaEs(checkinFmt)} al ${formatFechaEs(checkoutFmt)}` : 'Próximamente';
+  const fechas = checkinFmt&&checkoutFmt ? formatFechaEs(checkinFmt)+' al '+formatFechaEs(checkoutFmt) : 'Próximamente';
   const localizador = document.getElementById('localizador').value;
   const habitaciones = document.getElementById('habitaciones').value;
-  const checkin = document.getElementById('checkin').value;
-  const checkout = document.getElementById('checkout').value;
   const noches = parseInt(document.getElementById('noches').value)||2;
   const plan = (document.getElementById('planComidas').value||'').toLowerCase();
   const comidasEsp = document.getElementById('comidasEspeciales').value;
@@ -540,18 +442,20 @@ function generarGuia(){
     ida:{origen:document.getElementById('v1origen').value,destino:document.getElementById('v1destino').value,numero:document.getElementById('v1numero').value,compania:document.getElementById('v1compania').value,salida:document.getElementById('v1salida').value,llegada:document.getElementById('v1llegada').value},
     vuelta:{origen:document.getElementById('v2origen').value,destino:document.getElementById('v2destino').value,numero:document.getElementById('v2numero').value,compania:document.getElementById('v2compania').value,salida:document.getElementById('v2salida').value,llegada:document.getElementById('v2llegada').value}
   };
-  const bonoInfo = {titulo: document.getElementById('planComidas').value||'Sin plan de comidas', detalle:''};
   const bonoDesayunos = parseInt(document.getElementById('bonoDesayunos').value)||0;
   const bonoRapidas = parseInt(document.getElementById('bonoRapidas').value)||0;
   const bonoBuffet = parseInt(document.getElementById('bonoBuffet').value)||0;
   const bonoRegalo = document.getElementById('bonoRegalo').value;
+  const bonoInfo = {titulo: document.getElementById('planComidas').value||'Sin plan de comidas'};
   const horaExtra = HORA_EXTRA[hotel];
   const esSantaFeDavy = hotel==='santafe'||hotel==='davy';
   const esDavy = hotel==='davy';
-  const tienePiscina = !['cheyenne','santafe'].includes(hotel);
+  // Hoteles con maletas a habitación (Newport, NY Marvel, Disneyland Hotel)
+  const maletasHabitacion = ['newport','newyork','disneyland'].includes(hotel);
+  // Hoteles con código de habitación explicado
+  const hotelCodigo = ['santafe','cheyenne','sequoia'].includes(hotel);
 
   let html = `
-  <!-- PORTADA -->
   <div class="g-cover">
     <div class="g-cover-badge">⭐ Los Viajes de Moli · Agente Oficial Disney®</div>
     <h1>Disneyland<br><span>Paris</span></h1>
@@ -561,7 +465,6 @@ function generarGuia(){
     <div class="g-gracias">Gracias por hacerlo conmigo 💜</div>
   </div>
 
-  <!-- HOTEL -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--purple-l)">🏨</div>
@@ -575,35 +478,50 @@ function generarGuia(){
       ${checkoutFmt?`<div class="g-info-item"><div class="g-info-label">Check-out</div><div class="g-info-value">${formatFechaEs(checkoutFmt)}</div><div class="g-info-sub">Antes de las 11:00h</div></div>`:''}
     </div>
     <div class="g-bubble gb-teal" style="margin-top:12px">
-      <strong>🛎️ Tu habitación</strong>
-      La habitación estará disponible a partir de las 15:00h. Recibirás un SMS con el número de habitación cuando esté lista. Puedes revisar su ubicación en el mapa del hotel disponible en recepción.
+      <strong>🛎️ Check-in y acceso al parque</strong>
+      Recibirás un SMS aproximadamente a las 15:00h con el número de habitación cuando esté lista. <strong>No es necesario esperar para entrar al parque</strong> — puedes acceder directamente con el código QR de tu reserva en la app de Disneyland Paris sin pasar por recepción.
+    </div>
+    ${maletasHabitacion?`
+    <div class="g-bubble gb-green">
+      <strong>🧳 Maletas directamente a tu habitación</strong>
+      En el ${hotelNombre} las maletas se llevan directamente a tu habitación. No necesitas recogerlas en consigna — estarán esperándote cuando llegues a la habitación.
+    </div>`:`
+    <div class="g-bubble gb-purple">
+      <strong>🧳 Consigna de equipaje</strong>
+      Puedes dejar las maletas en la consigna del hotel (abre a las 07:30h). La consigna del parque y la estación de tren son de pago.
+    </div>`}
+    ${hotelCodigo?`
+    <div class="g-bubble gb-gold">
+      <strong>🔢 Cómo leer el número de habitación</strong>
+      En el ${hotelNombre} el número de habitación tiene un código: las <strong>2 primeras cifras</strong> corresponden al <strong>edificio</strong>, la <strong>tercera cifra</strong> a la <strong>planta</strong> y el <strong>resto</strong> al número de <strong>habitación</strong>. Por ejemplo: habitación <strong>03215</strong> → Edificio 03 · Planta 2 · Habitación 15.
+    </div>`:''}
+    <div class="g-bubble gb-gold" style="margin-top:4px">
+      <strong>🗺️ Mapa del parque</strong>
+      Lo encontrarás en el sobre que te entregan durante el check-in en el hotel. También está disponible en la app de Disneyland Paris en la sección <strong>Magic Pass</strong>.
     </div>
     ${esDavy?`<div class="g-alert"><span>⚠️</span><span><strong>Davy Crockett Ranch:</strong> No hay traslados gratuitos al parque. Imprescindible vehículo propio. Tasa turística a pagar en el hotel.</span></div>`:''}
-    ${hotel==='otro'?`<div class="g-alert"><span>⚠️</span><span>Los hoteles no Disney requieren pago de <strong>tasa turística en persona</strong> al hacer check-in. No incluye hora extra ni autobús gratuito al parque.</span></div>`:''}
+    ${hotel==='otro'?`<div class="g-alert"><span>⚠️</span><span>Los hoteles no Disney requieren pago de <strong>tasa turística por adulto y noche en persona</strong> al hacer check-in. No incluye hora extra ni autobús gratuito al parque. Pueden requerir un <strong>depósito o fianza a la llegada con tarjeta de crédito física</strong> — no se acepta tarjeta digital ni contactless.</span></div>`:''}
   </div>
 
-  <!-- PLAN DE COMIDAS -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--pink-l)">🍽️</div>
       <div class="g-section-title">Plan de comidas</div>
     </div>
     ${(()=>{
-      const desayunos=bonoDesayunos,rapidas=bonoRapidas,buffetMesa=bonoBuffet;
-      const regalo=bonoRegalo;
-      let extras='';
-      if(plan==='smart') extras='⚠️ Solo válido en restaurantes de tu hotel y Disney Village';
-      else if(plan==='extra_plus') extras='+ 1 comida con personajes por estancia · + bebida y snack por noche';
-      else if(plan==='premium') extras='✨ Todas las comidas pueden ser con personajes sin suplemento adicional';
       if(!plan) return '';
       const col='border:2px solid rgba(91,45,142,.15);border-radius:14px;padding:14px 10px;text-align:center;background:white';
       const num='font-family:Fredoka One,cursive;font-size:2.2rem;line-height:1;color:#3D1A6B';
       const lbl='font-size:.7rem;font-weight:800;text-transform:uppercase;color:#888;letter-spacing:.5px;margin-top:2px';
       let items='';
-      if(desayunos) items+=`<div style="${col}"><span style="font-size:1.2rem">☀️</span><div style="${num}">${desayunos}</div><div style="${lbl}">Desayunos</div></div>`;
-      if(rapidas) items+=`<div style="${col}"><span style="font-size:1.2rem">⚡</span><div style="${num}">${rapidas}</div><div style="${lbl}">Comida rápida</div></div>`;
-      if(buffetMesa) items+=`<div style="${col}"><span style="font-size:1.2rem">🍽️</span><div style="${num}">${buffetMesa}</div><div style="${lbl}">Buffet / Mesa</div></div>`;
-      if(regalo) items+=`<div style="${col}"><span style="font-size:1.2rem">🎁</span><div style="font-family:Fredoka One,cursive;font-size:2.2rem;line-height:1;color:var(--gold)">+1</div><div style="${lbl}">REGALO Disney</div></div>`;
+      if(bonoDesayunos) items+=`<div style="${col}"><span style="font-size:1.2rem">☀️</span><div style="${num}">${bonoDesayunos}</div><div style="${lbl}">Desayunos</div></div>`;
+      if(bonoRapidas) items+=`<div style="${col}"><span style="font-size:1.2rem">⚡</span><div style="${num}">${bonoRapidas}</div><div style="${lbl}">Comida rápida</div></div>`;
+      if(bonoBuffet) items+=`<div style="${col}"><span style="font-size:1.2rem">🍽️</span><div style="${num}">${bonoBuffet}</div><div style="${lbl}">Buffet / Mesa</div></div>`;
+      if(bonoRegalo) items+=`<div style="${col}"><span style="font-size:1.2rem">🎁</span><div style="font-family:Fredoka One,cursive;font-size:2.2rem;line-height:1;color:var(--gold)">+1</div><div style="${lbl}">REGALO Disney</div></div>`;
+      let extras='';
+      if(plan.includes('smart')) extras='⚠️ Solo válido en restaurantes de tu hotel y Disney Village';
+      else if(plan.includes('extra')) extras='+ 1 comida con personajes por estancia · + bebida y snack por noche';
+      else if(plan.includes('premium')) extras='✨ Todas las comidas pueden ser con personajes sin suplemento adicional';
       return `<div style="background:var(--teal-l);border:2px solid var(--teal);border-radius:16px;padding:16px;margin-bottom:14px">
         <div style="font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--teal-d);margin-bottom:12px">🍽️ ${bonoInfo.titulo} · ${noches} noches</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px">${items}</div>
@@ -611,30 +529,20 @@ function generarGuia(){
         <div style="margin-top:8px;font-size:.78rem;color:var(--teal-d);opacity:.75">💡 Los bonos son flexibles — úsalos cuando quieras durante toda la estancia</div>
       </div>`;
     })()}
-    <div class="g-bubble gb-purple">
-      <strong>🍽️ ${bonoInfo.titulo}</strong>
-      ${bonoInfo.detalle}
-    </div>
-    ${plan&&plan!==''?`
+    ${plan?`
     <div class="g-bubble gb-teal">
       <strong>☀️ Desayuno — siempre en el hotel (7:00 a 10:30h)</strong>
-      El desayuno se toma siempre en el restaurante de tu hotel. No hay desayuno en los parques.
+      El desayuno se toma siempre en el restaurante de tu hotel. No hay desayuno en los parques. No es necesario reservar.
     </div>
     <div class="g-bubble gb-gold">
       <strong>💡 Flexibilidad de bonos</strong>
       Los bonos NO caducan cada día. Puedes acumularlos y usarlos como quieras durante toda la estancia. Total libertad para distribuirlos según el día.
+    </div>
+    <div class="g-bubble gb-purple">
+      <strong>⚠️ Con plan de comidas NO se puede pedir desde la app</strong>
+      Si tenéis plan de comidas, el pedido siempre se realiza en el <strong>quiosco o en caja</strong> directamente en el restaurante.
     </div>`:''}
-    ${esSantaFeDavy&&plan.includes('pc_standard')?`
-    <div class="g-bubble gb-green">
-      <strong>⭐ Consejo especial para tu hotel</strong>
-      En el ${hotelNombre} la Pensión Completa Standard es la mejor opción: una comida del día es en restaurante rápido (ideal para días de muchas atracciones) y la otra en buffet o mesa. ¡Mejor relación calidad-precio de todos los hoteles Disney!
-    </div>`:''}
-    ${plan==='premium'?`<div class="g-bubble gb-pink"><strong>✨ Plan Premium</strong>TODAS las comidas pueden ser con personajes en el Royal Banquet y La Table de Lumière sin suplemento adicional. Una experiencia única.</div>`:''}
-    ${comidasEsp?`
-    <div class="g-bubble gb-pink">
-      <strong>👑 Comidas especiales reservadas</strong>
-      ${comidasEsp}
-    </div>`:''}
+    ${comidasEsp?`<div class="g-bubble gb-pink"><strong>👑 Comidas especiales reservadas</strong>${comidasEsp}</div>`:''}
     <div class="g-bubble gb-gold" style="margin-top:4px">
       <strong>⚠️ Importante — Los planes de comidas</strong>
       Los planes NO se pueden comprar una vez en el hotel. Si tienes cualquier duda sobre tu plan, contacta con Lara.
@@ -642,7 +550,6 @@ function generarGuia(){
   </div>
 
   ${v.ida.numero||v.vuelta.numero?`
-  <!-- VUELOS -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--teal-l)">✈️</div>
@@ -659,7 +566,6 @@ function generarGuia(){
   </div>`:''}
 
   ${tieneTraslado?`
-  <!-- TRASLADO -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--green-l)">🚌</div>
@@ -672,43 +578,37 @@ function generarGuia(){
     </div>
     <div class="g-bubble gb-teal">
       <strong>🏨 Recogida en el hotel para la vuelta</strong>
-      El día de salida habrá una persona esperando en la puerta del hotel (exterior) con un cartel. Debes estar listo <strong>15 minutos antes</strong> de la hora programada. El transportista esperará un máximo de 15 minutos.
+      El día de salida habrá una persona esperando en la puerta del hotel (exterior) con un cartel. Debes estar listo <strong>15 minutos antes</strong> de la hora programada.
       ${horaRecogida?`<br><br>⏰ <strong>Hora de recogida: ${horaRecogida}</strong>`:''}
     </div>`:''}
     ${tipoTraslado==='shuttle'||tipoTraslado==='ambos'?`
     <div class="g-bubble gb-gold">
       <strong>🚌 Magical Shuttle — Bus regular</strong>
-      Espera fuera, en la puerta de tu hotel al autobús <strong>Magical Shuttle</strong>. Indica en el frontal si va al aeropuerto CDG o ORY. Se recomienda coger el autobús <strong>3 horas y media antes</strong> de la salida del vuelo.
+      Espera en la puerta de tu hotel al autobús <strong>Magical Shuttle</strong>. Se recomienda cogerlo <strong>3 horas y media antes</strong> de la salida del vuelo.
     </div>`:''}
     ${telTraslado||empresaTraslado?`
     <div class="g-info">
       ${empresaTraslado?`<div class="g-info-item"><div class="g-info-label">Empresa</div><div class="g-info-value">${empresaTraslado}</div></div>`:''}
-      ${telTraslado?`<div class="g-info-item"><div class="g-info-label">Tel / WhatsApp urgencias</div><div class="g-info-value">${telTraslado}</div><div class="g-info-sub">Para cualquier problema o cambio de vuelo</div></div>`:''}
+      ${telTraslado?`<div class="g-info-item"><div class="g-info-label">Tel / WhatsApp urgencias</div><div class="g-info-value">${telTraslado}</div></div>`:''}
     </div>`:''}
   </div>`:''}
 
   ${tieneSeguro||photopass?`
-  <!-- EXTRAS -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--gold-l)">✨</div>
       <div class="g-section-title">Extras de tu paquete</div>
     </div>
-    ${photopass?`
-    <div class="g-bubble gb-teal">
-      <strong>📷 Photopass — Regalo de fotos incluido</strong>
-      Recoge el Photopass en la tienda de tu hotel con el sobre que te entregarán durante el check-in. A la vuelta del viaje recibirás todas las fotos por email. Recuerda también hacer fotos y vídeos con tu móvil/cámara, especialmente en los encuentros con personajes.
-    </div>`:''}
+    ${photopass?`<div class="g-bubble gb-teal"><strong>📷 Photopass — Regalo de fotos incluido</strong>Recoge el Photopass en la tienda de tu hotel con el sobre que te entregarán durante el check-in. A la vuelta recibirás todas las fotos por email.</div>`:''}
     ${tieneSeguro?`
     <div class="g-bubble gb-purple">
       <strong>🛡️ Seguro de viaje — ${aseguradora||'Incluido'}</strong>
       ${poliza?`Nº de póliza: <strong>${poliza}</strong><br><br>`:''}
-      En caso de necesitar asistencia médica durante el viaje, contacta inmediatamente con la central de asistencia 24h. Guarda el número en tu móvil antes de salir.
+      En caso de necesitar asistencia médica, contacta inmediatamente con la central de asistencia 24h.
     </div>
-    <div class="g-alert"><span>📞</span><span>Asistencia 24h: <strong>(+34) 93 485 77 35</strong> · Email: <strong>iatimedicos@arag.es</strong> · WhatsApp: <strong>673 885 576</strong></span></div>`:''}
+    <div class="g-alert"><span>📞</span><span>Asistencia 24h (365 días): <strong>91 000 19 49</strong> · Desde el extranjero: <strong>+34 91 000 19 49</strong> · WhatsApp: <strong>+34 666 14 26 01</strong> · Reembolsos: <strong>siniestros.i4t@arag.es</strong></span></div>`:''}
   </div>`:''}
 
-  <!-- BENEFICIOS HOTEL DISNEY -->
   ${hotel!=='otro'?`
   <div class="g-section">
     <div class="g-section-header">
@@ -739,48 +639,48 @@ function generarGuia(){
     <p style="font-size:.78rem;color:#888;margin-top:8px;font-style:italic">* Las atracciones pueden variar. Algunos días algunas abren a las 9:00h.</p>`:''}
     <div class="g-consejos" style="margin-top:16px">
       ${!esDavy?`<div class="g-consejo"><span class="ico">🚌</span><div><strong>Bus gratuito</strong> — Desde primera hora hasta después del cierre del parque.</div></div>`:''}
-      <div class="g-consejo"><span class="ico">🧳</span><div><strong>Consigna gratuita</strong> — Puedes dejar las maletas en la consigna del hotel (07:00–23:30h). La consigna del parque y la estación de tren son de pago.</div></div>
-      <div class="g-consejo"><span class="ico">🛍️</span><div><strong>Envío de compras al hotel</strong> — Compras superiores a 50€ y antes de las 15:00h pueden enviarse a la tienda de tu hotel gratuitamente.</div></div>
+      ${maletasHabitacion
+        ? `<div class="g-consejo"><span class="ico">🧳</span><div><strong>Maletas a la habitación</strong> — Las maletas se llevan directamente a tu habitación. Abre a las 07:30h si necesitas dejarlas antes.</div></div>`
+        : `<div class="g-consejo"><span class="ico">🧳</span><div><strong>Consigna gratuita</strong> — Abre a las 07:30h. La consigna del parque y la estación de tren son de pago.</div></div>`}
+      <div class="g-consejo"><span class="ico">🛍️</span><div><strong>Envío de compras al hotel</strong> — Compras superiores a 50€ y antes de las 15:00h pueden enviarse gratuitamente a la tienda de tu hotel.</div></div>
       <div class="g-consejo"><span class="ico">🎖️</span><div><strong>Chapas y pegatinas</strong> — Al hacer el check-in pide las chapas gratuitas de temporada. Para cumpleaños, solicita la chapa en City Hall.</div></div>
-      <div class="g-consejo"><span class="ico">📱</span><div><strong>Check-in online</strong> — Puedes hacer el check-in desde la tarde anterior a partir de las 18:00h. No es necesario pasar por recepción, puedes acceder directamente con el QR de la app.</div></div>
+      <div class="g-consejo"><span class="ico">📱</span><div><strong>Check-in online y acceso al parque</strong> — Puedes hacer el check-in desde la tarde anterior a partir de las 18:00h. Puedes acceder directamente al parque con el <strong>código QR de la app</strong> sin necesidad de recoger las Magic Pass en recepción.</div></div>
+      <div class="g-consejo"><span class="ico">🗺️</span><div><strong>Mapa del parque</strong> — Lo encontrarás en el sobre que te entregan con el check-in en el hotel. También está disponible en la app en la sección <strong>Magic Pass</strong>.</div></div>
     </div>
   </div>`:''}
 
-  <!-- CONSEJOS PARQUE -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--teal-l)">🎢</div>
       <div class="g-section-title">Consejos para los parques</div>
     </div>
     <div class="g-consejos">
-      <div class="g-consejo"><span class="ico">🍽️</span><div><strong>Restaurantes de comida rápida</strong> — Revisa los horarios, muchos cierran a la hora de la cena. Puedes pedir por la app Disney y recoger sin cola. Confirma siempre el email de confirmación (en algunos sitios no hay buena cobertura). Hay microondas disponibles para calentar comida propia — muy útil con bebés y alérgicos.</div></div>
-      <div class="g-consejo"><span class="ico">🥗</span><div><strong>Restaurantes buffet o mesa</strong> — Muy recomendable reservar con antelación desde la app. Puedes acercarte a preguntar si hay mesas disponibles. Con niños menores de 3 años, avisa siempre de que es "baby" y no tiene plan de comidas para que no descuenten un menú por error.</div></div>
-      <div class="g-consejo"><span class="ico">🎭</span><div><strong>Desfiles</strong> — Siempre comienzan en la zona de It's Small World y terminan en la entrada del parque (Main Street). En temporadas especiales hay desfiles adicionales, y en la plaza del castillo los personajes realizan bailes en los pequeños escenarios. Muy recomendable verlo al menos una vez en primera fila.</div></div>
-      <div class="g-consejo"><span class="ico">🦸</span><div><strong>Premier Access</strong> — Pase sin colas para ciertas atracciones. Se puede comprar por atracción o como pase múltiple desde la app. No todas las atracciones disponen de él.</div></div>
-      <div class="g-consejo"><span class="ico">🎆</span><div><strong>Espectáculo nocturno</strong> — Se reserva 7 días antes a través de la app. Recomiendo revisar desde 15 días antes a las 00:00h ya que el sistema a veces abre reservas antes de lo previsto.</div></div>
+      <div class="g-consejo"><span class="ico">🍽️</span><div><strong>Restaurantes de comida rápida</strong> — Revisa los horarios, muchos cierran antes de la cena. Hay microondas disponibles para calentar comida propia — muy útil con bebés y alérgicos.</div></div>
+      <div class="g-consejo"><span class="ico">🥗</span><div><strong>Restaurantes buffet o mesa</strong> — Muy recomendable reservar con antelación desde la app. Con niños menores de 3 años, avisa siempre de que es "baby" para que no descuenten un menú por error.</div></div>
+      <div class="g-consejo"><span class="ico">🎭</span><div><strong>Desfiles</strong> — Comienzan en la zona de It's Small World y terminan en Main Street. Muy recomendable verlo al menos una vez en primera fila.</div></div>
+      <div class="g-consejo"><span class="ico">🦸</span><div><strong>Premier Access</strong> — Pase sin colas para ciertas atracciones. Se puede comprar por atracción o como pase múltiple desde la app.</div></div>
+      <div class="g-consejo"><span class="ico">🎆</span><div><strong>Espectáculo nocturno</strong> — Se reserva 7 días antes a través de la app. Recomiendo revisar desde 15 días antes a las 00:00h.</div></div>
       <div class="g-consejo"><span class="ico">💧</span><div><strong>Agua gratuita</strong> — Puedes pedir jarra de agua del grifo en cualquier restaurante. Lleva botellas para rellenar en las fuentes del parque.</div></div>
       <div class="g-consejo"><span class="ico">💰</span><div><strong>Lleva algo de efectivo</strong> — A veces hay problemas tecnológicos y los datáfonos del parque no funcionan.</div></div>
-      <div class="g-consejo"><span class="ico">🏨</span><div><strong>Visita los demás hoteles Disney</strong> — Aunque no te alojes en ellos, puedes visitarlos para hacer fotos con los personajes (llevan ropa diferente) y ver las decoraciones.</div></div>
-      <div class="g-consejo"><span class="ico">🅿️</span><div><strong>City Hall</strong> — Atención al cliente en el Parque Disneyland, en Main Street al inicio. <strong>Guest Relations</strong> — Atención al cliente en Disney Adventure World, a la entrada del parque. Acude a cualquiera de los dos para problemas, reclamaciones o incidencias con la app.</div></div>
+      <div class="g-consejo"><span class="ico">🏨</span><div><strong>Visita los demás hoteles Disney</strong> — Puedes visitarlos para hacer fotos con los personajes y ver las decoraciones aunque no te alojes en ellos.</div></div>
+      <div class="g-consejo"><span class="ico">🅿️</span><div><strong>City Hall / Guest Relations</strong> — Atención al cliente en el Parque Disneyland (City Hall, en Main Street) y en Disney Adventure World (Guest Relations, a la entrada). Acude para problemas, reclamaciones o incidencias con la app.</div></div>
     </div>
   </div>
 
-  <!-- PERSONAJES -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--pink-l)">👑</div>
       <div class="g-section-title">Encuentros con personajes</div>
     </div>
     <div class="g-consejos">
-      <div class="g-consejo"><span class="ico">❄️</span><div><strong>Elsa y Anna</strong> — Encuentro a las 8:45h durante la hora extra. ¡No te lo pierdas, es uno de los más especiales!</div></div>
-      <div class="g-consejo"><span class="ico">📸</span><div><strong>Siempre fotos y vídeos con tu móvil</strong> — El fotógrafo profesional solo hace un par de fotos y puede perder momentos bonitos (abrazos, risas...). Capta tú también cada momento.</div></div>
-      <div class="g-consejo"><span class="ico">📖</span><div><strong>Libro de firmas</strong> — Ten siempre el libro de firmas preparado. Ojo: Buzz Lightyear y Darth Vader no firman.</div></div>
-      <div class="g-consejo"><span class="ico">⏰</span><div><strong>Llega antes del horario</strong> — Si deseas mucho un personaje, haz cola antes de que abra el encuentro. El aforo es limitado y se cierra cuando se llena.</div></div>
-      <div class="g-consejo"><span class="ico">📖</span><div><strong>Consulta la guía privada</strong> — Te hemos enviado una guía con ubicaciones de personajes que no aparecen en la app y consejos exclusivos para aprovechar al máximo cada día.</div></div>
+      <div class="g-consejo"><span class="ico">❄️</span><div><strong>Elsa y Anna</strong> — Encuentro a las 8:45h durante la hora extra. ¡No te lo pierdas!</div></div>
+      <div class="g-consejo"><span class="ico">📸</span><div><strong>Siempre fotos y vídeos con tu móvil</strong> — El fotógrafo solo hace un par de fotos. Capta tú también cada momento.</div></div>
+      <div class="g-consejo"><span class="ico">📖</span><div><strong>Libro de firmas</strong> — Ten siempre el libro preparado. Ojo: Buzz Lightyear y Darth Vader no firman.</div></div>
+      <div class="g-consejo"><span class="ico">⏰</span><div><strong>Llega antes del horario</strong> — El aforo es limitado y se cierra cuando se llena.</div></div>
+      <div class="g-consejo"><span class="ico">📖</span><div><strong>Consulta la guía privada</strong> — Te hemos enviado una guía con ubicaciones de personajes que no aparecen en la app y consejos exclusivos.</div></div>
     </div>
   </div>
 
-  <!-- NIÑOS -->
   ${conBebes?`
   <div class="g-section">
     <div class="g-section-header">
@@ -788,51 +688,49 @@ function generarGuia(){
       <div class="g-section-title">Consejos con bebés y niños pequeños</div>
     </div>
     <div class="g-consejos">
-      <div class="g-consejo"><span class="ico">🌅</span><div><strong>Madruga</strong> — Vale la pena aunque luego necesiten siesta. Durante la hora extra ahorraréis muchas colas.</div></div>
-      <div class="g-consejo"><span class="ico">🚼</span><div><strong>Sillas de paseo</strong> — Se dejan fuera de espectáculos, atracciones y restaurantes. Si el bebé está dormido al llegar a un restaurante, tendréis que despertarlo.</div></div>
-      <div class="g-consejo"><span class="ico">🔄</span><div><strong>Baby Switch</strong> — Si un niño no alcanza la altura mínima o no quiere subir, el adulto que se queda puede acceder después por Premier Access sin volver a hacer cola. Pídelo justo al terminar la atracción.</div></div>
-      <div class="g-consejo"><span class="ico">🍼</span><div><strong>Baby Care Center</strong> — En ambos parques hay espacios con cambiadores, tronas y microondas (solo para calentar leche y potitos). También venden pañales, toallitas y crema.</div></div>
-      <div class="g-consejo"><span class="ico">🍽️</span><div><strong>Menores de 3 años no pagan en buffets</strong> — Pueden comer del plato de los adultos. En restaurantes, avisa siempre que es "baby" para que no descuenten un bono.</div></div>
+      <div class="g-consejo"><span class="ico">🌅</span><div><strong>Madruga</strong> — Durante la hora extra ahorraréis muchas colas.</div></div>
+      <div class="g-consejo"><span class="ico">🚼</span><div><strong>Sillas de paseo</strong> — Se dejan fuera de espectáculos, atracciones y restaurantes.</div></div>
+      <div class="g-consejo"><span class="ico">🔄</span><div><strong>Baby Switch</strong> — Si un niño no alcanza la altura mínima, el adulto que se queda puede acceder después por Premier Access sin volver a hacer cola.</div></div>
+      <div class="g-consejo"><span class="ico">🍼</span><div><strong>Baby Care Center</strong> — En ambos parques hay espacios con cambiadores, tronas y microondas. También venden pañales y toallitas.</div></div>
+      <div class="g-consejo"><span class="ico">🍽️</span><div><strong>Menores de 3 años no pagan en buffets</strong> — Pueden comer del plato de los adultos. Avisa siempre que es "baby".</div></div>
       <div class="g-consejo"><span class="ico">🌧️</span><div><strong>Lleva plástico de lluvia para la silla</strong> — El tiempo en París es muy cambiante.</div></div>
     </div>
-  </div>`:``}
+  </div>`:''}
 
-  <!-- CONSEJOS DISNEY CON NIÑOS (siempre) -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--gold-l)">💡</div>
       <div class="g-section-title">Más consejos útiles</div>
     </div>
     <div class="g-consejos">
-      <div class="g-consejo"><span class="ico">🌧️</span><div><strong>Chubasquero siempre</strong> — El tiempo en Disneyland Paris es muy inestable. Lleva chubasquero y ponlo antes de entrar a atracciones o restaurantes si hay dudas.</div></div>
-      <div class="g-consejo"><span class="ico">🔋</span><div><strong>Batería portátil</strong> — Imprescindible. Si se te acaba, hay puestos por el parque para alquilar una por horas o días.</div></div>
+      <div class="g-consejo"><span class="ico">🌧️</span><div><strong>Chubasquero siempre</strong> — El tiempo en Disneyland Paris es muy inestable.</div></div>
+      <div class="g-consejo"><span class="ico">🔋</span><div><strong>Batería portátil</strong> — Imprescindible. También hay puestos de alquiler por el parque.</div></div>
       <div class="g-consejo"><span class="ico">🧺</span><div><strong>Puedes llevar comida al parque</strong> — Fruta, bocadillos, snacks. Sin tarros de cristal ni objetos cortantes.</div></div>
-      <div class="g-consejo"><span class="ico">🛒</span><div><strong>Snacks más económicos</strong> — En la tienda de la estación RER de Disneyland Paris tienes agua y snacks a mejor precio que dentro.</div></div>
-      <div class="g-consejo"><span class="ico">🏥</span><div><strong>Primeros auxilios</strong> — En ambos parques, ubicados junto al Baby Care Center. Acude para heridas, enfermedad o urgencias.</div></div>
+      <div class="g-consejo"><span class="ico">🛒</span><div><strong>Snacks más económicos</strong> — En la tienda de la estación RER tienes agua y snacks a mejor precio.</div></div>
+      <div class="g-consejo"><span class="ico">🏥</span><div><strong>Primeros auxilios</strong> — En ambos parques, junto al Baby Care Center.</div></div>
       <div class="g-consejo"><span class="ico">🚭</span><div><strong>Está prohibido fumar</strong> excepto en las áreas habilitadas señalizadas.</div></div>
     </div>
-
     <div class="g-bubble gb-gold" style="margin-top:16px">
       <strong>💊 Botiquín recomendado</strong>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;font-size:.84rem">
-        <div><strong style="font-size:.8rem;display:block;margin-bottom:4px;font-family:'Fredoka One',cursive">Niños</strong>Paracetamol · Ibuprofeno · Tiritas · Suero oral (Neo Peques) · Termómetro · Árnica</div>
-        <div><strong style="font-size:.8rem;display:block;margin-bottom:4px;font-family:'Fredoka One',cursive">Adultos</strong>Analgésicos · Antiinflamatorios · Compeed · Suero oral · Lenodiar · Manzanilla · Tila</div>
+        <div><strong style="font-size:.8rem;display:block;margin-bottom:4px;font-family:'Fredoka One',cursive">Niños</strong>Paracetamol · Ibuprofeno · Tiritas · Suero oral · Termómetro · Árnica</div>
+        <div><strong style="font-size:.8rem;display:block;margin-bottom:4px;font-family:'Fredoka One',cursive">Adultos</strong>Analgésicos · Antiinflamatorios · Compeed · Suero oral · Lenodiar · Manzanilla</div>
       </div>
     </div>
   </div>
 
-  <!-- CHECKLIST -->
   <div class="g-section">
     <div class="g-section-header">
       <div class="g-section-icon" style="background:var(--purple-l)">✅</div>
       <div class="g-section-title">Lista de comprobación</div>
     </div>
+    <div class="g-alert" style="background:var(--red-l);border-left:5px solid var(--red);border-radius:0 12px 12px 0;padding:14px 18px;font-size:.87rem;font-weight:700;color:var(--red);margin-bottom:16px;display:flex;gap:10px;align-items:flex-start"><span style="font-size:1.3rem">⚠️</span><div><strong style="display:block;margin-bottom:6px;font-size:.95rem">MUY IMPORTANTE — Documentación</strong>Viajad siempre con el <strong>DNI en vigor de todos los viajeros</strong> (adultos y niños) o pasaporte. Un documento caducado puede impedir el embarque o el acceso a servicios.<br><br>La <strong>Tarjeta Sanitaria Europea no cubre el 100% de los gastos médicos</strong> ni los gastos derivados como noches de hotel adicionales por ingreso o cambios de vuelo. Se recomienda encarecidamente un <strong>seguro de viaje</strong> que cubra estas contingencias.</div></div>
     <ul class="g-checklist">
       <li><div class="g-check"></div>DNI vigentes y/o pasaporte (revisa fecha de caducidad)</li>
       <li><div class="g-check"></div>Transporte al aeropuerto revisado y organizado</li>
-      ${tieneSeguro?`<li><div class="g-check"></div>Seguro de viaje contratado — Nº póliza guardado en el móvil</li>`:''}
-      <li><div class="g-check"></div>Tarjeta Sanitaria Europea solicitada (no sustituye al seguro de viaje)</li>
-      <li><div class="g-check"></div>App de Disneyland Paris descargada y con la reserva vinculada</li>
+      ${tieneSeguro?`<li><div class="g-check"></div>Seguro de viaje — Nº póliza guardado en el móvil</li>`:''}
+      <li><div class="g-check"></div>Tarjeta Sanitaria Europea solicitada — ⚠️ NO cubre el 100% de los gastos médicos ni los derivados (noches de hotel por ingreso, cambio de vuelos...)</li>
+      <li><div class="g-check"></div>App de Disneyland Paris descargada y reserva vinculada</li>
       <li><div class="g-check"></div>Chubasquero y ropa por capas preparados</li>
       <li><div class="g-check"></div>Batería portátil cargada</li>
       <li><div class="g-check"></div>Botiquín preparado</li>
@@ -852,7 +750,6 @@ function generarGuia(){
     <div class="g-bubble gb-pink"><strong>ℹ️ Información especial</strong>${notas}</div>
   </div>`:''}
 
-  <!-- PIE -->
   <div style="background:var(--purple-d);padding:28px;text-align:center;color:rgba(255,255,255,.6);font-size:.82rem">
     <div style="font-family:'Fredoka One',cursive;color:white;font-size:1.2rem;margin-bottom:6px">Los Viajes de Moli ✨</div>
     Agente Oficial Disney® · losviajesdemoli.com<br>
@@ -869,8 +766,7 @@ function generarGuia(){
 }
 
 function imprimirGuia(){
-  // Avisar si el navegador puede necesitar activar gráficos de fondo
-  const ok = confirm('Para que la portada salga con color:\n\n1. En el diálogo de impresión busca "Más ajustes" u "Opciones"\n2. Activa "Gráficos de fondo" o "Imprimir fondos"\n\n¿Continuar?');
+  const ok = confirm('Para que la portada salga con color:\n\n1. En el diálogo de impresión busca "Más ajustes"\n2. Activa "Gráficos de fondo"\n\n¿Continuar?');
   if(ok) window.print();
 }
 
