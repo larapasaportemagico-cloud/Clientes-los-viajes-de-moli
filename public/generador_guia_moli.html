@@ -453,7 +453,7 @@ function generarGuia(){
   // Hoteles con maletas a habitación (Newport, NY Marvel, Disneyland Hotel)
   const maletasHabitacion = ['newport','newyork','disneyland'].includes(hotel);
   // Hoteles con código de habitación explicado
-  const hotelCodigo = ['santafe','cheyenne','sequoia'].includes(hotel);
+  const hotelCodigo = ['santafe','cheyenne'].includes(hotel);
 
   let html = `
   <div class="g-cover">
@@ -490,11 +490,7 @@ function generarGuia(){
       <strong>🧳 Consigna de equipaje</strong>
       Puedes dejar las maletas en la consigna del hotel (abre a las 07:30h). La consigna del parque y la estación de tren son de pago.
     </div>`}
-    ${hotelCodigo?`
-    <div class="g-bubble gb-gold">
-      <strong>🔢 Cómo leer el número de habitación</strong>
-      En el ${hotelNombre} el número de habitación tiene un código: las <strong>2 primeras cifras</strong> corresponden al <strong>edificio</strong>, la <strong>tercera cifra</strong> a la <strong>planta</strong> y el <strong>resto</strong> al número de <strong>habitación</strong>. Por ejemplo: habitación <strong>03215</strong> → Edificio 03 · Planta 2 · Habitación 15.
-    </div>`:''}
+    ${hotelCodigo?`<div class="g-bubble gb-gold"><strong>🔢 Número de habitación</strong>Las <strong>2 primeras cifras</strong> = edificio · <strong>3ª cifra</strong> = planta · <strong>resto</strong> = habitación. Ej: 03215 → Edificio 03, Planta 2, Hab. 15.</div>`:''}
     <div class="g-bubble gb-gold" style="margin-top:4px">
       <strong>🗺️ Mapa del parque</strong>
       Lo encontrarás en el sobre que te entregan durante el check-in en el hotel. También está disponible en la app de Disneyland Paris en la sección <strong>Magic Pass</strong>.
