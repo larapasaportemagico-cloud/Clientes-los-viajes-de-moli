@@ -14,7 +14,11 @@ export async function POST(request) {
       return Response.json({ encontrado: false });
     }
     
-    const cliente = Array.isArray(data) ? data[0] : data;
+    // n8n puede devolver array o objeto directo
+    const raw = Array.isArray(data) ? data[0] : data;
+    // Los datos pueden estar en raw.json o directamente en raw
+    const cliente = raw?.json || raw;
+    
     return Response.json({ encontrado: true, datos: cliente });
   } catch (e) {
     return Response.json({ encontrado: false, error: e.message });
