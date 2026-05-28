@@ -334,7 +334,7 @@ function calcularBonos(){
   else if(planRaw.includes('standard')||planRaw.includes('estándar')){
     desayunos=noches;
     if(planRaw.includes('media')||planRaw.includes('mp')){ rapidas=noches; }
-    else { buffetMesa=noches; rapidas=noches; regalo='rapida'; }
+    else { buffetMesa=noches; rapidas=noches; regalo='rapida'; } // PC Standard: 1 buffet + 1 rapida + regalo rapida
   }
   else if(planRaw.includes('smart')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; }
   else if(planRaw.includes('extra')){ desayunos=noches; buffetMesa=noches*2; regalo='buffet'; }
@@ -606,7 +606,8 @@ function generarGuia(){
       ${poliza?`Nº de póliza: <strong>${poliza}</strong><br><br>`:''}
       En caso de necesitar asistencia médica, contacta inmediatamente con la central de asistencia 24h.
     </div>
-    <div class="g-alert"><span>📞</span><span>Asistencia 24h (365 días): <strong>91 000 19 49</strong> · Desde el extranjero: <strong>+34 91 000 19 49</strong> · WhatsApp: <strong>+34 666 14 26 01</strong> · Reembolsos: <strong>siniestros.i4t@arag.es</strong></span></div>`:''}
+    ${(aseguradora||'').toLowerCase().includes('insurance')||(aseguradora||'').toLowerCase().includes(' it ')||(aseguradora||'').trim().toLowerCase()==='it'?`<div class="g-alert"><span>📞</span><span>Asistencia 24h (365 días): <strong>91 000 19 49</strong> · Desde el extranjero: <strong>+34 91 000 19 49</strong> · WhatsApp: <strong>+34 666 14 26 01</strong> · Reembolsos: <strong>siniestros.i4t@arag.es</strong></span></div>`:''}
+    `:''}
   </div>`:''}
 
   ${hotel!=='otro'?`
