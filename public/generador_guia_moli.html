@@ -304,11 +304,11 @@ const HOTEL_NAMES = {
 };
 
 const HORA_EXTRA = {
-  disneyland:{tiempo:'8:00–9:00',parque:'Disneyland® Park'},
-  newyork:{tiempo:'8:00–9:00',parque:'Disneyland® Park'},
-  newport:{tiempo:'8:00–9:00',parque:'Disneyland® Park'},
-  sequoia:{tiempo:'8:00–9:00',parque:'Disneyland® Park'},
-  cheyenne:{tiempo:'8:00–9:00',parque:'Disneyland® Park'},
+  disneyland:{tiempo:'8:30–9:30',parque:'Disneyland® Park'},
+  newyork:{tiempo:'8:30–9:30',parque:'Disneyland® Park'},
+  newport:{tiempo:'8:30–9:30',parque:'Disneyland® Park'},
+  sequoia:{tiempo:'8:30–9:30',parque:'Disneyland® Park'},
+  cheyenne:{tiempo:'8:30–9:30',parque:'Disneyland® Park'},
   santafe:{tiempo:'8:30–9:30',parque:'Disneyland® Park'},
   davy:{tiempo:null,parque:null},
   otro:{tiempo:null,parque:null}
@@ -618,7 +618,7 @@ function generarGuia(){
     ${horaExtra&&horaExtra.tiempo?`
     <div class="g-bubble gb-pink">
       <strong>⏰ Hora Extra — Solo para alojados en Hotel Disney</strong>
-      El parque abre <strong>${horaExtra.tiempo}h</strong> solo para vosotros. Lo ideal es estar en los tornos a las 8:20h para ir directos a las atracciones con más cola.
+      El parque abre <strong>${horaExtra.tiempo}h</strong> solo para vosotros. Lo ideal es estar en los tornos a las 8:20h para ir directos a las atracciones con más cola. <em style="font-size:.82rem;opacity:.8">⚠️ En octubre, noviembre y algunas épocas especiales puede cambiar a 8:00–9:00h — revisa siempre la app.</em>
     </div>
     <div class="g-atracciones">
       <div class="g-park-block">
