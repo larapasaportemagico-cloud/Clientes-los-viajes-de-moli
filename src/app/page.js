@@ -705,6 +705,802 @@ Genera plan día a día con emojis y formato claro. Responde en español.`;
 }
 
 // ═══════════════════════════════════════════════════════
+// PLANIFICADOR INTELIGENTE — Lógica experta de Lara
+// Tiempos reales + consejos por hora + peques + restaurantes
+// ═══════════════════════════════════════════════════════
+
+// ── ZONAS DE JUEGO / ESPERA PARA PEQUES ──
+const ZONAS_PEQUES = {
+  dlp: [
+    { zona:"Frontierland", nombre:"Adventure Isle", desc:"Zona de juego junto a BTM con puentes colgantes, cuevas y toboganes. Perfecta mientras adultos hacen BTM o Phantom Manor.", cerca:["btm","phantom"] },
+    { zona:"Adventureland", nombre:"La Cabane des Robinson", desc:"Treehouse climbable con vistas. Sin cola, entretenida para peques mientras adultos hacen Indiana Jones.", cerca:["indiana"] },
+    { zona:"Fantasyland", nombre:"Zona de juego Fantasyland", desc:"Pequeña área de juego cerca de Dumbo. Los peques pueden jugar mientras el adulto espera su turno con Baby Switch.", cerca:["peter-pan","dumbo"] },
+    { zona:"Discoveryland", nombre:"Autopia (conducir)", desc:"Los niños pequeños pueden conducir con un adulto. Sin restricción de altura. Buena mientras esperan en Space Mountain.", cerca:["space","buzz"] },
+  ],
+  daw: [
+    { zona:"Worlds of Pixar", nombre:"Zona de juego Toy Story", desc:"Área temática de Toy Story con juegos para peques. Perfecta mientras adultos hacen Crush Coaster.", cerca:["crush","rc-racer"] },
+    { zona:"Toon Studio", nombre:"Cars Quatre Roues Rallye", desc:"Atracción suave sin restricción de altura. El adulto que se queda puede montar con los peques mientras esperan Crush.", cerca:["crush"] },
+    { zona:"Campus Avengers", nombre:"Zona de exposiciones Avengers", desc:"Exposición interactiva de superhéroes sin cola. Entretenida para niños mientras adultos hacen Avengers Flight Force.", cerca:["avengers"] },
+  ]
+};
+
+
+// ── SECUENCIAS HORA EXTRA DAW ──
+// Crush y Frozen son excluyentes — hay que elegir UNO primero
+// y luego seguir la secuencia correspondiente
+const SECUENCIAS_HE_DAW = {
+  frozen: {
+    label: "Empezáis por Frozen Ever After ❄️",
+    color: "#1a7aaa",
+    bg: "#e0f4ff",
+    orden: [
+      { id:"frozen",     consejo:"Primera parada nada más abrir. En hora extra 30-60 min — el resto del día llega a 120 min. ⚠️ Puede asustar a niños pequeños (caída similar a Piratas)." },
+      { id:"ratatouille",consejo:"Segunda. Hora extra siempre. Ve directo al salir de Frozen sin perder tiempo." },
+      { id:"paracaidas", consejo:"Tercera. Cola baja en hora extra. Buena opción con niños pequeños." },
+      { id:"spiderman",  consejo:"Cuarta. Tiempos bajos en hora extra. También puedes dejarla para el final del día." },
+    ],
+    aviso: "⚠️ Si Frozen está cerrada por avería → ve directo a Crush Coaster, que se saturará más sin Frozen operativa.",
+    despues: "Una vez terminada la hora extra: Crush Coaster tendrá más cola que de costumbre si Frozen también está llena. Considera Premier Access para Crush o hazla al final del día (baja a 30 min antes del cierre)."
+  },
+  crush: {
+    label: "Empezáis por Crush's Coaster 🐢",
+    color: "#0a8a5e",
+    bg: "#e0fff4",
+    orden: [
+      { id:"crush",      consejo:"Primera parada obligatoria. LA más demandada — en hora extra 30-60 min, el resto del día puede superar 120 min. 💡 Si vais con niños que no pueden montar: Premier Access + Baby Switch (2-3 personas precio de 1)." },
+      { id:"ratatouille",consejo:"Segunda. Hora extra siempre. Ve directo al salir de Crush." },
+      { id:"spiderman",  consejo:"Tercera. Tiempos bajos en hora extra." },
+      { id:"paracaidas", consejo:"Cuarta. Cola muy baja. Buena para peques." },
+    ],
+    aviso: "⚠️ Si Crush está cerrado por avería → ve directo a Frozen, que se saturará más sin Crush operativo.",
+    despues: "Frozen puedes dejarlo para el final del día — suele bajar a ~30 min antes del cierre. ⚠️ Recuerda: Frozen cierra a las 23:00h, más tarde que el resto del parque."
+  }
+};
+
+// ── LÓGICA DE COLAS POR HORA (estimada) ──
+// Devuelve minutos estimados según hora del día
+function colaEstimada(atrId, horaNum) {
+  const CURVAS = {
+    // DLP
+    "peter-pan":  { 8:20, 9:45, 10:70, 11:90, 12:100, 13:90, 14:80, 15:70, 16:60, 17:60, 18:50, 19:40, 20:30, 21:20 },
+    "dumbo":      { 8:15, 9:30, 10:45, 11:60, 12:60,  13:50, 14:45, 15:40, 16:35, 17:30, 18:25, 19:20, 20:15, 21:10 },
+    "buzz":       { 8:10, 9:25, 10:40, 11:50, 12:55,  13:50, 14:45, 15:40, 16:35, 17:30, 18:20, 19:15, 20:10, 21:10 },
+    "btm":        { 8:20, 9:35, 10:50, 11:65, 12:75,  13:70, 14:65, 15:60, 16:55, 17:50, 18:40, 19:25, 20:15, 21:10 },
+    "space":      { 8:25, 9:35, 10:45, 11:55, 12:60,  13:55, 14:50, 15:45, 16:40, 17:35, 18:30, 19:20, 20:15, 21:10 },
+    "indiana":    { 8:0,  9:25, 10:45, 11:60, 12:70,  13:65, 14:60, 15:55, 16:50, 17:55, 18:45, 19:25, 20:15, 21:10 },
+    "pirates":    { 8:0,  9:15, 10:25, 11:30, 12:35,  13:30, 14:25, 15:20, 16:20, 17:20, 18:15, 19:10, 20:10, 21:5  },
+    "phantom":    { 8:0,  9:15, 10:20, 11:30, 12:35,  13:30, 14:25, 15:20, 16:20, 17:20, 18:15, 19:10, 20:10, 21:5  },
+    "small-world":{ 8:0,  9:5,  10:10, 11:15, 12:20,  13:15, 14:15, 15:15, 16:10, 17:10, 18:10, 19:5,  20:5,  21:5  },
+    "meet-mickey":{ 8:0,  9:20, 10:35, 11:45, 12:50,  13:45, 14:40, 15:35, 16:30, 17:25, 18:20, 19:15, 20:0,  21:0  },
+    "princess-pavilion":{ 8:0, 9:25, 10:40, 11:55, 12:60, 13:55, 14:50, 15:45, 16:40, 17:35, 18:25, 19:15, 20:0, 21:0 },
+    // DAW
+    "crush":      { 8:35, 9:55, 10:80, 11:100,12:110, 13:100,14:90, 15:85, 16:80, 17:75, 18:60, 19:45, 20:30, 21:20 },
+    "frozen":     { 8:30, 9:50, 10:70, 11:90, 12:100, 13:90, 14:80, 15:75, 16:65, 17:60, 18:50, 19:35, 20:25, 21:15 },
+    "ratatouille":{ 8:20, 9:35, 10:50, 11:65, 12:75,  13:65, 14:60, 15:55, 16:50, 17:45, 18:35, 19:20, 20:15, 21:10 },
+    "spiderman":  { 8:15, 9:25, 10:40, 11:55, 12:60,  13:55, 14:50, 15:45, 16:35, 17:30, 18:25, 19:15, 20:10, 21:10 },
+    "tower":      { 8:0,  9:20, 10:35, 11:45, 12:55,  13:50, 14:45, 15:40, 16:35, 17:30, 18:25, 19:15, 20:10, 21:5  },
+    "rapunzel":   { 8:5,  9:10, 10:20, 11:25, 12:30,  13:25, 14:20, 15:20, 16:15, 17:15, 18:15, 19:10, 20:10, 21:10 },
+    "avengers":   { 8:0,  9:15, 10:25, 11:35, 12:40,  13:35, 14:30, 15:25, 16:20, 17:20, 18:15, 19:10, 20:5,  21:5  },
+    "paracaidas": { 8:10, 9:15, 10:20, 11:25, 12:30,  13:25, 14:20, 15:15, 16:15, 17:10, 18:10, 19:5,  20:5,  21:5  },
+  };
+  const curva = CURVAS[atrId];
+  if (!curva) return null;
+  const horas = Object.keys(curva).map(Number).sort((a,b)=>a-b);
+  const horaBase = horas.reduce((prev, h) => h <= horaNum ? h : prev, horas[0]);
+  return curva[horaBase] || null;
+};
+
+// ── TENDENCIA DE COLA ──
+// Devuelve si la cola está subiendo, bajando o estable
+function tendenciaCola(atrId, horaNum) {
+  const actual = colaEstimada(atrId, horaNum);
+  const en2h   = colaEstimada(atrId, horaNum + 2);
+  if (!actual || !en2h) return "estable";
+  const diff = en2h - actual;
+  if (diff > 15) return "subiendo";
+  if (diff < -15) return "bajando";
+  return "estable";
+}
+
+// ── MEJOR MOMENTO PARA UNA ATRACCIÓN ──
+function mejorMomento(atrId, horaActual, horaCierre) {
+  const horas = [];
+  for (let h = horaActual; h <= horaCierre - 1; h++) {
+    const cola = colaEstimada(atrId, h);
+    if (cola !== null) horas.push({ h, cola });
+  }
+  if (!horas.length) return null;
+  return horas.reduce((min, x) => x.cola < min.cola ? x : min, horas[0]);
+}
+
+// ── CONSEJO INTELIGENTE POR ATRACCIÓN + HORA ──
+function consejoInteligente({ atrId, atrNombre, horaActual, horaCierre, colaReal, tieneBebes, zona }) {
+  const colaEst = colaEstimada(atrId, horaActual) || 30;
+  const cola = colaReal !== null && colaReal !== undefined ? colaReal : colaEst;
+  const tendencia = tendenciaCola(atrId, horaActual);
+  const mejor = mejorMomento(atrId, horaActual, horaCierre);
+  const minutosParaCierre = (horaCierre - horaActual) * 60;
+
+  // Atracción fuerte con peques
+  const atrFuertes = ["btm","indiana","space","crush","avengers","tower","frozen","rapunzel","rc-racer"];
+  const esAtraccionFuerte = atrFuertes.includes(atrId);
+
+  const consejos = [];
+
+  // ── CONSEJO DE COLA ACTUAL ──
+  if (cola <= 15) {
+    consejos.push({ tipo:"verde", texto:`Cola muy baja ahora mismo (${cola} min) — ¡hazla ya! Es el momento perfecto.` });
+  } else if (cola <= 30) {
+    consejos.push({ tipo:"verde", texto:`Cola moderada (${cola} min). Buen momento para hacerla sin perder mucho tiempo.` });
+  } else if (cola <= 60 && tendencia === "bajando") {
+    consejos.push({ tipo:"amarillo", texto:`Ahora tiene ${cola} min, pero la cola está bajando. Puedes hacerla ahora o esperar un poco más — en un par de horas irá bajando.` });
+  } else if (cola <= 60 && tendencia === "subiendo") {
+    consejos.push({ tipo:"amarillo", texto:`Cola de ${cola} min y subiendo. Si la quieres hacer hoy, hazla ahora antes de que suba más.` });
+  } else if (cola > 60) {
+    if (mejor && mejor.cola < cola - 20 && mejor.h > horaActual) {
+      const horaLabel = `${mejor.h}:00h`;
+      consejos.push({ tipo:"naranja", texto:`Ahora tiene ${cola} min — bastante espera. Según mis datos, sobre las ${horaLabel} suele bajar bastante (aprox. ${mejor.cola} min). Si no tienes prisa, puede valer la pena esperar.` });
+    } else {
+      consejos.push({ tipo:"rojo", texto:`Cola alta ahora (${cola} min). Si la quieres hacer hoy, el final del día suele ser el mejor momento para las colas más largas.` });
+    }
+  }
+
+  // ── CONSEJO FANTASYLAND (cierra antes) ──
+  const atrFantasyland = ["peter-pan","dumbo","small-world","meet-mickey","princess-pavilion","snow-white","pinocchio","carrousel","casey","contes","tea-cups","labyrinth"];
+  if (atrFantasyland.includes(atrId) && horaActual >= 19) {
+    consejos.push({ tipo:"rojo", texto:`⚠️ Atención: Fantasyland cierra 1 hora antes del show nocturno. Si el parque cierra tarde, esta zona puede estar cerrando ya. No la dejes para el último momento.` });
+  }
+
+  // ── CONSEJO BABY SWITCH + ZONA PEQUES ──
+  if (tieneBebes && esAtraccionFuerte) {
+    const atrBabySwitch = ["btm","indiana","space","crush","avengers","tower","spiderman","rc-racer"];
+    const zonaPequesInfo = ZONAS_PEQUES[zona]?.find(z => z.cerca.includes(atrId));
+    const usaBabySwitch = atrBabySwitch.includes(atrId);
+
+    if (usaBabySwitch) {
+      const esCrush = atrId === "crush";
+      consejos.push({
+        tipo:"baby",
+        texto: esCrush
+          ? `👶 Baby Switch + Premier Access: compra Premier Access para Crush. Con el precio de 1 persona entran 2 o 3 usando Baby Switch. El adulto que se queda con los peques entra después directamente sin cola.`
+          : `👶 Baby Switch gratuito: pide Baby Switch al Cast Member de la entrada. El adulto que se queda con los peques puede entrar después sin hacer cola de nuevo.`
+      });
+    }
+
+    if (zonaPequesInfo) {
+      consejos.push({
+        tipo:"peques",
+        texto: `🧒 Mientras esperas: ${zonaPequesInfo.nombre} está cerca — ${zonaPequesInfo.desc}`
+      });
+    }
+  }
+
+  // ── CONSEJO DE TIEMPO RESTANTE ──
+  if (minutosParaCierre < 90 && cola > 30) {
+    consejos.push({ tipo:"rojo", texto:`⚠️ Queda poco para el cierre y la cola es alta. Valora si merece la pena o si prefieres aprovechar ese tiempo en otras atracciones.` });
+  }
+
+  return consejos;
+}
+
+// ── ATRACCIONES COMPLETAS ──
+const ATRACCIONES_DLP = [
+  { id:"peter-pan",   nombre:"Peter Pan's Flight",         zona:"dlp", subzona:"Fantasyland",   emoji:"🧚", intensidad:"suave",    altura:null, heEsencial:true,  heOrden:1, babySwitch:false, susto:false, fantasyland:true },
+  { id:"dumbo",       nombre:"Dumbo",                       zona:"dlp", subzona:"Fantasyland",   emoji:"🐘", intensidad:"suave",    altura:null, heEsencial:true,  heOrden:2, babySwitch:false, susto:false, fantasyland:true },
+  { id:"buzz",        nombre:"Buzz Lightyear Laser Blast",  zona:"dlp", subzona:"Discoveryland", emoji:"🚀", intensidad:"suave",    altura:null, heEsencial:true,  heOrden:3, babySwitch:false, susto:false, fantasyland:false },
+  { id:"btm",         nombre:"Big Thunder Mountain",        zona:"dlp", subzona:"Frontierland",  emoji:"⛰️", intensidad:"media",   altura:102,  heEsencial:true,  heOrden:4, babySwitch:true,  susto:false, fantasyland:false },
+  { id:"space",       nombre:"Space Mountain / Star Wars",  zona:"dlp", subzona:"Discoveryland", emoji:"🌌", intensidad:"fuerte",  altura:120,  heEsencial:false, heOrden:5, babySwitch:true,  susto:false, fantasyland:false },
+  { id:"indiana",     nombre:"Indiana Jones™",              zona:"dlp", subzona:"Adventureland", emoji:"🎩", intensidad:"media",   altura:140,  heEsencial:false, heOrden:null, babySwitch:true, susto:false, fantasyland:false },
+  { id:"pirates",     nombre:"Pirates of the Caribbean",    zona:"dlp", subzona:"Adventureland", emoji:"☠️", intensidad:"suave",   altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:false },
+  { id:"phantom",     nombre:"Phantom Manor",               zona:"dlp", subzona:"Frontierland",  emoji:"👻", intensidad:"suave",   altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:false },
+  { id:"small-world", nombre:"It's a Small World",          zona:"dlp", subzona:"Fantasyland",   emoji:"🌍", intensidad:"suave",   altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:true },
+  { id:"meet-mickey", nombre:"Meet Mickey Mouse",           zona:"dlp", subzona:"Fantasyland",   emoji:"🐭", intensidad:"personaje",altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:true },
+  { id:"princess-pavilion", nombre:"Princess Pavilion",    zona:"dlp", subzona:"Fantasyland",   emoji:"👸", intensidad:"personaje",altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:true },
+  { id:"snow-white",  nombre:"Blanche-Neige et les Sept Nains", zona:"dlp", subzona:"Fantasyland", emoji:"🍎", intensidad:"suave", altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:true, fantasyland:true },
+  { id:"tea-cups",    nombre:"Mad Hatter's Tea Cups",       zona:"dlp", subzona:"Fantasyland",   emoji:"🍵", intensidad:"suave",   altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:true },
+  { id:"nautilus",    nombre:"Les Mystères du Nautilus",    zona:"dlp", subzona:"Discoveryland", emoji:"🐙", intensidad:"suave",   altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:false },
+];
+
+const ATRACCIONES_DAW = [
+  { id:"crush",     nombre:"Crush's Coaster",                  zona:"daw", subzona:"Toon Studio",      emoji:"🐢", intensidad:"media",  altura:107, heEsencial:true,  heOrden:1, babySwitch:true,  susto:false, fantasyland:false },
+  { id:"frozen",    nombre:"Frozen Ever After ❄️",              zona:"daw", subzona:"World of Frozen",  emoji:"❄️", intensidad:"suave",  altura:null, heEsencial:true, heOrden:2, babySwitch:false, susto:true,  fantasyland:false },
+  { id:"ratatouille",nombre:"Ratatouille",                     zona:"daw", subzona:"Worlds of Pixar",  emoji:"🐀", intensidad:"suave",  altura:null, heEsencial:true,  heOrden:3, babySwitch:false, susto:false, fantasyland:false },
+  { id:"spiderman", nombre:"Spider-Man WEB Adventure",         zona:"daw", subzona:"Campus Avengers",  emoji:"🕷️", intensidad:"suave", altura:107,  heEsencial:false, heOrden:4, babySwitch:true,  susto:false, fantasyland:false },
+  { id:"tower",     nombre:"Tower of Terror",                  zona:"daw", subzona:"Studio 1",         emoji:"🏨", intensidad:"fuerte", altura:102,  heEsencial:false, heOrden:null, babySwitch:true, susto:false, fantasyland:false },
+  { id:"rapunzel",  nombre:"La Tanière du Dragon (Rapunzel) 🌸",zona:"daw", subzona:"World of Frozen",  emoji:"🌸", intensidad:"suave",  altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:true, fantasyland:false },
+  { id:"avengers",  nombre:"Avengers Assemble: Flight Force",  zona:"daw", subzona:"Campus Avengers",  emoji:"🦸", intensidad:"fuerte", altura:140,  heEsencial:false, heOrden:null, babySwitch:true,  susto:false, fantasyland:false },
+  { id:"paracaidas",nombre:"Toy Soldiers Parachute Drop",      zona:"daw", subzona:"Worlds of Pixar",  emoji:"🪂", intensidad:"suave",  altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:false },
+  { id:"rc-racer",  nombre:"RC Racer",                         zona:"daw", subzona:"Worlds of Pixar",  emoji:"🏎️", intensidad:"media", altura:120,  heEsencial:false, heOrden:null, babySwitch:true,  susto:false, fantasyland:false },
+  { id:"slinky",    nombre:"Slinky Dog Zigzag Spin",           zona:"daw", subzona:"Worlds of Pixar",  emoji:"🐶", intensidad:"suave",  altura:null, heEsencial:false, heOrden:null, babySwitch:false, susto:false, fantasyland:false },
+];
+
+const TODAS_ATRACCIONES = [...ATRACCIONES_DLP, ...ATRACCIONES_DAW];
+
+// ── NOMBRE → ID para tiempos reales ──
+const NOMBRE_A_ID = {
+  "Peter Pan's Flight":"peter-pan","Dumbo the Flying Elephant":"dumbo",
+  "Buzz Lightyear Laser Blast":"buzz","Big Thunder Mountain":"btm",
+  "Star Wars Hyperspace Mountain":"space","Indiana Jones and the Temple of Peril":"indiana",
+  "Pirates of the Caribbean":"pirates","Phantom Manor":"phantom",
+  "it's a small world":"small-world","It's a Small World":"small-world",
+  "Princess Pavilion":"princess-pavilion","Meet Mickey Mouse":"meet-mickey",
+  "Blanche-Neige et les Sept Nains":"snow-white","Mad Hatter's Tea Cups":"tea-cups",
+  "Les Mystères du Nautilus":"nautilus",
+  "Crush's Coaster":"crush","Frozen Ever After":"frozen",
+  "Ratatouille: The Adventure":"ratatouille","Spider-Man W.E.B. Adventure":"spiderman",
+  "The Twilight Zone Tower of Terror":"tower","La Tanière du Dragon":"rapunzel",
+  "Avengers Assemble: Flight Force":"avengers","Toy Soldiers Parachute Drop":"paracaidas",
+  "RC Racer":"rc-racer","Slinky Dog Zigzag Spin":"slinky",
+};
+
+// ── COLORES ──
+const C = {
+  verde:  { bg:"#e8fdf0", border:"#2EC866", color:"#0a5a28", icon:"✅" },
+  amarillo:{ bg:"#fff8e0", border:"#F0A500", color:"#7a4a00", icon:"💡" },
+  naranja:{ bg:"#fff3e0", border:"#FF8C00", color:"#8a3a00", icon:"⏳" },
+  rojo:   { bg:"#fff0f0", border:"#DC143C", color:"#8a0010", icon:"⚠️" },
+  baby:   { bg:"#ffe0ef", border:"#F5287A", color:"#8a003a", icon:"👶" },
+  peques: { bg:"#ede0ff", border:"#5B2D8E", color:"#3a1a6e", icon:"🧒" },
+  info:   { bg:"#dffaff", border:"#2BBCD4", color:"#0a5a6e", icon:"ℹ️" },
+};
+
+function ConsejoBox({ tipo, texto }) {
+  const c = C[tipo] || C.info;
+  return (
+    <div style={{ background:c.bg, border:`1px solid ${c.border}`, borderRadius:10, padding:"9px 12px", display:"flex", gap:8, alignItems:"flex-start", marginTop:6 }}>
+      <span style={{ fontSize:14, flexShrink:0 }}>{c.icon}</span>
+      <div style={{ fontSize:12, color:c.color, fontWeight:700, lineHeight:1.55 }}>{texto}</div>
+    </div>
+  );
+}
+
+function WaitBadge({ min, status, cargando }) {
+  if (cargando) return <span style={{ fontSize:10, background:"#f0f0f0", color:"#999", padding:"2px 8px", borderRadius:10, fontWeight:800 }}>⏳ cargando</span>;
+  if (status === "DOWN")         return <span style={{ fontSize:10, background:"#fff0f0", color:"#8a0010", padding:"2px 8px", borderRadius:10, fontWeight:800 }}>🔴 Parada técnica</span>;
+  if (status === "CLOSED")       return <span style={{ fontSize:10, background:"#f0f0f0", color:"#666", padding:"2px 8px", borderRadius:10, fontWeight:800 }}>⚫ Cerrada hoy</span>;
+  if (status === "REFURBISHMENT")return <span style={{ fontSize:10, background:"#f0f0f0", color:"#666", padding:"2px 8px", borderRadius:10, fontWeight:800 }}>🔧 En obras</span>;
+  if (min === null || min === undefined) return null;
+  const c = min <= 15 ? "#0a5a28" : min <= 30 ? "#7a4a00" : min <= 60 ? "#8a3a00" : "#8a0010";
+  const bg = min <= 15 ? "#e8fdf0" : min <= 30 ? "#fff8e0" : min <= 60 ? "#fff3e0" : "#fff0f0";
+  return <span style={{ fontSize:10, background:bg, color:c, padding:"2px 8px", borderRadius:10, fontWeight:800 }}>🕐 {min} min</span>;
+}
+
+// ══════════════════════════════════════════════════
+// COMPONENTE PRINCIPAL
+// ══════════════════════════════════════════════════
+function PlanificadorAtracciones({ cliente }) {
+  const [zona, setZona]             = useState(null);
+  const [horaExtra, setHoraExtra]   = useState(null);
+  const [tieneBebes, setTieneBebes] = useState(null);
+  const [horaActual, setHoraActual] = useState(null); // "9", "10", etc.
+  const [horaCierre, setHoraCierre] = useState(null); // "22", "21", etc.
+  const [seleccionadas, setSeleccionadas] = useState([]);
+  const [paso, setPaso]             = useState(1);
+  const [vista, setVista]           = useState("config"); // "config" | "consejo" | "ruta"
+  const [atrActivaConsejo, setAtrActivaConsejo] = useState(null);
+  const [heEleccionDAW, setHeEleccionDAW] = useState(null); // "frozen" | "crush" | null
+
+  // Tiempos reales
+  const [tiemposReales, setTiemposReales]       = useState({});
+  const [cargandoTiempos, setCargandoTiempos]   = useState(false);
+  const [ultimaActualizacion, setUltimaActualizacion] = useState(null);
+  const [errorAPI, setErrorAPI]                 = useState(false);
+
+  const atrDisponibles = zona === "ambos" ? TODAS_ATRACCIONES
+    : zona === "dlp" ? ATRACCIONES_DLP
+    : zona === "daw" ? ATRACCIONES_DAW : [];
+
+  const horaNum = parseInt(horaActual) || 10;
+  const cierreNum = parseInt(horaCierre) || 22;
+
+  // ── Cargar tiempos reales ──
+  const cargarTiempos = async (z) => {
+    if (!z) return;
+    setCargandoTiempos(true); setErrorAPI(false);
+    const parques = z === "ambos" ? ["dlp","daw"] : [z];
+    try {
+      const results = await Promise.all(parques.map(p =>
+        fetch(`/api/waittimes?parque=${p}`).then(r => r.json())
+      ));
+      const mapa = {};
+      results.forEach(data => {
+        if (data.ok && data.atracciones) {
+          data.atracciones.forEach(a => {
+            const id = NOMBRE_A_ID[a.nombre] || NOMBRE_A_ID[a.nombre?.trim()];
+            if (id) mapa[id] = { waitTime: a.waitTime, status: a.status };
+          });
+        } else { setErrorAPI(true); }
+      });
+      setTiemposReales(mapa);
+      setUltimaActualizacion(new Date().toLocaleTimeString("es-ES", { hour:"2-digit", minute:"2-digit" }));
+    } catch { setErrorAPI(true); }
+    setCargandoTiempos(false);
+  };
+
+  const toggleAtr = (id) => setSeleccionadas(p => p.includes(id) ? p.filter(x=>x!==id) : [...p,id]);
+
+  // ── Vista: consejo para una atracción específica ──
+  const abrirConsejo = (atr) => { setAtrActivaConsejo(atr); setVista("consejo"); };
+
+  // ── Generar ruta ordenada ──
+  const generarRuta = () => {
+    const sels = TODAS_ATRACCIONES.filter(a => seleccionadas.includes(a.id));
+    // Ordenar por: 1) hora extra esenciales, 2) cola más baja ahora
+    return sels.sort((a, b) => {
+      if (horaExtra === "si") {
+        if (a.heEsencial && !b.heEsencial) return -1;
+        if (!a.heEsencial && b.heEsencial) return 1;
+        if (a.heEsencial && b.heEsencial) return (a.heOrden||99) - (b.heOrden||99);
+      }
+      const trA = tiemposReales[a.id];
+      const trB = tiemposReales[b.id];
+      const colaA = trA?.waitTime ?? colaEstimada(a.id, horaNum) ?? 50;
+      const colaB = trB?.waitTime ?? colaEstimada(b.id, horaNum) ?? 50;
+      return colaA - colaB;
+    });
+  };
+
+  const s = {
+    card: { background:"#fff", border:"1px solid #e8e0d5", borderRadius:14, padding:"14px 16px" },
+    optBtn: (sel, color="#5B2D8E") => ({
+      flex:1, padding:"9px 12px", borderRadius:12,
+      border:`2px solid ${sel ? color : "#e0e0e0"}`,
+      background: sel ? color : "#f7f7f9",
+      color: sel ? "#fff" : "#555",
+      fontSize:12, fontWeight:700, cursor:"pointer",
+      fontFamily:"inherit", transition:"all .15s", minWidth:100,
+    }),
+    atrCard: (sel, cerrada) => ({
+      border:`2px solid ${sel ? "#5B2D8E" : cerrada ? "#f0f0f0" : "#e8e0d5"}`,
+      background: sel ? "#f0e8ff" : cerrada ? "#fafafa" : "#fff",
+      borderRadius:12, padding:"10px 12px",
+      cursor: cerrada ? "not-allowed" : "pointer",
+      transition:"all .15s", opacity: cerrada ? 0.5 : 1,
+    }),
+    nextBtn: (ok) => ({
+      width:"100%", marginTop:12,
+      background: ok ? "linear-gradient(135deg,#5B2D8E,#F5287A)" : "#e0e0e0",
+      color: ok ? "#fff" : "#999", border:"none", borderRadius:12,
+      padding:"13px", fontSize:14, fontWeight:700,
+      cursor: ok ? "pointer" : "not-allowed", fontFamily:"inherit",
+    }),
+  };
+
+  const coloresInt = {
+    suave:    { bg:"#e8fdf0", color:"#0a5a28", label:"Suave" },
+    media:    { bg:"#fff8e0", color:"#7a4a00", label:"Media" },
+    fuerte:   { bg:"#fff0f0", color:"#8a0010", label:"Fuerte ⚠️" },
+    personaje:{ bg:"#ede0ff", color:"#5B2D8E", label:"Personaje 🌟" },
+  };
+
+  // ════════════════════════
+  // VISTA: CONSEJO ESPECÍFICO
+  // ════════════════════════
+  if (vista === "consejo" && atrActivaConsejo) {
+    const a = atrActivaConsejo;
+    const tr = tiemposReales[a.id];
+    const colaReal = tr?.waitTime ?? null;
+    const colaEst = colaEstimada(a.id, horaNum);
+    const cola = colaReal !== null ? colaReal : colaEst;
+    const consejos = consejoInteligente({ atrId:a.id, atrNombre:a.nombre, horaActual:horaNum, horaCierre:cierreNum, colaReal, tieneBebes, zona });
+    const mejor = mejorMomento(a.id, horaNum, cierreNum);
+
+    return (
+      <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+        <button onClick={() => setVista("config")} style={{ background:"none", border:"none", color:"#5B2D8E", fontSize:13, fontWeight:800, cursor:"pointer", textAlign:"left", padding:0, fontFamily:"inherit" }}>← Volver al planificador</button>
+
+        <div style={{ background:"linear-gradient(135deg,#5B2D8E,#F5287A)", borderRadius:14, padding:"16px 18px", color:"white" }}>
+          <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:20 }}>{a.emoji} {a.nombre}</div>
+          <div style={{ fontSize:12, opacity:.8, marginTop:2 }}>{a.subzona} · {zona === "dlp" ? "Disneyland Park" : "Disney Adventure World"}</div>
+        </div>
+
+        {/* Cola ahora */}
+        <div style={s.card}>
+          <div style={{ fontSize:11, fontWeight:900, color:"#999", textTransform:"uppercase", letterSpacing:1.5, marginBottom:8 }}>Cola ahora mismo</div>
+          <div style={{ display:"flex", alignItems:"center", gap:12, flexWrap:"wrap" }}>
+            <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:28, color: cola <= 20 ? "#2EC866" : cola <= 45 ? "#F0A500" : cola <= 70 ? "#FF6347" : "#DC143C" }}>
+              {tr?.status === "DOWN" ? "🔴" : tr?.status === "CLOSED" ? "⚫" : cola !== null ? `${cola} min` : "—"}
+            </div>
+            <div>
+              {tr ? (
+                <div style={{ fontSize:11, color:"#2EC866", fontWeight:800 }}>🟢 Dato en directo · {ultimaActualizacion}</div>
+              ) : (
+                <div style={{ fontSize:11, color:"#F0A500", fontWeight:800 }}>🟡 Estimación según mis datos · {horaNum}:00h</div>
+              )}
+              <div style={{ fontSize:11, color:"#999", marginTop:2 }}>
+                Tendencia: {tendenciaCola(a.id, horaNum) === "bajando" ? "📉 bajando" : tendenciaCola(a.id, horaNum) === "subiendo" ? "📈 subiendo" : "➡️ estable"}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mejor momento */}
+        {mejor && mejor.h > horaNum && mejor.cola < (cola || 99) - 15 && (
+          <div style={{ ...s.card, borderLeft:"4px solid #2EC866" }}>
+            <div style={{ fontSize:11, fontWeight:900, color:"#0a5a28", textTransform:"uppercase", letterSpacing:1.5, marginBottom:4 }}>⭐ Mejor momento hoy</div>
+            <div style={{ fontSize:13, color:"#1c1410", fontWeight:700 }}>
+              Sobre las <strong>{mejor.h}:00h</strong> — aprox. {mejor.cola} min de espera
+            </div>
+            <div style={{ fontSize:11, color:"#555", marginTop:4 }}>Según mis datos de afluencia habitual para esta atracción.</div>
+          </div>
+        )}
+
+        {/* Consejos */}
+        <div style={s.card}>
+          <div style={{ fontSize:11, fontWeight:900, color:"#999", textTransform:"uppercase", letterSpacing:1.5, marginBottom:6 }}>💜 Consejo de Lara</div>
+          {consejos.map((c, i) => <ConsejoBox key={i} tipo={c.tipo} texto={c.texto} />)}
+        </div>
+
+        {/* Altura mínima */}
+        {a.altura && (
+          <div style={{ background:"#fff0f0", border:"1px solid #ffcdd2", borderRadius:10, padding:"10px 14px", fontSize:12, color:"#8a0010", fontWeight:700 }}>
+            📏 Altura mínima: <strong>{a.altura} cm</strong>
+          </div>
+        )}
+
+        {/* Tabla colas por hora */}
+        <div style={s.card}>
+          <div style={{ fontSize:11, fontWeight:900, color:"#999", textTransform:"uppercase", letterSpacing:1.5, marginBottom:10 }}>📊 Colas estimadas a lo largo del día</div>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+            {[9,10,11,12,13,14,15,16,17,18,19,20,21].map(h => {
+              const c = colaEstimada(a.id, h);
+              if (c === null || h > cierreNum) return null;
+              const bg = c <= 15 ? "#e8fdf0" : c <= 30 ? "#fff8e0" : c <= 60 ? "#fff3e0" : "#fff0f0";
+              const col = c <= 15 ? "#0a5a28" : c <= 30 ? "#7a4a00" : c <= 60 ? "#8a3a00" : "#8a0010";
+              const esAhora = h === horaNum;
+              return (
+                <div key={h} style={{ background:bg, border:`${esAhora ? "2px" : "1px"} solid ${esAhora ? "#5B2D8E" : col}`, borderRadius:8, padding:"5px 9px", textAlign:"center", minWidth:48 }}>
+                  <div style={{ fontSize:10, color:"#999", fontWeight:700 }}>{h}:00h</div>
+                  <div style={{ fontSize:12, fontWeight:900, color:col }}>{c} min</div>
+                  {esAhora && <div style={{ fontSize:9, color:"#5B2D8E", fontWeight:900 }}>ahora</div>}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ fontSize:10, color:"#aaa", marginTop:8 }}>Estimaciones para afluencia media-alta. Pueden variar según temporada y condiciones del día.</div>
+        </div>
+
+        <button onClick={() => setVista("config")} style={{ background:"none", border:"2px solid #e0d8f0", borderRadius:12, padding:"10px", color:"#5B2D8E", fontFamily:"inherit", fontWeight:800, fontSize:13, cursor:"pointer" }}>
+          ← Volver al planificador
+        </button>
+      </div>
+    );
+  }
+
+  // ════════════════════════
+  // VISTA: RUTA DEL DÍA
+  // ════════════════════════
+  if (vista === "ruta") {
+    const ruta = generarRuta();
+    const hayBabySwitch = tieneBebes === "si" && ruta.some(a => a.babySwitch);
+
+    return (
+      <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+        <div style={{ background:"linear-gradient(135deg,#5B2D8E,#F5287A)", borderRadius:14, padding:"16px 18px", color:"white" }}>
+          <div style={{ fontSize:11, opacity:.8, letterSpacing:1.5, textTransform:"uppercase", marginBottom:3 }}>Tu ruta de hoy</div>
+          <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:18 }}>{ruta.length} atracciones · Orden optimizado</div>
+          <div style={{ fontSize:12, opacity:.85, marginTop:3 }}>
+            {horaExtra === "si" ? "⭐ Hora extra 8:30h · " : ""}Parque cierra a las {horaCierre}:00h
+          </div>
+        </div>
+
+        {/* Estado tiempos reales */}
+        <div style={{ ...s.card, borderLeft:`4px solid ${Object.keys(tiemposReales).length > 0 && !errorAPI ? "#2EC866" : "#F0A500"}` }}>
+          <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:8, flexWrap:"wrap" }}>
+            <div style={{ fontSize:12, fontWeight:800, color: Object.keys(tiemposReales).length > 0 && !errorAPI ? "#0a5a28" : "#7a4a00" }}>
+              {Object.keys(tiemposReales).length > 0 && !errorAPI ? `🟢 Tiempos en directo · ${ultimaActualizacion}` : errorAPI ? "🟡 Tiempos estimados (API no disponible)" : "⚪ Sin tiempos en directo"}
+            </div>
+            <button onClick={() => cargarTiempos(zona)} disabled={cargandoTiempos}
+              style={{ background:"none", border:"1px solid #2EC866", borderRadius:20, padding:"3px 12px", color:"#0a5a28", fontSize:11, fontWeight:800, cursor:"pointer", fontFamily:"inherit" }}>
+              {cargandoTiempos ? "⏳" : "🔄 Actualizar"}
+            </button>
+          </div>
+          <div style={{ fontSize:11, color:"#555", marginTop:5 }}>📱 Revisa siempre la app oficial de Disneyland Paris antes de cada atracción.</div>
+        </div>
+
+        {/* Baby Switch resumen */}
+        {hayBabySwitch && (
+          <div style={{ background:"linear-gradient(135deg,#FFE0EF,#fff0f8)", border:"2px solid #F5287A", borderRadius:14, padding:"13px 15px" }}>
+            <div style={{ fontFamily:"'Fredoka One',cursive", color:"#F5287A", fontSize:14, marginBottom:6 }}>👶 Baby Switch disponible en tu ruta</div>
+            {ruta.filter(a => a.babySwitch).map(a => (
+              <div key={a.id} style={{ background:"white", borderRadius:9, padding:"8px 11px", marginTop:6, fontSize:12, color:"#555", lineHeight:1.5 }}>
+                <strong style={{ color:"#5B2D8E" }}>{a.emoji} {a.nombre}:</strong>{" "}
+                {a.id === "crush" ? "💡 Premier Access + Baby Switch — 2-3 personas con precio de 1. El adulto que espera entra sin cola." : "Baby Switch gratuito. Pídelo al Cast Member de la entrada."}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* SECUENCIA HORA EXTRA DAW */}
+        {horaExtra === "si" && (zona === "daw" || zona === "ambos") && heEleccionDAW && (
+          <div style={{ background: SECUENCIAS_HE_DAW[heEleccionDAW].bg, border:`2px solid ${SECUENCIAS_HE_DAW[heEleccionDAW].color}`, borderRadius:14, padding:"13px 15px" }}>
+            <div style={{ fontFamily:"'Fredoka One',cursive", color: SECUENCIAS_HE_DAW[heEleccionDAW].color, fontSize:14, marginBottom:8 }}>
+              ⭐ Hora Extra — {heEleccionDAW === "frozen" ? "❄️" : "🐢"} {SECUENCIAS_HE_DAW[heEleccionDAW].label}
+            </div>
+            {SECUENCIAS_HE_DAW[heEleccionDAW].orden.map((a, i) => {
+              const atrInfo = TODAS_ATRACCIONES.find(x => x.id === a.id);
+              const tr = tiemposReales[a.id];
+              return (
+                <div key={a.id} style={{ display:"flex", gap:8, alignItems:"flex-start", padding:"6px 0", borderBottom: i < SECUENCIAS_HE_DAW[heEleccionDAW].orden.length-1 ? "1px solid rgba(0,0,0,.07)" : "none" }}>
+                  <div style={{ width:22, height:22, borderRadius:"50%", background: SECUENCIAS_HE_DAW[heEleccionDAW].color, color:"white", fontSize:11, fontWeight:900, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>{i+1}</div>
+                  <div style={{ flex:1 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+                      <span style={{ fontSize:13, fontWeight:800, color:"#1c1410" }}>{atrInfo?.emoji} {atrInfo?.nombre}</span>
+                      {tr && <WaitBadge min={tr.waitTime} status={tr.status} cargando={cargandoTiempos} />}
+                    </div>
+                    <div style={{ fontSize:11, color:"#555", lineHeight:1.4, marginTop:2 }}>{a.consejo}</div>
+                  </div>
+                </div>
+              );
+            })}
+            <div style={{ marginTop:8, fontSize:11, fontWeight:700, color:"#8a3a00", background:"rgba(255,255,255,.6)", borderRadius:8, padding:"6px 10px" }}>
+              {SECUENCIAS_HE_DAW[heEleccionDAW].aviso}
+            </div>
+          </div>
+        )}
+
+        {/* Lista ruta */}
+        {ruta.map((a, i) => {
+          const tr = tiemposReales[a.id];
+          const colaR = tr?.waitTime ?? null;
+          const colaE = colaEstimada(a.id, horaNum);
+          const cola = colaR !== null ? colaR : colaE;
+          const cerrada = tr?.status === "CLOSED" || tr?.status === "REFURBISHMENT" || tr?.status === "DOWN";
+          const intInfo = coloresInt[a.intensidad];
+          const zonaJuego = tieneBebes === "si" && ZONAS_PEQUES[zona]?.find(z => z.cerca.includes(a.id));
+
+          return (
+            <div key={a.id} style={{ borderRadius:14, overflow:"hidden", boxShadow:"0 2px 10px rgba(91,45,142,.08)" }}>
+              {/* Header atracción */}
+              <div style={{ background: cerrada ? "#f0f0f0" : i === 0 ? "linear-gradient(135deg,#5B2D8E,#8B1FCC)" : "#faf8ff", borderTop:`3px solid ${cerrada ? "#ccc" : i === 0 ? "#5B2D8E" : "#e8e0f8"}`, padding:"11px 14px", display:"flex", alignItems:"center", gap:12 }}>
+                <div style={{ width:28, height:28, borderRadius:"50%", background: cerrada ? "#ccc" : i === 0 ? "rgba(255,255,255,.2)" : "#5B2D8E", border: i === 0 ? "2px solid rgba(255,255,255,.4)" : "none", display:"flex", alignItems:"center", justifyContent:"center", color:"white", fontSize:13, fontWeight:900, flexShrink:0 }}>{i+1}</div>
+                <div style={{ flex:1 }}>
+                  <div style={{ fontWeight:900, fontSize:14, color: cerrada ? "#999" : i === 0 ? "white" : "#1c1410" }}>{a.emoji} {a.nombre}</div>
+                  <div style={{ display:"flex", gap:5, marginTop:3, flexWrap:"wrap" }}>
+                    <span style={{ fontSize:10, fontWeight:800, background: i===0 ? "rgba(255,255,255,.2)" : intInfo.bg, color: i===0 ? "white" : intInfo.color, padding:"1px 7px", borderRadius:10 }}>{intInfo.label}</span>
+                    {a.altura && <span style={{ fontSize:10, fontWeight:800, background:"#fff0f0", color:"#8a0010", padding:"1px 7px", borderRadius:10 }}>📏 {a.altura}cm</span>}
+                    {horaExtra === "si" && a.heEsencial && <span style={{ fontSize:10, fontWeight:800, background: i===0 ? "rgba(255,255,255,.25)" : "#e8fdf0", color: i===0 ? "white" : "#0a5a28", padding:"1px 7px", borderRadius:10 }}>⭐ Hora extra</span>}
+                    <WaitBadge min={cola} status={tr?.status} cargando={cargandoTiempos} />
+                  </div>
+                </div>
+                <button onClick={() => abrirConsejo(a)} style={{ background: i===0 ? "rgba(255,255,255,.15)" : "#ede0ff", border:"none", borderRadius:8, padding:"5px 10px", color: i===0 ? "white" : "#5B2D8E", fontSize:11, fontWeight:800, cursor:"pointer", fontFamily:"inherit", whiteSpace:"nowrap" }}>
+                  💡 Consejo
+                </button>
+              </div>
+
+              {/* Consejo rápido + zona peques */}
+              <div style={{ background:"white", padding:"10px 14px" }}>
+                {cerrada ? (
+                  <div style={{ fontSize:12, color:"#999" }}>Esta atracción no está operativa hoy. Consulta la app oficial.</div>
+                ) : (
+                  <>
+                    {/* Consejo principal resumido */}
+                    {cola !== null && cola > 45 && (
+                      (() => {
+                        const mejor = mejorMomento(a.id, horaNum, cierreNum);
+                        return mejor && mejor.h > horaNum && mejor.cola < cola - 15 ? (
+                          <div style={{ fontSize:12, color:"#7a4a00", fontWeight:700, background:"#fff8e0", borderRadius:8, padding:"7px 10px", marginBottom:6 }}>
+                            ⏳ Cola alta ahora ({cola} min). Sobre las {mejor.h}:00h podría bajar a ~{mejor.cola} min — una opción a valorar.
+                          </div>
+                        ) : null;
+                      })()
+                    )}
+                    {cola !== null && cola <= 15 && (
+                      <div style={{ fontSize:12, color:"#0a5a28", fontWeight:700, background:"#e8fdf0", borderRadius:8, padding:"7px 10px", marginBottom:6 }}>
+                        ✅ Cola muy baja ahora — ¡momento ideal para hacerla!
+                      </div>
+                    )}
+                    {/* Zona peques */}
+                    {zonaJuego && tieneBebes === "si" && (
+                      <div style={{ fontSize:12, color:"#3a1a6e", fontWeight:700, background:"#ede0ff", borderRadius:8, padding:"7px 10px" }}>
+                        🧒 Mientras esperáis: <strong>{zonaJuego.nombre}</strong> — {zonaJuego.desc}
+                      </div>
+                    )}
+                    {/* Fantasyland warning */}
+                    {a.fantasyland && horaNum >= 19 && (
+                      <div style={{ fontSize:12, color:"#8a0010", fontWeight:700, background:"#fff0f0", borderRadius:8, padding:"7px 10px", marginTop:6 }}>
+                        ⚠️ Fantasyland cierra 1h antes del show nocturno. ¡No la dejes para el último momento!
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        <button onClick={() => { setVista("config"); setSeleccionadas([]); setPaso(1); setZona(null); setHoraExtra(null); setTieneBebes(null); setHoraActual(null); setHoraCierre(null); setTiemposReales({}); setHeEleccionDAW(null); }}
+          style={{ background:"none", border:"2px solid #e0d8f0", borderRadius:12, padding:"10px", color:"#5B2D8E", fontFamily:"inherit", fontWeight:800, fontSize:13, cursor:"pointer" }}>
+          ↩ Nuevo planificador
+        </button>
+      </div>
+    );
+  }
+
+  // ════════════════════════
+  // VISTA: CONFIGURACIÓN
+  // ════════════════════════
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+
+      {/* PASO 1: Parque */}
+      <div style={s.card}>
+        <div style={{ fontSize:12, fontWeight:800, color:"#5B2D8E", marginBottom:10 }}>🏰 ¿En qué parque estáis hoy?</div>
+        <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+          {[{val:"dlp",label:"🏰 Disneyland Park"},{val:"daw",label:"🎬 Disney Adventure World"},{val:"ambos",label:"✨ Los dos parques"}].map(opt => (
+            <button key={opt.val} onClick={() => { setZona(opt.val); setPaso(Math.max(paso,2)); setSeleccionadas([]); setTiemposReales({}); cargarTiempos(opt.val); }}
+              style={s.optBtn(zona===opt.val)}>{opt.label}</button>
+          ))}
+        </div>
+      </div>
+
+      {/* PASO 2: Hora actual */}
+      {zona && (
+        <div style={s.card}>
+          <div style={{ fontSize:12, fontWeight:800, color:"#5B2D8E", marginBottom:10 }}>🕐 ¿Qué hora es ahora?</div>
+          <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+            {(horaExtra === "si" ? [8,9,10,11,12,13,14,15,16,17,18,19,20,21] : [9,10,11,12,13,14,15,16,17,18,19,20,21]).map(h => (
+              <button key={h} onClick={() => { setHoraActual(String(h)); setPaso(Math.max(paso,3)); }}
+                style={{ ...s.optBtn(horaActual===String(h)), flex:"0 0 auto", padding:"7px 12px", fontSize:12, minWidth:0 }}>{h}:00h</button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* PASO 3: Hora cierre */}
+      {horaActual && (
+        <div style={s.card}>
+          <div style={{ fontSize:12, fontWeight:800, color:"#5B2D8E", marginBottom:10 }}>🌙 ¿A qué hora cierra el parque hoy?</div>
+          <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+            {["18","19","20","21","22","22:40"].map(h => (
+              <button key={h} onClick={() => { setHoraCierre(h); setPaso(Math.max(paso,4)); }}
+                style={{ ...s.optBtn(horaCierre===h), flex:"0 0 auto", padding:"7px 12px", fontSize:12, minWidth:0 }}>{h}h</button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* PASO 4: Hora extra */}
+      {horaCierre && (
+        <div style={s.card}>
+          <div style={{ fontSize:12, fontWeight:800, color:"#5B2D8E", marginBottom:10 }}>⭐ ¿Tenéis hora extra?</div>
+          <div style={{ display:"flex", gap:8 }}>
+            {[{val:"si",label:"✅ Sí, hotel Disney",c:"#2EC866"},{val:"no",label:"⏰ No, apertura general",c:"#5B2D8E"}].map(opt => (
+              <button key={opt.val} onClick={() => { setHoraExtra(opt.val); setPaso(Math.max(paso,5)); }}
+                style={s.optBtn(horaExtra===opt.val, opt.c)}>{opt.label}</button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* SELECTOR HORA EXTRA DAW — elegir Frozen o Crush primero */}
+      {horaExtra === "si" && (zona === "daw" || zona === "ambos") && (
+        <div style={{ background:"#fff", border:"2px solid #1a7aaa", borderRadius:14, padding:"14px 16px" }}>
+          <div style={{ fontSize:12, fontWeight:800, color:"#1a7aaa", marginBottom:6 }}>❄️🐢 ¿Por cuál empezáis la hora extra en Disney Adventure World?</div>
+          <div style={{ fontSize:11, color:"#666", marginBottom:12, lineHeight:1.5 }}>Frozen Ever After y Crush Coaster son siempre prioritarias en hora extra — pero hay que elegir UNO primero. La secuencia depende de tu elección.</div>
+          <div style={{ display:"flex", gap:8, flexWrap:"wrap" }}>
+            {Object.entries(SECUENCIAS_HE_DAW).map(([key, seq]) => (
+              <button key={key} onClick={() => setHeEleccionDAW(key)}
+                style={{ flex:1, minWidth:140, padding:"12px 14px", borderRadius:12, border:`2px solid ${heEleccionDAW===key ? seq.color : "#e0e0e0"}`, background: heEleccionDAW===key ? seq.bg : "#f7f7f9", cursor:"pointer", fontFamily:"inherit", textAlign:"left" }}>
+                <div style={{ fontSize:13, fontWeight:800, color: heEleccionDAW===key ? seq.color : "#333" }}>{key === "frozen" ? "❄️" : "🐢"} {seq.label}</div>
+                <div style={{ fontSize:11, color:"#888", marginTop:3 }}>{key === "frozen" ? "Frozen → Ratatouille → Paracaídas → Spiderman" : "Crush → Ratatouille → Spiderman → Paracaídas"}</div>
+              </button>
+            ))}
+          </div>
+          {heEleccionDAW && (
+            <div style={{ marginTop:10, background: SECUENCIAS_HE_DAW[heEleccionDAW].bg, border:`1px solid ${SECUENCIAS_HE_DAW[heEleccionDAW].color}`, borderRadius:10, padding:"9px 12px" }}>
+              <div style={{ fontSize:11, fontWeight:800, color: SECUENCIAS_HE_DAW[heEleccionDAW].color, marginBottom:4 }}>⭐ Secuencia recomendada:</div>
+              {SECUENCIAS_HE_DAW[heEleccionDAW].orden.map((a, i) => {
+                const atrInfo = TODAS_ATRACCIONES.find(x => x.id === a.id);
+                return (
+                  <div key={a.id} style={{ display:"flex", gap:8, alignItems:"flex-start", padding:"5px 0", borderBottom: i < SECUENCIAS_HE_DAW[heEleccionDAW].orden.length-1 ? "1px solid rgba(0,0,0,.06)" : "none" }}>
+                    <div style={{ width:20, height:20, borderRadius:"50%", background: SECUENCIAS_HE_DAW[heEleccionDAW].color, color:"white", fontSize:10, fontWeight:900, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, marginTop:1 }}>{i+1}</div>
+                    <div>
+                      <div style={{ fontSize:12, fontWeight:800, color:"#1c1410" }}>{atrInfo?.emoji} {atrInfo?.nombre}</div>
+                      <div style={{ fontSize:11, color:"#666", lineHeight:1.4 }}>{a.consejo}</div>
+                    </div>
+                  </div>
+                );
+              })}
+              <div style={{ marginTop:8, fontSize:11, fontWeight:700, color:"#8a3a00", background:"#fff8e0", borderRadius:8, padding:"6px 10px" }}>
+                {SECUENCIAS_HE_DAW[heEleccionDAW].aviso}
+              </div>
+              {SECUENCIAS_HE_DAW[heEleccionDAW].despues && (
+                <div style={{ marginTop:6, fontSize:11, fontWeight:700, color:"#0a5a6e", background:"#e0f9ff", borderRadius:8, padding:"6px 10px" }}>
+                  💡 {SECUENCIAS_HE_DAW[heEleccionDAW].despues}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* PASO 5: Niños */}
+      {horaExtra && (
+        <div style={s.card}>
+          <div style={{ fontSize:12, fontWeight:800, color:"#5B2D8E", marginBottom:10 }}>👶 ¿Vais con bebés o niños pequeños?</div>
+          <div style={{ display:"flex", gap:8 }}>
+            {[{val:"si",label:"👶 Sí, hay peques",c:"#F5287A"},{val:"no",label:"🎉 No",c:"#5B2D8E"}].map(opt => (
+              <button key={opt.val} onClick={() => { setTieneBebes(opt.val); setPaso(Math.max(paso,6)); }}
+                style={s.optBtn(tieneBebes===opt.val, opt.c)}>{opt.label}</button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Estado tiempos reales */}
+      {zona && (
+        <div style={{ background: Object.keys(tiemposReales).length > 0 && !errorAPI ? "#e8fdf0" : "#fff8e0", border:`1px solid ${Object.keys(tiemposReales).length > 0 && !errorAPI ? "#2EC866" : "#F0A500"}`, borderRadius:10, padding:"8px 13px", display:"flex", alignItems:"center", justifyContent:"space-between", gap:8 }}>
+          <div style={{ fontSize:11, fontWeight:700, color: Object.keys(tiemposReales).length > 0 && !errorAPI ? "#0a5a28" : "#7a4a00" }}>
+            {cargandoTiempos ? "⏳ Cargando tiempos en directo..." : Object.keys(tiemposReales).length > 0 && !errorAPI ? `🟢 Tiempos en directo · ${ultimaActualizacion}` : errorAPI ? "🟡 Usando tiempos estimados" : "⚪ Tiempos se cargarán al seleccionar parque"}
+          </div>
+          {!cargandoTiempos && zona && (
+            <button onClick={() => cargarTiempos(zona)} style={{ background:"none", border:"1px solid currentColor", borderRadius:20, padding:"2px 10px", fontSize:10, fontWeight:800, cursor:"pointer", fontFamily:"inherit", color: Object.keys(tiemposReales).length > 0 ? "#0a5a28" : "#7a4a00" }}>🔄</button>
+          )}
+        </div>
+      )}
+
+      {/* PASO 6: Seleccionar atracciones */}
+      {tieneBebes && (
+        <div style={s.card}>
+          <div style={{ fontSize:12, fontWeight:800, color:"#5B2D8E", marginBottom:4 }}>🎢 ¿Qué atracciones queréis hacer?</div>
+          <div style={{ fontSize:11, color:"#999", marginBottom:12 }}>Márcalas y te doy la ruta óptima con consejos en tiempo real.</div>
+
+          {Array.from(new Set(atrDisponibles.map(a => a.subzona))).map(subzona => {
+            const atrZona = atrDisponibles.filter(a => a.subzona === subzona);
+            return (
+              <div key={subzona} style={{ marginBottom:14 }}>
+                <div style={{ fontSize:10, fontWeight:900, color:"#999", textTransform:"uppercase", letterSpacing:1.5, marginBottom:8, paddingBottom:4, borderBottom:"1px solid #f0eaf8" }}>{subzona}</div>
+                <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
+                  {atrZona.map(a => {
+                    const sel = seleccionadas.includes(a.id);
+                    const tr = tiemposReales[a.id];
+                    const cerrada = tr?.status === "CLOSED" || tr?.status === "REFURBISHMENT";
+                    const intInfo = coloresInt[a.intensidad];
+                    return (
+                      <div key={a.id} style={{ display:"flex", gap:8, alignItems:"stretch" }}>
+                        <div onClick={() => !cerrada && toggleAtr(a.id)} style={{ ...s.atrCard(sel, cerrada), flex:1 }}>
+                          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                            <div style={{ fontSize:20, flexShrink:0 }}>{a.emoji}</div>
+                            <div style={{ flex:1 }}>
+                              <div style={{ fontSize:13, fontWeight:800, color:"#1c1410" }}>{a.nombre}</div>
+                              <div style={{ display:"flex", gap:4, marginTop:3, flexWrap:"wrap" }}>
+                                <span style={{ fontSize:10, fontWeight:800, background:intInfo.bg, color:intInfo.color, padding:"1px 6px", borderRadius:10 }}>{intInfo.label}</span>
+                                {a.altura && <span style={{ fontSize:10, fontWeight:700, background:"#fff0f0", color:"#8a0010", padding:"1px 6px", borderRadius:10 }}>📏 {a.altura}cm</span>}
+                                {horaExtra === "si" && a.heEsencial && <span style={{ fontSize:10, fontWeight:800, background:"#e8fdf0", color:"#0a5a28", padding:"1px 6px", borderRadius:10 }}>⭐</span>}
+                                {a.susto && tieneBebes === "si" && <span style={{ fontSize:10, fontWeight:800, background:"#fff8e0", color:"#8a4a00", padding:"1px 6px", borderRadius:10 }}>⚠️</span>}
+                                {tr && <WaitBadge min={tr.waitTime} status={tr.status} cargando={cargandoTiempos} />}
+                              </div>
+                            </div>
+                            <div style={{ width:20, height:20, borderRadius:"50%", border:`2px solid ${sel ? "#5B2D8E" : "#ddd"}`, background: sel ? "#5B2D8E" : "transparent", display:"flex", alignItems:"center", justifyContent:"center", color:"white", fontSize:11, flexShrink:0 }}>
+                              {sel ? "✓" : ""}
+                            </div>
+                          </div>
+                        </div>
+                        {/* Botón consejo rápido */}
+                        <button onClick={() => abrirConsejo(a)} title="Ver consejo de Lara"
+                          style={{ background:"#ede0ff", border:"none", borderRadius:10, width:38, cursor:"pointer", fontSize:16, flexShrink:0 }}>
+                          💡
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+
+          <button onClick={() => setVista("ruta")} disabled={seleccionadas.length === 0} style={s.nextBtn(seleccionadas.length > 0)}>
+            {seleccionadas.length === 0 ? "Selecciona al menos una atracción" : `✨ Ver mi ruta optimizada (${seleccionadas.length} atr.)`}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════
 // PORTAL PRINCIPAL
 // ═══════════════════════════════════════════════════════
 export default function Portal() {
@@ -777,6 +1573,7 @@ export default function Portal() {
   // Tabs: si la reserva NO está completa, solo muestra Guías, Asistente (y oculta el resto)
   const allTabs = [
     { id:"reserva", label:"🏰 Mi Reserva", soloCompleta: false },
+    { id:"atracciones", label:"🎢 Planificador", soloCompleta: false },
     { id:"restaurantes", label:"🍽️ Planificador", soloCompleta: true },
     { id:"guias", label:"📖 Guías", soloCompleta: false },
     { id:"pagos", label:"💰 Pagos", soloCompleta: false },
@@ -964,6 +1761,8 @@ export default function Portal() {
 
             {/* TAB: PLANIFICADOR DE RESTAURANTES */}
             {activeTab==="restaurantes" && reservaCompleta && <PlanificadorRestaurantes cliente={cliente} />}
+
+            {activeTab==="atracciones" && <PlanificadorAtracciones cliente={cliente} />}
 
             {/* TAB: GUÍAS — accesible para todos */}
             {activeTab==="guias" && (
