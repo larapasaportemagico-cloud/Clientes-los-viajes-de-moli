@@ -712,9 +712,8 @@ Genera plan día a día con emojis y formato claro. Responde en español.`;
 // ── ZONAS DE JUEGO / ESPERA PARA PEQUES ──
 const ZONAS_PEQUES = {
   dlp: [
-    { zona:"Frontierland", nombre:"Adventure Isle", desc:"Zona de juego junto a BTM con puentes colgantes, cuevas y toboganes. Perfecta mientras adultos hacen BTM o Phantom Manor.", cerca:["btm","phantom"] },
+    { zona:"Frontierland", nombre:"Adventure Isle", desc:"Adventure Isle está justo al lado de BTM — zona con puentes colgantes, cuevas y toboganes. Los peques pueden explorar mientras adultos hacen BTM o Phantom Manor.", cerca:["btm","phantom"] },
     { zona:"Adventureland", nombre:"La Cabane des Robinson", desc:"Treehouse climbable con vistas. Sin cola, entretenida para peques mientras adultos hacen Indiana Jones.", cerca:["indiana"] },
-    { zona:"Fantasyland", nombre:"Zona de juego Fantasyland", desc:"Pequeña área de juego cerca de Dumbo. Los peques pueden jugar mientras el adulto espera su turno con Baby Switch.", cerca:["peter-pan","dumbo"] },
     { zona:"Discoveryland", nombre:"Autopia (conducir)", desc:"Los niños pequeños pueden conducir con un adulto. Sin restricción de altura. Buena mientras esperan en Space Mountain.", cerca:["space","buzz"] },
   ],
   daw: [
