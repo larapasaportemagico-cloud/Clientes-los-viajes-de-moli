@@ -714,7 +714,10 @@ const ZONAS_PEQUES = {
   dlp: [
     { zona:"Frontierland", nombre:"Adventure Isle", desc:"Adventure Isle está justo al lado de BTM — zona con puentes colgantes, cuevas y toboganes. Los peques pueden explorar mientras adultos hacen BTM o Phantom Manor.", cerca:["btm","phantom"] },
     { zona:"Adventureland", nombre:"La Cabane des Robinson", desc:"Treehouse climbable con vistas. Sin cola, entretenida para peques mientras adultos hacen Indiana Jones.", cerca:["indiana"] },
-    { zona:"Discoveryland", nombre:"Autopia (conducir)", desc:"Los niños pequeños pueden conducir con un adulto. Sin restricción de altura. Buena mientras esperan en Space Mountain.", cerca:["space","buzz"] },
+    { zona:"Discoveryland", nombre:"Café Hyperion", desc:"Gran espacio cubierto con pantallas de dibujos animados y shows en temporadas especiales (Halloween, Navidad). Ideal para un descanso o comida con peques mientras adultos hacen Space Mountain.", cerca:["space","buzz"] },
+    { zona:"Discoveryland", nombre:"Les Mystères du Nautilus", desc:"Submarino cubierto y sin prácticamente cola a ninguna hora. Perfecto para refugiarse del calor o la lluvia mientras adultos hacen Space Mountain o Buzz.", cerca:["space","buzz","buzz"] },
+    { zona:"Discoveryland", nombre:"Orbitron", desc:"Atracción suave sin restricción de altura. Los peques vuelan en cohetes mientras adultos esperan en Buzz o Space Mountain. En hora extra siempre tiene poca cola.", cerca:["space","buzz"] },
+    { zona:"Discoveryland", nombre:"Autopia", desc:"Los peques pueden conducir con un adulto (altura mínima 81cm). Cola baja, cubierta parcialmente. Buena mientras esperan en Space Mountain o Buzz.", cerca:["space","buzz"] },
   ],
   daw: [
     { zona:"Worlds of Pixar", nombre:"Zona de juego Toy Story", desc:"Área temática de Toy Story con juegos para peques. Perfecta mientras adultos hacen Crush Coaster.", cerca:["crush","rc-racer"] },
