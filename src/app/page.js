@@ -1574,13 +1574,13 @@ export default function Portal() {
 
   // Tabs: si la reserva NO está completa, solo muestra Guías, Asistente (y oculta el resto)
   const allTabs = [
-    { id:"reserva", label:"🏰 Mi Reserva", soloCompleta: false },
-    { id:"atracciones", label:"🎢 Planificador", soloCompleta: false },
-    { id:"colas", label:"🗺️ Mis Atracciones", soloCompleta: false },
-    { id:"restaurantes", label:"🍽️ Planificador", soloCompleta: true },
-    { id:"guias", label:"📖 Guías", soloCompleta: false },
-    { id:"pagos", label:"💰 Pagos", soloCompleta: false },
-    { id:"extras", label:"✨ Servicios", soloCompleta: true },
+    { id:"reserva",      label:"🏰 Mi Reserva",      soloCompleta: false, soloReserva: true  },
+    { id:"atracciones",  label:"🎢 Planificador",     soloCompleta: false, soloReserva: true  },
+    { id:"colas",        label:"🗺️ Mis Atracciones", soloCompleta: false, soloReserva: true  },
+    { id:"restaurantes", label:"🍽️ Restaurantes",    soloCompleta: true,  soloReserva: true  },
+    { id:"guias",        label:"📖 Guías",            soloCompleta: false, soloReserva: false },
+    { id:"pagos",        label:"💰 Pagos",            soloCompleta: false, soloReserva: true  },
+    { id:"extras",       label:"✨ Servicios",        soloCompleta: true,  soloReserva: true  },
     { id:"asistente", label:"🪄 Moli", soloCompleta: false },
   ];
 
@@ -1678,12 +1678,13 @@ export default function Portal() {
             {/* TABS */}
             <div style={{ display:"flex", gap:6, marginBottom:20, overflowX:"auto" }}>
               {tabs.map(tab => {
-                const disabled = tab.soloCompleta && !reservaCompleta;
+                const esPref = !reservaCompleta; // sin hotel = presupuesto preferente
+                const disabled = (tab.soloCompleta && !reservaCompleta) || (tab.soloReserva && esPref);
                 const isActive = activeTab === tab.id;
                 return (
                   <button key={tab.id}
                     onClick={() => !disabled && setActiveTab(tab.id)}
-                    title={disabled ? "Disponible cuando tu reserva esté confirmada" : ""}
+                    title={disabled ? (esPref ? "Disponible cuando confirmes tu reserva con Lara ✨" : "Disponible cuando tu reserva esté confirmada") : ""}
                     style={{
                       background: isActive ? "linear-gradient(135deg,#2BBCD4,#1A8A9E)" : disabled ? "rgba(43,188,212,0.03)" : "rgba(43,188,212,0.08)",
                       color: isActive ? "white" : disabled ? "rgba(43,188,212,0.25)" : "#2BBCD4",
@@ -1777,6 +1778,18 @@ export default function Portal() {
                   <p style={{ fontSize:13, color:"#7a6a50", lineHeight:1.6, marginBottom:20 }}>
                     Con más de 25 visitas a Disneyland Paris, Lara ha preparado estas guías para que llegues al parque con todo claro y sin dudas.
                   </p>
+                  {esPref && (
+                    <div style={{ background:"linear-gradient(135deg,rgba(91,45,142,0.08),rgba(245,40,122,0.06))", border:"2px solid rgba(91,45,142,0.2)", borderRadius:12, padding:"14px 16px", marginBottom:16 }}>
+                      <div style={{ fontFamily:"'Fredoka One',cursive", color:"#5B2D8E", fontSize:15, marginBottom:6 }}>✨ Tu portal completo te espera</div>
+                      <div style={{ fontSize:12, color:"#7a6a50", lineHeight:1.6 }}>
+                        Cuando confirmes tu reserva con Lara tendrás acceso a tu planificador de atracciones con tiempos reales, el asistente de restaurantes personalizado, el seguimiento de pagos y mucho más. <strong style={{color:"#F5287A"}}>Todo pensado para que tu familia disfrute al máximo cada hora en el parque.</strong>
+                      </div>
+                      <a href="https://losviajesdemoli.com" target="_blank" rel="noopener noreferrer"
+                        style={{ display:"inline-flex", alignItems:"center", gap:6, marginTop:10, background:"linear-gradient(135deg,#5B2D8E,#F5287A)", color:"white", borderRadius:20, padding:"7px 16px", textDecoration:"none", fontSize:12, fontWeight:800 }}>
+                        🏰 Reservar con Lara →
+                      </a>
+                    </div>
+                  )}
                   <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
                     {/* GUÍA HOTELES */}
                     <a href="/guia_hoteles_moli.html" target="_blank" rel="noopener noreferrer"
