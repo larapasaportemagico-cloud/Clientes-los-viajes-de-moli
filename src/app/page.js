@@ -1576,6 +1576,7 @@ export default function Portal() {
   const allTabs = [
     { id:"reserva", label:"🏰 Mi Reserva", soloCompleta: false },
     { id:"atracciones", label:"🎢 Planificador", soloCompleta: false },
+    { id:"colas", label:"⏱️ Colas", soloCompleta: false },
     { id:"restaurantes", label:"🍽️ Planificador", soloCompleta: true },
     { id:"guias", label:"📖 Guías", soloCompleta: false },
     { id:"pagos", label:"💰 Pagos", soloCompleta: false },
@@ -1765,6 +1766,8 @@ export default function Portal() {
             {activeTab==="restaurantes" && reservaCompleta && <PlanificadorRestaurantes cliente={cliente} />}
 
             {activeTab==="atracciones" && <PlanificadorAtracciones cliente={cliente} />}
+
+            {activeTab==="colas" && <VisorColas cliente={cliente} />}
 
             {/* TAB: GUÍAS — accesible para todos */}
             {activeTab==="guias" && (
