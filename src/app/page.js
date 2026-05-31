@@ -1576,7 +1576,7 @@ export default function Portal() {
   const allTabs = [
     { id:"reserva", label:"🏰 Mi Reserva", soloCompleta: false },
     { id:"atracciones", label:"🎢 Planificador", soloCompleta: false },
-    { id:"colas", label:"⏱️ Colas", soloCompleta: false },
+    { id:"colas", label:"🗺️ Mis Atracciones", soloCompleta: false },
     { id:"restaurantes", label:"🍽️ Planificador", soloCompleta: true },
     { id:"guias", label:"📖 Guías", soloCompleta: false },
     { id:"pagos", label:"💰 Pagos", soloCompleta: false },
