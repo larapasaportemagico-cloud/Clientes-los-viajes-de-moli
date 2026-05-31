@@ -10,6 +10,24 @@ const FORM_PAGOS = "https://forms.gle/t5QaxnEuFqL6SCHQ9";
 // Un cliente "en proceso" es aquel que está en el Sheet
 // pero aún no tiene los datos de reserva completos (hotel vacío)
 // ═══════════════════════════════════════════════════════
+function esPeriodoVisita(cliente) {
+  if (!cliente?.["Check-in"] || !cliente?.["Check-out"]) return false;
+  const hoy = new Date();
+  hoy.setHours(0,0,0,0);
+  const checkin = new Date(cliente["Check-in"] + "T00:00:00");
+  const checkout = new Date(cliente["Check-out"] + "T00:00:00");
+  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 3);
+  return hoy >= inicio && hoy <= checkout;
+}
+
+function diasParaViaje(cliente) {
+  if (!cliente?.["Check-in"]) return null;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const checkin = new Date(cliente["Check-in"] + "T00:00:00");
+  const diff = Math.ceil((checkin - hoy) / (1000*60*60*24));
+  return diff;
+}
+
 function tieneReservaCompleta(cliente) {
   if (!cliente) return false;
   return !!(cliente.Hotel && String(cliente.Hotel).trim() !== "");
@@ -1575,10 +1593,11 @@ export default function Portal() {
   // Tabs: si la reserva NO está completa, solo muestra Guías, Asistente (y oculta el resto)
   const allTabs = [
     { id:"reserva",      label:"🏰 Mi Reserva",      soloCompleta: false, soloReserva: true  },
-    { id:"atracciones",  label:"🎢 Planificador",     soloCompleta: false, soloReserva: true  },
-    { id:"colas",        label:"🗺️ Mis Atracciones", soloCompleta: false, soloReserva: true  },
+    { id:"atracciones",  label:"🎢 Atracciones",      soloCompleta: false, soloReserva: true  },
+    { id:"colas",        label:"⏱️ Tiempos",          soloCompleta: false, soloReserva: true  },
     { id:"restaurantes", label:"🍽️ Restaurantes",    soloCompleta: true,  soloReserva: true  },
     { id:"guias",        label:"📖 Guías",            soloCompleta: false, soloReserva: false },
+    { id:"guia-parque",   label:"🏰 Guía del Parque",  soloCompleta: false, soloReserva: true  },
     { id:"pagos",        label:"💰 Pagos",            soloCompleta: false, soloReserva: true  },
     { id:"extras",       label:"✨ Servicios",        soloCompleta: true,  soloReserva: true  },
     { id:"asistente", label:"🪄 Moli", soloCompleta: false },
@@ -1771,6 +1790,66 @@ export default function Portal() {
             {activeTab==="colas" && <VisorColas cliente={cliente} />}
 
             {/* TAB: GUÍAS — accesible para todos */}
+            {activeTab==="guia-parque" && (() => {
+              const activo = esPeriodoVisita(cliente);
+              const dias = diasParaViaje(cliente);
+              return (
+                <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+                  <div style={{ background:"linear-gradient(135deg,#5B2D8E,#F5287A)", borderRadius:16, padding:"20px 22px", color:"white" }}>
+                    <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:20, marginBottom:4 }}>🏰 Guía del Parque</div>
+                    <div style={{ fontSize:12, opacity:.85 }}>La guía completa de Lara para sacar el máximo a cada hora</div>
+                  </div>
+
+                  {!activo && dias !== null && dias > 0 && (
+                    <div style={{ background:"rgba(240,165,0,0.1)", border:"2px solid #F0A500", borderRadius:14, padding:"18px 20px", textAlign:"center" }}>
+                      <div style={{ fontSize:36, marginBottom:10 }}>⏳</div>
+                      <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:18, color:"#8a4a00", marginBottom:6 }}>
+                        ¡Faltan {dias} día{dias!==1?"s":""}!
+                      </div>
+                      <div style={{ fontSize:13, color:"#7a5000", lineHeight:1.6 }}>
+                        La guía del parque se activa <strong>3 días antes de tu llegada</strong>.<br/>
+                        Mientras tanto, puedes revisar la guía de hoteles y restaurantes en la pestaña Guías.
+                      </div>
+                    </div>
+                  )}
+
+                  {!activo && (dias === null || dias <= 0) && (
+                    <div style={{ background:"rgba(43,188,212,0.08)", border:"1px solid rgba(43,188,212,0.3)", borderRadius:14, padding:"18px 20px", textAlign:"center" }}>
+                      <div style={{ fontSize:36, marginBottom:10 }}>✈️</div>
+                      <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:18, color:"#1A8A9E", marginBottom:6 }}>¡Espero que hayáis disfrutado!</div>
+                      <div style={{ fontSize:13, color:"#4a7a8a", lineHeight:1.6 }}>El viaje ya ha terminado. ¡Gracias por confiar en Los Viajes de Moli!</div>
+                    </div>
+                  )}
+
+                  {activo && (
+                    <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                      <div style={{ background:"#e8fdf0", border:"2px solid #2EC866", borderRadius:12, padding:"12px 16px", fontSize:13, fontWeight:700, color:"#0a5a28", textAlign:"center" }}>
+                        🟢 Guía activa — ¡Disfrutad del viaje!
+                      </div>
+                      {[
+                        { href:"/GUIA_DLP.html", icon:"🗺️", title:"Guía completa del parque", desc:"Atracciones, rutas, hora extra, personajes, espectáculos y todos los consejos de Lara" },
+                        { href:"/guia_restaurantes_moli.html", icon:"🍽️", title:"Guía de restaurantes", desc:"Dónde comer en los parques, hoteles y Disney Village con consejos de reserva" },
+                        { href:"/guia_hoteles_moli.html", icon:"🏨", title:"Guía de hoteles", desc:"Todos los hoteles Disney con características, precios y pros/contras" },
+                      ].map((g,i) => (
+                        <a key={i} href={g.href} target="_blank" rel="noopener noreferrer"
+                          style={{ display:"flex", alignItems:"center", gap:14, background:"rgba(255,255,255,0.97)", border:"1px solid rgba(43,188,212,0.25)", borderRadius:14, padding:"16px 18px", textDecoration:"none" }}>
+                          <span style={{ fontSize:32 }}>{g.icon}</span>
+                          <div style={{ flex:1 }}>
+                            <div style={{ color:"#1c1410", fontSize:14, fontWeight:800, marginBottom:3 }}>{g.title}</div>
+                            <div style={{ color:"#7a6a50", fontSize:12 }}>{g.desc}</div>
+                          </div>
+                          <span style={{ color:"#2BBCD4", fontSize:20 }}>→</span>
+                        </a>
+                      ))}
+                      <div style={{ background:"#FFF8E1", border:"1px solid #fde68a", borderRadius:12, padding:"12px 14px", fontSize:12, color:"#92400e" }}>
+                        💡 <strong>Consejo de Lara:</strong> Lee la sección de Hora Extra antes de entrar al parque y ten clara la ruta del primer día. ¡Marca en favoritos esta página para acceder rápido desde el parque!
+                      </div>
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
+
             {activeTab==="guias" && (
               <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
                 <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:16, padding:"18px 20px", border:"1px solid rgba(43,188,212,0.2)" }}>
