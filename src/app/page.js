@@ -1688,15 +1688,6 @@ function getEst(id, h) {
   return c[hb]??null;
 }
 
-function WaitBadge({min,status,cargando}) {
-  if(cargando) return <span style={{fontSize:10,background:"#f0f0f0",color:"#999",padding:"2px 8px",borderRadius:10,fontWeight:800}}>⏳</span>;
-  if(status==="DOWN") return <span style={{fontSize:10,background:"#fff0f0",color:"#8a0010",padding:"2px 8px",borderRadius:10,fontWeight:800}}>🔴 Parada</span>;
-  if(status==="CLOSED"||status==="REFURBISHMENT") return <span style={{fontSize:10,background:"#f0f0f0",color:"#666",padding:"2px 8px",borderRadius:10,fontWeight:800}}>⚫ Cerrada</span>;
-  if(min===null||min===undefined) return null;
-  const c = min<=15?{bg:"#e8fdf0",co:"#0a5a28"}:min<=30?{bg:"#fff8e0",co:"#7a4a00"}:min<=60?{bg:"#fff0d0",co:"#8a3a00"}:{bg:"#fff0f0",co:"#8a0010"};
-  return <span style={{fontSize:10,background:c.bg,color:c.co,padding:"2px 8px",borderRadius:10,fontWeight:900,border:`1px solid ${c.co}20`}}>🕐 {min} min</span>;
-}
-
 function VisorColas({cliente}) {
   const [parque, setParque] = useState("dlp");
   const [modo, setModo] = useState("directo");
