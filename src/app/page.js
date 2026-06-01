@@ -1688,7 +1688,7 @@ function getEst(id, h) {
   return c[hb]??null;
 }
 
-function WaitBadge2({min,status,cargando}) {
+function WaitBadge({min,status,cargando}) {
   if(cargando) return <span style={{fontSize:10,background:"#f0f0f0",color:"#999",padding:"2px 8px",borderRadius:10,fontWeight:800}}>⏳</span>;
   if(status==="DOWN") return <span style={{fontSize:10,background:"#fff0f0",color:"#8a0010",padding:"2px 8px",borderRadius:10,fontWeight:800}}>🔴 Parada</span>;
   if(status==="CLOSED"||status==="REFURBISHMENT") return <span style={{fontSize:10,background:"#f0f0f0",color:"#666",padding:"2px 8px",borderRadius:10,fontWeight:800}}>⚫ Cerrada</span>;
