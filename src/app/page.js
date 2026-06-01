@@ -1095,6 +1095,122 @@ function WaitBadge({ min, status, cargando }) {
   return <span style={{ fontSize:10, background:bg, color:c, padding:"2px 8px", borderRadius:10, fontWeight:800 }}>🕐 {min} min</span>;
 }
 
+
+// ═══════════════════════════════════════════════════════
+// RESTAURANTES POR ZONA — datos reales de Lara
+// ═══════════════════════════════════════════════════════
+const RESTS_ZONA = {
+  dlp: {
+    "Main Street": [
+      { n:"Walt's Restaurant", tipo:"mesa", emoji:"🕯️", consejo:"El más especial del parque. Vistas al castillo. Reserva con mucha antelación.", plan:["mp","plus","premium","sin"] },
+      { n:"Market House Deli", tipo:"rapido", emoji:"🥪", consejo:"Sándwiches y snacks. El de jamón y queso tiene forma de Mickey. Abre hasta el cierre.", plan:["standard","plus","sin"] },
+    ],
+    "Adventureland": [
+      { n:"Blue Lagoon", tipo:"mesa", emoji:"🏝️", consejo:"Cenáis DENTRO de la atracción de Piratas. Experiencia única en el mundo. Reserva con meses.", plan:["mp","plus","premium","sin"] },
+      { n:"Captain Jack's", tipo:"mesa", emoji:"☠️", consejo:"Temática Piratas. Cocina española e internacional.", plan:["mp","plus","premium","sin"] },
+      { n:"Colonel Hathi's Pizza Outpost", tipo:"rapido", emoji:"🍕", consejo:"El ÚNICO restaurante con pizza del Parque Disneyland. Si quieren pizza, aquí.", plan:["standard","plus","sin"] },
+    ],
+    "Frontierland": [
+      { n:"Silver Spur Steakhouse", tipo:"mesa", emoji:"🤠", consejo:"Restaurante de mesa temático del Oeste.", plan:["mp","plus","premium","sin"] },
+      { n:"Cowboy Cookout BBQ", tipo:"buffet", emoji:"🥩", consejo:"Favorito de Lara. Costillas, pollo y salchichas para compartir. ⚠️ Cierra antes — verifica horario en app.", plan:["mp","plus"] },
+      { n:"Lucky Nugget Saloon", tipo:"rapido", emoji:"🎰", consejo:"⚠️ Aunque parece buffet, descuenta bono de mesa — no rentable. Úsalo con bono rápido sobrante.", plan:["standard","sin"] },
+    ],
+    "Discoveryland": [
+      { n:"Café Hyperion", tipo:"rapido", emoji:"☕", consejo:"El refugio del parque. Grande, cubierto, enchufes EU. Shows de temporada dentro. Hamburguesas.", plan:["standard","plus","sin"] },
+    ],
+    "Fantasyland": [
+      { n:"Auberge de Cendrillon", tipo:"mesa", emoji:"👸", consejo:"Princesas + Mickey. Solo para plan Extra Plus/Premium o pagando suplemento. Reserva con meses de antelación.", plan:["extra_plus","premium","sin"] },
+      { n:"Toad Hall Restaurant", tipo:"rapido", emoji:"🐸", consejo:"Comida rápida en Fantasyland. ⚠️ Cierra 1h antes del show nocturno.", plan:["standard","plus","sin"] },
+    ],
+  },
+  daw: {
+    "Studio 1 / Entrada": [
+      { n:"World Premier Café (The Garden)", tipo:"rapido", emoji:"🌿", consejo:"Al entrar o salir de DAW. Hamburguesas. Bueno para empezar el día.", plan:["standard","plus","sin"] },
+    ],
+    "Campus Avengers": [
+      { n:"PYM Kitchen", tipo:"buffet", emoji:"🦸", consejo:"Buffet temático Avengers con personajes Marvel. Muy recomendable para fans. Reserva con antelación.", plan:["mp","plus"] },
+      { n:"Stark Factory", tipo:"rapido", emoji:"⚡", consejo:"Raciones MUY grandes con bono rápido. Pasta infantil = misma cantidad que adulto. Ideal para aprovechar bono.", plan:["standard","plus","sin"] },
+      { n:"Downtown Restaurant", tipo:"mesa", emoji:"🎬", consejo:"Mesa cerca de Avengers Campus. Ambiente cinematográfico.", plan:["mp","plus","premium","sin"] },
+    ],
+    "Worlds of Pixar": [
+      { n:"Chez Rémy (Ratatouille)", tipo:"mesa", emoji:"🐀", consejo:"El más famoso de DAW. Cocina francesa junto a la atracción. ~55€/persona. Reserva con semanas.", plan:["mp","plus","premium","sin"] },
+    ],
+    "World of Frozen": [
+      { n:"The Regal View Restaurant", tipo:"mesa", emoji:"🌊", consejo:"NUEVO 2026. Vistas al lago Adventure Bay. Desayuno/comida/cena. Princesas con plan Premium. Reserva cuanto antes.", plan:["mp","plus","premium","sin"] },
+      { n:"Restaurante rápido Frozen", tipo:"rapido", emoji:"❄️", consejo:"Albóndigas y salmón. ⚠️ Poca capacidad en la zona del lago — si hay mucha gente, mejor moverse a otra zona.", plan:["standard","plus","sin"] },
+    ],
+  },
+  hotel: {
+    "Hotel Newport Bay Club": [
+      { n:"Cape Cod Restaurant", tipo:"buffet", emoji:"⚓", consejo:"Favorito de Lara para familias con bebés. Tronas, variedad, ambiente relajado. Cenas a partir de las 18h.", plan:["mp","plus"] },
+    ],
+    "Hotel New York Marvel": [
+      { n:"Manhattan Restaurant", tipo:"buffet", emoji:"🗽", consejo:"Buffet con personajes Avengers por las noches. Cenas a partir de las 18h.", plan:["mp","plus"] },
+      { n:"Downtown Restaurant (hotel)", tipo:"mesa", emoji:"🎨", consejo:"Restaurante de mesa del hotel NY Marvel.", plan:["mp","plus","sin"] },
+    ],
+    "Hotel Disneyland": [
+      { n:"Royal Banquet", tipo:"mesa", emoji:"👑", consejo:"Mickey, Minnie, Pluto, Donald. Comida y cena con personajes. Solo con plan Premium o pagando suplemento.", plan:["premium","sin"] },
+      { n:"La Table de Lumière", tipo:"mesa", emoji:"✨", consejo:"Príncipes y princesas. Solo cena. Disponible para todos desde 2026.", plan:["premium","sin"] },
+    ],
+    "Hotel Sequoia Lodge": [
+      { n:"Hunter's Grill & Beaver Creek Tavern", tipo:"buffet", emoji:"🌲", consejo:"Buffet rústico muy completo. Cenas a partir de las 18h.", plan:["mp","plus"] },
+    ],
+    "Hotel Cheyenne": [
+      { n:"Chuck Wagon Cafe", tipo:"buffet", emoji:"🤠", consejo:"Ideal para grupos grandes. Buffet amplio. Cenas a partir de las 18h.", plan:["mp","plus"] },
+    ],
+    "Hotel Santa Fe": [
+      { n:"La Cantina", tipo:"buffet", emoji:"🌵", consejo:"Cocina mexicana. Opciones variadas. Ideal para grupos. Cenas a partir de las 18h.", plan:["mp","plus"] },
+    ],
+  },
+  village: [
+    { n:"Billy Bob's Country Western Saloon", tipo:"mesa", emoji:"🎸", consejo:"Incluido en planes. Ambiente country con espectáculos.", plan:["mp","plus","sin"] },
+    { n:"Steakhouse Disney Village", tipo:"mesa", emoji:"🥩", consejo:"Incluido en planes. Carne a la brasa.", plan:["mp","plus","sin"] },
+    { n:"McDonald's", tipo:"rapido", emoji:"🍔", consejo:"⚠️ NO incluido en ningún plan Disney.", plan:["sin"] },
+    { n:"Rainforest Café", tipo:"mesa", emoji:"🌴", consejo:"Temático con animales animatrónicos. NO incluido en planes Disney.", plan:["sin"] },
+    { n:"Starbucks", tipo:"rapido", emoji:"☕", consejo:"⚠️ NO incluido en ningún plan Disney.", plan:["sin"] },
+  ],
+};
+
+// Helper: obtener restaurantes por zona y plan
+function getRestsParaZona(zona, subzona, planTipo) {
+  let rests = [];
+  if(zona === "dlp") rests = RESTS_ZONA.dlp[subzona] || [];
+  else if(zona === "daw") rests = RESTS_ZONA.daw[subzona] || [];
+  else if(zona === "hotel") {
+    Object.values(RESTS_ZONA.hotel).forEach(arr => rests.push(...arr));
+  } else if(zona === "village") rests = RESTS_ZONA.village;
+  // Filtrar por plan
+  if(planTipo && planTipo !== "ninguno") {
+    const planSimple = planTipo.replace("mp_","").replace("pc_","");
+    return rests.filter(r => r.plan.includes(planTipo) || r.plan.includes(planSimple) || r.plan.includes("sin"));
+  }
+  return rests;
+}
+
+// Helper: buscar por tipo de comida
+function buscarPorTipo(query, zona) {
+  const q = query.toLowerCase();
+  const todasLasZonas = zona === "dlp" ? Object.values(RESTS_ZONA.dlp).flat()
+    : zona === "daw" ? Object.values(RESTS_ZONA.daw).flat()
+    : zona === "ambos" ? [...Object.values(RESTS_ZONA.dlp).flat(), ...Object.values(RESTS_ZONA.daw).flat()]
+    : [];
+  
+  const mapa = {
+    "pizza": ["Colonel Hathi's Pizza Outpost"],
+    "hamburguesa": ["Café Hyperion","World Premier Café"],
+    "pasta": ["Stark Factory"],
+    "buffet": todasLasZonas.filter(r=>r.tipo==="buffet").map(r=>r.n),
+    "personajes": todasLasZonas.filter(r=>r.consejo.includes("personaj")||r.consejo.includes("Personaj")).map(r=>r.n),
+    "rapido": todasLasZonas.filter(r=>r.tipo==="rapido").map(r=>r.n),
+    "especial": todasLasZonas.filter(r=>r.tipo==="mesa").map(r=>r.n),
+  };
+  
+  for(const [key, nombres] of Object.entries(mapa)) {
+    if(q.includes(key)) return todasLasZonas.filter(r => nombres.includes(r.n));
+  }
+  return [];
+}
+
 // ══════════════════════════════════════════════════
 // COMPONENTE PRINCIPAL
 // ══════════════════════════════════════════════════
