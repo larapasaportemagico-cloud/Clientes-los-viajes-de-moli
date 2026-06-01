@@ -1555,6 +1555,52 @@ function PlanificadorAtracciones({ cliente }) {
           );
         })}
 
+
+        {/* RESTAURANTES CERCA */}
+        {zona && zona !== "hotel" && zona !== "village" && (() => {
+          const planTipo = parsePlan(cliente?.["Plan de comidas"], cliente?.Hotel);
+          const zonasDlp = zona === "dlp" || zona === "ambos";
+          const zonasDaw = zona === "daw" || zona === "ambos";
+          const rapidos = [
+            ...(zonasDlp ? Object.values(RESTS_ZONA.dlp).flat().filter(r=>r.tipo==="rapido") : []),
+            ...(zonasDaw ? Object.values(RESTS_ZONA.daw).flat().filter(r=>r.tipo==="rapido") : []),
+          ].slice(0,4);
+          const especiales = [
+            ...(zonasDlp ? Object.values(RESTS_ZONA.dlp).flat().filter(r=>r.tipo==="mesa"||r.tipo==="buffet") : []),
+            ...(zonasDaw ? Object.values(RESTS_ZONA.daw).flat().filter(r=>r.tipo==="mesa"||r.tipo==="buffet") : []),
+          ].slice(0,3);
+          return (
+            <div style={{background:"#fff",border:"1px solid #e8e0d5",borderRadius:14,padding:"14px 16px",marginBottom:12}}>
+              <div style={{fontFamily:"'Fredoka One',cursive",color:"#5B2D8E",fontSize:".95rem",marginBottom:10}}>🍽️ Dónde comer hoy</div>
+              <div style={{fontSize:11,fontWeight:800,color:"#0a5a6e",marginBottom:6}}>⚡ Rápido (sin perder tiempo de parque)</div>
+              {rapidos.map((r,i)=>(
+                <div key={i} style={{display:"flex",gap:10,padding:"7px 0",borderBottom:"1px solid #f5f0fc",alignItems:"flex-start"}}>
+                  <span style={{fontSize:16,flexShrink:0}}>{r.emoji}</span>
+                  <div>
+                    <div style={{fontSize:12,fontWeight:800,color:"#1c1410"}}>{r.n}</div>
+                    <div style={{fontSize:11,color:"#666",lineHeight:1.4}}>{r.consejo}</div>
+                  </div>
+                </div>
+              ))}
+              {especiales.length > 0 && <>
+                <div style={{fontSize:11,fontWeight:800,color:"#5B2D8E",margin:"10px 0 6px"}}>🕯️ Mesa / buffet</div>
+                {especiales.map((r,i)=>(
+                  <div key={i} style={{display:"flex",gap:10,padding:"7px 0",borderBottom:"1px solid #f5f0fc",alignItems:"flex-start"}}>
+                    <span style={{fontSize:16,flexShrink:0}}>{r.emoji}</span>
+                    <div>
+                      <div style={{fontSize:12,fontWeight:800,color:"#1c1410"}}>{r.n}</div>
+                      <div style={{fontSize:11,color:"#666",lineHeight:1.4}}>{r.consejo}</div>
+                    </div>
+                  </div>
+                ))}
+              </>}
+              <div style={{background:"#fff8e0",border:"1px solid #fde68a",borderRadius:8,padding:"7px 10px",marginTop:10,fontSize:11,color:"#92400e"}}>
+                📱 Reservas desde la app de DLP. ¿Dudas? Pregunta a Moli.
+              </div>
+            </div>
+          );
+        })()}
+
         <button onClick={() => { setVista("config"); setSeleccionadas([]); setPaso(1); setZona(null); setHoraExtra(null); setTieneBebes(null); setHoraActual(null); setHoraCierre(null); setTiemposReales({}); setHeEleccionDAW(null); }}
           style={{ background:"none", border:"2px solid #e0d8f0", borderRadius:12, padding:"10px", color:"#5B2D8E", fontFamily:"inherit", fontWeight:800, fontSize:13, cursor:"pointer" }}>
           ↩ Nuevo planificador
