@@ -643,21 +643,131 @@ function PlanificadorRestaurantes({ cliente }) {
 
   const accentColors = { personajes:'#5B2D8E', reserva:'#F5287A', estilo:'#2BBCD4', dieta:'#F0A500' };
 
-  async function generarPlan() {
+  function generarPlan() {
     if (!prefsCompletas) return;
     setLoading(true); setPlan(null);
-    const diasInfo = dates.map(date => ({ fecha: formatDateEs(date), cierre: getHorario(date), alta: isAltaDemanda(date), mierc: isMiercoles(date) }));
-    const prompt = `Eres el asistente de restaurantes de "Los Viajes de Moli". Crea un plan de restaurantes personalizado.
-DATOS: Nombre: ${cliente?.Nombre}, Hotel: ${cliente?.Hotel}, Plan: ${cliente?.["Plan de comidas"] || "sin plan"}, Fechas: ${cliente?.["Check-in"]} al ${cliente?.["Check-out"]} (${noches} noches), Adultos: ${adultos}, Niños: ${ninos}, Bebés: ${bebes}
-PREFERENCIAS: Personajes: ${prefs.personajes}, Reservas: ${prefs.reserva}, Estilo: ${prefs.estilo}, Dieta: ${prefs.dieta || 'ninguna'}
-HORARIOS DÍA A DÍA: ${diasInfo.map(d => `${d.fecha}: cierre ${d.cierre}${d.mierc?' — MIÉRCOLES (alta afluencia)':''}`).join(', ')}
-Genera plan día a día con emojis y formato claro. Responde en español.`;
-    try {
-      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:prompt }], system:"Eres el asistente de restaurantes de Los Viajes de Moli. Responde siempre en español." }) });
-      const data = await res.json();
-      setPlan(data.content?.[0]?.text || "No se pudo generar el plan.");
-      setTimeout(() => resultRef.current?.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
-    } catch { setPlan("Error de conexión. Inténtalo de nuevo."); }
+
+    // Restaurantes reales de DLP por tipo y plan
+    const RESTS_PERSONAJES = {
+      "premium":   ["🏰 Auberge de Cendrillon (Fantasyland) — Princesas + Mickey · Reserva imprescindible con meses de antelación","👑 La Table de Lumière (Hotel Disneyland) — Príncipes y Princesas · Solo cena","🎭 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald"],
+      "extra_plus":["🏰 Auberge de Cendrillon (Fantasyland) — Incluida 1 vez en tu plan · Reserva con mucha antelación","🌊 The Regal View (Adventure Way) — Nuevo 2026 · Princesas · Reserva cuanto antes"],
+      "pc_plus":   ["🏰 Auberge de Cendrillon — Suplemento adicional · Reserva con antelación","🌊 The Regal View — Suplemento · Nuevo 2026 · Reserva cuanto antes","🦸 PYM Kitchen (Campus Avengers) — Buffet temático Avengers · Con plan"],
+      "mp_plus":   ["🏰 Auberge de Cendrillon — Suplemento adicional","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen — Buffet Avengers · Con plan"],
+      "pc_standard":["🌊 The Regal View — Suplemento · Nuevo 2026"],
+      "mp_standard":["🌊 The Regal View — Suplemento · Nuevo 2026"],
+    };
+
+    const RESTS_MESA = [
+      "🕯️ Walt's Restaurant (Main Street) — Cocina francesa · Vistas al castillo · Muy especial",
+      "🏝️ Blue Lagoon (Adventureland) — DENTRO de la atracción de Piratas · Experiencia única · Reserva con meses",
+      "☠️ Captain Jack's (Adventureland) — Temática Piratas · Cocina española",
+      "🐀 Chez Rémy (Worlds of Pixar) — Temática Ratatouille · Cocina francesa · Muy demandado",
+      "🌊 The Regal View (Adventure Way) — Nuevo 2026 · Vistas al lago · Muy solicitado",
+      "🎬 Downtown Restaurant (Campus Avengers) — Ambiente cinematográfico",
+    ];
+
+    const RESTS_BUFFET = [
+      "🧞 Agrabah Café (Adventureland) — Buffet temático Aladdin · Personajes Disney",
+      "🤠 Cowboy Cookout BBQ (Frontierland) — Barbacoa del Oeste · Cierra antes que otros",
+      "🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Personajes Marvel",
+      "⚓ Cape Cod (Newport Bay Club) — Buffet · Favorito de Lara para familias con bebés",
+      "🌴 Manhattan Restaurant (NY Marvel) — Buffet · Avengers por las noches",
+    ];
+
+    const RESTS_RAPIDO = [
+      "🍕 Colonel Hathi's (Adventureland) — Único con pizza del parque",
+      "☕ Café Hyperion (Discoveryland) — Grande, cubierto · Shows de temporada · Enchufes",
+      "🦸 Stark Factory (Campus Avengers) — Raciones muy grandes con bono rápido",
+      "🍔 World Premier Café (Studio 1) — Al entrar/salir de DAW",
+    ];
+
+    const horario = getHorario(dates[0] || "");
+    const cierresTarde = horario >= "22:00";
+    const tienePersonajes = prefs.personajes === 'si' || prefs.personajes === 'si-si-hay';
+    const quiereBuffet = prefs.estilo === 'buffet';
+
+    const restsPersonajes = RESTS_PERSONAJES[planTipo] || [];
+    
+    let planTexto = `🍽️ **Plan de restaurantes para ${cliente?.Nombre}**
+`;
+    planTexto += `📍 Hotel: ${cliente?.Hotel} · Plan: ${cliente?.["Plan de comidas"] || "sin plan"} · ${noches} noches
+
+`;
+
+    // Desayuno
+    const desayunoInfo = getDesayunoHotel(cliente?.Hotel);
+    planTexto += `**🌅 DESAYUNOS (todos los días)**
+${desayunoInfo.rest}
+${desayunoInfo.tipo}
+⏰ No necesitas reserva — ve directamente al restaurante del hotel
+
+`;
+
+    // Consejos por plan
+    planTexto += `**🍽️ COMIDAS Y CENAS — Tu plan: ${bonos?.desc || "Sin plan"}**
+${bonos?.detalle || ""}
+
+`;
+
+    // Personajes
+    if(tienePersonajes && restsPersonajes.length > 0) {
+      planTexto += `**👑 RESTAURANTES CON PERSONAJES (incluidos o con suplemento en tu plan)**
+`;
+      restsPersonajes.forEach(r => planTexto += `• ${r}
+`);
+      planTexto += `
+⚠️ *Reserva con la máxima antelación posible desde la app de DLP (disponible desde 7 días antes, pero revisa desde 15 días antes)*
+
+`;
+    }
+
+    // Recomendaciones por estilo
+    planTexto += `**💡 NUESTRAS RECOMENDACIONES PARA TI**
+
+`;
+    
+    if(quiereBuffet) {
+      planTexto += `*Buffets recomendados:*
+`;
+      RESTS_BUFFET.slice(0,3).forEach(r => planTexto += `• ${r}
+`);
+    } else {
+      planTexto += `*Restaurantes de mesa recomendados:*
+`;
+      RESTS_MESA.slice(0,3).forEach(r => planTexto += `• ${r}
+`);
+    }
+
+    planTexto += `
+*Para comer rápido sin perder tiempo de parque:*
+`;
+    RESTS_RAPIDO.slice(0,2).forEach(r => planTexto += `• ${r}
+`);
+
+    // Consejo horario cena
+    planTexto += `
+**🌙 CONSEJO HORARIO DE CENAS**
+`;
+    if(cierresTarde) {
+      planTexto += `El parque cierra tarde (${horario}). Cenad **al menos 2 horas antes del show nocturno** (sobre las 19:30-20:00h). Así disfrutáis la cena sin prisas y llegáis al show con tiempo para buen sitio.
+`;
+    } else {
+      planTexto += `Con el horario de cierre habitual, podéis cenar en los hoteles a las **20:00-21:00h** o en Disney Village. Sin prisas.
+`;
+    }
+
+    // Lucky Nugget aviso
+    if(planTipo==="pc_standard"||planTipo==="mp_standard") {
+      planTexto += `
+⚠️ **Lucky Nugget Saloon:** Aunque es comida rápida, el sistema descuenta bono de buffet/mesa — no es rentable con ese bono. Úsalo con bono rápido si te sobra uno.
+`;
+    }
+
+    planTexto += `
+📱 *Todas las reservas a través de la app de Disneyland Paris. ¿Dudas? Pregúntame directamente.*`;
+
+    setPlan(planTexto);
+    setTimeout(() => resultRef.current?.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
     setLoading(false);
   }
 
@@ -1521,6 +1631,310 @@ function PlanificadorAtracciones({ cliente }) {
 
 
 // ═══════════════════════════════════════════════════════
+// VISOR COLAS — tiempos reales + estimación por hora
+// ═══════════════════════════════════════════════════════
+const CURVAS_COLAS = {
+  "peter-pan":  {z:"dlp",sz:"Fantasyland",  e:"🧚",n:"Peter Pan's Flight",        c:{8:15,9:30,10:45,11:60,12:60,13:55,14:50,15:55,16:55,17:55,18:45,19:35,20:25,21:20}},
+  "dumbo":      {z:"dlp",sz:"Fantasyland",  e:"🐘",n:"Dumbo",                      c:{8:10,9:25,10:40,11:55,12:55,13:50,14:45,15:40,16:35,17:30,18:25,19:20,20:15,21:10}},
+  "small-world":{z:"dlp",sz:"Fantasyland",  e:"🌍",n:"It's a Small World",         c:{8:0, 9:5, 10:10,11:15,12:20,13:15,14:15,15:15,16:10,17:10,18:10,19:5, 20:5, 21:5}},
+  "snow-white": {z:"dlp",sz:"Fantasyland",  e:"🍎",n:"Blanche-Neige",             c:{8:0, 9:10,10:20,11:30,12:35,13:30,14:25,15:20,16:20,17:15,18:10,19:5, 20:5, 21:5}},
+  "pinocchio":  {z:"dlp",sz:"Fantasyland",  e:"🎭",n:"Les Voyages de Pinocchio",   c:{8:0, 9:10,10:20,11:25,12:30,13:25,14:20,15:15,16:15,17:10,18:10,19:5, 20:5, 21:5}},
+  "tea-cups":   {z:"dlp",sz:"Fantasyland",  e:"🍵",n:"Mad Hatter's Tea Cups",      c:{8:0, 9:10,10:20,11:30,12:35,13:30,14:25,15:20,16:15,17:15,18:10,19:5, 20:5, 21:5}},
+  "carrousel":  {z:"dlp",sz:"Fantasyland",  e:"🎠",n:"Carrousel de Lancelot",      c:{8:10,9:20,10:30,11:40,12:45,13:40,14:35,15:30,16:25,17:20,18:15,19:10,20:5, 21:5}},
+  "rapunzel-dlp":{z:"dlp",sz:"Fantasyland", e:"🌸",n:"La Tanière du Dragon",       c:{8:5, 9:10,10:20,11:25,12:30,13:25,14:20,15:20,16:15,17:15,18:15,19:10,20:10,21:10}},
+  "space":      {z:"dlp",sz:"Discoveryland",e:"🌌",n:"Space Mountain",             c:{8:5, 9:25,10:40,11:50,12:55,13:50,14:45,15:40,16:35,17:30,18:25,19:15,20:10,21:10}},
+  "buzz":       {z:"dlp",sz:"Discoveryland",e:"🚀",n:"Buzz Lightyear Laser Blast", c:{8:10,9:25,10:40,11:50,12:55,13:50,14:45,15:40,16:35,17:30,18:20,19:15,20:10,21:10}},
+  "orbitron":   {z:"dlp",sz:"Discoveryland",e:"🪐",n:"Orbitron",                   c:{8:10,9:15,10:25,11:35,12:40,13:35,14:30,15:25,16:20,17:20,18:15,19:10,20:5, 21:5}},
+  "autopia":    {z:"dlp",sz:"Discoveryland",e:"🚗",n:"Autopia (81cm)",             c:{8:0, 9:10,10:20,11:30,12:35,13:30,14:25,15:20,16:15,17:15,18:10,19:5, 20:5, 21:5}},
+  "star-tours": {z:"dlp",sz:"Discoveryland",e:"⭐",n:"Star Tours",                 c:{8:0, 9:15,10:25,11:35,12:40,13:35,14:30,15:25,16:20,17:15,18:15,19:10,20:5, 21:5}},
+  "nautilus":   {z:"dlp",sz:"Discoveryland",e:"🐙",n:"Les Mystères du Nautilus",   c:{8:0, 9:5, 10:5, 11:10,12:10,13:10,14:10,15:10,16:5, 17:5, 18:5, 19:5, 20:5, 21:5}},
+  "btm":        {z:"dlp",sz:"Frontierland", e:"⛰️",n:"Big Thunder Mountain",       c:{8:20,9:35,10:50,11:60,12:70,13:65,14:60,15:55,16:50,17:45,18:35,19:20,20:15,21:10}},
+  "phantom":    {z:"dlp",sz:"Frontierland", e:"👻",n:"Phantom Manor",              c:{8:0, 9:15,10:20,11:30,12:35,13:30,14:25,15:20,16:20,17:20,18:15,19:10,20:10,21:5}},
+  "indiana":    {z:"dlp",sz:"Adventureland",e:"🎩",n:"Indiana Jones™ (140cm)",     c:{8:0, 9:25,10:40,11:55,12:60,13:55,14:55,15:50,16:50,17:50,18:40,19:25,20:15,21:10}},
+  "pirates":    {z:"dlp",sz:"Adventureland",e:"☠️",n:"Pirates of the Caribbean",   c:{8:0, 9:15,10:25,11:30,12:35,13:30,14:25,15:20,16:20,17:20,18:15,19:10,20:10,21:5}},
+  "crush":      {z:"daw",sz:"Toon Studio",  e:"🐢",n:"Crush's Coaster (~107cm)",   c:{8:30,9:50,10:75,11:95,12:105,13:95,14:85,15:80,16:75,17:70,18:55,19:45,20:40,21:35}},
+  "ratatouille":{z:"daw",sz:"Worlds of Pixar",e:"🐀",n:"Ratatouille",             c:{8:20,9:35,10:50,11:65,12:70,13:60,14:55,15:50,16:45,17:40,18:30,19:20,20:15,21:10}},
+  "paracaidas": {z:"daw",sz:"Worlds of Pixar",e:"🪂",n:"Toy Soldiers Parachute",  c:{8:0, 9:20,10:35,11:50,12:55,13:50,14:45,15:40,16:35,17:30,18:25,19:15,20:10,21:10}},
+  "rc-racer":   {z:"daw",sz:"Worlds of Pixar",e:"🏎️",n:"RC Racer (120cm)",        c:{8:0, 9:10,10:20,11:30,12:35,13:30,14:25,15:20,16:15,17:15,18:10,19:10,20:5, 21:5}},
+  "slinky":     {z:"daw",sz:"Worlds of Pixar",e:"🐶",n:"Slinky Dog Zigzag Spin",  c:{8:0, 9:5, 10:10,11:15,12:20,13:15,14:15,15:10,16:10,17:5, 18:5, 19:5, 20:5, 21:5}},
+  "frozen":     {z:"daw",sz:"World of Frozen",e:"❄️",n:"Frozen Ever After",        c:{8:30,9:50,10:70,11:85,12:95,13:85,14:75,15:70,16:60,17:55,18:45,19:30,20:15,21:5}},
+  "rapunzel":   {z:"daw",sz:"World of Frozen",e:"🌸",n:"La Tanière du Dragon",     c:{8:5, 9:10,10:20,11:25,12:30,13:25,14:20,15:20,16:15,17:15,18:15,19:10,20:10,21:10}},
+  "spiderman":  {z:"daw",sz:"Campus Avengers",e:"🕷️",n:"Spider-Man WEB Adventure",c:{8:15,9:25,10:40,11:50,12:55,13:50,14:45,15:40,16:30,17:25,18:20,19:15,20:10,21:10}},
+  "avengers":   {z:"daw",sz:"Campus Avengers",e:"🦸",n:"Avengers Flight Force (140cm)",c:{8:0,9:15,10:25,11:35,12:40,13:35,14:30,15:25,16:20,17:20,18:15,19:10,20:5,21:5}},
+  "tower":      {z:"daw",sz:"Studio 1",     e:"🏨",n:"Tower of Terror (102cm)",    c:{8:0, 9:20,10:35,11:45,12:55,13:50,14:45,15:40,16:35,17:30,18:25,19:15,20:10,21:5}},
+};
+
+const API_MAP = {
+  "Peter Pan's Flight":"peter-pan","Dumbo the Flying Elephant":"dumbo",
+  "it's a small world":"small-world","It's a Small World":"small-world",
+  "Blanche-Neige et les Sept Nains":"snow-white","Les Voyages de Pinocchio":"pinocchio",
+  "Mad Hatter's Tea Cups":"tea-cups","Le Carrousel de Lancelot":"carrousel",
+  "La Tanière du Dragon":"rapunzel-dlp",
+  "Star Wars Hyperspace Mountain":"space","Buzz Lightyear Laser Blast":"buzz",
+  "Orbitron":"orbitron","Autopia":"autopia","Star Tours: The Adventures Continue":"star-tours",
+  "Les Mystères du Nautilus":"nautilus","Big Thunder Mountain":"btm","Phantom Manor":"phantom",
+  "Indiana Jones and the Temple of Peril":"indiana","Pirates of the Caribbean":"pirates",
+  "Crush's Coaster":"crush","Ratatouille: The Adventure":"ratatouille",
+  "Toy Soldiers Parachute Drop":"paracaidas","RC Racer":"rc-racer",
+  "Slinky Dog Zigzag Spin":"slinky","Frozen Ever After":"frozen",
+  "Spider-Man W.E.B. Adventure":"spiderman","Avengers Assemble: Flight Force":"avengers",
+  "The Twilight Zone Tower of Terror":"tower",
+};
+
+function getEst(id, h) {
+  const c = CURVAS_COLAS[id]?.c; if(!c) return null;
+  const hs = Object.keys(c).map(Number).sort((a,b)=>a-b);
+  const hb = hs.reduce((p,x) => x<=h?x:p, hs[0]);
+  return c[hb]??null;
+}
+
+function WaitBadge2({min,status,cargando}) {
+  if(cargando) return <span style={{fontSize:10,background:"#f0f0f0",color:"#999",padding:"2px 8px",borderRadius:10,fontWeight:800}}>⏳</span>;
+  if(status==="DOWN") return <span style={{fontSize:10,background:"#fff0f0",color:"#8a0010",padding:"2px 8px",borderRadius:10,fontWeight:800}}>🔴 Parada</span>;
+  if(status==="CLOSED"||status==="REFURBISHMENT") return <span style={{fontSize:10,background:"#f0f0f0",color:"#666",padding:"2px 8px",borderRadius:10,fontWeight:800}}>⚫ Cerrada</span>;
+  if(min===null||min===undefined) return null;
+  const c = min<=15?{bg:"#e8fdf0",co:"#0a5a28"}:min<=30?{bg:"#fff8e0",co:"#7a4a00"}:min<=60?{bg:"#fff0d0",co:"#8a3a00"}:{bg:"#fff0f0",co:"#8a0010"};
+  return <span style={{fontSize:10,background:c.bg,color:c.co,padding:"2px 8px",borderRadius:10,fontWeight:900,border:`1px solid ${c.co}20`}}>🕐 {min} min</span>;
+}
+
+function VisorColas({cliente}) {
+  const [parque, setParque] = useState("dlp");
+  const [modo, setModo] = useState("directo");
+  const [horaSelec, setHoraSelec] = useState(10);
+  const [tiempos, setTiempos] = useState({});
+  const [cargando, setCargando] = useState(false);
+  const [ultimaAct, setUltimaAct] = useState(null);
+  const [errorAPI, setErrorAPI] = useState(false);
+
+  const cargar = async(p) => {
+    setCargando(true); setErrorAPI(false);
+    try {
+      const res = await fetch(`/api/waittimes?parque=${p}`);
+      const data = await res.json();
+      if(data.ok && data.atracciones) {
+        const m={};
+        data.atracciones.forEach(a => { const id=API_MAP[a.nombre]||API_MAP[a.nombre?.trim()]; if(id) m[id]={waitTime:a.waitTime,status:a.status}; });
+        setTiempos(m);
+        setUltimaAct(new Date().toLocaleTimeString("es-ES",{hour:"2-digit",minute:"2-digit"}));
+      } else setErrorAPI(true);
+    } catch { setErrorAPI(true); }
+    setCargando(false);
+  };
+
+  useEffect(() => { if(modo==="directo") cargar(parque); }, [parque,modo]);
+
+  const atrPorZona = {};
+  Object.entries(CURVAS_COLAS).filter(([,v])=>v.z===parque).forEach(([id,v])=>{
+    if(!atrPorZona[v.sz]) atrPorZona[v.sz]=[];
+    atrPorZona[v.sz].push({id,...v});
+  });
+
+  const st = {
+    tab:(sel,c="#5B2D8E")=>({flex:1,padding:"8px 10px",borderRadius:10,border:"none",background:sel?c:"#f0f0f0",color:sel?"#fff":"#666",fontWeight:700,fontSize:12,cursor:"pointer",fontFamily:"inherit",transition:"all .15s"}),
+  };
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      <div style={{background:"#fff",border:"1px solid #e8e0d5",borderRadius:14,padding:"14px 16px"}}>
+        <div style={{fontSize:12,fontWeight:800,color:"#5B2D8E",marginBottom:10}}>🏰 Selecciona el parque</div>
+        <div style={{display:"flex",gap:8}}>
+          {[{v:"dlp",l:"🏰 Disneyland Park"},{v:"daw",l:"🎬 Disney Adventure World"}].map(o=>(
+            <button key={o.v} onClick={()=>setParque(o.v)} style={st.tab(parque===o.v)}>{o.l}</button>
+          ))}
+        </div>
+      </div>
+      <div style={{display:"flex",gap:8}}>
+        <button onClick={()=>setModo("directo")} style={st.tab(modo==="directo","#2EC866")}>🟢 En directo</button>
+        <button onClick={()=>setModo("planificar")} style={st.tab(modo==="planificar")}>📅 Por hora</button>
+      </div>
+      {modo==="planificar" && (
+        <div style={{background:"#fff",border:"1px solid #e8e0d5",borderRadius:14,padding:"14px 16px"}}>
+          <div style={{fontSize:12,fontWeight:800,color:"#5B2D8E",marginBottom:10}}>🕐 Hora del día</div>
+          <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+            {[8,9,10,11,12,13,14,15,16,17,18,19,20,21].map(h=>(
+              <button key={h} onClick={()=>setHoraSelec(h)} style={{...st.tab(horaSelec===h),flex:"0 0 auto",padding:"5px 9px",fontSize:11}}>
+                {h}h
+              </button>
+            ))}
+          </div>
+          <div style={{fontSize:10,color:"#aaa",marginTop:6}}>Estimación basada en datos de afluencia de Lara</div>
+        </div>
+      )}
+      {modo==="directo" && (
+        <div style={{background:errorAPI?"#fff8e0":Object.keys(tiempos).length>0?"#e8fdf0":"#f5f5f5",border:`1px solid ${errorAPI?"#F0A500":Object.keys(tiempos).length>0?"#2EC866":"#ddd"}`,borderRadius:10,padding:"8px 14px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:8}}>
+          <div style={{fontSize:11,fontWeight:700,color:errorAPI?"#7a4a00":Object.keys(tiempos).length>0?"#0a5a28":"#666"}}>
+            {cargando?"⏳ Cargando tiempos...":errorAPI?"🟡 Mostrando estimaciones de Lara":Object.keys(tiempos).length>0?`🟢 Datos en directo · ${ultimaAct}`:""}
+          </div>
+          <button onClick={()=>cargar(parque)} disabled={cargando} style={{background:"none",border:"1px solid #2EC866",borderRadius:20,padding:"2px 10px",color:"#0a5a28",fontSize:10,fontWeight:800,cursor:"pointer",fontFamily:"inherit"}}>
+            {cargando?"⏳":"🔄"}
+          </button>
+        </div>
+      )}
+      <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+        {[{min:10,l:"≤15 min"},{min:25,l:"16-30"},{min:45,l:"31-60"},{min:75,l:"61-90"},{min:100,l:"+90"}].map(({min,l})=>{
+          const c=min<=15?{bg:"#e8fdf0",co:"#0a5a28"}:min<=30?{bg:"#fff8e0",co:"#7a4a00"}:min<=60?{bg:"#fff0d0",co:"#8a3a00"}:{bg:"#fff0f0",co:"#8a0010"};
+          return <div key={min} style={{display:"flex",alignItems:"center",gap:4,fontSize:10,fontWeight:700,color:"#555"}}><div style={{width:11,height:11,borderRadius:3,background:c.bg,border:`1px solid ${c.co}`}}/>{l}</div>;
+        })}
+      </div>
+      {Object.entries(atrPorZona).map(([zona,atrs])=>(
+        <div key={zona} style={{borderRadius:13,overflow:"hidden",boxShadow:"0 2px 10px rgba(91,45,142,.07)"}}>
+          <div style={{background:parque==="dlp"?"linear-gradient(135deg,#5B2D8E,#8B1FCC)":"linear-gradient(135deg,#0a8a9e,#2BBCD4)",padding:"8px 14px"}}>
+            <div style={{fontFamily:"'Fredoka One',cursive",color:"white",fontSize:13}}>{zona}</div>
+          </div>
+          <div style={{background:"white"}}>
+            {atrs.map((a,i)=>{
+              const tr=tiempos[a.id];
+              const sc=tr?.status==="DOWN"||tr?.status==="CLOSED"||tr?.status==="REFURBISHMENT"?tr.status:null;
+              const minReal=tr?.waitTime??null;
+              const minEst=getEst(a.id,horaSelec);
+              const min=modo==="directo"?(sc?null:(minReal!==null?minReal:minEst)):minEst;
+              const c=min===null?{bg:"#f0f0f0",co:"#999"}:min<=15?{bg:"#e8fdf0",co:"#0a5a28"}:min<=30?{bg:"#fff8e0",co:"#7a4a00"}:min<=60?{bg:"#fff0d0",co:"#8a3a00"}:{bg:"#fff0f0",co:"#8a0010"};
+              const esTiempoReal=modo==="directo"&&minReal!==null&&!sc;
+              return (
+                <div key={a.id} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 14px",borderBottom:i<atrs.length-1?"1px solid #f5f0fc":"none",background:i%2===0?"white":"#fdfcff"}}>
+                  <div style={{fontSize:17,flexShrink:0}}>{a.e}</div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:12,fontWeight:800,color:"#1c1410",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{a.n}</div>
+                    {esTiempoReal&&<div style={{fontSize:9,color:"#2EC866",fontWeight:800}}>🟢 en directo</div>}
+                    {modo==="directo"&&!tr&&<div style={{fontSize:9,color:"#F0A500"}}>estimación Lara</div>}
+                  </div>
+                  <div style={{width:90,flexShrink:0}}>
+                    {min!==null&&!sc&&<div style={{height:5,borderRadius:3,background:"#f0f0f0",marginBottom:3}}><div style={{height:"100%",width:`${Math.min(100,Math.round((min/120)*100))}%`,background:c.co,borderRadius:3}}/></div>}
+                    <div style={{textAlign:"right"}}>
+                      {sc?<span style={{fontSize:10,fontWeight:800,background:"#f0f0f0",color:"#666",padding:"2px 7px",borderRadius:10}}>{sc==="DOWN"?"🔴 Parada":"⚫ Cerrada"}</span>
+                        :<span style={{fontSize:11,fontWeight:900,background:c.bg,color:c.co,padding:"2px 8px",borderRadius:20,border:`1px solid ${c.co}18`}}>{min!==null?`${min} min`:"—"}</span>}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+      <div style={{background:"#fffbeb",border:"1px solid #fde68a",borderRadius:10,padding:"10px 14px",fontSize:11,color:"#92400e"}}>
+        ⚠️ <strong>Datos en directo:</strong> API oficial DLP, actualización cada 60 seg. <strong>Estimaciones:</strong> datos de afluencia media-alta de Lara. Revisa siempre la app oficial.
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// TIEMPO METEOROLÓGICO DISNEYLAND PARIS
+// ═══════════════════════════════════════════════════════
+function TiempoDLP({cliente}) {
+  const [tiempo, setTiempo] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(()=>{
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=48.8722&longitude=2.7760&current=temperature_2m,weathercode,windspeed_10m,precipitation&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=Europe/Paris&forecast_days=3")
+      .then(r=>r.json())
+      .then(d=>{ setTiempo(d); setCargando(false); })
+      .catch(()=>{ setError(true); setCargando(false); });
+  },[]);
+
+  const getIcono = (wc) => {
+    if(wc<=1) return {icon:"☀️",label:"Soleado",tipo:"sol"};
+    if(wc<=3) return {icon:"⛅",label:"Parcialmente nublado",tipo:"nublado"};
+    if(wc<=48) return {icon:"☁️",label:"Nublado",tipo:"nublado"};
+    if(wc<=67) return {icon:"🌧️",label:"Lluvia",tipo:"lluvia"};
+    if(wc<=77) return {icon:"❄️",label:"Nieve",tipo:"frio"};
+    return {icon:"⛈️",label:"Tormenta",tipo:"tormenta"};
+  };
+
+  const getConsejos = (tipo, tmax) => {
+    if(tipo==="lluvia"||tipo==="tormenta") return [
+      {icon:"☂️",txt:"<strong>Llevad chubasqueros</strong> — los ponchos del parque son caros y de poca calidad"},
+      {icon:"🏛️",txt:"<strong>Main Street</strong> tiene galerías cubiertas a ambos lados — perfectas para cruzar sin mojarse"},
+      {icon:"☕",txt:"<strong>Café Hyperion</strong> (Discoveryland) es el refugio grande del parque — interior con dibujos animados"},
+      {icon:"🐙",txt:"<strong>Nautilus</strong> es cubierto y sin cola — ideal para esperar que escampe"},
+      {icon:"⚠️",txt:"<strong>Disney Adventure World tiene MUY POCAS zonas cubiertas</strong> — en días de lluvia es más incómodo que Disneyland Park"},
+      {icon:"🎭",txt:"Los espectáculos de interior (Mickey and the Magician, Together...) son la mejor opción con lluvia"},
+    ];
+    if(tmax>=28) return [
+      {icon:"🌊",txt:"<strong>Piscina del hotel a mediodía</strong> (13-16h) — las colas bajan y los peques descansan"},
+      {icon:"💧",txt:"<strong>Hidratación constante</strong> — lleva botellas rellenables. Fuentes en Café Hyperion y Studio 1"},
+      {icon:"⚠️",txt:"<strong>Disney Adventure World tiene muy poca sombra</strong> — en verano es especialmente duro al mediodía"},
+      {icon:"🌅",txt:"Aprovecha las <strong>primeras horas y última hora</strong> del día para las atracciones exteriores"},
+      {icon:"🧴",txt:"<strong>Protección solar</strong> imprescindible — especialmente en DAW"},
+      {icon:"🎡",txt:"Las <strong>atracciones de agua</strong> (Thunder Mesa...) son especialmente apetecibles con calor"},
+    ];
+    if(tmax<=10) return [
+      {icon:"🧥",txt:"<strong>Ropa de abrigo en capas</strong> — las mañanas son muy frías aunque mejore el día"},
+      {icon:"💧",txt:"Las <strong>fuentes al aire libre no funcionan</strong> con frío — recarga botellas en Café Hyperion o Studio 1"},
+      {icon:"🎠",txt:"Algunas atracciones al aire libre pueden cerrar con viento fuerte — revisa la app"},
+      {icon:"☕",txt:"Los restaurantes cubiertos son tu mejor aliado — Café Hyperion y restaurantes de hotel"},
+      {icon:"✅",txt:"<strong>Las colas son más cortas</strong> en temporada fría — aprovecha para hacer más atracciones"},
+    ];
+    return [
+      {icon:"✅",txt:"<strong>Temperatura ideal</strong> para disfrutar el parque sin agobios de calor ni frío"},
+      {icon:"🕐",txt:"Con buen tiempo las colas son más largas — sigue la estrategia de hora extra"},
+      {icon:"🧥",txt:"Lleva una <strong>capa ligera</strong> para la noche — Disneyland Paris puede refrescar al anochecer"},
+    ];
+  };
+
+  const dias = ["Hoy","Mañana","Pasado"];
+  const meses = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+
+  if(cargando) return <div style={{textAlign:"center",padding:"30px",color:"#5B2D8E",fontWeight:700}}>⏳ Cargando tiempo en Marne-la-Vallée...</div>;
+  if(error||!tiempo) return <div style={{background:"#fff8e0",border:"1px solid #F0A500",borderRadius:12,padding:"14px",fontSize:12,color:"#7a4a00"}}>No se pudo cargar el tiempo. Consulta la app del tiempo para Marne-la-Vallée (Paris).</div>;
+
+  const curr = tiempo.current;
+  const currIcono = getIcono(curr.weathercode);
+  const tmaxHoy = tiempo.daily.temperature_2m_max[0];
+  const consejos = getConsejos(currIcono.tipo, tmaxHoy);
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",gap:12}}>
+      {/* Tiempo actual */}
+      <div style={{background:`linear-gradient(135deg,${currIcono.tipo==="lluvia"||currIcono.tipo==="tormenta"?"#1a3a5e,#2a5a8e":currIcono.tipo==="sol"?"#1a6e2e,#2a9e4e":currIcono.tipo==="frio"?"#1a4a6e,#2a6a9e":"#2a3a5e,#3a5a8e"})`,borderRadius:16,padding:"20px 22px",color:"white"}}>
+        <div style={{fontSize:11,opacity:.7,letterSpacing:1.5,textTransform:"uppercase",marginBottom:6}}>🏰 Disneyland Paris · Marne-la-Vallée</div>
+        <div style={{display:"flex",alignItems:"center",gap:16,marginBottom:12}}>
+          <div style={{fontSize:48}}>{currIcono.icon}</div>
+          <div>
+            <div style={{fontFamily:"'Fredoka One',cursive",fontSize:32,lineHeight:1}}>{Math.round(curr.temperature_2m)}°C</div>
+            <div style={{fontSize:13,opacity:.85,marginTop:2}}>{currIcono.label}</div>
+            {curr.windspeed_10m>20&&<div style={{fontSize:11,opacity:.75,marginTop:1}}>💨 Viento {Math.round(curr.windspeed_10m)} km/h</div>}
+          </div>
+        </div>
+        {/* Próximos 3 días */}
+        <div style={{display:"flex",gap:8}}>
+          {tiempo.daily.temperature_2m_max.slice(0,3).map((tmax,i)=>{
+            const tmin=tiempo.daily.temperature_2m_min[i];
+            const ic=getIcono(tiempo.daily.weathercode[i]);
+            const fecha=new Date(tiempo.daily.time[i]+"T12:00:00");
+            return (
+              <div key={i} style={{flex:1,background:"rgba(255,255,255,.12)",borderRadius:10,padding:"8px 10px",textAlign:"center"}}>
+                <div style={{fontSize:10,opacity:.7,fontWeight:700,marginBottom:3}}>{i===0?"Hoy":i===1?"Mañana":`${fecha.getDate()} ${meses[fecha.getMonth()]}`}</div>
+                <div style={{fontSize:18,marginBottom:2}}>{ic.icon}</div>
+                <div style={{fontSize:11,fontWeight:800}}>{Math.round(tmax)}° <span style={{opacity:.6,fontWeight:600}}>{Math.round(tmin)}°</span></div>
+                {tiempo.daily.precipitation_sum[i]>1&&<div style={{fontSize:9,opacity:.7,marginTop:1}}>💧{Math.round(tiempo.daily.precipitation_sum[i])}mm</div>}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Consejos según tiempo */}
+      <div style={{background:"#fff",border:"1px solid #e8e0d5",borderRadius:14,padding:"14px 16px"}}>
+        <div style={{fontFamily:"'Fredoka One',cursive",color:"#5B2D8E",fontSize:.95+"rem",marginBottom:10}}>
+          💜 Consejos de Lara para hoy
+        </div>
+        {consejos.map((c,i)=>(
+          <div key={i} style={{display:"flex",gap:10,alignItems:"flex-start",padding:"7px 0",borderBottom:i<consejos.length-1?"1px solid #f5f0fc":"none"}}>
+            <span style={{fontSize:16,flexShrink:0}}>{c.icon}</span>
+            <div style={{fontSize:12,color:"#444",fontWeight:600,lineHeight:1.55}} dangerouslySetInnerHTML={{__html:c.txt}}/>
+          </div>
+        ))}
+      </div>
+
+      <div style={{fontSize:10,color:"#aaa",textAlign:"center"}}>Datos: Open-Meteo · Coordenadas Marne-la-Vallée (Disneyland Paris)</div>
+    </div>
+  );
+}
+
+
+// ═══════════════════════════════════════════════════════
 // PORTAL PRINCIPAL
 // ═══════════════════════════════════════════════════════
 export default function Portal() {
@@ -1597,6 +2011,7 @@ export default function Portal() {
     { id:"colas",        label:"⏱️ Tiempos",          soloCompleta: false, soloReserva: true  },
     { id:"restaurantes", label:"🍽️ Restaurantes",    soloCompleta: true,  soloReserva: true  },
     { id:"guias",        label:"📖 Guías",            soloCompleta: false, soloReserva: false },
+    { id:"tiempo",        label:"🌤️ Tiempo",           soloCompleta: false, soloReserva: false },
     { id:"guia-parque",   label:"🏰 Guía del Parque",  soloCompleta: false, soloReserva: true  },
     { id:"pagos",        label:"💰 Pagos",            soloCompleta: false, soloReserva: true  },
     { id:"extras",       label:"✨ Servicios",        soloCompleta: true,  soloReserva: true  },
@@ -1788,6 +2203,8 @@ export default function Portal() {
             {activeTab==="atracciones" && <PlanificadorAtracciones cliente={cliente} />}
 
             {activeTab==="colas" && <VisorColas cliente={cliente} />}
+
+            {activeTab==="tiempo" && <TiempoDLP cliente={cliente} />}
 
             {/* TAB: GUÍAS — accesible para todos */}
             {activeTab==="guia-parque" && (() => {
