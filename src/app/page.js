@@ -648,32 +648,16 @@ function PlanificadorRestaurantes({ cliente }) {
     setLoading(true); setPlan(null);
 
     const RESTS_PERSONAJES = {
-      "premium":   ["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses de antelación","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
-      "extra_plus":["🏰 Auberge de Cendrillon — Incluida 1 vez en tu plan · Reserva con mucha antelación","🌊 The Regal View (Adventure Way) — Nuevo 2026 · Princesas · Reserva cuanto antes"],
-      "pc_plus":   ["🏰 Auberge de Cendrillon — Suplemento · Reserva con antelación","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Con plan"],
-      "mp_plus":   ["🏰 Auberge de Cendrillon — Suplemento","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen — Buffet Avengers · Con plan"],
+      "premium":["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald · Solo cena","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
+      "extra_plus":["🏰 Auberge de Cendrillon — Incluida en tu plan · Reserva con antelación","🌊 The Regal View (Adventure Way) — Nuevo 2026 · Princesas · Reserva cuanto antes"],
+      "pc_plus":["🏰 Auberge de Cendrillon — Suplemento · Reserva con antelación","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Con plan"],
+      "mp_plus":["🏰 Auberge de Cendrillon — Suplemento","🌊 The Regal View — Suplemento · Nuevo 2026"],
       "pc_standard":["🌊 The Regal View — Suplemento · Nuevo 2026"],
       "mp_standard":["🌊 The Regal View — Suplemento · Nuevo 2026"],
     };
-
-    const RESTS_MESA = [
-      "🕯️ Walt's Restaurant (Main Street) — Cocina francesa · Vistas al castillo · Muy especial",
-      "🏝️ Blue Lagoon (Adventureland) — DENTRO de la atracción de Piratas · Experiencia única · Reserva con meses",
-      "☠️ Captain Jack's (Adventureland) — Temática Piratas · Cocina española",
-      "🐀 Chez Rémy (Worlds of Pixar) — Temática Ratatouille · Muy demandado · Reserva con semanas",
-      "🌊 The Regal View (Adventure Way) — Nuevo 2026 · Vistas al lago · Reserva cuanto antes",
-    ];
-    const RESTS_BUFFET = [
-      "🤠 Cowboy Cookout BBQ (Frontierland) — Barbacoa del Oeste · Cierra antes · Verifica horario",
-      "🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Personajes Marvel · Reserva con antelación",
-      "⚓ Cape Cod (Newport Bay Club) — Favorito de Lara para familias con bebés · Solo cenas",
-      "🌴 Manhattan Restaurant (NY Marvel) — Buffet · Avengers por las noches · Solo cenas",
-    ];
-    const RESTS_RAPIDO = [
-      "🍕 Colonel Hathi's (Adventureland) — El ÚNICO con pizza del Parque Disneyland",
-      "☕ Café Hyperion (Discoveryland) — Grande, cubierto, enchufes. Shows de temporada",
-      "⚡ Stark Factory (Campus Avengers) — Raciones muy grandes · Ideal para bono rápido",
-    ];
+    const RESTS_BUFFET = ["🤠 Cowboy Cookout BBQ (Frontierland) — Barbacoa · Cierra antes","🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Personajes Marvel","⚓ Cape Cod (Newport Bay) — Favorito Lara para familias con bebés · Solo cenas","🌴 Manhattan Restaurant (NY Marvel) — Buffet · Avengers por las noches"];
+    const RESTS_MESA = ["🕯️ Walt's Restaurant (Main Street) — Cocina francesa · Vistas al castillo","🏝️ Blue Lagoon (Adventureland) — DENTRO de Piratas · Única en el mundo · Reserva con meses","🐀 Chez Rémy (Worlds of Pixar) — Muy demandado · Reserva con semanas","🌊 The Regal View (Adventure Way) — Nuevo 2026 · Vistas al lago"];
+    const RESTS_RAPIDO = ["🍕 Colonel Hathi's (Adventureland) — ÚNICO con pizza del parque","☕ Café Hyperion (Discoveryland) — Grande, cubierto, enchufes EU","⚡ Stark Factory (Campus Avengers) — Raciones muy grandes · Ideal bono rápido"];
 
     const tienePersonajes = prefs.personajes === "si" || prefs.personajes === "si-si-hay";
     const quiereBuffet = prefs.estilo === "buffet";
@@ -682,52 +666,41 @@ function PlanificadorRestaurantes({ cliente }) {
     const horario = getHorario(dates[0] || "");
     const cierresTarde = horario >= "22:00";
 
-    let lineas = [];
-    lineas.push("🍽️ **Plan de restaurantes para " + (cliente?.Nombre || "") + "**");
-    lineas.push("📍 Hotel: " + (cliente?.Hotel || "") + " · Plan: " + (cliente?.["Plan de comidas"] || "Sin plan") + " · " + noches + " noches");
-    lineas.push("");
-    lineas.push("**🌅 DESAYUNOS** · Todos los días en el restaurante del hotel · Sin reserva");
-    lineas.push("→ " + desayunoInfo.rest + " · " + desayunoInfo.tipo);
-    lineas.push("");
-    lineas.push("**🍽️ TU PLAN: " + (bonos?.desc || "Sin plan") + "**");
-    if (bonos?.detalle) lineas.push(bonos.detalle);
-    lineas.push("");
-
+    const partes = [];
+    partes.push("🍽️ **Plan de restaurantes para " + (cliente?.Nombre || "") + "**");
+    partes.push("📍 " + (cliente?.Hotel || "") + " · " + (cliente?.["Plan de comidas"] || "Sin plan") + " · " + noches + " noches\n");
+    partes.push("**🌅 DESAYUNOS** · Todos los días en el hotel · Sin reserva");
+    partes.push("→ " + desayunoInfo.rest + " · " + desayunoInfo.tipo + "\n");
+    partes.push("**🍽️ TU PLAN: " + (bonos?.desc || "Sin plan") + "**");
+    if (bonos?.detalle) partes.push(bonos.detalle + "\n");
     if (tienePersonajes && restsPersonajes.length > 0) {
-      lineas.push("**👑 RESTAURANTES CON PERSONAJES**");
-      restsPersonajes.forEach(r => lineas.push("• " + r));
-      lineas.push("⚠️ Reserva desde la app DLP con la máxima antelación posible (disponible 7 días antes · revisa desde 15 días)");
-      lineas.push("");
+      partes.push("**👑 RESTAURANTES CON PERSONAJES**");
+      restsPersonajes.forEach(function(r2) { partes.push("• " + r2); });
+      partes.push("⚠️ Reserva desde la app DLP · Disponible 7 días antes · Revisa desde 15 días\n");
     }
-
-    lineas.push("**💡 RECOMENDACIONES PARA TI**");
-    lineas.push("");
+    partes.push("**💡 RECOMENDACIONES**\n");
     if (quiereBuffet) {
-      lineas.push("*Buffets recomendados:*");
-      RESTS_BUFFET.slice(0,3).forEach(r => lineas.push("• " + r));
+      partes.push("*Buffets recomendados:*");
+      RESTS_BUFFET.slice(0,3).forEach(function(r2) { partes.push("• " + r2); });
     } else {
-      lineas.push("*Restaurantes de mesa recomendados:*");
-      RESTS_MESA.slice(0,3).forEach(r => lineas.push("• " + r));
+      partes.push("*Restaurantes de mesa:*");
+      RESTS_MESA.slice(0,3).forEach(function(r2) { partes.push("• " + r2); });
     }
-    lineas.push("");
-    lineas.push("*Para comer rápido sin perder tiempo de parque:*");
-    RESTS_RAPIDO.slice(0,2).forEach(r => lineas.push("• " + r));
-    lineas.push("");
-    lineas.push("**🌙 CONSEJO HORARIO DE CENAS**");
+    partes.push("\n*Comida rápida (sin perder tiempo):*");
+    RESTS_RAPIDO.slice(0,2).forEach(function(r2) { partes.push("• " + r2); });
+    partes.push("\n**🌙 HORARIO DE CENAS**");
     if (cierresTarde) {
-      lineas.push("El parque cierra tarde (" + horario + "h). Cenad al menos 2 horas antes del show nocturno — sobre las 19:30-20:00h.");
+      partes.push("El parque cierra tarde (" + horario + "h). Cenad sobre las 19:30-20:00h antes del show.");
     } else {
-      lineas.push("Podéis cenar en los hoteles a las 20:00-21:00h o en Disney Village. Sin prisas.");
+      partes.push("Podéis cenar en los hoteles a las 20:00-21:00h o en Disney Village.");
     }
     if (planTipo === "pc_standard" || planTipo === "mp_standard") {
-      lineas.push("");
-      lineas.push("⚠️ Lucky Nugget: aunque es comida rápida, el sistema descuenta bono de mesa. Usa bono rápido sobrante.");
+      partes.push("\n⚠️ Lucky Nugget: usa bono rápido sobrante, no bono de mesa.");
     }
-    lineas.push("");
-    lineas.push("📱 Todas las reservas desde la app de Disneyland Paris. ¿Dudas? Escríbeme directamente.");
+    partes.push("\n📱 Reservas desde la app de DLP. ¿Dudas? Escríbeme directamente.");
 
-    setPlan(lineas.join("\n"));
-    setTimeout(() => resultRef.current?.scrollIntoView({ behavior:"smooth", block:"start" }), 100);
+    setPlan(partes.join("\n"));
+    setTimeout(function() { resultRef.current && resultRef.current.scrollIntoView({ behavior:"smooth", block:"start" }); }, 100);
     setLoading(false);
   }
 
@@ -1055,6 +1028,9 @@ function WaitBadge({ min, status, cargando }) {
   return <span style={{ fontSize:10, background:bg, color:c, padding:"2px 8px", borderRadius:10, fontWeight:800 }}>🕐 {min} min</span>;
 }
 
+// ══════════════════════════════════════════════════
+// COMPONENTE PRINCIPAL
+// ══════════════════════════════════════════════════
 
 // ═══════════════════════════════════════════════════════
 // RESTAURANTES POR ZONA — datos reales de Lara
@@ -1062,118 +1038,43 @@ function WaitBadge({ min, status, cargando }) {
 const RESTS_ZONA = {
   dlp: {
     "Main Street": [
-      { n:"Walt's Restaurant", tipo:"mesa", emoji:"🕯️", consejo:"El más especial del parque. Vistas al castillo. Reserva con mucha antelación.", plan:["mp","plus","premium","sin"] },
-      { n:"Market House Deli", tipo:"rapido", emoji:"🥪", consejo:"Sándwiches y snacks. El de jamón y queso tiene forma de Mickey. Abre hasta el cierre.", plan:["standard","plus","sin"] },
+      { n:"Walt's Restaurant", tipo:"mesa", emoji:"🕯️", consejo:"El más especial del parque. Vistas al castillo. Reserva con antelación.", plan:["mp","plus","sin"] },
+      { n:"Market House Deli", tipo:"rapido", emoji:"🥪", consejo:"Sándwich con forma de Mickey. Beignet chocolate. Ideal para esperar el show.", plan:["standard","sin"] },
     ],
     "Adventureland": [
-      { n:"Blue Lagoon", tipo:"mesa", emoji:"🏝️", consejo:"Cenáis DENTRO de la atracción de Piratas. Experiencia única en el mundo. Reserva con meses.", plan:["mp","plus","premium","sin"] },
-      { n:"Captain Jack's", tipo:"mesa", emoji:"☠️", consejo:"Temática Piratas. Cocina española e internacional.", plan:["mp","plus","premium","sin"] },
-      { n:"Colonel Hathi's Pizza Outpost", tipo:"rapido", emoji:"🍕", consejo:"El ÚNICO restaurante con pizza del Parque Disneyland. Si quieren pizza, aquí.", plan:["standard","plus","sin"] },
+      { n:"Blue Lagoon", tipo:"mesa", emoji:"🏝️", consejo:"DENTRO de la atracción de Piratas. Experiencia única. Reserva con meses.", plan:["mp","plus","sin"] },
+      { n:"Colonel Hathi's Pizza Outpost", tipo:"rapido", emoji:"🍕", consejo:"El ÚNICO restaurante con pizza del Parque Disneyland. Si quieren pizza, aquí.", plan:["standard","sin"] },
     ],
     "Frontierland": [
-      { n:"Silver Spur Steakhouse", tipo:"mesa", emoji:"🤠", consejo:"Restaurante de mesa temático del Oeste.", plan:["mp","plus","premium","sin"] },
-      { n:"Cowboy Cookout BBQ", tipo:"buffet", emoji:"🥩", consejo:"Favorito de Lara. Costillas, pollo y salchichas para compartir. ⚠️ Cierra antes — verifica horario en app.", plan:["mp","plus"] },
-      { n:"Lucky Nugget Saloon", tipo:"rapido", emoji:"🎰", consejo:"⚠️ Aunque parece buffet, descuenta bono de mesa — no rentable. Úsalo con bono rápido sobrante.", plan:["standard","sin"] },
+      { n:"Cowboy Cookout BBQ", tipo:"buffet", emoji:"🥩", consejo:"Barbacoa del Oeste. ⚠️ Cierra antes que otros — verifica horario en la app.", plan:["mp","plus"] },
+      { n:"Lucky Nugget Saloon", tipo:"rapido", emoji:"🎰", consejo:"⚠️ Descuenta bono de mesa aunque es comida rápida. Usa bono rápido sobrante.", plan:["standard","sin"] },
     ],
     "Discoveryland": [
-      { n:"Café Hyperion", tipo:"rapido", emoji:"☕", consejo:"El refugio del parque. Grande, cubierto, enchufes EU. Shows de temporada dentro. Hamburguesas.", plan:["standard","plus","sin"] },
+      { n:"Café Hyperion", tipo:"rapido", emoji:"☕", consejo:"Grande, cubierto, enchufes EU. Shows de temporada. El refugio del parque con lluvia.", plan:["standard","sin"] },
     ],
     "Fantasyland": [
-      { n:"Auberge de Cendrillon", tipo:"mesa", emoji:"👸", consejo:"Princesas + Mickey. Solo para plan Extra Plus/Premium o pagando suplemento. Reserva con meses de antelación.", plan:["extra_plus","premium","sin"] },
-      { n:"Toad Hall Restaurant", tipo:"rapido", emoji:"🐸", consejo:"Comida rápida en Fantasyland. ⚠️ Cierra 1h antes del show nocturno.", plan:["standard","plus","sin"] },
+      { n:"Auberge de Cendrillon", tipo:"mesa", emoji:"👸", consejo:"Princesas + Mickey. Solo plan Extra Plus/Premium o suplemento. Reserva con meses.", plan:["extra_plus","premium","sin"] },
+      { n:"Pizzeria Bella Notte", tipo:"rapido", emoji:"🍕", consejo:"Pizza en Fantasyland. ⚠️ Cierra 1h antes del show nocturno.", plan:["standard","sin"] },
     ],
   },
   daw: {
-    "Studio 1 / Entrada": [
-      { n:"World Premier Café (The Garden)", tipo:"rapido", emoji:"🌿", consejo:"Al entrar o salir de DAW. Hamburguesas. Bueno para empezar el día.", plan:["standard","plus","sin"] },
-    ],
     "Campus Avengers": [
-      { n:"PYM Kitchen", tipo:"buffet", emoji:"🦸", consejo:"Buffet temático Avengers con personajes Marvel. Muy recomendable para fans. Reserva con antelación.", plan:["mp","plus"] },
-      { n:"Stark Factory", tipo:"rapido", emoji:"⚡", consejo:"Raciones MUY grandes con bono rápido. Pasta infantil = misma cantidad que adulto. Ideal para aprovechar bono.", plan:["standard","plus","sin"] },
-      { n:"Downtown Restaurant", tipo:"mesa", emoji:"🎬", consejo:"Mesa cerca de Avengers Campus. Ambiente cinematográfico.", plan:["mp","plus","premium","sin"] },
+      { n:"PYM Kitchen", tipo:"buffet", emoji:"🦸", consejo:"Buffet temático Avengers. Personajes Marvel. Reserva con antelación.", plan:["mp","plus"] },
+      { n:"Stark Factory", tipo:"rapido", emoji:"⚡", consejo:"Raciones MUY grandes con bono rápido. Pasta infantil = misma cantidad que adulto.", plan:["standard","sin"] },
     ],
     "Worlds of Pixar": [
-      { n:"Chez Rémy (Ratatouille)", tipo:"mesa", emoji:"🐀", consejo:"El más famoso de DAW. Cocina francesa junto a la atracción. ~55€/persona. Reserva con semanas.", plan:["mp","plus","premium","sin"] },
+      { n:"Chez Rémy", tipo:"mesa", emoji:"🐀", consejo:"El más famoso de DAW. ~55€/persona. Reserva con semanas.", plan:["mp","plus","sin"] },
     ],
     "World of Frozen": [
-      { n:"The Regal View Restaurant", tipo:"mesa", emoji:"🌊", consejo:"NUEVO 2026. Vistas al lago Adventure Bay. Desayuno/comida/cena. Princesas con plan Premium. Reserva cuanto antes.", plan:["mp","plus","premium","sin"] },
-      { n:"Restaurante rápido Frozen", tipo:"rapido", emoji:"❄️", consejo:"Albóndigas y salmón. ⚠️ Poca capacidad en la zona del lago — si hay mucha gente, mejor moverse a otra zona.", plan:["standard","plus","sin"] },
+      { n:"The Regal View Restaurant", tipo:"mesa", emoji:"🌊", consejo:"NUEVO 2026. Vistas al lago. Desayuno/comida/cena. Princesas con plan Premium. Reserva YA.", plan:["mp","plus","premium","sin"] },
+      { n:"Restaurante rápido Frozen", tipo:"rapido", emoji:"❄️", consejo:"Albóndigas y salmón. Poca capacidad — si hay mucha gente, mejor otra zona.", plan:["standard","sin"] },
+    ],
+    "Studio 1": [
+      { n:"World Premier Café", tipo:"rapido", emoji:"🌿", consejo:"Al entrar o salir de DAW. Hamburguesas.", plan:["standard","sin"] },
     ],
   },
-  hotel: {
-    "Hotel Newport Bay Club": [
-      { n:"Cape Cod Restaurant", tipo:"buffet", emoji:"⚓", consejo:"Favorito de Lara para familias con bebés. Tronas, variedad, ambiente relajado. Cenas a partir de las 18h.", plan:["mp","plus"] },
-    ],
-    "Hotel New York Marvel": [
-      { n:"Manhattan Restaurant", tipo:"buffet", emoji:"🗽", consejo:"Buffet con personajes Avengers por las noches. Cenas a partir de las 18h.", plan:["mp","plus"] },
-      { n:"Downtown Restaurant (hotel)", tipo:"mesa", emoji:"🎨", consejo:"Restaurante de mesa del hotel NY Marvel.", plan:["mp","plus","sin"] },
-    ],
-    "Hotel Disneyland": [
-      { n:"Royal Banquet", tipo:"mesa", emoji:"👑", consejo:"Mickey, Minnie, Pluto, Donald. Comida y cena con personajes. Solo con plan Premium o pagando suplemento.", plan:["premium","sin"] },
-      { n:"La Table de Lumière", tipo:"mesa", emoji:"✨", consejo:"Príncipes y princesas. Solo cena. Disponible para todos desde 2026.", plan:["premium","sin"] },
-    ],
-    "Hotel Sequoia Lodge": [
-      { n:"Hunter's Grill & Beaver Creek Tavern", tipo:"buffet", emoji:"🌲", consejo:"Buffet rústico muy completo. Cenas a partir de las 18h.", plan:["mp","plus"] },
-    ],
-    "Hotel Cheyenne": [
-      { n:"Chuck Wagon Cafe", tipo:"buffet", emoji:"🤠", consejo:"Ideal para grupos grandes. Buffet amplio. Cenas a partir de las 18h.", plan:["mp","plus"] },
-    ],
-    "Hotel Santa Fe": [
-      { n:"La Cantina", tipo:"buffet", emoji:"🌵", consejo:"Cocina mexicana. Opciones variadas. Ideal para grupos. Cenas a partir de las 18h.", plan:["mp","plus"] },
-    ],
-  },
-  village: [
-    { n:"Billy Bob's Country Western Saloon", tipo:"mesa", emoji:"🎸", consejo:"Incluido en planes. Ambiente country con espectáculos.", plan:["mp","plus","sin"] },
-    { n:"Steakhouse Disney Village", tipo:"mesa", emoji:"🥩", consejo:"Incluido en planes. Carne a la brasa.", plan:["mp","plus","sin"] },
-    { n:"McDonald's", tipo:"rapido", emoji:"🍔", consejo:"⚠️ NO incluido en ningún plan Disney.", plan:["sin"] },
-    { n:"Rainforest Café", tipo:"mesa", emoji:"🌴", consejo:"Temático con animales animatrónicos. NO incluido en planes Disney.", plan:["sin"] },
-    { n:"Starbucks", tipo:"rapido", emoji:"☕", consejo:"⚠️ NO incluido en ningún plan Disney.", plan:["sin"] },
-  ],
 };
 
-// Helper: obtener restaurantes por zona y plan
-function getRestsParaZona(zona, subzona, planTipo) {
-  let rests = [];
-  if(zona === "dlp") rests = RESTS_ZONA.dlp[subzona] || [];
-  else if(zona === "daw") rests = RESTS_ZONA.daw[subzona] || [];
-  else if(zona === "hotel") {
-    Object.values(RESTS_ZONA.hotel).forEach(arr => rests.push(...arr));
-  } else if(zona === "village") rests = RESTS_ZONA.village;
-  // Filtrar por plan
-  if(planTipo && planTipo !== "ninguno") {
-    const planSimple = planTipo.replace("mp_","").replace("pc_","");
-    return rests.filter(r => r.plan.includes(planTipo) || r.plan.includes(planSimple) || r.plan.includes("sin"));
-  }
-  return rests;
-}
-
-// Helper: buscar por tipo de comida
-function buscarPorTipo(query, zona) {
-  const q = query.toLowerCase();
-  const todasLasZonas = zona === "dlp" ? Object.values(RESTS_ZONA.dlp).flat()
-    : zona === "daw" ? Object.values(RESTS_ZONA.daw).flat()
-    : zona === "ambos" ? [...Object.values(RESTS_ZONA.dlp).flat(), ...Object.values(RESTS_ZONA.daw).flat()]
-    : [];
-  
-  const mapa = {
-    "pizza": ["Colonel Hathi's Pizza Outpost"],
-    "hamburguesa": ["Café Hyperion","World Premier Café"],
-    "pasta": ["Stark Factory"],
-    "buffet": todasLasZonas.filter(r=>r.tipo==="buffet").map(r=>r.n),
-    "personajes": todasLasZonas.filter(r=>r.consejo.includes("personaj")||r.consejo.includes("Personaj")).map(r=>r.n),
-    "rapido": todasLasZonas.filter(r=>r.tipo==="rapido").map(r=>r.n),
-    "especial": todasLasZonas.filter(r=>r.tipo==="mesa").map(r=>r.n),
-  };
-  
-  for(const [key, nombres] of Object.entries(mapa)) {
-    if(q.includes(key)) return todasLasZonas.filter(r => nombres.includes(r.n));
-  }
-  return [];
-}
-
-// ══════════════════════════════════════════════════
-// COMPONENTE PRINCIPAL
-// ══════════════════════════════════════════════════
 function PlanificadorAtracciones({ cliente }) {
   const [zona, setZona]             = useState(null);
   const [horaExtra, setHoraExtra]   = useState(null);
@@ -1515,50 +1416,39 @@ function PlanificadorAtracciones({ cliente }) {
           );
         })}
 
-
-        {/* RESTAURANTES CERCA */}
-        {zona && zona !== "hotel" && zona !== "village" && (() => {
-          const planTipo = parsePlan(cliente?.["Plan de comidas"], cliente?.Hotel);
+        {zona && zona !== "hotel" && (() => {
           const zonasDlp = zona === "dlp" || zona === "ambos";
           const zonasDaw = zona === "daw" || zona === "ambos";
           const rapidos = [
-            ...(zonasDlp ? Object.values(RESTS_ZONA.dlp).flat().filter(r=>r.tipo==="rapido") : []),
-            ...(zonasDaw ? Object.values(RESTS_ZONA.daw).flat().filter(r=>r.tipo==="rapido") : []),
-          ].slice(0,4);
+            ...(zonasDlp ? Object.values(RESTS_ZONA.dlp).flat() : []),
+            ...(zonasDaw ? Object.values(RESTS_ZONA.daw).flat() : []),
+          ].filter(function(r2) { return r2.tipo === "rapido"; }).slice(0,3);
           const especiales = [
-            ...(zonasDlp ? Object.values(RESTS_ZONA.dlp).flat().filter(r=>r.tipo==="mesa"||r.tipo==="buffet") : []),
-            ...(zonasDaw ? Object.values(RESTS_ZONA.daw).flat().filter(r=>r.tipo==="mesa"||r.tipo==="buffet") : []),
-          ].slice(0,3);
-          return (
+            ...(zonasDlp ? Object.values(RESTS_ZONA.dlp).flat() : []),
+            ...(zonasDaw ? Object.values(RESTS_ZONA.daw).flat() : []),
+          ].filter(function(r2) { return r2.tipo === "mesa" || r2.tipo === "buffet"; }).slice(0,3);
+          return rapidos.length > 0 ? (
             <div style={{background:"#fff",border:"1px solid #e8e0d5",borderRadius:14,padding:"14px 16px",marginBottom:12}}>
               <div style={{fontFamily:"'Fredoka One',cursive",color:"#5B2D8E",fontSize:".95rem",marginBottom:10}}>🍽️ Dónde comer hoy</div>
-              <div style={{fontSize:11,fontWeight:800,color:"#0a5a6e",marginBottom:6}}>⚡ Rápido (sin perder tiempo de parque)</div>
-              {rapidos.map((r,i)=>(
-                <div key={i} style={{display:"flex",gap:10,padding:"7px 0",borderBottom:"1px solid #f5f0fc",alignItems:"flex-start"}}>
-                  <span style={{fontSize:16,flexShrink:0}}>{r.emoji}</span>
-                  <div>
-                    <div style={{fontSize:12,fontWeight:800,color:"#1c1410"}}>{r.n}</div>
-                    <div style={{fontSize:11,color:"#666",lineHeight:1.4}}>{r.consejo}</div>
-                  </div>
+              <div style={{fontSize:11,fontWeight:800,color:"#0a5a6e",marginBottom:6}}>⚡ Rápido</div>
+              {rapidos.map(function(r2,i) { return (
+                <div key={i} style={{display:"flex",gap:10,padding:"6px 0",borderBottom:"1px solid #f5f0fc",alignItems:"flex-start"}}>
+                  <span style={{fontSize:15,flexShrink:0}}>{r2.emoji}</span>
+                  <div><div style={{fontSize:12,fontWeight:800}}>{r2.n}</div><div style={{fontSize:11,color:"#666"}}>{r2.consejo}</div></div>
                 </div>
-              ))}
-              {especiales.length > 0 && <>
-                <div style={{fontSize:11,fontWeight:800,color:"#5B2D8E",margin:"10px 0 6px"}}>🕯️ Mesa / buffet</div>
-                {especiales.map((r,i)=>(
-                  <div key={i} style={{display:"flex",gap:10,padding:"7px 0",borderBottom:"1px solid #f5f0fc",alignItems:"flex-start"}}>
-                    <span style={{fontSize:16,flexShrink:0}}>{r.emoji}</span>
-                    <div>
-                      <div style={{fontSize:12,fontWeight:800,color:"#1c1410"}}>{r.n}</div>
-                      <div style={{fontSize:11,color:"#666",lineHeight:1.4}}>{r.consejo}</div>
-                    </div>
-                  </div>
-                ))}
-              </>}
-              <div style={{background:"#fff8e0",border:"1px solid #fde68a",borderRadius:8,padding:"7px 10px",marginTop:10,fontSize:11,color:"#92400e"}}>
+              ); })}
+              {especiales.length > 0 && <div style={{fontSize:11,fontWeight:800,color:"#5B2D8E",margin:"8px 0 5px"}}>🕯️ Mesa / Buffet</div>}
+              {especiales.map(function(r2,i) { return (
+                <div key={i} style={{display:"flex",gap:10,padding:"6px 0",borderBottom:"1px solid #f5f0fc",alignItems:"flex-start"}}>
+                  <span style={{fontSize:15,flexShrink:0}}>{r2.emoji}</span>
+                  <div><div style={{fontSize:12,fontWeight:800}}>{r2.n}</div><div style={{fontSize:11,color:"#666"}}>{r2.consejo}</div></div>
+                </div>
+              ); })}
+              <div style={{background:"#fff8e0",border:"1px solid #fde68a",borderRadius:8,padding:"6px 10px",marginTop:8,fontSize:11,color:"#92400e"}}>
                 📱 Reservas desde la app de DLP. ¿Dudas? Pregunta a Moli.
               </div>
             </div>
-          );
+          ) : null;
         })()}
 
         <button onClick={() => { setVista("config"); setSeleccionadas([]); setPaso(1); setZona(null); setHoraExtra(null); setTieneBebes(null); setHoraActual(null); setHoraCierre(null); setTiemposReales({}); setHeEleccionDAW(null); }}
