@@ -2010,15 +2010,15 @@ export default function Portal() {
 
   // Tabs: si la reserva NO está completa, solo muestra Guías, Asistente (y oculta el resto)
   const allTabs = [
-    { id:"reserva",      label:"🏰 Mi Reserva",      soloCompleta: false, soloReserva: true  },
-    { id:"atracciones",  label:"🎢 Atracciones",      soloCompleta: false, soloReserva: true  },
-    { id:"restaurantes", label:"🍽️ Restaurantes",    soloCompleta: true,  soloReserva: true  },
-    { id:"guias",        label:"📖 Guías",            soloCompleta: false, soloReserva: false },
-    { id:"tiempo",        label:"🌤️ Tiempo",           soloCompleta: false, soloReserva: false },
-    { id:"guia-parque",   label:"🏰 Guía del Parque",  soloCompleta: false, soloReserva: true  },
-    { id:"pagos",        label:"💰 Pagos",            soloCompleta: false, soloReserva: true  },
-    { id:"extras",       label:"✨ Servicios",        soloCompleta: true,  soloReserva: true  },
-    { id:"asistente", label:"🪄 Moli", soloCompleta: false },
+    { id:"reserva",     label:"🏰 Mi Reserva",     soloCompleta: false, soloReserva: true,  soloPref: false },
+    { id:"atracciones", label:"🎢 Atracciones",     soloCompleta: false, soloReserva: true,  soloPref: false },
+    { id:"restaurantes",label:"🍽️ Restaurantes",   soloCompleta: true,  soloReserva: true,  soloPref: false },
+    { id:"guias",       label:"📖 Guías",           soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"tiempo",      label:"🌤️ Tiempo",          soloCompleta: false, soloReserva: false, soloPref: false },
+    { id:"guia-parque", label:"🏰 Guía del Parque", soloCompleta: false, soloReserva: true,  soloPref: false },
+    { id:"pagos",       label:"💰 Pagos",           soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"extras",      label:"✨ Servicios",       soloCompleta: true,  soloReserva: true,  soloPref: false },
+    { id:"asistente",   label:"🪄 Moli",            soloCompleta: false, soloReserva: false, soloPref: true  },
   ];
 
   // Siempre mostramos todas las tabs; las que son "soloCompleta" se muestran deshabilitadas si no hay reserva
