@@ -1955,6 +1955,7 @@ export default function Portal() {
 
   // Detectar si la reserva está completa o en proceso
   const reservaCompleta = tieneReservaCompleta(cliente);
+  const esPref = !reservaCompleta; // presupuesto preferente: sin hotel confirmado
 
   const handleLogin = async () => {
     if (!dni.trim()) return;
@@ -2114,7 +2115,6 @@ export default function Portal() {
             {/* TABS */}
             <div style={{ display:"flex", gap:6, marginBottom:20, overflowX:"auto" }}>
               {tabs.map(tab => {
-                const esPref = !reservaCompleta; // sin hotel = presupuesto preferente
                 const disabled = (tab.soloCompleta && !reservaCompleta) || (tab.soloReserva && esPref);
                 const isActive = activeTab === tab.id;
                 return (
