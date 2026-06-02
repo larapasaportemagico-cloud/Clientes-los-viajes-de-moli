@@ -12,7 +12,6 @@ const FORM_PAGOS = "https://forms.gle/t5QaxnEuFqL6SCHQ9";
 // ═══════════════════════════════════════════════════════
 function parseFecha(str) {
   if (!str) return null;
-  // Soporta DD/MM/YYYY y YYYY-MM-DD
   const s = String(str).trim();
   const ddmmyyyy = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   if (ddmmyyyy) return new Date(parseInt(ddmmyyyy[3]), parseInt(ddmmyyyy[2])-1, parseInt(ddmmyyyy[1]));
@@ -480,40 +479,6 @@ CONSIGNAS DE EQUIPAJE EN HOTELES DISNEY:
 - Horario habitual: abren entre las 7:00h y las 7:30h según el hotel.
 - ⚠️ EXCEPCIÓN: Davy Crockett Ranch NO tiene consigna de equipaje.
 
-
-RESTAURANTES Y PLANES DE COMIDA — CONOCIMIENTO AMPLIADO:
-- Solo recomendar restaurantes de Disneyland Paris: parques, hoteles Disney y Disney Village.
-- Buffet: incluye bebida NO alcohólica. Mesa: solo bebida para niños, adultos pueden pedir agua del grifo gratis.
-- Las comidas con personajes especiales (Auberge de Cendrillon, Royal Banquet, La Table de Lumière, The Regal View con princesas) se pueden pagar de dos formas:
-  1. Con la Magic Pass si está incluida en la reserva (bono de comida con personajes del plan Extra Plus o Premium). El suplemento ya está añadido a su reserva con Lara.
-  2. Si reservan directamente por la app: pagan allí. Pueden usar un bono de mesa/buffet y pagar la diferencia, O usar ese bono en otro restaurante y pagar la comida con personajes completa (~100€/persona).
-  → CASI SIEMPRE es más rentable usar un bono de comida normal + pagar el suplemento de personajes que pagar la comida completa con personajes sin bono.
-- Lucky Nugget Saloon: aunque es comida rápida, el sistema descuenta bono de mesa — no es rentable. Usar bono rápido sobrante.
-- The Regal View: nuevo 2026, vistas al lago Adventure Bay, princesas con plan Premium.
-
-CUMPLEAÑOS EN DISNEYLAND PARIS:
-- Chapa de cumpleaños: solicitarla en recepción del hotel o City Hall. Sujeta a disponibilidad. Truco: ir a última hora del día al hotel cuando reponen stock para asegurar disponibilidad.
-- El hotel puede tramitar sorpresas: mensaje en el espejo, monedas de chocolate, y según el hotel hay extras especiales.
-- Caja de Frozen edición limitada por 189€ (según disponibilidad del hotel).
-- Tartas de cumpleaños: se pueden encargar para 2-4 personas o para más de 4 personas.
-- Los Cast Members suelen tener detalles especiales con los cumpleañeros si llevan la chapa.
-
-SHOW NOCTURNO — RESERVAS:
-- Disney Tales of Magic (show nocturno Parque Disneyland): la reserva de zonas VIP se abre entre 7 y 10 días antes. Revisar a diario si hay huecos. Hacer especial hincapié 3 días antes porque se liberan huecos cancelados.
-- Cascades of Light (show nocturno lago DAW): NO merece la pena reservar zona VIP. Hay mucha zona para verlo bien sin reserva.
-
-SILLAS Y MOVILIDAD:
-- Se pueden alquilar sillas infantiles en el parque por 30€/día. También sillas de ruedas.
-- Externamente se pueden reservar sillas infantiles, sillas eléctricas, etc. con empresas de alquiler.
-
-AUTOBUSES HOTELES DISNEY:
-- Hoteles Disney oficiales: autobuses empiezan muy pronto, en torno a las 6:30h. Perfectos para hora extra.
-- Hoteles asociados: los autobuses empiezan más tarde. Valorar siempre la posibilidad de usar Uber, especialmente para la hora extra, debido a los horarios y a la cantidad de gente que no respeta las filas.
-- Parada de autobuses: frente a la estación de tren. Cada hotel tiene su cartel identificativo.
-- Excepción: algunos hoteles asociados como Adagio paran en el otro lado, saliendo por Disney Village junto a Vapiano y Five Guys.
-
-NOTA IMPORTANTE: Cuando un cliente pregunte por comidas, consultar siempre su plan de comidas y hotel para dar recomendaciones personalizadas y precisas. Basarse siempre en los restaurantes reales de Disneyland Paris listados en este sistema.
-
 CONTACTO:
 lara@pasaportemagico.com`;
 
@@ -614,28 +579,10 @@ function getDesayunoHotel(hotel) {
 
 function extractNumber(val) {
   if (!val && val !== 0) return 0;
-  // Limpiar símbolo € y espacios
-  let str = String(val).replace(/€/g, '').replace(/\s/g, '').trim();
-  if (!str || str === '-') return 0;
-  // Formato español: 4.985,88 (punto=miles, coma=decimales)
-  // Detectar si hay coma decimal al final: "4985,88" o "4.985,88"
-  if (/^-?\d{1,3}(\.\d{3})*(,\d+)?$/.test(str)) {
-    // Formato español con punto de miles
-    str = str.replace(/\./g, '').replace(',', '.');
-  } else if (/^-?\d+(,\d+)?$/.test(str)) {
-    // Formato con coma decimal simple: "4985,88"
-    str = str.replace(',', '.');
-  } else if (/^-?\d+(\.\d+)?$/.test(str)) {
-    // Ya tiene punto decimal: "4985.88"
-    // no cambiar
-  } else {
-    // Intentar extraer primer número válido
-    const m = str.match(/^-?[\d.,]+/);
-    if (!m) return 0;
-    str = m[0].replace(/\./g, '').replace(',', '.');
-  }
-  const n = parseFloat(str);
-  return isNaN(n) ? 0 : Math.abs(n);
+  const str = String(val).replace(/€/g, '').replace(/\s/g, '');
+  const nums = str.match(/\d+([.,]\d+)?/g);
+  if (!nums) return 0;
+  return nums.reduce((acc, n) => acc + parseFloat(n.replace(',', '.')), 0);
 }
 function hasText(val) {
   if (!val && val !== 0) return false;
@@ -768,7 +715,6 @@ function PlanificadorRestaurantes({ cliente }) {
     setLoading(false);
   }
 
-  console.log('DEBUG CLIENTE KEYS:', cliente ? Object.keys(cliente) : 'null', 'Pagado:', getCol(cliente,'Pagado','PAGADO'), 'TOTAL:', getCol(cliente,'TOTAL','Total'), 'Pendiente:', getCol(cliente,'Pendiente','PENDIENTE'));
   const s = {
     card: { background:"#fff", border:"1px solid #e8e0d5", borderRadius:12, padding:"14px 16px" },
     chip: (selected, color) => ({ padding:"6px 14px", borderRadius:50, border:`2px solid ${selected ? color : '#e0e0e0'}`, background: selected ? color : '#f7f7f9', color: selected ? '#fff' : '#555', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', transition:'all .15s' }),
@@ -2063,20 +2009,9 @@ export default function Portal() {
     setChatLoading(false);
   };
 
-  // Helper flexible para leer columnas del Sheet independiente de mayúsculas
-  const getCol = (obj, ...keys) => {
-    if (!obj) return "";
-    for (const k of keys) {
-      // Buscar con el nombre exacto, en mayúsculas, en minúsculas, y capitalizado
-      for (const variant of [k, k.toUpperCase(), k.toLowerCase(), k.charAt(0).toUpperCase()+k.slice(1).toLowerCase()]) {
-        if (obj[variant] !== undefined && obj[variant] !== null && obj[variant] !== "") return obj[variant];
-      }
-    }
-    return "";
-  };
-  const pagadoTotal = Math.round((extractNumber(getCol(cliente, "Pagado","PAGADO","pagado","Importe pagado","IMPORTE PAGADO") || "0") + Number.EPSILON) * 100) / 100;
-  const totalViaje  = Math.round((extractNumber(getCol(cliente, "TOTAL","Total","total","Precio total","PRECIO TOTAL","Importe total") || "0") + Number.EPSILON) * 100) / 100;
-  const pendiente   = Math.round((extractNumber(getCol(cliente, "Pendiente","PENDIENTE","pendiente","PENDIENTE AUTO","Pendiente de pago") || "0") + Number.EPSILON) * 100) / 100;
+  const pendiente = Math.round((extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0") + Number.EPSILON) * 100) / 100;
+  const pagadoRaw = cliente?.Pagado || cliente?.["PAGADO"] || "0";
+  const pagadoTotal = Math.round((extractNumber(pagadoRaw) + Number.EPSILON) * 100) / 100;
 
   const s = {
     page: { minHeight:"100vh", background:"linear-gradient(160deg,#0a1628 0%,#0d2233 40%,#0a1a2e 100%)", fontFamily:"'Nunito', sans-serif" },
@@ -2185,7 +2120,7 @@ export default function Portal() {
               ) : (
                 <div style={{ background:"rgba(240,165,0,0.15)", border:"1px solid rgba(240,165,0,0.3)", borderRadius:12, padding:"12px 18px", textAlign:"center" }}>
                   <div style={{ color:"#fbbf24", fontSize:11, textTransform:"uppercase", letterSpacing:1, marginBottom:4 }}>⏳ En proceso</div>
-                  <div style={{ color:"#fcd34d", fontSize:13, fontWeight:700 }}>Pendiente de abono</div><div style={{ color:"#9d8b78", fontSize:11, marginTop:4 }}>Cuando realices tu primer pago aparecerá el estado aquí</div>
+                  <div style={{ color:"#fcd34d", fontSize:13, fontWeight:700 }}>Lara está preparando<br/>tu reserva</div>
                 </div>
               )}
             </div>
@@ -2406,12 +2341,12 @@ export default function Portal() {
                 ) : (
                   <>
                     <div style={{ fontSize:11, color:"#c9a84c", letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>💰 Estado de pagos</div>
-                    <PagoBar pagado={getCol(cliente,"Pagado","PAGADO")} total={getCol(cliente,"TOTAL","Total")} />
+                    <PagoBar pagado={cliente.Pagado} total={cliente["TOTAL"]} />
                     <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginTop:20 }}>
                       {[
                         { label:"Total viaje", val:cliente["TOTAL"], bg:"#f9f7f4", colorNum:"#1c1410", colorTxt:"#7a6a50" },
-                        { label:"Pagado", val:getCol(cliente,"Pagado","PAGADO"), bg:"#f0fdf4", colorNum:"#16a34a", colorTxt:"#15803d" },
-                        { label:"Pendiente", val:getCol(cliente,"Pendiente","PENDIENTE","PENDIENTE AUTO"), bg: pendiente>0?"#fef2f2":"#f0fdf4", colorNum: pendiente>0?"#dc2626":"#16a34a", colorTxt: pendiente>0?"#b91c1c":"#15803d" },
+                        { label:"Pagado", val:cliente.Pagado, bg:"#f0fdf4", colorNum:"#16a34a", colorTxt:"#15803d" },
+                        { label:"Pendiente", val:cliente.Pendiente, bg: pendiente>0?"#fef2f2":"#f0fdf4", colorNum: pendiente>0?"#dc2626":"#16a34a", colorTxt: pendiente>0?"#b91c1c":"#15803d" },
                       ].map((item,i) => (
                         <div key={i} style={{ textAlign:"center", padding:14, background:item.bg, borderRadius:10 }}>
                           <div style={{ fontSize:10, color:item.colorNum, textTransform:"uppercase", letterSpacing:1, marginBottom:6 }}>{item.label}</div>
