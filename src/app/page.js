@@ -16,7 +16,7 @@ function esPeriodoVisita(cliente) {
   hoy.setHours(0,0,0,0);
   const checkin = new Date(cliente["Check-in"] + "T00:00:00");
   const checkout = new Date(cliente["Check-out"] + "T00:00:00");
-  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 3);
+  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 1); // 1 día antes del check-in
   return hoy >= inicio && hoy <= checkout;
 }
 
@@ -2224,7 +2224,7 @@ export default function Portal() {
                         ¡Faltan {dias} día{dias!==1?"s":""}!
                       </div>
                       <div style={{ fontSize:13, color:"#7a5000", lineHeight:1.6 }}>
-                        La guía del parque se activa <strong>3 días antes de tu llegada</strong>.<br/>
+                        La guía del parque se activa <strong>el día antes de tu llegada</strong>.<br/>
                         Mientras tanto, puedes revisar la guía de hoteles y restaurantes en la pestaña Guías.
                       </div>
                     </div>
