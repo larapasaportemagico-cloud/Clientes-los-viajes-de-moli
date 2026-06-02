@@ -468,6 +468,40 @@ CONSIGNAS DE EQUIPAJE EN HOTELES DISNEY:
 - Horario habitual: abren entre las 7:00h y las 7:30h según el hotel.
 - ⚠️ EXCEPCIÓN: Davy Crockett Ranch NO tiene consigna de equipaje.
 
+
+RESTAURANTES Y PLANES DE COMIDA — CONOCIMIENTO AMPLIADO:
+- Solo recomendar restaurantes de Disneyland Paris: parques, hoteles Disney y Disney Village.
+- Buffet: incluye bebida NO alcohólica. Mesa: solo bebida para niños, adultos pueden pedir agua del grifo gratis.
+- Las comidas con personajes especiales (Auberge de Cendrillon, Royal Banquet, La Table de Lumière, The Regal View con princesas) se pueden pagar de dos formas:
+  1. Con la Magic Pass si está incluida en la reserva (bono de comida con personajes del plan Extra Plus o Premium). El suplemento ya está añadido a su reserva con Lara.
+  2. Si reservan directamente por la app: pagan allí. Pueden usar un bono de mesa/buffet y pagar la diferencia, O usar ese bono en otro restaurante y pagar la comida con personajes completa (~100€/persona).
+  → CASI SIEMPRE es más rentable usar un bono de comida normal + pagar el suplemento de personajes que pagar la comida completa con personajes sin bono.
+- Lucky Nugget Saloon: aunque es comida rápida, el sistema descuenta bono de mesa — no es rentable. Usar bono rápido sobrante.
+- The Regal View: nuevo 2026, vistas al lago Adventure Bay, princesas con plan Premium.
+
+CUMPLEAÑOS EN DISNEYLAND PARIS:
+- Chapa de cumpleaños: solicitarla en recepción del hotel o City Hall. Sujeta a disponibilidad. Truco: ir a última hora del día al hotel cuando reponen stock para asegurar disponibilidad.
+- El hotel puede tramitar sorpresas: mensaje en el espejo, monedas de chocolate, y según el hotel hay extras especiales.
+- Caja de Frozen edición limitada por 189€ (según disponibilidad del hotel).
+- Tartas de cumpleaños: se pueden encargar para 2-4 personas o para más de 4 personas.
+- Los Cast Members suelen tener detalles especiales con los cumpleañeros si llevan la chapa.
+
+SHOW NOCTURNO — RESERVAS:
+- Disney Tales of Magic (show nocturno Parque Disneyland): la reserva de zonas VIP se abre entre 7 y 10 días antes. Revisar a diario si hay huecos. Hacer especial hincapié 3 días antes porque se liberan huecos cancelados.
+- Cascades of Light (show nocturno lago DAW): NO merece la pena reservar zona VIP. Hay mucha zona para verlo bien sin reserva.
+
+SILLAS Y MOVILIDAD:
+- Se pueden alquilar sillas infantiles en el parque por 30€/día. También sillas de ruedas.
+- Externamente se pueden reservar sillas infantiles, sillas eléctricas, etc. con empresas de alquiler.
+
+AUTOBUSES HOTELES DISNEY:
+- Hoteles Disney oficiales: autobuses empiezan muy pronto, en torno a las 6:30h. Perfectos para hora extra.
+- Hoteles asociados: los autobuses empiezan más tarde. Valorar siempre la posibilidad de usar Uber, especialmente para la hora extra, debido a los horarios y a la cantidad de gente que no respeta las filas.
+- Parada de autobuses: frente a la estación de tren. Cada hotel tiene su cartel identificativo.
+- Excepción: algunos hoteles asociados como Adagio paran en el otro lado, saliendo por Disney Village junto a Vapiano y Five Guys.
+
+NOTA IMPORTANTE: Cuando un cliente pregunte por comidas, consultar siempre su plan de comidas y hotel para dar recomendaciones personalizadas y precisas. Basarse siempre en los restaurantes reales de Disneyland Paris listados en este sistema.
+
 CONTACTO:
 lara@pasaportemagico.com`;
 
