@@ -10,20 +10,32 @@ const FORM_PAGOS = "https://forms.gle/t5QaxnEuFqL6SCHQ9";
 // Un cliente "en proceso" es aquel que está en el Sheet
 // pero aún no tiene los datos de reserva completos (hotel vacío)
 // ═══════════════════════════════════════════════════════
+function parseFecha(str) {
+  if (!str) return null;
+  // Soporta DD/MM/YYYY y YYYY-MM-DD
+  const s = String(str).trim();
+  const ddmmyyyy = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (ddmmyyyy) return new Date(parseInt(ddmmyyyy[3]), parseInt(ddmmyyyy[2])-1, parseInt(ddmmyyyy[1]));
+  const iso = s.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (iso) return new Date(parseInt(iso[1]), parseInt(iso[2])-1, parseInt(iso[3]));
+  return new Date(s);
+}
+
 function esPeriodoVisita(cliente) {
   if (!cliente?.["Check-in"] || !cliente?.["Check-out"]) return false;
-  const hoy = new Date();
-  hoy.setHours(0,0,0,0);
-  const checkin = new Date(cliente["Check-in"] + "T00:00:00");
-  const checkout = new Date(cliente["Check-out"] + "T00:00:00");
-  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 1); // 1 día antes del check-in
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const checkin = parseFecha(cliente["Check-in"]);
+  const checkout = parseFecha(cliente["Check-out"]);
+  if (!checkin || !checkout || isNaN(checkin) || isNaN(checkout)) return false;
+  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 1);
   return hoy >= inicio && hoy <= checkout;
 }
 
 function diasParaViaje(cliente) {
   if (!cliente?.["Check-in"]) return null;
   const hoy = new Date(); hoy.setHours(0,0,0,0);
-  const checkin = new Date(cliente["Check-in"] + "T00:00:00");
+  const checkin = parseFecha(cliente["Check-in"]);
+  if (!checkin || isNaN(checkin)) return null;
   const diff = Math.ceil((checkin - hoy) / (1000*60*60*24));
   return diff;
 }
@@ -2051,8 +2063,10 @@ export default function Portal() {
   };
 
   const pendiente = Math.round((extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0") + Number.EPSILON) * 100) / 100;
-  const pagadoTotal = Math.round((extractNumber(cliente?.Pagado || "0") + Number.EPSILON) * 100) / 100;
-  const totalViaje = Math.round((extractNumber(cliente?.["TOTAL"] || "0") + Number.EPSILON) * 100) / 100;
+  // Buscar columnas de pago con nombres flexibles (mayúsculas/minúsculas)
+  const getCol = (obj, ...keys) => { if (!obj) return ""; for (const k of keys) { const v = obj[k] ?? obj[k.toUpperCase()] ?? obj[k.toLowerCase()] ?? obj[k.charAt(0).toUpperCase()+k.slice(1).toLowerCase()]; if (v !== undefined && v !== null) return v; } return ""; };
+  const pagadoTotal = Math.round((extractNumber(getCol(cliente, "Pagado", "PAGADO", "pagado") || "0") + Number.EPSILON) * 100) / 100;
+  const totalViaje = Math.round((extractNumber(getCol(cliente, "TOTAL", "Total", "total") || "0") + Number.EPSILON) * 100) / 100;
 
   const s = {
     page: { minHeight:"100vh", background:"linear-gradient(160deg,#0a1628 0%,#0d2233 40%,#0a1a2e 100%)", fontFamily:"'Nunito', sans-serif" },
@@ -2382,12 +2396,12 @@ export default function Portal() {
                 ) : (
                   <>
                     <div style={{ fontSize:11, color:"#c9a84c", letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>💰 Estado de pagos</div>
-                    <PagoBar pagado={cliente.Pagado} total={cliente["TOTAL"]} />
+                    <PagoBar pagado={getCol(cliente,"Pagado","PAGADO")} total={getCol(cliente,"TOTAL","Total")} />
                     <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginTop:20 }}>
                       {[
                         { label:"Total viaje", val:cliente["TOTAL"], bg:"#f9f7f4", colorNum:"#1c1410", colorTxt:"#7a6a50" },
-                        { label:"Pagado", val:cliente.Pagado, bg:"#f0fdf4", colorNum:"#16a34a", colorTxt:"#15803d" },
-                        { label:"Pendiente", val:cliente.Pendiente, bg: pendiente>0?"#fef2f2":"#f0fdf4", colorNum: pendiente>0?"#dc2626":"#16a34a", colorTxt: pendiente>0?"#b91c1c":"#15803d" },
+                        { label:"Pagado", val:getCol(cliente,"Pagado","PAGADO"), bg:"#f0fdf4", colorNum:"#16a34a", colorTxt:"#15803d" },
+                        { label:"Pendiente", val:getCol(cliente,"Pendiente","PENDIENTE","PENDIENTE AUTO"), bg: pendiente>0?"#fef2f2":"#f0fdf4", colorNum: pendiente>0?"#dc2626":"#16a34a", colorTxt: pendiente>0?"#b91c1c":"#15803d" },
                       ].map((item,i) => (
                         <div key={i} style={{ textAlign:"center", padding:14, background:item.bg, borderRadius:10 }}>
                           <div style={{ fontSize:10, color:item.colorNum, textTransform:"uppercase", letterSpacing:1, marginBottom:6 }}>{item.label}</div>
