@@ -2143,7 +2143,7 @@ export default function Portal() {
               ) : (
                 <div style={{ background:"rgba(240,165,0,0.15)", border:"1px solid rgba(240,165,0,0.3)", borderRadius:12, padding:"12px 18px", textAlign:"center" }}>
                   <div style={{ color:"#fbbf24", fontSize:11, textTransform:"uppercase", letterSpacing:1, marginBottom:4 }}>⏳ En proceso</div>
-                  <div style={{ color:"#fcd34d", fontSize:13, fontWeight:700 }}>Lara está preparando<br/>tu reserva</div>
+                  <div style={{ color:"#fcd34d", fontSize:13, fontWeight:700 }}>Pendiente de abono</div><div style={{ color:"#9d8b78", fontSize:11, marginTop:4 }}>Cuando realices tu primer pago aparecerá el estado aquí</div>
                 </div>
               )}
             </div>
