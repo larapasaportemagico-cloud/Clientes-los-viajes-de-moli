@@ -2033,6 +2033,8 @@ export default function Portal() {
   };
 
   const pendiente = Math.round((extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0") + Number.EPSILON) * 100) / 100;
+  const pagadoTotal = Math.round((extractNumber(cliente?.Pagado || "0") + Number.EPSILON) * 100) / 100;
+  const totalViaje = Math.round((extractNumber(cliente?.["TOTAL"] || "0") + Number.EPSILON) * 100) / 100;
 
   const s = {
     page: { minHeight:"100vh", background:"linear-gradient(160deg,#0a1628 0%,#0d2233 40%,#0a1a2e 100%)", fontFamily:"'Nunito', sans-serif" },
@@ -2134,7 +2136,7 @@ export default function Portal() {
                   <div style={{ color:"#f87171", fontSize:22, fontWeight:600 }}><PagoValor val={cliente.Pendiente} colorNum="#f87171" colorTxt="#fca5a5" size={22} /></div>
                   {cliente["Fecha_límite_pago"] && <div style={{ color:"#9d8b78", fontSize:11, marginTop:4 }}>Límite: {cliente["Fecha_límite_pago"]}</div>}
                 </div>
-              ) : reservaCompleta ? (
+              ) : (reservaCompleta && pagadoTotal > 0) ? (
                 <div style={{ background:"rgba(46,200,102,0.15)", border:"1px solid rgba(46,200,102,0.3)", borderRadius:12, padding:"12px 18px" }}>
                   <div style={{ color:"#86efac", fontSize:13 }}>✅ Todo pagado</div>
                 </div>
