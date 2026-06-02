@@ -602,10 +602,28 @@ function getDesayunoHotel(hotel) {
 
 function extractNumber(val) {
   if (!val && val !== 0) return 0;
-  const str = String(val).replace(/€/g, '').replace(/\s/g, '');
-  const nums = str.match(/\d+([.,]\d+)?/g);
-  if (!nums) return 0;
-  return nums.reduce((acc, n) => acc + parseFloat(n.replace(',', '.')), 0);
+  // Limpiar símbolo € y espacios
+  let str = String(val).replace(/€/g, '').replace(/\s/g, '').trim();
+  if (!str || str === '-') return 0;
+  // Formato español: 4.985,88 (punto=miles, coma=decimales)
+  // Detectar si hay coma decimal al final: "4985,88" o "4.985,88"
+  if (/^-?\d{1,3}(\.\d{3})*(,\d+)?$/.test(str)) {
+    // Formato español con punto de miles
+    str = str.replace(/\./g, '').replace(',', '.');
+  } else if (/^-?\d+(,\d+)?$/.test(str)) {
+    // Formato con coma decimal simple: "4985,88"
+    str = str.replace(',', '.');
+  } else if (/^-?\d+(\.\d+)?$/.test(str)) {
+    // Ya tiene punto decimal: "4985.88"
+    // no cambiar
+  } else {
+    // Intentar extraer primer número válido
+    const m = str.match(/^-?[\d.,]+/);
+    if (!m) return 0;
+    str = m[0].replace(/\./g, '').replace(',', '.');
+  }
+  const n = parseFloat(str);
+  return isNaN(n) ? 0 : Math.abs(n);
 }
 function hasText(val) {
   if (!val && val !== 0) return false;
