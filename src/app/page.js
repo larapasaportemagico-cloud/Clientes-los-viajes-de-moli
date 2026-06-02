@@ -647,12 +647,11 @@ function PlanificadorRestaurantes({ cliente }) {
     if (!prefsCompletas) return;
     setLoading(true); setPlan(null);
 
-    // Restaurantes reales de DLP por tipo y plan
     const RESTS_PERSONAJES = {
-      "premium":   ["🏰 Auberge de Cendrillon (Fantasyland) — Princesas + Mickey · Reserva imprescindible con meses de antelación","👑 La Table de Lumière (Hotel Disneyland) — Príncipes y Princesas · Solo cena","🎭 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald"],
-      "extra_plus":["🏰 Auberge de Cendrillon (Fantasyland) — Incluida 1 vez en tu plan · Reserva con mucha antelación","🌊 The Regal View (Adventure Way) — Nuevo 2026 · Princesas · Reserva cuanto antes"],
-      "pc_plus":   ["🏰 Auberge de Cendrillon — Suplemento adicional · Reserva con antelación","🌊 The Regal View — Suplemento · Nuevo 2026 · Reserva cuanto antes","🦸 PYM Kitchen (Campus Avengers) — Buffet temático Avengers · Con plan"],
-      "mp_plus":   ["🏰 Auberge de Cendrillon — Suplemento adicional","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen — Buffet Avengers · Con plan"],
+      "premium":   ["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses de antelación","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
+      "extra_plus":["🏰 Auberge de Cendrillon — Incluida 1 vez en tu plan · Reserva con mucha antelación","🌊 The Regal View (Adventure Way) — Nuevo 2026 · Princesas · Reserva cuanto antes"],
+      "pc_plus":   ["🏰 Auberge de Cendrillon — Suplemento · Reserva con antelación","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Con plan"],
+      "mp_plus":   ["🏰 Auberge de Cendrillon — Suplemento","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen — Buffet Avengers · Con plan"],
       "pc_standard":["🌊 The Regal View — Suplemento · Nuevo 2026"],
       "mp_standard":["🌊 The Regal View — Suplemento · Nuevo 2026"],
     };
@@ -661,113 +660,74 @@ function PlanificadorRestaurantes({ cliente }) {
       "🕯️ Walt's Restaurant (Main Street) — Cocina francesa · Vistas al castillo · Muy especial",
       "🏝️ Blue Lagoon (Adventureland) — DENTRO de la atracción de Piratas · Experiencia única · Reserva con meses",
       "☠️ Captain Jack's (Adventureland) — Temática Piratas · Cocina española",
-      "🐀 Chez Rémy (Worlds of Pixar) — Temática Ratatouille · Cocina francesa · Muy demandado",
-      "🌊 The Regal View (Adventure Way) — Nuevo 2026 · Vistas al lago · Muy solicitado",
-      "🎬 Downtown Restaurant (Campus Avengers) — Ambiente cinematográfico",
+      "🐀 Chez Rémy (Worlds of Pixar) — Temática Ratatouille · Muy demandado · Reserva con semanas",
+      "🌊 The Regal View (Adventure Way) — Nuevo 2026 · Vistas al lago · Reserva cuanto antes",
     ];
-
     const RESTS_BUFFET = [
-      "🧞 Agrabah Café (Adventureland) — Buffet temático Aladdin · Personajes Disney",
-      "🤠 Cowboy Cookout BBQ (Frontierland) — Barbacoa del Oeste · Cierra antes que otros",
-      "🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Personajes Marvel",
-      "⚓ Cape Cod (Newport Bay Club) — Buffet · Favorito de Lara para familias con bebés",
-      "🌴 Manhattan Restaurant (NY Marvel) — Buffet · Avengers por las noches",
+      "🤠 Cowboy Cookout BBQ (Frontierland) — Barbacoa del Oeste · Cierra antes · Verifica horario",
+      "🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Personajes Marvel · Reserva con antelación",
+      "⚓ Cape Cod (Newport Bay Club) — Favorito de Lara para familias con bebés · Solo cenas",
+      "🌴 Manhattan Restaurant (NY Marvel) — Buffet · Avengers por las noches · Solo cenas",
     ];
-
     const RESTS_RAPIDO = [
-      "🍕 Colonel Hathi's (Adventureland) — Único con pizza del parque",
-      "☕ Café Hyperion (Discoveryland) — Grande, cubierto · Shows de temporada · Enchufes",
-      "🦸 Stark Factory (Campus Avengers) — Raciones muy grandes con bono rápido",
-      "🍔 World Premier Café (Studio 1) — Al entrar/salir de DAW",
+      "🍕 Colonel Hathi's (Adventureland) — El ÚNICO con pizza del Parque Disneyland",
+      "☕ Café Hyperion (Discoveryland) — Grande, cubierto, enchufes. Shows de temporada",
+      "⚡ Stark Factory (Campus Avengers) — Raciones muy grandes · Ideal para bono rápido",
     ];
 
+    const tienePersonajes = prefs.personajes === "si" || prefs.personajes === "si-si-hay";
+    const quiereBuffet = prefs.estilo === "buffet";
+    const restsPersonajes = RESTS_PERSONAJES[planTipo] || [];
+    const desayunoInfo = getDesayunoHotel(cliente?.Hotel);
     const horario = getHorario(dates[0] || "");
     const cierresTarde = horario >= "22:00";
-    const tienePersonajes = prefs.personajes === 'si' || prefs.personajes === 'si-si-hay';
-    const quiereBuffet = prefs.estilo === 'buffet';
 
-    const restsPersonajes = RESTS_PERSONAJES[planTipo] || [];
-    
-    let planTexto = `🍽️ **Plan de restaurantes para ${cliente?.Nombre}**
-`;
-    planTexto += `📍 Hotel: ${cliente?.Hotel} · Plan: ${cliente?.["Plan de comidas"] || "sin plan"} · ${noches} noches
+    let lineas = [];
+    lineas.push("🍽️ **Plan de restaurantes para " + (cliente?.Nombre || "") + "**");
+    lineas.push("📍 Hotel: " + (cliente?.Hotel || "") + " · Plan: " + (cliente?.["Plan de comidas"] || "Sin plan") + " · " + noches + " noches");
+    lineas.push("");
+    lineas.push("**🌅 DESAYUNOS** · Todos los días en el restaurante del hotel · Sin reserva");
+    lineas.push("→ " + desayunoInfo.rest + " · " + desayunoInfo.tipo);
+    lineas.push("");
+    lineas.push("**🍽️ TU PLAN: " + (bonos?.desc || "Sin plan") + "**");
+    if (bonos?.detalle) lineas.push(bonos.detalle);
+    lineas.push("");
 
-`;
-
-    // Desayuno
-    const desayunoInfo = getDesayunoHotel(cliente?.Hotel);
-    planTexto += `**🌅 DESAYUNOS (todos los días)**
-${desayunoInfo.rest}
-${desayunoInfo.tipo}
-⏰ No necesitas reserva — ve directamente al restaurante del hotel
-
-`;
-
-    // Consejos por plan
-    planTexto += `**🍽️ COMIDAS Y CENAS — Tu plan: ${bonos?.desc || "Sin plan"}**
-${bonos?.detalle || ""}
-
-`;
-
-    // Personajes
-    if(tienePersonajes && restsPersonajes.length > 0) {
-      planTexto += `**👑 RESTAURANTES CON PERSONAJES (incluidos o con suplemento en tu plan)**
-`;
-      restsPersonajes.forEach(r => planTexto += `• ${r}
-`);
-      planTexto += `
-⚠️ *Reserva con la máxima antelación posible desde la app de DLP (disponible desde 7 días antes, pero revisa desde 15 días antes)*
-
-`;
+    if (tienePersonajes && restsPersonajes.length > 0) {
+      lineas.push("**👑 RESTAURANTES CON PERSONAJES**");
+      restsPersonajes.forEach(r => lineas.push("• " + r));
+      lineas.push("⚠️ Reserva desde la app DLP con la máxima antelación posible (disponible 7 días antes · revisa desde 15 días)");
+      lineas.push("");
     }
 
-    // Recomendaciones por estilo
-    planTexto += `**💡 NUESTRAS RECOMENDACIONES PARA TI**
-
-`;
-    
-    if(quiereBuffet) {
-      planTexto += `*Buffets recomendados:*
-`;
-      RESTS_BUFFET.slice(0,3).forEach(r => planTexto += `• ${r}
-`);
+    lineas.push("**💡 RECOMENDACIONES PARA TI**");
+    lineas.push("");
+    if (quiereBuffet) {
+      lineas.push("*Buffets recomendados:*");
+      RESTS_BUFFET.slice(0,3).forEach(r => lineas.push("• " + r));
     } else {
-      planTexto += `*Restaurantes de mesa recomendados:*
-`;
-      RESTS_MESA.slice(0,3).forEach(r => planTexto += `• ${r}
-`);
+      lineas.push("*Restaurantes de mesa recomendados:*");
+      RESTS_MESA.slice(0,3).forEach(r => lineas.push("• " + r));
     }
-
-    planTexto += `
-*Para comer rápido sin perder tiempo de parque:*
-`;
-    RESTS_RAPIDO.slice(0,2).forEach(r => planTexto += `• ${r}
-`);
-
-    // Consejo horario cena
-    planTexto += `
-**🌙 CONSEJO HORARIO DE CENAS**
-`;
-    if(cierresTarde) {
-      planTexto += `El parque cierra tarde (${horario}). Cenad **al menos 2 horas antes del show nocturno** (sobre las 19:30-20:00h). Así disfrutáis la cena sin prisas y llegáis al show con tiempo para buen sitio.
-`;
+    lineas.push("");
+    lineas.push("*Para comer rápido sin perder tiempo de parque:*");
+    RESTS_RAPIDO.slice(0,2).forEach(r => lineas.push("• " + r));
+    lineas.push("");
+    lineas.push("**🌙 CONSEJO HORARIO DE CENAS**");
+    if (cierresTarde) {
+      lineas.push("El parque cierra tarde (" + horario + "h). Cenad al menos 2 horas antes del show nocturno — sobre las 19:30-20:00h.");
     } else {
-      planTexto += `Con el horario de cierre habitual, podéis cenar en los hoteles a las **20:00-21:00h** o en Disney Village. Sin prisas.
-`;
+      lineas.push("Podéis cenar en los hoteles a las 20:00-21:00h o en Disney Village. Sin prisas.");
     }
-
-    // Lucky Nugget aviso
-    if(planTipo==="pc_standard"||planTipo==="mp_standard") {
-      planTexto += `
-⚠️ **Lucky Nugget Saloon:** Aunque es comida rápida, el sistema descuenta bono de buffet/mesa — no es rentable con ese bono. Úsalo con bono rápido si te sobra uno.
-`;
+    if (planTipo === "pc_standard" || planTipo === "mp_standard") {
+      lineas.push("");
+      lineas.push("⚠️ Lucky Nugget: aunque es comida rápida, el sistema descuenta bono de mesa. Usa bono rápido sobrante.");
     }
+    lineas.push("");
+    lineas.push("📱 Todas las reservas desde la app de Disneyland Paris. ¿Dudas? Escríbeme directamente.");
 
-    planTexto += `
-📱 *Todas las reservas a través de la app de Disneyland Paris. ¿Dudas? Pregúntame directamente.*`;
-
-    setPlan(planTexto);
-    setTimeout(() => resultRef.current?.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+    setPlan(lineas.join("\n"));
+    setTimeout(() => resultRef.current?.scrollIntoView({ behavior:"smooth", block:"start" }), 100);
     setLoading(false);
   }
 
