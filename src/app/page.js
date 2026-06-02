@@ -517,12 +517,16 @@ function getDayOfWeek(dateStr) { return new Date(dateStr + 'T12:00:00').getDay()
 function isAltaDemanda(dateStr) { return [0,3,5,6].includes(getDayOfWeek(dateStr)); }
 function isMiercoles(dateStr) { return getDayOfWeek(dateStr) === 3; }
 function getDatesInRange(start, end) {
-  const dates=[]; const cur=new Date(start+'T12:00:00'); const last=new Date(end+'T12:00:00');
-  while(cur<last){dates.push(cur.toISOString().split('T')[0]);cur.setDate(cur.getDate()+1);}
+  const dates=[];
+  const cur = parseFecha(start); if (!cur || isNaN(cur)) return dates;
+  const last = parseFecha(end);  if (!last || isNaN(last)) return dates;
+  cur.setHours(12,0,0,0); last.setHours(12,0,0,0);
+  while(cur<last){ dates.push(cur.toISOString().split('T')[0]); cur.setDate(cur.getDate()+1); }
   return dates;
 }
 function formatDateEs(dateStr) {
-  const d=new Date(dateStr+'T12:00:00');
+  const d = parseFecha(dateStr) || new Date(dateStr+'T12:00:00');
+  if (!d || isNaN(d)) return dateStr;
   const days=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
   const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   return `${days[d.getDay()]} ${d.getDate()} de ${months[d.getMonth()]}`;
