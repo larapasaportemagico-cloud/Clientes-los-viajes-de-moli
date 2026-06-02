@@ -2115,7 +2115,7 @@ export default function Portal() {
             {/* TABS */}
             <div style={{ display:"flex", gap:6, marginBottom:20, overflowX:"auto" }}>
               {tabs.map(tab => {
-                const disabled = (tab.soloCompleta && !reservaCompleta) || (tab.soloReserva && esPref);
+                const disabled = (tab.soloCompleta && !reservaCompleta) || (tab.soloReserva && esPref) || (esPref && !tab.soloPref);
                 const isActive = activeTab === tab.id;
                 return (
                   <button key={tab.id}
