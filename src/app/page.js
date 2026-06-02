@@ -2009,9 +2009,9 @@ export default function Portal() {
     setChatLoading(false);
   };
 
-  const pendiente = Math.round((extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0") + Number.EPSILON) * 100) / 100;
-  const pagadoRaw = cliente?.Pagado || cliente?.["PAGADO"] || "0";
-  const pagadoTotal = Math.round((extractNumber(pagadoRaw) + Number.EPSILON) * 100) / 100;
+  const pendiente   = Math.round((extractNumber(cliente?.PENDIENTE || cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0") + Number.EPSILON) * 100) / 100;
+  const pagadoTotal = Math.round((extractNumber(cliente?.PAGADO   || cliente?.Pagado   || "0") + Number.EPSILON) * 100) / 100;
+  const totalViaje  = Math.round((extractNumber(cliente?.TOTAL    || cliente?.Total    || cliente?.["Precio total"] || "0") + Number.EPSILON) * 100) / 100;
 
   const s = {
     page: { minHeight:"100vh", background:"linear-gradient(160deg,#0a1628 0%,#0d2233 40%,#0a1a2e 100%)", fontFamily:"'Nunito', sans-serif" },
@@ -2110,7 +2110,7 @@ export default function Portal() {
               {reservaCompleta && pendiente > 0 ? (
                 <div style={{ background:"rgba(239,68,68,0.15)", border:"1px solid rgba(239,68,68,0.3)", borderRadius:12, padding:"12px 18px", textAlign:"center" }}>
                   <div style={{ color:"#fca5a5", fontSize:11, textTransform:"uppercase", letterSpacing:1, marginBottom:4 }}>⚠️ Pendiente</div>
-                  <div style={{ color:"#f87171", fontSize:22, fontWeight:600 }}><PagoValor val={cliente.Pendiente} colorNum="#f87171" colorTxt="#fca5a5" size={22} /></div>
+                  <div style={{ color:"#f87171", fontSize:22, fontWeight:600 }}><PagoValor val={cliente.PENDIENTE || cliente.Pendiente} colorNum="#f87171" colorTxt="#fca5a5" size={22} /></div>
                   {cliente["Fecha_límite_pago"] && <div style={{ color:"#9d8b78", fontSize:11, marginTop:4 }}>Límite: {cliente["Fecha_límite_pago"]}</div>}
                 </div>
               ) : (reservaCompleta && pagadoTotal > 0) ? (
@@ -2341,7 +2341,7 @@ export default function Portal() {
                 ) : (
                   <>
                     <div style={{ fontSize:11, color:"#c9a84c", letterSpacing:2, textTransform:"uppercase", marginBottom:16 }}>💰 Estado de pagos</div>
-                    <PagoBar pagado={cliente.Pagado} total={cliente["TOTAL"]} />
+                    <PagoBar pagado={cliente.PAGADO || cliente.Pagado} total={cliente.TOTAL || cliente.Total} />
                     <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr 1fr", gap:12, marginTop:20 }}>
                       {[
                         { label:"Total viaje", val:cliente["TOTAL"], bg:"#f9f7f4", colorNum:"#1c1410", colorTxt:"#7a6a50" },
