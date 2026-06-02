@@ -768,6 +768,7 @@ function PlanificadorRestaurantes({ cliente }) {
     setLoading(false);
   }
 
+  console.log('DEBUG CLIENTE KEYS:', cliente ? Object.keys(cliente) : 'null', 'Pagado:', getCol(cliente,'Pagado','PAGADO'), 'TOTAL:', getCol(cliente,'TOTAL','Total'), 'Pendiente:', getCol(cliente,'Pendiente','PENDIENTE'));
   const s = {
     card: { background:"#fff", border:"1px solid #e8e0d5", borderRadius:12, padding:"14px 16px" },
     chip: (selected, color) => ({ padding:"6px 14px", borderRadius:50, border:`2px solid ${selected ? color : '#e0e0e0'}`, background: selected ? color : '#f7f7f9', color: selected ? '#fff' : '#555', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', transition:'all .15s' }),
@@ -2062,11 +2063,20 @@ export default function Portal() {
     setChatLoading(false);
   };
 
-  const pendiente = Math.round((extractNumber(cliente?.Pendiente || cliente?.["PENDIENTE AUTO"] || "0") + Number.EPSILON) * 100) / 100;
-  // Buscar columnas de pago con nombres flexibles (mayúsculas/minúsculas)
-  const getCol = (obj, ...keys) => { if (!obj) return ""; for (const k of keys) { const v = obj[k] ?? obj[k.toUpperCase()] ?? obj[k.toLowerCase()] ?? obj[k.charAt(0).toUpperCase()+k.slice(1).toLowerCase()]; if (v !== undefined && v !== null) return v; } return ""; };
-  const pagadoTotal = Math.round((extractNumber(getCol(cliente, "Pagado", "PAGADO", "pagado") || "0") + Number.EPSILON) * 100) / 100;
-  const totalViaje = Math.round((extractNumber(getCol(cliente, "TOTAL", "Total", "total") || "0") + Number.EPSILON) * 100) / 100;
+  // Helper flexible para leer columnas del Sheet independiente de mayúsculas
+  const getCol = (obj, ...keys) => {
+    if (!obj) return "";
+    for (const k of keys) {
+      // Buscar con el nombre exacto, en mayúsculas, en minúsculas, y capitalizado
+      for (const variant of [k, k.toUpperCase(), k.toLowerCase(), k.charAt(0).toUpperCase()+k.slice(1).toLowerCase()]) {
+        if (obj[variant] !== undefined && obj[variant] !== null && obj[variant] !== "") return obj[variant];
+      }
+    }
+    return "";
+  };
+  const pagadoTotal = Math.round((extractNumber(getCol(cliente, "Pagado","PAGADO","pagado","Importe pagado","IMPORTE PAGADO") || "0") + Number.EPSILON) * 100) / 100;
+  const totalViaje  = Math.round((extractNumber(getCol(cliente, "TOTAL","Total","total","Precio total","PRECIO TOTAL","Importe total") || "0") + Number.EPSILON) * 100) / 100;
+  const pendiente   = Math.round((extractNumber(getCol(cliente, "Pendiente","PENDIENTE","pendiente","PENDIENTE AUTO","Pendiente de pago") || "0") + Number.EPSILON) * 100) / 100;
 
   const s = {
     page: { minHeight:"100vh", background:"linear-gradient(160deg,#0a1628 0%,#0d2233 40%,#0a1a2e 100%)", fontFamily:"'Nunito', sans-serif" },
