@@ -26,7 +26,7 @@ function esPeriodoVisita(cliente) {
   const checkin = parseFecha(cliente["Check-in"]);
   const checkout = parseFecha(cliente["Check-out"]);
   if (!checkin || !checkout || isNaN(checkin) || isNaN(checkout)) return false;
-  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 1);
+  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 30);
   return hoy >= inicio && hoy <= checkout;
 }
 
