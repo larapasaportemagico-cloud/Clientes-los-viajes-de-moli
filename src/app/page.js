@@ -509,6 +509,10 @@ TRASLADOS PRIVADOS — DLPshuttle:
 - Usa SIEMPRE el código de agencia: LOSVIAJESDEMOLI para obtener un 5% de descuento.
 - Es importante usar este código para que Lara pueda revisar y hacer seguimiento de tu traslado.
 - DLPshuttle es el servicio de traslado privado de referencia para Disneyland Paris.
+REVISIÓN DE BONOS EN DOCUMENTACIÓN:
+- Es muy importante que los clientes revisen su documentación de reserva (el PDF o email de confirmación que les envió Lara) para comprobar las comidas especiales incluidas, el tipo de bono y el precio.
+- Ahí encontrarán detallado qué comidas tienen incluidas (buffet, mesa, con personajes...) y cuántas.
+- Antes de reservar restaurantes, comprobar siempre la documentación para saber exactamente de qué bonos disponen y si alguna comida especial ya está incluida y pagada en su reserva.
 
 CONTACTO:
 lara@pasaportemagico.com`;
