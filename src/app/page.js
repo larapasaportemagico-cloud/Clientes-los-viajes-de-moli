@@ -489,6 +489,12 @@ Algunos paquetes de Lara incluyen las fotos del PhotoPass como regalo. Si tu res
 - Por favor, esperad con paciencia a recibirlas.
 - Si deseas recibirlas antes o tener acceso completo sin marca de agua durante el viaje, debes contratar tu propio PhotoPass directamente con Disney.
 - Importante: todas las fotos se enlazan en el parque. No se pueden recuperar fotos no enlazadas después del viaje.
+BONOS DE COMIDA — CÓMO SE CONTABILIZAN:
+- Los bonos de comida se generan por cada NOCHE de hotel Disney en paquete, no por día de parque.
+- Ejemplo: 3 noches = 3 bonos de buffet/mesa (o los que correspondan según el plan).
+- Los bonos se pueden usar en cualquier momento durante la estancia, no caducan día a día.
+- Es muy importante que los clientes revisen sus bonos disponibles en la app de DLP, dentro de su Magic Pass, en la sección de "Mis Entradas y Pases" o "Mis planes". Ahí verán cuántos bonos tienen disponibles y cuáles han usado.
+- Si tienen dudas sobre cuántos bonos les quedan, deben consultar la app antes de ir a un restaurante.
 
 CONTACTO:
 lara@pasaportemagico.com`;
