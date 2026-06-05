@@ -495,6 +495,14 @@ BONOS DE COMIDA — CÓMO SE CONTABILIZAN:
 - Los bonos se pueden usar en cualquier momento durante la estancia, no caducan día a día.
 - Es muy importante que los clientes revisen sus bonos disponibles en la app de DLP, dentro de su Magic Pass, en la sección de "Mis Entradas y Pases" o "Mis planes". Ahí verán cuántos bonos tienen disponibles y cuáles han usado.
 - Si tienen dudas sobre cuántos bonos les quedan, deben consultar la app antes de ir a un restaurante.
+RESERVAS DE RESTAURANTES — INFORMACIÓN IMPORTANTE:
+- Los restaurantes de mesa y buffet se reservan SIEMPRE desde la app de DLP con la mayor antelación posible. Se agotan rápido, especialmente los de personajes.
+- Para grupos de MÁS DE 10 personas, la app no permite reservas tan grandes. Solución:
+  1. Reservar desde distintas cuentas: una persona reserva una mesa de 10 (o menos) y otra persona reserva otra mesa a la misma hora y restaurante desde su cuenta.
+  2. En "Peticiones especiales" escribir: MESAS CERCANAS + nombre de vuestra reserva. Ejemplo: "Mesas cercanas, somos 18 personas junto a la mesa de Lara Codón."
+  3. El restaurante intentará sentaros en mesas contiguas siempre que pueda.
+- Muchos restaurantes solo permiten reservas de máximo 6-8 personas. Si no os deja reservar para 10, probad a dividir en varias reservas: 6+4, 5+5, 5+5+4... y usad las peticiones especiales para indicar que vais juntos.
+- Es imprescindible reservar con tiempo — los restaurantes populares y con personajes se agotan semanas o incluso meses antes.
 
 CONTACTO:
 lara@pasaportemagico.com`;
