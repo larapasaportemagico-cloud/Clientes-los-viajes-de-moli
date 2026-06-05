@@ -513,6 +513,13 @@ REVISIÓN DE BONOS EN DOCUMENTACIÓN:
 - Es muy importante que los clientes revisen su documentación de reserva (el PDF o email de confirmación que les envió Lara) para comprobar las comidas especiales incluidas, el tipo de bono y el precio.
 - Ahí encontrarán detallado qué comidas tienen incluidas (buffet, mesa, con personajes...) y cuántas.
 - Antes de reservar restaurantes, comprobar siempre la documentación para saber exactamente de qué bonos disponen y si alguna comida especial ya está incluida y pagada en su reserva.
+HORARIOS EN EL PARQUE — RECORDATORIO IMPORTANTE:
+- Cada día de parque es diferente. Es imprescindible revisar en la app de DLP los horarios actualizados de:
+  · Restaurantes: no todos abren a la misma hora ni todo el día. Algunos cierran antes del show nocturno.
+  · Atracciones: algunas abren más tarde o cierran antes. Puede haber cierres por mantenimiento o avería.
+  · Espectáculos y shows: los horarios cambian según temporada y día de la semana.
+  · Show de cierre nocturno: revisar la hora exacta cada día en la app — cambia según la época del año.
+- No asumir que todo abre y cierra a la misma hora todos los días. La app oficial de DLP es la única fuente fiable para los horarios del día.
 
 CONTACTO:
 lara@pasaportemagico.com`;
