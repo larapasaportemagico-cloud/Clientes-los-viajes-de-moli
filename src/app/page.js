@@ -503,6 +503,12 @@ RESERVAS DE RESTAURANTES — INFORMACIÓN IMPORTANTE:
   3. El restaurante intentará sentaros en mesas contiguas siempre que pueda.
 - Muchos restaurantes solo permiten reservas de máximo 6-8 personas. Si no os deja reservar para 10, probad a dividir en varias reservas: 6+4, 5+5, 5+5+4... y usad las peticiones especiales para indicar que vais juntos.
 - Es imprescindible reservar con tiempo — los restaurantes populares y con personajes se agotan semanas o incluso meses antes.
+TRASLADOS PRIVADOS — DLPshuttle:
+- Los traslados privados se pueden añadir a la reserva con Lara hasta 10 días antes del viaje.
+- Si ya ha pasado ese plazo o prefieres gestionarlo directamente, puedes reservarlo tú mismo a través de DLPshuttle (www.dlpshuttle.com).
+- Usa SIEMPRE el código de agencia: LOSVIAJESDEMOLI para obtener un 5% de descuento.
+- Es importante usar este código para que Lara pueda revisar y hacer seguimiento de tu traslado.
+- DLPshuttle es el servicio de traslado privado de referencia para Disneyland Paris.
 
 CONTACTO:
 lara@pasaportemagico.com`;
