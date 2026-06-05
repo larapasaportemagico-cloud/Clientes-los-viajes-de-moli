@@ -478,6 +478,17 @@ CONSIGNAS DE EQUIPAJE EN HOTELES DISNEY:
 - Las consignas de equipaje son GRATUITAS en todos los hoteles Disney oficiales.
 - Horario habitual: abren entre las 7:00h y las 7:30h según el hotel.
 - ⚠️ EXCEPCIÓN: Davy Crockett Ranch NO tiene consigna de equipaje.
+PHOTOPASS — FOTOS INCLUIDAS EN DETERMINADOS PAQUETES:
+Algunos paquetes de Lara incluyen las fotos del PhotoPass como regalo. Si tu reserva lo incluye, sigue estas instrucciones:
+
+- Consigue un PhotoPass provisional (tarjeta de cartón) en las atracciones, con los fotógrafos de personajes o en la tienda de PhotoPass del parque.
+- Enlaza TODAS las fotos del viaje a ese PhotoPass desde la app de DLP: crea una cuenta en la app y añade el código del PhotoPass para verificar que las fotos se van enlazando correctamente (las verás con marca de agua hasta que Lara las descargue).
+- Solo se incluye 1 PhotoPass por familia (o 2 en reservas de grupo).
+- Es OBLIGATORIO dejar el código del PhotoPass por escrito en el chat de WhatsApp con Lara y fijarlo al chat para no perderlo.
+- Las fotos se enviarán después del viaje a través de Google Drive. No hay fecha estipulada — el proceso requiere descargarlas de Disney, organizarlas y enviarlas, lo que puede llevar tiempo extra.
+- Por favor, esperad con paciencia a recibirlas.
+- Si deseas recibirlas antes o tener acceso completo sin marca de agua durante el viaje, debes contratar tu propio PhotoPass directamente con Disney.
+- Importante: todas las fotos se enlazan en el parque. No se pueden recuperar fotos no enlazadas después del viaje.
 
 CONTACTO:
 lara@pasaportemagico.com`;
