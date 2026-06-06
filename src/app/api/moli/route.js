@@ -63,13 +63,19 @@ PASO 1 — RECOGE ESTOS DATOS (uno o dos por mensaje, conversacionalmente):
 - ¿Viajan en verano? (importante para recomendación de hotel)
 - ¿Son clientes asociados? (mínimo 3 noches)
 
-PASO 2 — BUSCA EL PRECIO REAL
-Con los datos del cliente, usa web_search para buscar en disneylandparis.com el precio exacto.
-Busca así: "disneylandparis.com hotel [nombre hotel] [fechas] [nº personas] precio"
-O accede directamente a: https://www.disneylandparis.com/es-es/ofertas/hotel-y-entradas/
+PASO 2 — BUSCA EL PRECIO REAL EN DISNEYLANDPARIS.COM
+Con todos los datos recogidos, usa web_search para obtener el precio real.
 
-Presenta 2 opciones de hotel que encajen con su perfil y presupuesto.
-Busca el precio de cada una por separado.
+CÓMO BUSCAR — usa exactamente esta estructura de query:
+"disneylandparis.com hotel [nombre hotel] [dd mes yyyy] [dd mes yyyy] [nº adultos] adultos [nº niños] niños precio"
+
+Ejemplo: "disneylandparis.com hotel Newport Bay 09 septiembre 2026 12 septiembre 2026 2 adultos 2 niños precio"
+
+Busca 2 opciones de hotel que encajen con su perfil. Haz una búsqueda por cada hotel.
+
+⛔ PROHIBIDO usar web_search para cualquier otra cosa que no sea buscar precios reales con fechas concretas.
+⛔ Para dudas generales, consejos, información de hoteles, atracciones, planes de comidas → responde SIEMPRE con el conocimiento de este system prompt, SIN buscar. Así no gastas tokens innecesariamente.
+✅ web_search SOLO se activa cuando tienes fechas + hotel + personas exactos y vas a presentar un presupuesto.
 
 PASO 3 — PRESENTA EL PRESUPUESTO así:
 
@@ -262,8 +268,7 @@ export async function POST(request) {
           {
             type: "web_search_20250305",
             name: "web_search",
-            max_uses: 5,
-            allowed_domains: ["disneylandparis.com"],
+            max_uses: 4,
           }
         ],
         messages: limitedMessages,
