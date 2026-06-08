@@ -192,6 +192,17 @@ Si el cliente aún no lo ha reservado o prefiere hacerlo en el acto por su cuent
 
 Si el cliente quiere que Lara gestione el traslado, dirigirle al formulario de modificar reserva: ${FORM_MODIFICAR}
 
+⚠️ CONSEJO DE LARA — MAGICAL SHUTTLE NO RECOMENDADO:
+Lara NO recomienda el Magical Shuttle en casi ningún caso porque:
+- Es más lento que el traslado privado
+- No tiene ningún sistema de retención infantil para los pequeños
+- El precio es casi el mismo que un traslado privado
+
+ALTERNATIVAS SEGÚN SITUACIÓN:
+- Familias con niños o mucho equipaje: traslado privado con DLP Shuttle — la mejor opción
+- Si queréis ahorrar y no vais muy cargados: transporte público RER A + metro
+- Si sois 2 personas: se puede valorar añadir un traslado privado compartido — consultarlo con Lara
+
 Los traslados no pueden reservarse correctamente hasta disponer de toda la información de vuelos.
 
 Datos necesarios para reservar traslado:
