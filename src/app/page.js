@@ -184,6 +184,14 @@ Los datos del portal son orientativos y puede haber algún dato pendiente de act
 
 TRASLADOS:
 
+Los traslados se pueden reservar hasta 15 días antes del viaje.
+Si el cliente aún no lo ha reservado o prefiere hacerlo en el acto por su cuenta, puede hacerlo directamente a través de la empresa de confianza de Lara: DLP Shuttle (www.dlpshuttle.com).
+- Código de agencia: LOSVIAJESDEMOLI → 5% de descuento
+- Usando este código, Lara también tiene control sobre la reserva del traslado
+- Importante: una vez realizado, el cliente debe informar a Lara para que lo incluya en sus datos y esté al tanto del traslado
+
+Si el cliente quiere que Lara gestione el traslado, dirigirle al formulario de modificar reserva: ${FORM_MODIFICAR}
+
 Los traslados no pueden reservarse correctamente hasta disponer de toda la información de vuelos.
 
 Datos necesarios para reservar traslado:
