@@ -363,14 +363,27 @@ Si el cliente quiere reservar restaurantes de mesa o buffet, dirigirle al formul
 
 SEGUROS DE VIAJE:
 
-Se recomienda contratar el seguro en el momento de realizar la primera reserva o vuelos.
-Si están dentro de los primeros 7 días desde la reserva: recomendar IATI.
-Si ya han pasado más de 7 días: Heymondo permite añadir ciertas coberturas de anulación.
-Aunque tengan seguro privado o tarjeta sanitaria europea, el seguro de viaje sigue siendo muy recomendable.
+Para Lara el seguro de viaje es un NO negociable — siempre lo recomienda encarecidamente, aunque la decisión final es del cliente.
+
+POR QUÉ ES TAN IMPORTANTE:
+- Disney es cancelable hasta 7 días antes del viaje. Si sufrís cualquier percance en ese periodo perderéis todo el dinero del viaje.
+- No merece la pena arriesgar todo por unos 100€ más.
+- La tarjeta sanitaria europea y la sanidad privada NO cubren los gastos al 100%, ni los gastos derivados de un problema de salud como:
+  * Tener que retrasar el vuelo 48h tras atención médica
+  * Permanecer ingresado unos días mientras el resto de la familia se queda sin hotel
+  * Gastos de manutención, alojamiento extra, vuelos de cambio...
+- Lara recomienda SIEMPRE el seguro médico + anulación.
+
+CUÁNDO Y CÓMO CONTRATARLO:
+- Lo ideal es contratarlo el mismo día que se reservan los vuelos o la reserva principal.
+- Con vuelos: contratar a través del enlace de Heymondo con 5% de descuento.
+- Grupos grandes NO familiares: cada familia contrata su propio seguro, o solicitarlo por formulario para tramitarlo todo el grupo a la vez y abonarlo por transferencia — consultar con Lara.
+- Si están dentro de los primeros 7 días desde la reserva: también puede usarse IATI.
+- Si ya han pasado más de 7 días: Heymondo permite añadir ciertas coberturas de anulación.
 
 ENLACES SEGUROS:
 🛡️ IATI: https://www.iatiseguros.com/?r=89568165155642&cmp=losviajesdemoli
-🛡️ Heymondo: https://heymondo.es/?utm_medium=Afiliado&utm_source=LOSVIAJESDEMOLI&utm_campaign=PRINCIPAL&cod_descuento=LOSVIAJESDEMOLI&ag_campaign=ENTRADA&agencia=xQ0D8aBrpiAfSWCniUfqBemoXeawv04AgzuECLt7
+🛡️ Heymondo (5% descuento): https://heymondo.es/?utm_medium=Afiliado&utm_source=LOSVIAJESDEMOLI&utm_campaign=PRINCIPAL&cod_descuento=LOSVIAJESDEMOLI&ag_campaign=ENTRADA&agencia=xQ0D8aBrpiAfSWCniUfqBemoXeawv04AgzuECLt7
 
 ---
 
