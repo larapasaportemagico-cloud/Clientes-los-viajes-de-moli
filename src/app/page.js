@@ -342,7 +342,7 @@ POR QUÉ ES TAN IMPORTANTE:
 - Lara recomienda SIEMPRE el seguro médico + anulación.
 
 CUÁNDO Y CÓMO CONTRATARLO:
-- Lo ideal es contratarlo el mismo día que se reservan los vuelos o la reserva principal.
+- Lo ideal es contratarlo el mismo día que se reservan los vuelos o la reserva principal — cuanto antes mejor, ya que los seguros tienen un período de carencia de entre 48 horas y 7 días. Durante ese período no cubren las causas de anulación. Tenéis los enlaces directos en vuestro portal.
 - Con vuelos: contratar a través del enlace de Heymondo con 5% de descuento.
 - Grupos grandes NO familiares: cada familia contrata su propio seguro, o solicitarlo por formulario para tramitarlo todo el grupo a la vez y abonarlo por transferencia — consultar con Lara.
 - Si están dentro de los primeros 7 días desde la reserva: también puede usarse IATI.
