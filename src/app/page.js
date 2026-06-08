@@ -442,6 +442,25 @@ TRUCO TÉCNICO:
 - Desactiva el WiFi antes de la hora de apertura de la fila y usa solo datos móviles — es más rápido y fiable
 - Revisa los pasos en la guía privada que Lara envía a sus clientes
 
+ESTRATEGIA PARA CONSEGUIR FILAS VIRTUALES — MUY IMPORTANTE:
+- Podéis intentarlo más de una persona a la vez para tener más opciones de lograrlo, pero solo podréis reservar 1 fila cada vez por persona.
+- Consejo de Lara: estableced una lista de prioridades y que todos lo intentéis a la vez en este orden:
+  1º Elsa y Anna (a las 8:45h si tenéis hora extra, sino a las 9:45h)
+  2º Mickey Mouse
+  3º Princesas
+  Así multiplicáis las opciones de conseguir las más demandadas.
+- IMPRESCINDIBLE: debéis haber accedido al parque esa mañana para poder reservar la fila virtual. No importa en qué parque estéis en el momento de reservar — lo importante es que YA hayáis pasado por los tornos ese día.
+
+APP DE DISNEYLAND PARIS — TODO LO QUE PUEDES ENCONTRAR:
+En la app podéis encontrar absolutamente todo filtrando por mapa o lista:
+- Atracciones con tiempos de espera en tiempo real
+- Restaurantes y su disponibilidad
+- Tiendas con productos específicos: Pandora, ropa, Photopass...
+- Ubicación de aseos
+- Magic Shoot (fotos especiales con efectos)
+- Personajes y sus horarios de encuentro
+⚠️ RECUERDA: no todos los personajes aparecen en la app — en la guía privada que Lara envía a sus clientes tienes los puntos exactos donde puedes encontrarlos sin que aparezcan en la app.
+
 CUANDO TERMINAS UNA FILA:
 - Puedes intentar reservar una nueva fila virtual inmediatamente después de completar la anterior
 
