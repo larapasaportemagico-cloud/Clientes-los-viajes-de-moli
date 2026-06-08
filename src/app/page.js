@@ -217,19 +217,34 @@ Si el cliente quiere reservar traslado, dirigirle al formulario de modificar res
 RESTAURANTES:
 
 La reserva de restaurantes no es inmediata.
-Se recomienda leer primero la mini guía incluida en la reserva.
+Se recomienda leer primero la guía de restaurantes que Lara envía a sus clientes.
 
-Consejos generales:
-- Reservar con antelación, especialmente restaurantes con personajes.
-- Dejar noches flexibles.
-- Priorizar buffet con niños pequeños (más rápido y variado).
-- Los restaurantes de mesa son más lentos, mejor sin prisas.
-- Los restaurantes de servicio rápido no se reservan.
-- Reservar más restaurantes de los necesarios para decidir después cuáles usar.
-- En grupos grandes puede ser necesario dividir el grupo.
-- Todas las personas de la reserva deben tener el mismo plan de comidas y la misma comida especial.
+CONSEJOS GENERALES DE RESERVA:
+- Reservar cuanto antes, especialmente restaurantes con personajes — se agotan muy rápido.
+- Es mejor que el cliente vaya reservando desde un inicio aunque luego pida ayuda para modificar.
+- Reservar SIEMPRE más restaurantes de los que incluye el bono de comidas — así hay margen para elegir y cancelar los que no usen.
+- Dejar algún hueco libre para los shows nocturnos — no reservar cena muy tarde si hay show.
+- En grupos grandes puede ser necesario dividir el grupo en varias reservas.
+- Todas las personas de la reserva deben tener el mismo plan de comidas.
 - Las sillas infantiles normalmente se dejan fuera del restaurante.
 - Con plan de comidas hay que pedir SIEMPRE en quiosco o caja — NO se puede realizar el pedido desde la app.
+
+HORARIOS SEGÚN CIERRE DEL PARQUE:
+- Parque cierra 22:40h (verano/temporada alta): pueden cenar en torno a las 20:00h tanto en hoteles como en restaurantes del parque.
+- Parque cierra 20:00-21:00h (invierno/temporada baja): solo pueden cenar en hoteles al cierre del parque — por la noche no están abiertos todos los restaurantes de comida rápida del parque.
+
+RECORDATORIO DE BONOS POR PLAN:
+- Media Pensión: desayuno en hotel + 1 bono buffet/mesa por noche.
+- PC Standard (Hotel Davy Crockett y Santa Fe): desayuno + 1 bono comida rápida + 1 bono buffet/mesa por noche + 1 bono rápido de regalo.
+- PC Plus: desayuno + 2 bonos buffet/mesa por noche + 1 bono buffet/mesa de regalo.
+- PC Extra Plus: igual que Plus + snack y bebida extra al día + 1 comida con princesas/personajes por estancia (hay que reservarla a través de la app — si aún no lo has hecho, rellena el formulario de modificar reserva).
+
+SI EL CLIENTE QUIERE QUE LARA HAGA LAS RESERVAS:
+- Debe rellenar el formulario de reserva de restaurantes y comprobar que sus claves de acceso son correctas.
+- Las reservas se realizan en función de la disponibilidad — siempre es mejor que el cliente empiece a reservar desde un inicio y luego pida ayuda para modificar.
+- Algunos restaurantes se agotan muy rápido — no esperar al último momento.
+
+Si el cliente quiere reservar restaurantes, dirigirle al formulario: ${FORM_RESTAURANTES}
 
 ---
 
