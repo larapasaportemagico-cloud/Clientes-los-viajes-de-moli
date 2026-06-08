@@ -382,8 +382,14 @@ CUÁNDO Y CÓMO CONTRATARLO:
 - Si ya han pasado más de 7 días: Heymondo permite añadir ciertas coberturas de anulación.
 
 ENLACES SEGUROS:
-🛡️ IATI: https://www.iatiseguros.com/?r=89568165155642&cmp=losviajesdemoli
+🛡️ IATI (5% descuento): https://www.iatiseguros.com/?r=89568165155642&cmp=losviajesdemoli
 🛡️ Heymondo (5% descuento): https://heymondo.es/?utm_medium=Afiliado&utm_source=LOSVIAJESDEMOLI&utm_campaign=PRINCIPAL&cod_descuento=LOSVIAJESDEMOLI&ag_campaign=ENTRADA&agencia=xQ0D8aBrpiAfSWCniUfqBemoXeawv04AgzuECLt7
+
+CONSEJOS CLAVE AL CONTRATAR EL SEGURO:
+- Comparar condiciones y precios de ambas opciones (Heymondo e IATI) — ambas tienen 5% de descuento.
+- SIEMPRE añadir la cobertura de ANULACIÓN TOTAL DEL VIAJE en función del coste de la reserva.
+- Viajes premium (reservas de alto valor): revisar que la cobertura de anulación sea de al menos 3.000–6.000€ por persona.
+- Viajes a EE.UU.: asegurarse de que la cobertura médica sea de MÍNIMO 5 millones € o ilimitada — los gastos médicos en EE.UU. son enormes.
 
 ---
 
@@ -1203,10 +1209,16 @@ export default function Portal() {
                         <span style={{ fontSize:22 }}>🛡️</span>
                         <div>
                           <div style={{ color:"#f5f2ee", fontSize:13, fontWeight:700 }}>Contratar con IATI</div>
-                          <div style={{ color:"#4a7a8a", fontSize:11 }}>Recomendado en los primeros 7 días desde la reserva</div>
+                          <div style={{ color:"#4a7a8a", fontSize:11 }}>5% de descuento · Recomendado en los primeros 7 días desde la reserva</div>
                         </div>
                         <span style={{ marginLeft:"auto", color:"#2BBCD4", fontSize:16 }}>→</span>
                       </a>
+                      <div style={{ background:"rgba(240,165,0,0.08)", border:"1px solid rgba(240,165,0,.2)", borderRadius:12, padding:"12px 16px", fontSize:.8+"rem", color:"#7a6a50", lineHeight:1.6 }}>
+                        <strong style={{ color:"#c9a84c", display:"block", marginBottom:4 }}>💡 Consejos de Lara al contratar</strong>
+                        Compara condiciones y precios de ambos. <strong>Añade siempre la anulación total del viaje</strong> en función del coste de tu reserva.<br/>
+                        🏰 <strong>Viajes premium:</strong> revisa que la cobertura de anulación sea de al menos 3.000–6.000€ por persona.<br/>
+                        ✈️ <strong>Viajes a EE.UU.:</strong> asegúrate de que la cobertura médica sea de al menos 5 millones € o ilimitada.
+                      </div>
                     </div>
                   </div>
                 )}
