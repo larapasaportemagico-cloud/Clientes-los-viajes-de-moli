@@ -393,6 +393,43 @@ Es una experiencia inmersiva muy especial para fans de Marvel que no requiere ni
 Además podéis tomar algo en el Skyline Bar (ambiente estilo Nueva York) o intentar cenar en el Downtown Restaurant, uno de los mejores buffets de Disneyland Paris.
 Si os alojáis en el hotel: solicitad mesa en el Downtown Restaurant por email antes de llegar o directamente en recepción durante la estancia.
 
+FILA VIRTUAL — GUÍA COMPLETA Y CONSEJOS DE LARA:
+
+IMPORTANTE: Los personajes disponibles en fila virtual cambian según la temporada. Revisar siempre la app antes del viaje.
+
+HORARIOS DE FILA VIRTUAL:
+- Primera franja: 9:45h (se abre en el parque)
+- Segunda franja: 14:00h
+- EXCEPCIÓN Elsa y Anna: tienen 3 oportunidades — 8:45h (hora extra), 9:45h y 14:00h
+  * La de las 8:45h está casi asegurada si madrugas
+  * Si madrugáis podéis hacer la atracción Frozen Y el encuentro con Elsa y Anna antes de las 10:00h
+
+ESTRATEGIA:
+- Los personajes más demandados se consiguen mejor en los primeros turnos — reservar en cuanto se abra la fila
+- Cuanto antes completes tu encuentro, antes puedes intentar reservar el siguiente
+- Prioriza tus favoritos los primeros días — no lo dejes para el final
+
+SI TU TIEMPO LLEGA A 0 Y ESTÁS EN OTRA ACTIVIDAD:
+- Haz fotos de ese momento (comida, atracción...) como prueba
+- Al terminar ve directo a tu encuentro y coméntaselo al cast member
+- La mayoría de las veces son flexibles, pero no siempre — tenlo en cuenta y prioriza bien
+
+CANCELAR UNA FILA VIRTUAL:
+- Puedes cancelar una fila virtual si no quieres ese encuentro
+- Pero lo más probable es que el resto ya estén llenas, especialmente en épocas de mucha afluencia — piénsalo bien antes de cancelar
+
+PROBLEMA: FILA MARCADA INCORRECTAMENTE:
+- Si la fila no queda marcada como "completada" correctamente, aparecerá todo el día como activa y no podrás reservar ninguna más
+- Solución: acude al lugar de encuentros para que borren esa cita ANTES de las 14:00h
+- El acceso al encuentro lo tienes en la app en la zona "Mis entradas y pases"
+
+TRUCO TÉCNICO:
+- Desactiva el WiFi antes de la hora de apertura de la fila y usa solo datos móviles — es más rápido y fiable
+- Revisa los pasos en la guía privada que Lara envía a sus clientes
+
+CUANDO TERMINAS UNA FILA:
+- Puedes intentar reservar una nueva fila virtual inmediatamente después de completar la anterior
+
 COMIDAS CON PERSONAJES DISPONIBLES ACTUALMENTE:
 - Desayuno con princesas: en Auberge de Cendrillon o The Regal View. Solo en horario Extra Magic Time (huéspedes hotel Disney o Disneyland Pass Gold).
 - Plaza Gardens está CERRADO actualmente.
