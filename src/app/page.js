@@ -1160,24 +1160,56 @@ export default function Portal() {
 
             {/* TAB: EXTRAS */}
             {activeTab==="extras" && reservaCompleta && (
-              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:10 }}>
-                {[
-                  { icon:"🚌", label:"Traslado", val:cliente.Traslado },
-                  { icon:"🌙", label:"Noche extra", val:cliente["Noche extra"] },
-                  { icon:"🗼", label:"Hotel París", val:cliente["Hotel Paris"] },
-                  { icon:"🎢", label:"Actividades", val:cliente.Actividades },
-                  { icon:"🛡️", label:"Seguro", val:cliente.Seguro },
-                  { icon:"🎁", label:"Extras DLP", val:cliente["Extras DLP"] },
-                ].map((item,i) => {
-                  const tieneValor = item.val && item.val !== "0" && item.val !== "";
-                  return (
-                    <div key={i} style={{ ...s.card, opacity: tieneValor?1:0.4 }}>
-                      <div style={{ fontSize:24, marginBottom:8 }}>{item.icon}</div>
-                      <div style={{ fontSize:10, color:"#9d8b78", textTransform:"uppercase", letterSpacing:1.5, marginBottom:4 }}>{item.label}</div>
-                      <div style={{ fontSize:15, color: tieneValor?"#16a34a":"#9d8b78", fontWeight:600 }}>{tieneValor ? "✅ SÍ" : "—"}</div>
+              <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:10 }}>
+                  {[
+                    { icon:"🚌", label:"Traslado", val:cliente.Traslado },
+                    { icon:"🌙", label:"Noche extra", val:cliente["Noche extra"] },
+                    { icon:"🗼", label:"Hotel París", val:cliente["Hotel Paris"] },
+                    { icon:"🎢", label:"Actividades", val:cliente.Actividades },
+                    { icon:"🛡️", label:"Seguro", val:cliente.Seguro },
+                    { icon:"🎁", label:"Extras DLP", val:cliente["Extras DLP"] },
+                  ].map((item,i) => {
+                    const tieneValor = item.val && item.val !== "0" && item.val !== "";
+                    return (
+                      <div key={i} style={{ ...s.card, opacity: tieneValor?1:0.4 }}>
+                        <div style={{ fontSize:24, marginBottom:8 }}>{item.icon}</div>
+                        <div style={{ fontSize:10, color:"#9d8b78", textTransform:"uppercase", letterSpacing:1.5, marginBottom:4 }}>{item.label}</div>
+                        <div style={{ fontSize:15, color: tieneValor?"#16a34a":"#9d8b78", fontWeight:600 }}>{tieneValor ? "✅ SÍ" : "—"}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* SEGURO — botones si no lo tienen */}
+                {(!cliente.Seguro || cliente.Seguro === "0" || cliente.Seguro === "") && (
+                  <div style={{ background:"rgba(255,255,255,0.97)", border:"2px solid rgba(240,165,0,.3)", borderRadius:16, padding:"18px 20px" }}>
+                    <div style={{ fontSize:11, color:"#c9a84c", textTransform:"uppercase", letterSpacing:2, fontWeight:800, marginBottom:6 }}>🛡️ Seguro de viaje</div>
+                    <p style={{ fontSize:.85+"rem", color:"#7a6a50", marginBottom:14, lineHeight:1.5 }}>
+                      No tienes seguro de viaje incluido en tu paquete. Lara lo considera imprescindible — Disney es cancelable hasta 7 días antes y sin seguro perderías todo el dinero del viaje.
+                    </p>
+                    <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
+                      <a href="https://heymondo.es/?utm_medium=Afiliado&utm_source=LOSVIAJESDEMOLI&utm_campaign=PRINCIPAL&cod_descuento=LOSVIAJESDEMOLI&ag_campaign=ENTRADA&agencia=xQ0D8aBrpiAfSWCniUfqBemoXeawv04AgzuECLt7" target="_blank" rel="noopener noreferrer"
+                        style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", borderRadius:12, padding:"14px 18px", textDecoration:"none" }}>
+                        <span style={{ fontSize:22 }}>🛡️</span>
+                        <div>
+                          <div style={{ color:"white", fontSize:13, fontWeight:700 }}>Contratar con Heymondo</div>
+                          <div style={{ color:"rgba(255,255,255,.75)", fontSize:11 }}>5% de descuento con código LOSVIAJESDEMOLI · Médico + Anulación</div>
+                        </div>
+                        <span style={{ marginLeft:"auto", color:"white", fontSize:16 }}>→</span>
+                      </a>
+                      <a href="https://www.iatiseguros.com/?r=89568165155642&cmp=losviajesdemoli" target="_blank" rel="noopener noreferrer"
+                        style={{ display:"flex", alignItems:"center", gap:12, background:"rgba(43,188,212,0.08)", border:"1px solid rgba(43,188,212,.25)", borderRadius:12, padding:"14px 18px", textDecoration:"none" }}>
+                        <span style={{ fontSize:22 }}>🛡️</span>
+                        <div>
+                          <div style={{ color:"#f5f2ee", fontSize:13, fontWeight:700 }}>Contratar con IATI</div>
+                          <div style={{ color:"#4a7a8a", fontSize:11 }}>Recomendado en los primeros 7 días desde la reserva</div>
+                        </div>
+                        <span style={{ marginLeft:"auto", color:"#2BBCD4", fontSize:16 }}>→</span>
+                      </a>
                     </div>
-                  );
-                })}
+                  </div>
+                )}
               </div>
             )}
 
