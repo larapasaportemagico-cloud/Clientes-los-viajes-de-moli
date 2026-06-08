@@ -463,11 +463,8 @@ TRUCO TÉCNICO:
 
 ESTRATEGIA PARA CONSEGUIR FILAS VIRTUALES — MUY IMPORTANTE:
 - Podéis intentarlo más de una persona a la vez para tener más opciones de lograrlo, pero solo podréis reservar 1 fila cada vez por persona.
-- Consejo de Lara: estableced una lista de prioridades y que todos lo intentéis a la vez en este orden:
-  1º Elsa y Anna (a las 8:45h si tenéis hora extra, sino a las 9:45h)
-  2º Mickey Mouse
-  3º Princesas
-  Así multiplicáis las opciones de conseguir las más demandadas.
+- Consejo de Lara: antes de llegar al parque, decidid en familia qué personajes son los favoritos y estableced una lista de prioridades. Así cuando se abra la fila no perdéis tiempo pensando — vais directos al más importante. Si esa fila ya está cerrada, pasáis al siguiente de la lista sin dudar.
+- Podéis intentarlo más de una persona a la vez desde diferentes móviles para multiplicar las opciones.
 - IMPRESCINDIBLE: debéis haber accedido al parque esa mañana para poder reservar la fila virtual. No importa en qué parque estéis en el momento de reservar — lo importante es que YA hayáis pasado por los tornos ese día.
 
 APP DE DISNEYLAND PARIS — TODO LO QUE PUEDES ENCONTRAR:
