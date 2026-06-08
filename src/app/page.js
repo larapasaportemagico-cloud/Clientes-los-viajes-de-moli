@@ -230,6 +230,20 @@ ALTERNATIVAS SEGÚN SITUACIÓN:
 - Si queréis ahorrar y no vais muy cargados: transporte público RER A + metro
 - Si sois 2 personas: se puede valorar añadir un traslado privado compartido — consultarlo con Lara
 
+HOTELES ASOCIADOS (BYB, Campanile, Explorers, Dream Castle, Grand Magic...):
+- Tienen bus gratuito con varios horarios PERO el primer bus sale en torno a las 8:05-8:15h — con lo que se pierde la hora extra con total seguridad.
+- Este bus es compartido por todos los hoteles asociados. En hora punta (ida y vuelta) va lleno y es bastante agobiante, especialmente con niños, sillas de paseo y equipaje — nadie respeta los turnos ni las filas ni tiene en cuenta a los niños.
+- Por eso casi siempre se usa Uber: unos 12-15€, más cómodo. IMPORTANTE: los Uber no suelen llevar SRI (silla de retención infantil) correcta — la mayoría como mucho un elevador simple. Tenerlo en cuenta si viajáis con bebés o niños pequeños.
+
+TRASLADO ENTRE HOTEL ASOCIADO/EXTERNO Y DISNEY:
+- Uber/taxi: opción más cómoda pero sin garantía de SRI adecuada.
+- Bus gratuito del hotel: solo si no necesitáis la hora extra y podéis esperar.
+
+TRASLADO A PARÍS:
+- Si el hotel de París está bien comunicado con metro: RER A + metro por 2,50€/persona — barato pero NO cómodo con niños pequeños, sillas y maletas.
+- Si queréis comodidad o viajáis con bebés/equipaje: traslado privado con DLP Shuttle — recomendable.
+- En horario nocturno: SIEMPRE traslado en coche (taxi, Uber o privado) — nunca transporte público de noche.
+
 Si el cliente quiere que Lara gestione el traslado, dirigirle al formulario de modificar reserva: ${FORM_MODIFICAR}
 
 Los traslados no pueden reservarse correctamente hasta disponer de toda la información de vuelos.
