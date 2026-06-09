@@ -580,16 +580,21 @@ CONSIGNAS DE EQUIPAJE EN HOTELES DISNEY:
 - Horario habitual: abren entre las 7:00h y las 7:30h según el hotel.
 - ⚠️ EXCEPCIÓN: Davy Crockett Ranch NO tiene consigna de equipaje.
 PHOTOPASS — FOTOS INCLUIDAS EN DETERMINADOS PAQUETES:
-Algunos paquetes de Lara incluyen las fotos del PhotoPass como regalo. Si tu reserva lo incluye, sigue estas instrucciones:
+El PhotoPass de regalo es un beneficio que Lara ofrece en algunos paquetes, sujeto a disponibilidad. NO significa que hayas comprado el PhotoPass ni que tengas que recogerlo en recepción. El funcionamiento es el siguiente:
 
-- Consigue un PhotoPass provisional (tarjeta de cartón) en las atracciones, con los fotógrafos de personajes o en la tienda de PhotoPass del parque.
-- Enlaza TODAS las fotos del viaje a ese PhotoPass desde la app de DLP: crea una cuenta en la app y añade el código del PhotoPass para verificar que las fotos se van enlazando correctamente (las verás con marca de agua hasta que Lara las descargue).
-- Solo se incluye 1 PhotoPass por familia (o 2 en reservas de grupo).
-- Es OBLIGATORIO dejar el código del PhotoPass por escrito en el chat de WhatsApp con Lara y fijarlo al chat para no perderlo.
-- Las fotos se enviarán después del viaje a través de Google Drive. No hay fecha estipulada — el proceso requiere descargarlas de Disney, organizarlas y enviarlas, lo que puede llevar tiempo extra.
-- Por favor, esperad con paciencia a recibirlas.
-- Si deseas recibirlas antes o tener acceso completo sin marca de agua durante el viaje, debes contratar tu propio PhotoPass directamente con Disney.
-- Importante: todas las fotos se enlazan en el parque. No se pueden recuperar fotos no enlazadas después del viaje.
+CÓMO FUNCIONA:
+- En el parque, cuando os hagan fotos los fotógrafos de personajes o en atracciones con foto, os darán un PhotoPass (tarjeta con código). Usad ese código para enlazar todas las fotos.
+- Es OBLIGATORIO pasar ese código a Lara por WhatsApp, tal como ella indicó al inicio del viaje. Fijadlo en el chat para no perderlo.
+- Solo 1 PhotoPass por familia por favor.
+- Las fotos NO llegan de forma inmediata. Lara las envía después del viaje pero los tiempos varían: a veces en 48h, otras puede tardar una semana o incluso un mes, según la demanda y los problemas de carga de la web de Disney. Hay que tener paciencia.
+
+MIENTRAS ESPERÁIS:
+- Podéis crear una cuenta en https://www.disneyphotopass.eu/ y ver cómo se van cargando vuestras fotos con marca de agua. Así comprobáis que se están enlazando bien.
+
+SI QUERÉIS GESTIONAR LAS FOTOS VOSOTROS MISMOS SIN MARCA DE AGUA:
+- Podéis añadir el PhotoPass a vuestra reserva por 90€. Con esto tenéis acceso completo e inmediato a todas las fotos sin marca de agua y sin esperar a Lara.
+
+IMPORTANTE: todas las fotos deben enlazarse en el parque con el código. No se pueden recuperar fotos no enlazadas después del viaje.
 BONOS DE COMIDA — CÓMO SE CONTABILIZAN:
 - Los bonos de comida se generan por cada NOCHE de hotel Disney en paquete, no por día de parque.
 - Ejemplo: 3 noches = 3 bonos de buffet/mesa (o los que correspondan según el plan).
