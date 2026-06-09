@@ -44,6 +44,12 @@ function tieneReservaCompleta(cliente) {
   return !!(cliente.Hotel && String(cliente.Hotel).trim() !== "");
 }
 
+function esListaEspera(cliente) {
+  if (!cliente) return false;
+  const estado = String(cliente.Estado || cliente.ESTADO || "").trim().toUpperCase();
+  return estado === "LISTA_ESPERA";
+}
+
 const SYSTEM_ASISTENTE = `Eres MOLI, el hada madrina virtual del Área Mágica del Viajero de LOS VIAJES DE MOLI.
 
 Tu saludo inicial debe ser:
@@ -625,6 +631,50 @@ CONSIGNAS DE EQUIPAJE:
 
 HOTEL NEW YORK MARVEL — VISITA SIN ALOJARSE:
 Super Hero Station abierta de 17:00 a 22:00h para todos. Sin superhéroes en persona pero con armadura de Iron Man, habitación de Spider-Man, martillo de Thor y escudo del Capitán América. Skyline Bar para tomar algo. Downtown Restaurant: uno de los mejores buffets — si os alojáis, solicitar mesa por email o en recepción.
+
+CONTACTO:
+lara@pasaportemagico.com`;
+
+// ═══════════════════════════════════════════════════════
+// SYSTEM PROMPT MOLI — VERSIÓN LISTA DE ESPERA (limitado)
+// Solo responde sobre hoteles, plan de comidas, pagos,
+// traslados, seguros, celebraciones y dudas de reserva.
+// Redirige a Lara todo lo relacionado con el parque.
+// ═══════════════════════════════════════════════════════
+const SYSTEM_ASISTENTE_ESPERA = `Eres MOLI, el hada madrina virtual de LOS VIAJES DE MOLI.
+
+Tu saludo inicial debe ser:
+"✨ ¡Hola! Soy Moli, tu hada madrina de Los Viajes de Moli.
+
+Estás en la lista de espera para la temporada 2027-2028. Mientras esperas la apertura oficial del calendario, puedes explorar las guías de hoteles y plan de comidas que tienes disponibles.
+
+Estoy aquí para resolver tus dudas sobre hoteles, planes de comida, traslados, seguros y cualquier duda sobre la reserva. ¡Pregúntame lo que necesites! 🪄"
+
+Hablas en nombre de Los Viajes de Moli. Siempre respondes en español.
+
+DATOS DEL CLIENTE:
+{DATOS_CLIENTE}
+
+═══════════════════════════════════════════
+TEMAS EN LOS QUE SÍ PUEDES AYUDAR:
+═══════════════════════════════════════════
+- Hoteles de Disneyland Paris: categorías, diferencias, ubicación, temática, qué incluye cada uno
+- Plan de comidas Disney: qué incluye, cómo funciona, diferencias entre planes, si merece la pena
+- Traslados al parque: opciones, recomendaciones, precios orientativos
+- Seguros de viaje: qué cubrir, cuándo contratarlo (Heymondo, IATI)
+- Celebraciones y extras: tarta de cumpleaños, decoración habitación, PhotoPass
+- Dudas sobre el proceso de reserva con Lara: cómo funciona, cuándo se abre el calendario, qué documentos necesitan
+- Pagos: cómo funciona el sistema, cuándo se paga, señal vs. total
+
+═══════════════════════════════════════════
+TEMAS EN LOS QUE NO DEBES RESPONDER:
+═══════════════════════════════════════════
+Ante preguntas sobre: atracciones, colas, estrategia del parque, Extra Magic Hour, organización de días, rutas, Premier Access, FastPass, shows, qué hacer primero, horarios de atracciones, esperas, Remy vs Crush, qué atracciones son para niños pequeños, etc.
+
+DEBES responder SIEMPRE con una variación de:
+"¡Esa es la parte más emocionante! 🪄 Todo eso — estrategia del parque, atracciones, Extra Magic Hour, organización de tus días — es exactamente lo que Lara te explicará en detalle una vez hagas tu reserva. Tiene preparado un curso privado con todo eso y mucho más. ¡Va a ser increíble! ✨
+
+¿Tienes alguna duda sobre hoteles, plan de comidas o el proceso de reserva mientras tanto?"
 
 CONTACTO:
 lara@pasaportemagico.com`;
@@ -2117,7 +2167,8 @@ export default function Portal() {
 
   // Detectar si la reserva está completa o en proceso
   const reservaCompleta = tieneReservaCompleta(cliente);
-  const esPref = !reservaCompleta; // presupuesto preferente: sin hotel confirmado
+  const listaEspera = esListaEspera(cliente);
+  const esPref = !reservaCompleta && !listaEspera; // presupuesto preferente: sin hotel confirmado
 
   const handleLogin = async () => {
     if (!dni.trim()) return;
@@ -2129,9 +2180,13 @@ export default function Portal() {
         setCliente(result.datos);
         setStep("portal");
         // Si no tiene reserva completa, abrir directamente en la tab de Moli
+        const esEspera = esListaEspera(result.datos);
         setActiveTab(tieneReservaCompleta(result.datos) ? "reserva" : "asistente");
         setChatLoading(true);
-        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)) }) });
+        const systemPrompt = esEspera
+          ? SYSTEM_ASISTENTE_ESPERA.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos))
+          : SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos));
+        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: systemPrompt }) });
         const chatData = await chatRes.json();
         setMessages([{ role:"assistant", content: chatData.content?.[0]?.text || "✨ Hola, soy Moli, tu hada madrina de Los Viajes de Moli. ¿En qué puedo ayudarte?" }]);
         setChatLoading(false);
@@ -2153,7 +2208,10 @@ export default function Portal() {
     setChatInput("");
     setChatLoading(true);
     try {
-      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(cliente)) }) });
+      const systemPrompt = listaEspera
+        ? SYSTEM_ASISTENTE_ESPERA.replace("{DATOS_CLIENTE}", JSON.stringify(cliente))
+        : SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(cliente));
+      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: systemPrompt }) });
       const data = await res.json();
       setMessages(prev => [...prev, { role:"assistant", content: data.content?.[0]?.text || "Error al responder." }]);
     } catch { setMessages(prev => [...prev, { role:"assistant", content:"Error de conexión." }]); }
@@ -2172,17 +2230,20 @@ export default function Portal() {
     goldBtn: { background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", color:"white", border:"none", borderRadius:10, padding:"14px", fontSize:15, cursor:"pointer", fontFamily:"inherit", fontWeight:700, width:"100%" },
   };
 
-  // Tabs: si la reserva NO está completa, solo muestra Guías, Asistente (y oculta el resto)
+  // Tabs según estado del cliente:
+  // - reservaCompleta: acceso total
+  // - esPref (presupuesto): Guías + Pagos + Moli
+  // - listaEspera: solo Guías (hoteles/comidas) + Pagos + Moli (limitado)
   const allTabs = [
-    { id:"reserva",     label:"🏰 Mi Reserva",     soloCompleta: false, soloReserva: true,  soloPref: false },
-    { id:"atracciones", label:"🎢 Atracciones",     soloCompleta: false, soloReserva: true,  soloPref: false },
-    { id:"restaurantes",label:"🍽️ Restaurantes",   soloCompleta: true,  soloReserva: true,  soloPref: false },
-    { id:"guias",       label:"📖 Guías",           soloCompleta: false, soloReserva: false, soloPref: true  },
-    { id:"tiempo",      label:"🌤️ Tiempo",          soloCompleta: false, soloReserva: false, soloPref: false },
-    { id:"guia-parque", label:"🏰 Guía del Parque", soloCompleta: false, soloReserva: true,  soloPref: false },
-    { id:"pagos",       label:"💰 Pagos",           soloCompleta: false, soloReserva: false, soloPref: true  },
-    { id:"extras",      label:"✨ Servicios",       soloCompleta: true,  soloReserva: true,  soloPref: false },
-    { id:"asistente",   label:"🪄 Moli",            soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"reserva",     label:"🏰 Mi Reserva",     soloCompleta: false, soloReserva: true,  soloPref: false, noEspera: true  },
+    { id:"atracciones", label:"🎢 Atracciones",     soloCompleta: false, soloReserva: true,  soloPref: false, noEspera: true  },
+    { id:"restaurantes",label:"🍽️ Restaurantes",   soloCompleta: true,  soloReserva: true,  soloPref: false, noEspera: true  },
+    { id:"guias",       label:"📖 Guías",           soloCompleta: false, soloReserva: false, soloPref: true,  noEspera: false },
+    { id:"tiempo",      label:"🌤️ Tiempo",          soloCompleta: false, soloReserva: false, soloPref: false, noEspera: true  },
+    { id:"guia-parque", label:"🏰 Guía del Parque", soloCompleta: false, soloReserva: true,  soloPref: false, noEspera: true  },
+    { id:"pagos",       label:"💰 Pagos",           soloCompleta: false, soloReserva: false, soloPref: true,  noEspera: false },
+    { id:"extras",      label:"✨ Servicios",       soloCompleta: true,  soloReserva: true,  soloPref: false, noEspera: true  },
+    { id:"asistente",   label:"🪄 Moli",            soloCompleta: false, soloReserva: false, soloPref: true,  noEspera: false },
   ];
 
   // Siempre mostramos todas las tabs; las que son "soloCompleta" se muestran deshabilitadas si no hay reserva
@@ -2279,7 +2340,7 @@ export default function Portal() {
             {/* TABS */}
             <div style={{ display:"flex", gap:6, marginBottom:20, overflowX:"auto" }}>
               {tabs.map(tab => {
-                const disabled = (tab.soloCompleta && !reservaCompleta) || (tab.soloReserva && esPref) || (esPref && !tab.soloPref);
+                const disabled = (tab.soloCompleta && !reservaCompleta) || (tab.soloReserva && esPref) || (esPref && !tab.soloPref) || (listaEspera && tab.noEspera);
                 const isActive = activeTab === tab.id;
                 return (
                   <button key={tab.id}
@@ -2550,8 +2611,13 @@ export default function Portal() {
                   <div style={{ width:32, height:32, borderRadius:"50%", background:"linear-gradient(135deg,#2BBCD4,#5B2D8E)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16 }}>🪄</div>
                   <div>
                     <div style={{ color:"#f5f2ee", fontSize:14, fontFamily:"'Fredoka One',cursive" }}>Moli, tu hada madrina</div>
-                    <div style={{ color:"#2EC866", fontSize:11 }}>● Conoce tu reserva</div>
+                    <div style={{ color:"#2EC866", fontSize:11 }}>{listaEspera ? "● Lista de espera 2027-2028" : "● Conoce tu reserva"}</div>
                   </div>
+                  {listaEspera && (
+                    <div style={{ marginLeft:"auto", background:"rgba(240,165,0,0.15)", border:"1px solid rgba(240,165,0,0.3)", borderRadius:8, padding:"4px 10px", fontSize:10, color:"#fbbf24", fontWeight:700 }}>
+                      ✨ Acceso Prioritario
+                    </div>
+                  )}
                 </div>
                 <div style={{ height:320, overflowY:"auto", padding:16 }}>
                   {messages.map((msg,i) => (
@@ -2569,7 +2635,10 @@ export default function Portal() {
                   <div ref={bottomRef} />
                 </div>
                 <div style={{ padding:"8px 12px", borderTop:"1px solid rgba(43,188,212,0.1)", display:"flex", gap:6, overflowX:"auto" }}>
-                  {["¿Qué incluye mi plan?","¿Cuánto cuesta cambiar de plan?","¿Cuánto me falta pagar?","¿Qué necesito para el viaje?"].map((q,i) => (
+                  {(listaEspera
+                    ? ["¿Qué hotel me recomiendas?","¿Vale la pena el plan de comidas?","¿Cuándo abre el calendario?","¿Cómo funciona la reserva?"]
+                    : ["¿Qué incluye mi plan?","¿Cuánto cuesta cambiar de plan?","¿Cuánto me falta pagar?","¿Qué necesito para el viaje?"]
+                  ).map((q,i) => (
                     <button key={i} onClick={() => setChatInput(q)} style={{ background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:20, padding:"5px 12px", color:"#2BBCD4", fontSize:11, cursor:"pointer", whiteSpace:"nowrap", fontFamily:"inherit" }}>{q}</button>
                   ))}
                 </div>
