@@ -515,19 +515,25 @@ PREMIER ACCESS:
 Se puede añadir el pase Premier Access, pero no incluye todas las atracciones, solo algunas.
 
 TARJETA POR DISCAPACIDAD:
-Se solicita a través de la web 1 mes antes, aunque se finaliza el trámite en el propio hotel con foto e impresión de la tarjeta.
+Se puede comenzar a tramitar por la web de Disneyland Paris: https://www.disneylandparis.com/es-es/servicios-para-visitantes/tarjeta-de-prioridad
+Siempre hay que pasar por el punto de información del parque para realizar la foto y recoger la tarjeta física. La persona que la solicita DEBE estar presente en ese momento. Se puede acreditar con un informe médico que justifique la discapacidad o con la tarjeta oficial de discapacidad.
 
-VENTAJAS DE LA TARJETA:
-- Acceso prioritario a atracciones: la persona portadora y hasta 4 acompañantes.
-- Shows nocturnos: acceso prioritario para la persona y 2 acompañantes (no 4).
+VENTAJAS DE LA TARJETA POR DISCAPACIDAD:
+- Atracciones: acceso prioritario para la persona portadora y hasta 4 acompañantes.
+- Espectáculos en sala cerrada (Mickey y el Mago, Together, El Rey León...): la persona y hasta 4 acompañantes.
+- Espectáculos de calle, desfiles y shows al aire libre: la persona y 2 acompañantes (no 4).
+- Shows nocturnos (Illuminations, Disney Dreams...): la persona y 2 acompañantes.
 
-ENCUENTROS CON PERSONAJES — MUY IMPORTANTE:
-- Los personajes con FILA VIRTUAL (como Elsa y Anna) NO son accesibles con la tarjeta de discapacidad. Solo se puede acceder a ellos mediante fila virtual como el resto de visitantes.
-- El resto de encuentros con personajes (sin fila virtual) SÍ tienen un cupo de citas para tarjeta de discapacidad, pero ese cupo es limitado y se agota. Es imprescindible acudir al punto de encuentro a primera hora para solicitarla antes de que se agoten las citas del día.
-- Si alguien pregunta si puede ver a un personaje concreto con la tarjeta sin fila, Moli debe aclarar siempre que depende del personaje: si tiene fila virtual, NO; si no tiene fila virtual, SÍ pero con cupo limitado y mejor ir a primera hora.
+ENCUENTROS CON PERSONAJES CON TARJETA DE DISCAPACIDAD — MUY IMPORTANTE:
+- Los personajes con FILA VIRTUAL (como Elsa y Anna) NO son accesibles con la tarjeta de discapacidad. Solo se puede acceder mediante fila virtual como el resto de visitantes.
+- El resto de encuentros con personajes (sin fila virtual) SÍ tienen un cupo de citas para tarjeta de discapacidad, pero ese cupo es LIMITADO y se agota a lo largo del día. Es imprescindible acudir al punto de encuentro a primera hora para solicitarla antes de que se agoten las citas.
+- Si alguien pregunta si puede ver a un personaje concreto con la tarjeta sin fila: depende del personaje. Si tiene fila virtual → NO. Si no tiene fila virtual → SÍ pero con cupo limitado, ir a primera hora.
 
-TARJETA POR ENFERMEDAD:
-Se tramita directamente en el parque con un certificado médico que acredite enfermedad de larga duración.
+TARJETA POR ENFERMEDAD DE LARGA DURACIÓN:
+La normativa oficial exige un impreso oficial (se compra en estancos o colegios médicos) en el que el médico justifique que el paciente padece una enfermedad de larga duración, en inglés o francés.
+En la práctica, Disney suele aceptar un informe médico en el que aparezca claramente que "el paciente sufre / padece / tiene una enfermedad de larga duración". Si además se menciona que está contemplada en el listado de enfermedades de Disneyland Paris, mejor.
+Si se quiere garantía al 100%, lo más seguro es tramitarlo por la vía del impreso oficial.
+La tarjeta se tramita directamente en el punto de información del parque — siempre debe estar presente la persona que la solicita.
 
 CUMPLEAÑOS:
 - Pueden solicitar una chapa de cumpleaños en City Hall.
