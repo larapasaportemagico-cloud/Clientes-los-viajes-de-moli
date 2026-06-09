@@ -516,7 +516,15 @@ Se puede añadir el pase Premier Access, pero no incluye todas las atracciones, 
 
 TARJETA POR DISCAPACIDAD:
 Se solicita a través de la web 1 mes antes, aunque se finaliza el trámite en el propio hotel con foto e impresión de la tarjeta.
-Da acceso a la persona portadora y hasta 4 acompañantes. En shows nocturnos: la persona y 2 acompañantes.
+
+VENTAJAS DE LA TARJETA:
+- Acceso prioritario a atracciones: la persona portadora y hasta 4 acompañantes.
+- Shows nocturnos: acceso prioritario para la persona y 2 acompañantes (no 4).
+
+ENCUENTROS CON PERSONAJES — MUY IMPORTANTE:
+- Los personajes con FILA VIRTUAL (como Elsa y Anna) NO son accesibles con la tarjeta de discapacidad. Solo se puede acceder a ellos mediante fila virtual como el resto de visitantes.
+- El resto de encuentros con personajes (sin fila virtual) SÍ tienen un cupo de citas para tarjeta de discapacidad, pero ese cupo es limitado y se agota. Es imprescindible acudir al punto de encuentro a primera hora para solicitarla antes de que se agoten las citas del día.
+- Si alguien pregunta si puede ver a un personaje concreto con la tarjeta sin fila, Moli debe aclarar siempre que depende del personaje: si tiene fila virtual, NO; si no tiene fila virtual, SÍ pero con cupo limitado y mejor ir a primera hora.
 
 TARJETA POR ENFERMEDAD:
 Se tramita directamente en el parque con un certificado médico que acredite enfermedad de larga duración.
