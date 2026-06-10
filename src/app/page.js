@@ -755,7 +755,7 @@ function parsePlan(planStr, hotel) {
   const esSantaFeDavy = h.includes('santa fe') || h.includes('davy') || h.includes('crockett');
   if (p === 'no' || p === 'ninguno' || p === 'sin plan' || p === '') return 'ninguno';
   if (p.includes('desayuno')) return 'desayuno';
-  if (p.includes('premium')) return 'premium';
+  if (p.includes('premium')) { if (p.includes('media') || p === 'mp premium' || p.includes('mp p')) return 'mp_premium'; return 'pc_premium'; }
   if (p.includes('extra plus') || p.includes('extra-plus')) return 'extra_plus';
   if (p.includes('smart')) return 'smart';
   if (p.includes('plus')) { if (p.includes('media') || p === 'mp plus' || p.includes('mp p')) return 'mp_plus'; return 'pc_plus'; }
@@ -775,7 +775,8 @@ function calcBonos(planTipo, noches) {
     case 'pc_plus': return { desc: `Pensión Completa Plus`, detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono buffet/mesa de REGALO de Disney. Bonos flexibles.` };
     case 'smart': return { desc: `Pensión Completa Smart`, detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono de REGALO. ⚠️ Solo válido en restaurantes de tu hotel y Disney Village.` };
     case 'extra_plus': return { desc: `Pensión Completa Extra Plus`, detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO + 1 bebida extra/noche + 1 snack/noche + 1 comida con personajes incluida por estancia. Bonos flexibles.` };
-    case 'premium': return { desc: `Pensión Completa Premium`, detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento.` };
+    case 'mp_premium': return { desc: `Media Pensión Premium`, detalle: `1 desayuno en hotel + 1 comida o cena en buffet o mesa por cada noche. ✨ Las comidas pueden ser con personajes o princesas sin suplemento. Bonos flexibles — úsalos cuando quieras.` };
+    case 'pc_premium': return { desc: `Pensión Completa Premium`, detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento.` };
     default: return { desc: null, detalle: null };
   }
 }
@@ -879,7 +880,8 @@ function PlanificadorRestaurantes({ cliente }) {
     setLoading(true); setPlan(null);
 
     const RESTS_PERSONAJES = {
-      "premium":["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald · Solo cena","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
+      "mp_premium":["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald · Solo cena","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
+      "pc_premium":["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald · Solo cena","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
       "extra_plus":["🏰 Auberge de Cendrillon — Incluida en tu plan · Reserva con antelación","🌊 The Regal View (Adventure Way) — Nuevo 2026 · Princesas · Reserva cuanto antes"],
       "pc_plus":["🏰 Auberge de Cendrillon — Suplemento · Reserva con antelación","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Con plan"],
       "mp_plus":["🏰 Auberge de Cendrillon — Suplemento","🌊 The Regal View — Suplemento · Nuevo 2026"],
