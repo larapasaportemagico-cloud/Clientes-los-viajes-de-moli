@@ -323,7 +323,7 @@ BUFFETS (se reservan — SIEMPRE recomendarlos para familias grandes):
 RESTAURANTES DE MESA / A LA CARTA (se reservan):
 - Bistrot Chez Rémy (Disney Adventure World) — EL FAVORITO, a escala de ratón, cocina francesa, muy demandado
 - Walt's Restaurant (Main Street, Disneyland) — cocina francesa/americana, vistas al castillo y desfile, especial
-- Captain Jack's / Blue Lagoon (Adventureland) — ⚠️ NO recomendar por defecto: oscuro, lento, comida tropical especial. Solo si el cliente lo pide expresamente sabiendo lo que es
+- Captain Jack's Restaurant des Pirates (Adventureland, Disneyland) — ⚠️ NO recomendar por defecto: oscuro, lento, comida tropical especial, ubicado dentro de la atracción de Piratas. Solo si el cliente lo pide expresamente sabiendo lo que es. Blue Lagoon es el nombre del restaurante equivalente en Disney World Orlando — NUNCA usar ese nombre en DLP
 - Auberge de Cendrillon (Fantasyland) — comida con princesas, muy demandado, reservar con meses
 - The Regal View (Disney Adventure World) — nuevo 2026, comida/cena con princesas, desayuno con princesas en hora extra
 - La Table de Lumière (Disneyland Hotel) — cena con príncipes y princesas, abierto a todos
