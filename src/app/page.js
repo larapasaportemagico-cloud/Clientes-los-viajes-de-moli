@@ -26,7 +26,7 @@ function esPeriodoVisita(cliente) {
   const checkin = parseFecha(cliente["Check-in"]);
   const checkout = parseFecha(cliente["Check-out"]);
   if (!checkin || !checkout || isNaN(checkin) || isNaN(checkout)) return false;
-  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 1);
+  const inicio = new Date(checkin); inicio.setDate(inicio.getDate() - 30);
   return hoy >= inicio && hoy <= checkout;
 }
 
@@ -42,12 +42,6 @@ function diasParaViaje(cliente) {
 function tieneReservaCompleta(cliente) {
   if (!cliente) return false;
   return !!(cliente.Hotel && String(cliente.Hotel).trim() !== "");
-}
-
-function esListaEspera(cliente) {
-  if (!cliente) return false;
-  const estado = String(cliente.Estado || cliente.ESTADO || "").trim().toUpperCase();
-  return estado === "LISTA_ESPERA";
 }
 
 const SYSTEM_ASISTENTE = `Eres MOLI, el hada madrina virtual del Área Mágica del Viajero de LOS VIAJES DE MOLI.
@@ -312,6 +306,42 @@ SI EL CLIENTE QUIERE QUE LARA HAGA LAS RESERVAS:
 - Las reservas se realizan en función de la disponibilidad.
 - Algunos restaurantes se agotan muy rápido — no esperar al último momento.
 
+LISTA OFICIAL DE RESTAURANTES DISNEYLAND PARIS — SOLO MENCIONAR ESTOS:
+⚠️ CRÍTICO: NUNCA inventar restaurantes. NUNCA mencionar restaurantes de otros destinos Disney (Orlando, California...). SOLO usar esta lista.
+
+BUFFETS (se reservan — SIEMPRE recomendarlos para familias grandes):
+- Agrabah Café (Adventureland, Parque Disneyland) — árabe y mediterráneo, opciones veganas, muy bueno para grupos
+- Cape Cod (Newport Bay Club, hotel) — mediterráneo e internacional, FAVORITO de Lara especialmente para familias con bebés, sirve desayuno y cena
+- Chuck Wagon Cafe (Hotel Cheyenne) — barbacoa, ideal para grupos grandes
+- La Cantina (Hotel Santa Fe) — tex-mex, opciones veganas, ideal para grupos grandes
+- Hunter's Grill & Beaver Creek Tavern (Sequoia Lodge, hotel) — internacional, desayuno y cena
+- Downtown Restaurant (Hotel New York Marvel) — asiático + mediterráneo + americano, uno de los mejores buffets de DLP
+- Royal Banquet (Disneyland Hotel) — buffet con personajes Mickey/Minnie/Goofy/Donald/Daisy
+  ⚠️ IMPORTANTE: Inventions era el buffet anterior del Disneyland Hotel — YA NO EXISTE. Fue reemplazado por Royal Banquet. NUNCA mencionar Inventions.
+- Lucky Nugget Saloon (Frontierland) — ⚠️ técnicamente rápida pero descuenta bono buffet/mesa
+
+RESTAURANTES DE MESA / A LA CARTA (se reservan):
+- Bistrot Chez Rémy (Disney Adventure World) — EL FAVORITO, a escala de ratón, cocina francesa, muy demandado
+- Walt's Restaurant (Main Street, Disneyland) — cocina francesa/americana, vistas al castillo y desfile, especial
+- Captain Jack's / Blue Lagoon (Adventureland) — ⚠️ NO recomendar por defecto: oscuro, lento, comida tropical especial. Solo si el cliente lo pide expresamente sabiendo lo que es
+- Auberge de Cendrillon (Fantasyland) — comida con princesas, muy demandado, reservar con meses
+- The Regal View (Disney Adventure World) — nuevo 2026, comida/cena con princesas, desayuno con princesas en hora extra
+- La Table de Lumière (Disneyland Hotel) — cena con príncipes y princesas, abierto a todos
+- Yacht Club (Newport Bay Club, hotel) — a la carta, estilo náutico, solo cenas
+- Manhattan Restaurant (Hotel New York Marvel) — italiana moderna, solo cenas
+
+COMIDA RÁPIDA (NO se reserva):
+- Café Hyperion (Discoveryland) — hamburguesas, grande, cubierto, enchufes EU, ver espectáculos temporada, cierra tarde
+- Cowboy Cookout Barbecue (Frontierland) — raciones grandes para compartir, costillas/pollo/salchichas, ⚠️ cierra antes
+- Hakuna Matata (Adventureland) — comida rápida africana, NO se reserva
+  ⚠️ IMPORTANTE: Hakuna Matata es comida RÁPIDA — NO se reserva, nunca recomendarlo como buffet
+- Colonel Hathi's Outpost (Adventureland) — cocina india/étnica, pizza flatbread, abierto hasta cierre
+- Pizzeria Bella Notte (Fantasyland) — pizza con forma de Mickey, ⚠️ cierra antes (no válida para cenar tarde)
+- Market House Deli (Main Street) — sándwiches Mickey, beignet chocolate, snacks, abierto hasta cierre
+- Stark Factory (Campus Avengers, DAW) — raciones enormes, raciones infantiles = adultos, ideal bono rápido
+- World Premier Café (Studio 1, entrada DAW) — hamburguesas
+- Restaurante de Frozen (World of Frozen, DAW) — único en esa zona, albóndigas y salmón
+
 GUÍA DE RESTAURANTES DE COMIDA RÁPIDA — CONSEJOS DE LARA:
 
 Cuando el cliente pregunte dónde comer o cenar, hazle estas preguntas:
@@ -515,25 +545,11 @@ PREMIER ACCESS:
 Se puede añadir el pase Premier Access, pero no incluye todas las atracciones, solo algunas.
 
 TARJETA POR DISCAPACIDAD:
-Se puede comenzar a tramitar por la web de Disneyland Paris: https://www.disneylandparis.com/es-es/servicios-para-visitantes/tarjeta-de-prioridad
-Siempre hay que pasar por el punto de información del parque para realizar la foto y recoger la tarjeta física. La persona que la solicita DEBE estar presente en ese momento. Se puede acreditar con un informe médico que justifique la discapacidad o con la tarjeta oficial de discapacidad.
+Se solicita a través de la web 1 mes antes, aunque se finaliza el trámite en el propio hotel con foto e impresión de la tarjeta.
+Da acceso a la persona portadora y hasta 4 acompañantes. En shows nocturnos: la persona y 2 acompañantes.
 
-VENTAJAS DE LA TARJETA POR DISCAPACIDAD:
-- Atracciones: acceso prioritario para la persona portadora y hasta 4 acompañantes.
-- Espectáculos en sala cerrada (Mickey y el Mago, Together, El Rey León...): la persona y hasta 4 acompañantes.
-- Espectáculos de calle, desfiles y shows al aire libre: la persona y 2 acompañantes (no 4).
-- Shows nocturnos (Illuminations, Disney Dreams...): la persona y 2 acompañantes.
-
-ENCUENTROS CON PERSONAJES CON TARJETA DE DISCAPACIDAD — MUY IMPORTANTE:
-- Los personajes con FILA VIRTUAL (como Elsa y Anna) NO son accesibles con la tarjeta de discapacidad. Solo se puede acceder mediante fila virtual como el resto de visitantes.
-- El resto de encuentros con personajes (sin fila virtual) SÍ tienen un cupo de citas para tarjeta de discapacidad, pero ese cupo es LIMITADO y se agota a lo largo del día. Es imprescindible acudir al punto de encuentro a primera hora para solicitarla antes de que se agoten las citas.
-- Si alguien pregunta si puede ver a un personaje concreto con la tarjeta sin fila: depende del personaje. Si tiene fila virtual → NO. Si no tiene fila virtual → SÍ pero con cupo limitado, ir a primera hora.
-
-TARJETA POR ENFERMEDAD DE LARGA DURACIÓN:
-La normativa oficial exige un impreso oficial (se compra en estancos o colegios médicos) en el que el médico justifique que el paciente padece una enfermedad de larga duración, en inglés o francés.
-En la práctica, Disney suele aceptar un informe médico en el que aparezca claramente que "el paciente sufre / padece / tiene una enfermedad de larga duración". Si además se menciona que está contemplada en el listado de enfermedades de Disneyland Paris, mejor.
-Si se quiere garantía al 100%, lo más seguro es tramitarlo por la vía del impreso oficial.
-La tarjeta se tramita directamente en el punto de información del parque — siempre debe estar presente la persona que la solicita.
+TARJETA POR ENFERMEDAD:
+Se tramita directamente en el parque con un certificado médico que acredite enfermedad de larga duración.
 
 CUMPLEAÑOS:
 - Pueden solicitar una chapa de cumpleaños en City Hall.
@@ -580,21 +596,16 @@ CONSIGNAS DE EQUIPAJE EN HOTELES DISNEY:
 - Horario habitual: abren entre las 7:00h y las 7:30h según el hotel.
 - ⚠️ EXCEPCIÓN: Davy Crockett Ranch NO tiene consigna de equipaje.
 PHOTOPASS — FOTOS INCLUIDAS EN DETERMINADOS PAQUETES:
-El PhotoPass de regalo es un beneficio que Lara ofrece en algunos paquetes, sujeto a disponibilidad. NO significa que hayas comprado el PhotoPass ni que tengas que recogerlo en recepción. El funcionamiento es el siguiente:
+Algunos paquetes de Lara incluyen las fotos del PhotoPass como regalo. Si tu reserva lo incluye, sigue estas instrucciones:
 
-CÓMO FUNCIONA:
-- En el parque, cuando os hagan fotos los fotógrafos de personajes o en atracciones con foto, os darán un PhotoPass (tarjeta con código). Usad ese código para enlazar todas las fotos.
-- Es OBLIGATORIO pasar ese código a Lara por WhatsApp, tal como ella indicó al inicio del viaje. Fijadlo en el chat para no perderlo.
-- Solo 1 PhotoPass por familia por favor.
-- Las fotos NO llegan de forma inmediata. Lara las envía después del viaje pero los tiempos varían: a veces en 48h, otras puede tardar una semana o incluso un mes, según la demanda y los problemas de carga de la web de Disney. Hay que tener paciencia.
-
-MIENTRAS ESPERÁIS:
-- Podéis crear una cuenta en https://www.disneyphotopass.eu/ y ver cómo se van cargando vuestras fotos con marca de agua. Así comprobáis que se están enlazando bien.
-
-SI QUERÉIS GESTIONAR LAS FOTOS VOSOTROS MISMOS SIN MARCA DE AGUA:
-- Podéis añadir el PhotoPass a vuestra reserva por 90€. Con esto tenéis acceso completo e inmediato a todas las fotos sin marca de agua y sin esperar a Lara.
-
-IMPORTANTE: todas las fotos deben enlazarse en el parque con el código. No se pueden recuperar fotos no enlazadas después del viaje.
+- Consigue un PhotoPass provisional (tarjeta de cartón) en las atracciones, con los fotógrafos de personajes o en la tienda de PhotoPass del parque.
+- Enlaza TODAS las fotos del viaje a ese PhotoPass desde la app de DLP: crea una cuenta en la app y añade el código del PhotoPass para verificar que las fotos se van enlazando correctamente (las verás con marca de agua hasta que Lara las descargue).
+- Solo se incluye 1 PhotoPass por familia (o 2 en reservas de grupo).
+- Es OBLIGATORIO dejar el código del PhotoPass por escrito en el chat de WhatsApp con Lara y fijarlo al chat para no perderlo.
+- Las fotos se enviarán después del viaje a través de Google Drive. No hay fecha estipulada — el proceso requiere descargarlas de Disney, organizarlas y enviarlas, lo que puede llevar tiempo extra.
+- Por favor, esperad con paciencia a recibirlas.
+- Si deseas recibirlas antes o tener acceso completo sin marca de agua durante el viaje, debes contratar tu propio PhotoPass directamente con Disney.
+- Importante: todas las fotos se enlazan en el parque. No se pueden recuperar fotos no enlazadas después del viaje.
 BONOS DE COMIDA — CÓMO SE CONTABILIZAN:
 - Los bonos de comida se generan por cada NOCHE de hotel Disney en paquete, no por día de parque.
 - Ejemplo: 3 noches = 3 bonos de buffet/mesa (o los que correspondan según el plan).
@@ -650,50 +661,6 @@ CONSIGNAS DE EQUIPAJE:
 
 HOTEL NEW YORK MARVEL — VISITA SIN ALOJARSE:
 Super Hero Station abierta de 17:00 a 22:00h para todos. Sin superhéroes en persona pero con armadura de Iron Man, habitación de Spider-Man, martillo de Thor y escudo del Capitán América. Skyline Bar para tomar algo. Downtown Restaurant: uno de los mejores buffets — si os alojáis, solicitar mesa por email o en recepción.
-
-CONTACTO:
-lara@pasaportemagico.com`;
-
-// ═══════════════════════════════════════════════════════
-// SYSTEM PROMPT MOLI — VERSIÓN LISTA DE ESPERA (limitado)
-// Solo responde sobre hoteles, plan de comidas, pagos,
-// traslados, seguros, celebraciones y dudas de reserva.
-// Redirige a Lara todo lo relacionado con el parque.
-// ═══════════════════════════════════════════════════════
-const SYSTEM_ASISTENTE_ESPERA = `Eres MOLI, el hada madrina virtual de LOS VIAJES DE MOLI.
-
-Tu saludo inicial debe ser:
-"✨ ¡Hola! Soy Moli, tu hada madrina de Los Viajes de Moli.
-
-Estás en la lista de espera para la temporada 2027-2028. Mientras esperas la apertura oficial del calendario, puedes explorar las guías de hoteles y plan de comidas que tienes disponibles.
-
-Estoy aquí para resolver tus dudas sobre hoteles, planes de comida, traslados, seguros y cualquier duda sobre la reserva. ¡Pregúntame lo que necesites! 🪄"
-
-Hablas en nombre de Los Viajes de Moli. Siempre respondes en español.
-
-DATOS DEL CLIENTE:
-{DATOS_CLIENTE}
-
-═══════════════════════════════════════════
-TEMAS EN LOS QUE SÍ PUEDES AYUDAR:
-═══════════════════════════════════════════
-- Hoteles de Disneyland Paris: categorías, diferencias, ubicación, temática, qué incluye cada uno
-- Plan de comidas Disney: qué incluye, cómo funciona, diferencias entre planes, si merece la pena
-- Traslados al parque: opciones, recomendaciones, precios orientativos
-- Seguros de viaje: qué cubrir, cuándo contratarlo (Heymondo, IATI)
-- Celebraciones y extras: tarta de cumpleaños, decoración habitación, PhotoPass
-- Dudas sobre el proceso de reserva con Lara: cómo funciona, cuándo se abre el calendario, qué documentos necesitan
-- Pagos: cómo funciona el sistema, cuándo se paga, señal vs. total
-
-═══════════════════════════════════════════
-TEMAS EN LOS QUE NO DEBES RESPONDER:
-═══════════════════════════════════════════
-Ante preguntas sobre: atracciones, colas, estrategia del parque, Extra Magic Hour, organización de días, rutas, Premier Access, FastPass, shows, qué hacer primero, horarios de atracciones, esperas, Remy vs Crush, qué atracciones son para niños pequeños, etc.
-
-DEBES responder SIEMPRE con una variación de:
-"¡Esa es la parte más emocionante! 🪄 Todo eso — estrategia del parque, atracciones, Extra Magic Hour, organización de tus días — es exactamente lo que Lara te explicará en detalle una vez hagas tu reserva. Tiene preparado un curso privado con todo eso y mucho más. ¡Va a ser increíble! ✨
-
-¿Tienes alguna duda sobre hoteles, plan de comidas o el proceso de reserva mientras tanto?"
 
 CONTACTO:
 lara@pasaportemagico.com`;
@@ -755,7 +722,7 @@ function parsePlan(planStr, hotel) {
   const esSantaFeDavy = h.includes('santa fe') || h.includes('davy') || h.includes('crockett');
   if (p === 'no' || p === 'ninguno' || p === 'sin plan' || p === '') return 'ninguno';
   if (p.includes('desayuno')) return 'desayuno';
-  if (p.includes('premium')) { if (p.includes('media') || p === 'mp premium' || p.includes('mp p')) return 'mp_premium'; return 'pc_premium'; }
+  if (p.includes('premium')) return 'premium';
   if (p.includes('extra plus') || p.includes('extra-plus')) return 'extra_plus';
   if (p.includes('smart')) return 'smart';
   if (p.includes('plus')) { if (p.includes('media') || p === 'mp plus' || p.includes('mp p')) return 'mp_plus'; return 'pc_plus'; }
@@ -775,8 +742,7 @@ function calcBonos(planTipo, noches) {
     case 'pc_plus': return { desc: `Pensión Completa Plus`, detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono buffet/mesa de REGALO de Disney. Bonos flexibles.` };
     case 'smart': return { desc: `Pensión Completa Smart`, detalle: `1 desayuno en hotel + 2 comidas/cenas en buffet o mesa por cada noche + 1 bono de REGALO. ⚠️ Solo válido en restaurantes de tu hotel y Disney Village.` };
     case 'extra_plus': return { desc: `Pensión Completa Extra Plus`, detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO + 1 bebida extra/noche + 1 snack/noche + 1 comida con personajes incluida por estancia. Bonos flexibles.` };
-    case 'mp_premium': return { desc: `Media Pensión Premium`, detalle: `1 desayuno en hotel + 1 comida o cena en buffet o mesa por cada noche. ✨ Las comidas pueden ser con personajes o princesas sin suplemento. Bonos flexibles — úsalos cuando quieras.` };
-    case 'pc_premium': return { desc: `Pensión Completa Premium`, detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento.` };
+    case 'premium': return { desc: `Pensión Completa Premium`, detalle: `1 desayuno en hotel + 2 comidas/cenas buffet o mesa por cada noche + 1 de REGALO. ✨ TODAS las comidas pueden ser con personajes o princesas sin suplemento.` };
     default: return { desc: null, detalle: null };
   }
 }
@@ -880,8 +846,7 @@ function PlanificadorRestaurantes({ cliente }) {
     setLoading(true); setPlan(null);
 
     const RESTS_PERSONAJES = {
-      "mp_premium":["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald · Solo cena","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
-      "pc_premium":["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald · Solo cena","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
+      "premium":["🏰 Auberge de Cendrillon — Princesas + Mickey · Reserva con meses","👑 Royal Banquet (Hotel Disneyland) — Mickey, Minnie, Pluto, Donald · Solo cena","✨ La Table de Lumière (Hotel Disneyland) — Príncipes y princesas · Solo cena"],
       "extra_plus":["🏰 Auberge de Cendrillon — Incluida en tu plan · Reserva con antelación","🌊 The Regal View (Adventure Way) — Nuevo 2026 · Princesas · Reserva cuanto antes"],
       "pc_plus":["🏰 Auberge de Cendrillon — Suplemento · Reserva con antelación","🌊 The Regal View — Suplemento · Nuevo 2026","🦸 PYM Kitchen (Campus Avengers) — Buffet Avengers · Con plan"],
       "mp_plus":["🏰 Auberge de Cendrillon — Suplemento","🌊 The Regal View — Suplemento · Nuevo 2026"],
@@ -2188,8 +2153,7 @@ export default function Portal() {
 
   // Detectar si la reserva está completa o en proceso
   const reservaCompleta = tieneReservaCompleta(cliente);
-  const listaEspera = esListaEspera(cliente);
-  const esPref = !reservaCompleta && !listaEspera; // presupuesto preferente: sin hotel confirmado
+  const esPref = !reservaCompleta; // presupuesto preferente: sin hotel confirmado
 
   const handleLogin = async () => {
     if (!dni.trim()) return;
@@ -2201,13 +2165,9 @@ export default function Portal() {
         setCliente(result.datos);
         setStep("portal");
         // Si no tiene reserva completa, abrir directamente en la tab de Moli
-        const esEspera = esListaEspera(result.datos);
         setActiveTab(tieneReservaCompleta(result.datos) ? "reserva" : "asistente");
         setChatLoading(true);
-        const systemPrompt = esEspera
-          ? SYSTEM_ASISTENTE_ESPERA.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos))
-          : SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos));
-        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: systemPrompt }) });
+        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)) }) });
         const chatData = await chatRes.json();
         setMessages([{ role:"assistant", content: chatData.content?.[0]?.text || "✨ Hola, soy Moli, tu hada madrina de Los Viajes de Moli. ¿En qué puedo ayudarte?" }]);
         setChatLoading(false);
@@ -2229,10 +2189,7 @@ export default function Portal() {
     setChatInput("");
     setChatLoading(true);
     try {
-      const systemPrompt = listaEspera
-        ? SYSTEM_ASISTENTE_ESPERA.replace("{DATOS_CLIENTE}", JSON.stringify(cliente))
-        : SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(cliente));
-      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: systemPrompt }) });
+      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(cliente)) }) });
       const data = await res.json();
       setMessages(prev => [...prev, { role:"assistant", content: data.content?.[0]?.text || "Error al responder." }]);
     } catch { setMessages(prev => [...prev, { role:"assistant", content:"Error de conexión." }]); }
@@ -2251,20 +2208,17 @@ export default function Portal() {
     goldBtn: { background:"linear-gradient(135deg,#2BBCD4,#1A8A9E)", color:"white", border:"none", borderRadius:10, padding:"14px", fontSize:15, cursor:"pointer", fontFamily:"inherit", fontWeight:700, width:"100%" },
   };
 
-  // Tabs según estado del cliente:
-  // - reservaCompleta: acceso total
-  // - esPref (presupuesto): Guías + Pagos + Moli
-  // - listaEspera: solo Guías (hoteles/comidas) + Pagos + Moli (limitado)
+  // Tabs: si la reserva NO está completa, solo muestra Guías, Asistente (y oculta el resto)
   const allTabs = [
-    { id:"reserva",     label:"🏰 Mi Reserva",     soloCompleta: false, soloReserva: true,  soloPref: false, noEspera: true  },
-    { id:"atracciones", label:"🎢 Atracciones",     soloCompleta: false, soloReserva: true,  soloPref: false, noEspera: true  },
-    { id:"restaurantes",label:"🍽️ Restaurantes",   soloCompleta: true,  soloReserva: true,  soloPref: false, noEspera: true  },
-    { id:"guias",       label:"📖 Guías",           soloCompleta: false, soloReserva: false, soloPref: true,  noEspera: false },
-    { id:"tiempo",      label:"🌤️ Tiempo",          soloCompleta: false, soloReserva: false, soloPref: false, noEspera: true  },
-    { id:"guia-parque", label:"🏰 Guía del Parque", soloCompleta: false, soloReserva: true,  soloPref: false, noEspera: true  },
-    { id:"pagos",       label:"💰 Pagos",           soloCompleta: false, soloReserva: false, soloPref: true,  noEspera: false },
-    { id:"extras",      label:"✨ Servicios",       soloCompleta: true,  soloReserva: true,  soloPref: false, noEspera: true  },
-    { id:"asistente",   label:"🪄 Moli",            soloCompleta: false, soloReserva: false, soloPref: true,  noEspera: false },
+    { id:"reserva",     label:"🏰 Mi Reserva",     soloCompleta: false, soloReserva: true,  soloPref: false },
+    { id:"atracciones", label:"🎢 Atracciones",     soloCompleta: false, soloReserva: true,  soloPref: false },
+    { id:"restaurantes",label:"🍽️ Restaurantes",   soloCompleta: true,  soloReserva: true,  soloPref: false },
+    { id:"guias",       label:"📖 Guías",           soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"tiempo",      label:"🌤️ Tiempo",          soloCompleta: false, soloReserva: false, soloPref: false },
+    { id:"guia-parque", label:"🏰 Guía del Parque", soloCompleta: false, soloReserva: true,  soloPref: false },
+    { id:"pagos",       label:"💰 Pagos",           soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"extras",      label:"✨ Servicios",       soloCompleta: true,  soloReserva: true,  soloPref: false },
+    { id:"asistente",   label:"🪄 Moli",            soloCompleta: false, soloReserva: false, soloPref: true  },
   ];
 
   // Siempre mostramos todas las tabs; las que son "soloCompleta" se muestran deshabilitadas si no hay reserva
@@ -2361,7 +2315,7 @@ export default function Portal() {
             {/* TABS */}
             <div style={{ display:"flex", gap:6, marginBottom:20, overflowX:"auto" }}>
               {tabs.map(tab => {
-                const disabled = (tab.soloCompleta && !reservaCompleta) || (tab.soloReserva && esPref) || (esPref && !tab.soloPref) || (listaEspera && tab.noEspera);
+                const disabled = (tab.soloCompleta && !reservaCompleta) || (tab.soloReserva && esPref) || (esPref && !tab.soloPref);
                 const isActive = activeTab === tab.id;
                 return (
                   <button key={tab.id}
@@ -2470,7 +2424,7 @@ export default function Portal() {
                         ¡Faltan {dias} día{dias!==1?"s":""}!
                       </div>
                       <div style={{ fontSize:13, color:"#7a5000", lineHeight:1.6 }}>
-                        La guía del parque se activa <strong>el día antes de tu llegada</strong>.<br/>
+                        La guía del parque se activa <strong>30 días antes de tu llegada</strong>.<br/>
                         Mientras tanto, puedes revisar la guía de hoteles y restaurantes en la pestaña Guías.
                       </div>
                     </div>
@@ -2632,13 +2586,8 @@ export default function Portal() {
                   <div style={{ width:32, height:32, borderRadius:"50%", background:"linear-gradient(135deg,#2BBCD4,#5B2D8E)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16 }}>🪄</div>
                   <div>
                     <div style={{ color:"#f5f2ee", fontSize:14, fontFamily:"'Fredoka One',cursive" }}>Moli, tu hada madrina</div>
-                    <div style={{ color:"#2EC866", fontSize:11 }}>{listaEspera ? "● Lista de espera 2027-2028" : "● Conoce tu reserva"}</div>
+                    <div style={{ color:"#2EC866", fontSize:11 }}>● Conoce tu reserva</div>
                   </div>
-                  {listaEspera && (
-                    <div style={{ marginLeft:"auto", background:"rgba(240,165,0,0.15)", border:"1px solid rgba(240,165,0,0.3)", borderRadius:8, padding:"4px 10px", fontSize:10, color:"#fbbf24", fontWeight:700 }}>
-                      ✨ Acceso Prioritario
-                    </div>
-                  )}
                 </div>
                 <div style={{ height:320, overflowY:"auto", padding:16 }}>
                   {messages.map((msg,i) => (
@@ -2656,10 +2605,7 @@ export default function Portal() {
                   <div ref={bottomRef} />
                 </div>
                 <div style={{ padding:"8px 12px", borderTop:"1px solid rgba(43,188,212,0.1)", display:"flex", gap:6, overflowX:"auto" }}>
-                  {(listaEspera
-                    ? ["¿Qué hotel me recomiendas?","¿Vale la pena el plan de comidas?","¿Cuándo abre el calendario?","¿Cómo funciona la reserva?"]
-                    : ["¿Qué incluye mi plan?","¿Cuánto cuesta cambiar de plan?","¿Cuánto me falta pagar?","¿Qué necesito para el viaje?"]
-                  ).map((q,i) => (
+                  {["¿Qué incluye mi plan?","¿Cuánto cuesta cambiar de plan?","¿Cuánto me falta pagar?","¿Qué necesito para el viaje?"].map((q,i) => (
                     <button key={i} onClick={() => setChatInput(q)} style={{ background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:20, padding:"5px 12px", color:"#2BBCD4", fontSize:11, cursor:"pointer", whiteSpace:"nowrap", fontFamily:"inherit" }}>{q}</button>
                   ))}
                 </div>
