@@ -44,6 +44,15 @@ function tieneReservaCompleta(cliente) {
   return !!(cliente.Hotel && String(cliente.Hotel).trim() !== "");
 }
 
+function viajeTerminado(cliente) {
+  if (!cliente?.["Check-out"]) return false;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const checkout = parseFecha(cliente["Check-out"]);
+  if (!checkout || isNaN(checkout)) return false;
+  const limite = new Date(checkout); limite.setDate(limite.getDate() + 2);
+  return hoy > limite;
+}
+
 const SYSTEM_ASISTENTE = `Eres MOLI, el hada madrina virtual del Área Mágica del Viajero de LOS VIAJES DE MOLI.
 
 Tu saludo inicial debe ser:
@@ -2407,7 +2416,7 @@ export default function Portal() {
             {activeTab==="tiempo" && <TiempoDLP cliente={cliente} />}
 
             {/* TAB: GUÍAS — accesible para todos */}
-            {activeTab==="guia-parque" && (() => {
+            {activeTab==="guia-parque" && !viajeTerminado(cliente) && (() => {
               const activo = esPeriodoVisita(cliente);
               const dias = diasParaViaje(cliente);
               return (
@@ -2467,7 +2476,7 @@ export default function Portal() {
               );
             })()}
 
-            {activeTab==="guias" && (
+            {activeTab==="guias" && !viajeTerminado(cliente) && (
               <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
                 <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:16, padding:"18px 20px", border:"1px solid rgba(43,188,212,0.2)" }}>
                   <div style={{ fontSize:11, color:"#2BBCD4", textTransform:"uppercase", letterSpacing:2, fontWeight:800, marginBottom:16 }}>📖 Guías de Lara</div>
@@ -2517,7 +2526,7 @@ export default function Portal() {
             )}
 
             {/* TAB: PAGOS */}
-            {activeTab==="pagos" && (
+            {activeTab==="pagos" && !viajeTerminado(cliente) && (
               <div style={s.card}>
                 {!reservaCompleta ? (
                   <div style={{ textAlign:"center", padding:"20px 0" }}>
@@ -2557,7 +2566,7 @@ export default function Portal() {
             )}
 
             {/* TAB: EXTRAS */}
-            {activeTab==="extras" && reservaCompleta && (
+            {activeTab==="extras" && !viajeTerminado(cliente) && reservaCompleta && (
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))", gap:10 }}>
                 {[
                   { icon:"🚌", label:"Traslado", val:cliente.Traslado },
@@ -2580,7 +2589,7 @@ export default function Portal() {
             )}
 
             {/* TAB: ASISTENTE MOLI */}
-            {activeTab==="asistente" && (
+            {activeTab==="asistente" && !viajeTerminado(cliente) && (
               <div style={{ background:"rgba(43,188,212,0.05)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:16, overflow:"hidden" }}>
                 <div style={{ padding:"14px 18px", borderBottom:"1px solid rgba(43,188,212,0.15)", display:"flex", alignItems:"center", gap:10, background:"rgba(43,188,212,0.1)" }}>
                   <div style={{ width:32, height:32, borderRadius:"50%", background:"linear-gradient(135deg,#2BBCD4,#5B2D8E)", display:"flex", alignItems:"center", justifyContent:"center", fontSize:16 }}>🪄</div>
