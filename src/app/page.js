@@ -2862,7 +2862,7 @@ export default function Portal() {
     { id:"atracciones",  label:"🎢 Planificador",         soloCompleta: false, soloReserva: false, soloPref: true  },
     { id:"traslados",    label:"🚌 Traslados",            soloCompleta: false, soloReserva: false, soloPref: true  },
     { id:"tiempo",       label:"🌤️ Tiempo",               soloCompleta: false, soloReserva: false, soloPref: true  },
-    { id:"guia-parque",  label:"🗺️ Guía Universal",       soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"guia-parque",  label:"🗺️ Guías Parques",       soloCompleta: false, soloReserva: false, soloPref: true  },
     { id:"asistente",    label:"🪄 Moli",                 soloCompleta: false, soloReserva: false, soloPref: true  },
   ] : [
     { id:"reserva",     label:"🏰 Mi Reserva",     soloCompleta: false, soloReserva: true,  soloPref: false },
@@ -3073,7 +3073,7 @@ export default function Portal() {
                 return (
                   <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
                     <div style={{ background:"linear-gradient(135deg,#5B2D8E,#F5287A)", borderRadius:16, padding:"20px 22px", color:"white" }}>
-                      <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:20, marginBottom:4 }}>🗺️ Guía Universal Orlando</div>
+                      <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:20, marginBottom:4 }}>🗺️ Guías de Parques</div>
                       <div style={{ fontSize:12, opacity:.85 }}>Epic Universe · Islands of Adventure · Universal Studios Florida</div>
                     </div>
                     <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:14, padding:"16px 18px", border:"1px solid rgba(91,45,142,0.2)", fontSize:13, color:"#444", lineHeight:1.6 }}>
