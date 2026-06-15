@@ -2148,6 +2148,259 @@ function TiempoDLP({cliente}) {
 // PORTAL PRINCIPAL
 // ═══════════════════════════════════════════════════════
 // ═══════════════════════════════════════════════════════
+// COMPONENTE: Planificador Traslados WDW
+// ═══════════════════════════════════════════════════════
+
+const LUGARES_WDW = [
+  { id:"mk",    label:"Magic Kingdom",          emoji:"🏰", tipo:"parque" },
+  { id:"epcot", label:"EPCOT",                  emoji:"🌍", tipo:"parque" },
+  { id:"hs",    label:"Hollywood Studios",       emoji:"🎬", tipo:"parque" },
+  { id:"ak",    label:"Animal Kingdom",          emoji:"🦁", tipo:"parque" },
+  { id:"ds",    label:"Disney Springs",          emoji:"🛍️", tipo:"otro"  },
+  { id:"aoa",   label:"Art of Animation",        emoji:"🎨", tipo:"hotel"  },
+  { id:"pop",   label:"Pop Century",             emoji:"🎵", tipo:"hotel"  },
+  { id:"cb",    label:"Caribbean Beach",         emoji:"🌴", tipo:"hotel"  },
+  { id:"riv",   label:"Riviera Resort",          emoji:"✨", tipo:"hotel"  },
+  { id:"cont",  label:"Contemporary Resort",     emoji:"🏨", tipo:"hotel"  },
+  { id:"poly",  label:"Polynesian Village",      emoji:"🌺", tipo:"hotel"  },
+  { id:"gc",    label:"Grand Floridian",         emoji:"👑", tipo:"hotel"  },
+  { id:"bc",    label:"Beach Club / Yacht Club", emoji:"⛵", tipo:"hotel"  },
+  { id:"bw",    label:"BoardWalk Inn",           emoji:"🎡", tipo:"hotel"  },
+  { id:"ttc",   label:"Transportation & Ticket Center", emoji:"🚉", tipo:"otro" },
+  { id:"outlets_v", label:"Outlets Vineland (cerca Disney)", emoji:"🛒", tipo:"fuera" },
+  { id:"outlets_i", label:"Outlets International Drive",     emoji:"🛒", tipo:"fuera" },
+  { id:"walmart",   label:"Walmart / Target",               emoji:"🛒", tipo:"fuera" },
+];
+
+// Rutas: [origen, destino] => { pasos, tiempo, precio, consejos }
+const RUTAS = {
+  // Art of Animation
+  "aoa-epcot":  { pasos:[{t:"🚡",m:"Skyliner hasta Caribbean Beach (4 min)→ transbordo → EPCOT (11 min)"}], tiempo:"~20 min", precio:"Gratis", nota:"Sal con tiempo en horas punta. Cierra 90 min después del parque." },
+  "aoa-hs":     { pasos:[{t:"🚡",m:"Skyliner directo a Hollywood Studios (4 min desde Pop/AoA, transfer en Caribbean Beach)"}], tiempo:"~15 min", precio:"Gratis", nota:"La forma más rápida. Sin transbordo si vas a HS directamente." },
+  "aoa-mk":     { pasos:[{t:"🚌",m:"Bus directo desde parada Art of Animation → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Bus cada 20 min aprox. Sal 45 min antes de querer entrar." },
+  "aoa-ak":     { pasos:[{t:"🚌",m:"Bus directo desde parada Art of Animation → Animal Kingdom"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Bus directo. Frecuencia cada 20 min." },
+  "aoa-ds":     { pasos:[{t:"🚌",m:"Bus directo desde parada Art of Animation → Disney Springs"}], tiempo:"~20 min", precio:"Gratis", nota:"Hay bus directo a Disney Springs desde todos los hoteles." },
+  "aoa-pop":    { pasos:[{t:"🚶",m:"Pasarela peatonal entre Art of Animation y Pop Century (5 min andando)"}], tiempo:"~5 min", precio:"Gratis", nota:"¡Sin transporte necesario! Comparten Hourglass Lake. El paso peatonal cruza el lago." },
+  "aoa-cb":     { pasos:[{t:"🚡",m:"Skyliner desde AoA/Pop → Caribbean Beach (4 min)"}], tiempo:"~5-8 min", precio:"Gratis", nota:"Directo en Skyliner." },
+  // EPCOT
+  "epcot-hs":   { pasos:[{t:"🚡",m:"Skyliner desde EPCOT International Gateway → Hollywood Studios"}], tiempo:"~10 min", precio:"Gratis", nota:"También puedes ir andando (~25 min por el BoardWalk) o en barca desde International Gateway." },
+  "epcot-mk":   { pasos:[{t:"🚝",m:"Monorail desde EPCOT → Transportation & Ticket Center → transbordo → Magic Kingdom"}], tiempo:"~30 min", precio:"Gratis", nota:"Necesitas transbordo en el TTC. Alternativa: bus directo." },
+  "epcot-ak":   { pasos:[{t:"🚌",m:"Bus desde EPCOT → Animal Kingdom"}], tiempo:"~25 min", precio:"Gratis", nota:"No hay transporte directo salvo bus." },
+  "epcot-ds":   { pasos:[{t:"🚌",m:"Bus desde EPCOT → Disney Springs"}], tiempo:"~15-20 min", precio:"Gratis", nota:"Bus directo." },
+  // Magic Kingdom
+  "mk-epcot":   { pasos:[{t:"🚝",m:"Monorail Magic Kingdom → TTC → transbordo monorail EPCOT"}], tiempo:"~30 min", precio:"Gratis", nota:"Alternativa: bus directo desde MK." },
+  "mk-hs":      { pasos:[{t:"🚌",m:"Bus directo Magic Kingdom → Hollywood Studios"}], tiempo:"~25-30 min", precio:"Gratis", nota:"No hay transporte directo más eficiente que el bus entre estos dos parques." },
+  "mk-ak":      { pasos:[{t:"🚌",m:"Bus directo Magic Kingdom → Animal Kingdom"}], tiempo:"~25 min", precio:"Gratis", nota:"Bus directo." },
+  "mk-cont":    { pasos:[{t:"🚶",m:"Se puede ir ANDANDO desde Magic Kingdom al Contemporary Resort (5-10 min)"}], tiempo:"~10 min", precio:"Gratis", nota:"¡El único hotel al que puedes ir andando desde Magic Kingdom!" },
+  "mk-poly":    { pasos:[{t:"🚝",m:"Monorail desde Magic Kingdom → Polynesian Village"}], tiempo:"~5 min", precio:"Gratis", nota:"El monorail para en el Polynesian. Muy cómodo." },
+  "mk-gc":      { pasos:[{t:"🚝",m:"Monorail desde Magic Kingdom → Grand Floridian"}], tiempo:"~5 min", precio:"Gratis", nota:"El monorail para en el Grand Floridian." },
+  // Hollywood Studios
+  "hs-epcot":   { pasos:[{t:"🚡",m:"Skyliner desde Hollywood Studios → EPCOT (International Gateway)"}], tiempo:"~10 min", precio:"Gratis", nota:"Alternativa romántica: barca Friendship boat desde HS (vista al lago, ~15 min)." },
+  "hs-mk":      { pasos:[{t:"🚌",m:"Bus directo Hollywood Studios → Magic Kingdom"}], tiempo:"~25-30 min", precio:"Gratis", nota:"Solo bus entre estos dos." },
+  "hs-ak":      { pasos:[{t:"🚌",m:"Bus directo Hollywood Studios → Animal Kingdom"}], tiempo:"~20 min", precio:"Gratis", nota:"Bus directo." },
+  // Fuera de Disney
+  "aoa-outlets_v":  { pasos:[{t:"🚗",m:"Uber/Lyft desde AoA hasta Vineland Premium Outlets"}], tiempo:"~15-20 min", precio:"~10-15$", nota:"No hay transporte Disney. Uber es la opción más cómoda. Los outlets están muy cerca de Disney." },
+  "mk-outlets_v":   { pasos:[{t:"🚗",m:"Uber/Lyft desde cualquier hotel Disney hasta Vineland Outlets"}], tiempo:"~15-25 min", precio:"~12-20$", nota:"Sin transporte Disney gratuito a los outlets. Uber sale rentable si vais en grupo." },
+  "aoa-walmart":    { pasos:[{t:"🚗",m:"Uber/Lyft hasta el Walmart más cercano (Vineland Ave)"}], tiempo:"~10-15 min", precio:"~8-12$", nota:"Imprescindible para ahorrar en agua, snacks y protector solar. El Walmart de Vineland Ave es el más usado por turistas Disney." },
+  "aoa-outlets_i":  { pasos:[{t:"🚗",m:"Uber/Lyft hasta International Drive Outlets (junto a Universal)"}], tiempo:"~25-30 min", precio:"~20-28$", nota:"Más lejos que Vineland. Solo merece si combináis con visita a I-Drive o Universal." },
+};
+
+// Función para obtener la ruta (bidireccional)
+function getRuta(origen, destino) {
+  const key1 = `${origen}-${destino}`;
+  const key2 = `${destino}-${origen}`;
+  if (RUTAS[key1]) return RUTAS[key1];
+  if (RUTAS[key2]) {
+    // Invertir la descripción si es la misma ruta al revés
+    const r = RUTAS[key2];
+    return { ...r, nota: r.nota + " (ruta inversa)" };
+  }
+  return null;
+}
+
+function PlanificadorTraslados() {
+  const [origen, setOrigen] = useState(null);
+  const [destino, setDestino] = useState(null);
+  const [vista, setVista] = useState("planificador"); // "planificador" | "aoa" | "fuera"
+
+  const ruta = origen && destino && origen !== destino ? getRuta(origen.id, destino.id) : null;
+
+  const sinRutaDirecta = origen && destino && origen !== destino && !ruta;
+
+  const grupos = [
+    { label: "🎢 Parques Disney", items: LUGARES_WDW.filter(l => l.tipo === "parque") },
+    { label: "🏨 Hoteles Disney", items: LUGARES_WDW.filter(l => l.tipo === "hotel") },
+    { label: "🛍️ Fuera de Disney", items: LUGARES_WDW.filter(l => l.tipo === "fuera") },
+  ];
+
+  return (
+    <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+      {/* Header */}
+      <div style={{ background:"linear-gradient(135deg,#1a6aaa,#0d3a6e)", borderRadius:16, padding:"18px 20px", color:"white" }}>
+        <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:20, marginBottom:4 }}>🚌 Planificador de Traslados WDW</div>
+        <div style={{ fontSize:12, opacity:.85 }}>Encuentra la ruta más rápida y económica dentro de Disney · 100% gratuito</div>
+      </div>
+
+      {/* Subtabs */}
+      <div style={{ display:"flex", gap:8 }}>
+        {[["planificador","🗺️ Planificador"],["aoa","🎨 Art of Animation"],["fuera","🛒 Fuera de Disney"]].map(([id,label]) => (
+          <button key={id} onClick={() => setVista(id)}
+            style={{ background: vista===id ? "linear-gradient(135deg,#1a6aaa,#0d3a6e)" : "rgba(255,255,255,0.97)", color: vista===id ? "white" : "#1a6aaa", border:`2px solid #1a6aaa33`, borderRadius:20, padding:"8px 16px", fontSize:12, cursor:"pointer", fontFamily:"inherit", fontWeight:700, whiteSpace:"nowrap" }}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* PLANIFICADOR */}
+      {vista === "planificador" && (
+        <>
+          <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:14, padding:"16px 18px", border:"1px solid rgba(26,106,170,0.2)" }}>
+            <div style={{ fontSize:12, color:"#1a6aaa", fontWeight:800, textTransform:"uppercase", letterSpacing:1, marginBottom:14 }}>¿Desde dónde sales?</div>
+            {grupos.map(g => (
+              <div key={g.label} style={{ marginBottom:12 }}>
+                <div style={{ fontSize:11, color:"#888", fontWeight:700, marginBottom:6 }}>{g.label}</div>
+                <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                  {g.items.map(l => (
+                    <button key={l.id} onClick={() => { setOrigen(l); setDestino(null); }}
+                      style={{ background: origen?.id===l.id ? "linear-gradient(135deg,#1a6aaa,#0d3a6e)" : "rgba(26,106,170,0.06)", color: origen?.id===l.id ? "white" : "#1a6aaa", border:`1px solid ${origen?.id===l.id ? "transparent" : "rgba(26,106,170,0.2)"}`, borderRadius:20, padding:"6px 14px", fontSize:12, cursor:"pointer", fontFamily:"inherit", fontWeight:600 }}>
+                      {l.emoji} {l.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {origen && (
+            <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:14, padding:"16px 18px", border:"1px solid rgba(26,106,170,0.2)" }}>
+              <div style={{ fontSize:12, color:"#1a6aaa", fontWeight:800, textTransform:"uppercase", letterSpacing:1, marginBottom:14 }}>¿A dónde quieres ir? <span style={{ color:"#888", fontWeight:400 }}>Desde: {origen.emoji} {origen.label}</span></div>
+              {grupos.map(g => (
+                <div key={g.label} style={{ marginBottom:12 }}>
+                  <div style={{ fontSize:11, color:"#888", fontWeight:700, marginBottom:6 }}>{g.label}</div>
+                  <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                    {g.items.filter(l => l.id !== origen.id).map(l => (
+                      <button key={l.id} onClick={() => setDestino(l)}
+                        style={{ background: destino?.id===l.id ? "linear-gradient(135deg,#2EC866,#1a7a3a)" : "rgba(26,106,170,0.06)", color: destino?.id===l.id ? "white" : "#1a6aaa", border:`1px solid ${destino?.id===l.id ? "transparent" : "rgba(26,106,170,0.2)"}`, borderRadius:20, padding:"6px 14px", fontSize:12, cursor:"pointer", fontFamily:"inherit", fontWeight:600 }}>
+                        {l.emoji} {l.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {ruta && (
+            <div style={{ background:"linear-gradient(135deg,#e8fff3,#d0f5e8)", borderRadius:14, padding:"18px 20px", border:"2px solid #b0f0c8" }}>
+              <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:17, color:"#1a5a3a", marginBottom:12 }}>
+                {origen.emoji} {origen.label} → {destino.emoji} {destino.label}
+              </div>
+              {ruta.pasos.map((p,i) => (
+                <div key={i} style={{ display:"flex", gap:12, alignItems:"flex-start", padding:"10px 0", borderBottom: i < ruta.pasos.length-1 ? "1px dashed #b0f0c8" : "none" }}>
+                  <span style={{ fontSize:24, flexShrink:0 }}>{p.t}</span>
+                  <span style={{ fontSize:13, color:"#1a5a3a", fontWeight:600, lineHeight:1.5 }}>{p.m}</span>
+                </div>
+              ))}
+              <div style={{ display:"flex", gap:10, marginTop:14, flexWrap:"wrap" }}>
+                <div style={{ background:"white", borderRadius:10, padding:"8px 14px", fontSize:12, fontWeight:800, color:"#1a6aaa" }}>⏱️ {ruta.tiempo}</div>
+                <div style={{ background:"white", borderRadius:10, padding:"8px 14px", fontSize:12, fontWeight:800, color: ruta.precio==="Gratis" ? "#2EC866" : "#F0A500" }}>💰 {ruta.precio}</div>
+              </div>
+              {ruta.nota && (
+                <div style={{ marginTop:12, background:"rgba(255,255,255,0.7)", borderRadius:10, padding:"10px 14px", fontSize:12, color:"#2a5a3a", fontWeight:600 }}>
+                  💡 {ruta.nota}
+                </div>
+              )}
+            </div>
+          )}
+
+          {sinRutaDirecta && (
+            <div style={{ background:"rgba(240,165,0,0.1)", border:"2px solid #F0A500", borderRadius:14, padding:"16px 18px" }}>
+              <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:15, color:"#8a6000", marginBottom:8 }}>
+                🚌 {origen.emoji} {origen.label} → {destino.emoji} {destino.label}
+              </div>
+              <div style={{ fontSize:13, color:"#8a6000" }}>
+                La ruta más habitual entre estos dos puntos es por <strong>bus Disney</strong>. Frecuencia cada 20 min aprox. Tiempo estimado: 20–35 min. Completamente gratuito para huéspedes Disney.
+              </div>
+              <div style={{ marginTop:10, fontSize:12, color:"#666" }}>
+                💡 Consulta la app <strong>My Disney Experience</strong> para tiempos de espera en tiempo real de los buses.
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* ART OF ANIMATION */}
+      {vista === "aoa" && (
+        <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+          <div style={{ background:"linear-gradient(135deg,#F5287A,#5B2D8E)", borderRadius:14, padding:"18px 20px", color:"white" }}>
+            <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:18, marginBottom:4 }}>🎨 Art of Animation — Guía de traslados</div>
+            <div style={{ fontSize:12, opacity:.85 }}>El hotel favorito de las familias · Mejor conexión Skyliner de WDW</div>
+          </div>
+
+          {[
+            { destino:"🌍 EPCOT", tipo:"🚡 Skyliner", tiempo:"~20 min", pasos:"Toma el Skyliner en la estación compartida con Pop Century → Caribbean Beach (transbordo, 4 min) → EPCOT International Gateway (11 min). Sal por la entrada trasera del parque (International Gateway, entre Francia y el Reino Unido).", consejo:"El Skyliner cierra 90 min después del cierre del parque. Si hay tormenta eléctrica, ponen buses sustitutivos.", precio:"Gratis" },
+            { destino:"🎬 Hollywood Studios", tipo:"🚡 Skyliner", tiempo:"~15 min", pasos:"Toma el Skyliner → Caribbean Beach (transbordo, 4 min) → Hollywood Studios. Mucho más rápido que el bus.", consejo:"Si hay colas en el Skyliner al salir del parque, espera 20 min — se reducen rápidamente.", precio:"Gratis" },
+            { destino:"🏰 Magic Kingdom", tipo:"🚌 Bus", tiempo:"~25-35 min", pasos:"Bus directo desde la parada de Art of Animation. Frecuencia cada 20 min. No hay Skyliner ni barca.", consejo:"Sal 45 min antes de querer entrar al parque. En horas punta puede haber espera de un bus.", precio:"Gratis" },
+            { destino:"🦁 Animal Kingdom", tipo:"🚌 Bus", tiempo:"~25-30 min", pasos:"Bus directo desde Art of Animation. Frecuencia cada 20 min.", consejo:"Animal Kingdom cierra pronto — el bus de vuelta puede tener mucha gente. Sal 20 min antes del cierre.", precio:"Gratis" },
+            { destino:"🛍️ Disney Springs", tipo:"🚌 Bus", tiempo:"~20 min", pasos:"Bus directo a Disney Springs. Disponible desde todos los hoteles Disney.", consejo:"Disney Springs no cierra hasta las 23h–0h. Perfecto para cenar y compras de último día.", precio:"Gratis" },
+            { destino:"🎵 Pop Century", tipo:"🚶 A pie", tiempo:"~5 min", pasos:"Pasarela peatonal sobre Hourglass Lake. La más fácil del resort — ni transporte necesitas.", consejo:"Si te alojas en AoA pero quieres comer en Pop Century (o al revés), puedes cruzar andando en 5 minutos.", precio:"Gratis" },
+          ].map((r,i) => (
+            <div key={i} style={{ background:"rgba(255,255,255,0.97)", borderRadius:14, padding:"16px 18px", border:"1px solid rgba(91,45,142,0.15)" }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:8 }}>
+                <div>
+                  <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:15, color:"#1a0a2e" }}>{r.destino}</div>
+                  <div style={{ fontSize:12, color:"#5B2D8E", fontWeight:700 }}>{r.tipo}</div>
+                </div>
+                <div style={{ textAlign:"right" }}>
+                  <div style={{ fontSize:12, fontWeight:800, color:"#1a6aaa" }}>⏱️ {r.tiempo}</div>
+                  <div style={{ fontSize:12, fontWeight:800, color:"#2EC866" }}>💰 {r.precio}</div>
+                </div>
+              </div>
+              <div style={{ fontSize:12.5, color:"#333", lineHeight:1.55, marginBottom:8 }}>{r.pasos}</div>
+              <div style={{ background:"#f0e8ff", borderRadius:8, padding:"8px 12px", fontSize:12, color:"#5B2D8E", fontWeight:600 }}>💡 {r.consejo}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* FUERA DE DISNEY */}
+      {vista === "fuera" && (
+        <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+          <div style={{ background:"linear-gradient(135deg,#F0A500,#c07800)", borderRadius:14, padding:"16px 18px", color:"white" }}>
+            <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:17, marginBottom:4 }}>🛒 Outlets, Walmart y Target desde Disney</div>
+            <div style={{ fontSize:12, opacity:.9 }}>Disney no ofrece transporte gratuito fuera del resort — aquí tienes las mejores opciones</div>
+          </div>
+
+          {[
+            { lugar:"🛒 Outlets Vineland Premium Outlets", distancia:"~8 km desde Disney Springs", como:"Uber/Lyft: 10–15 min, ~10–18$. Sin transporte Disney.", marcas:"Nike, Coach, Michael Kors, Kate Spade, Swarovski, Polo Ralph Lauren, Levi's, Tommy Hilfiger, Adidas...", consejo:"Los más cercanos a Disney. Imprescindibles si buscas ropa, zapatillas o accesorios de marca. Abre todos los días a las 10h.", extra:"Cupón de descuento extra disponible en la app de Simon Outlets. Descárgatela antes de ir." },
+            { lugar:"🛒 Outlets International Drive Premium Outlets", distancia:"~18 km, junto a Universal", como:"Uber/Lyft: 20–30 min, ~18–28$. Más lejos de Disney.", marcas:"Gucci, Prada, Burberry, Versace, Armani, Louis Vuitton (outlet)... Los de lujo están aquí.", consejo:"Si buscas marcas de lujo, estos son mejores que Vineland. Combínalo con visita a I-Drive o Universal el mismo día.", extra:"El I-Ride Trolley recorre toda International Drive por 2$/viaje. Práctico para moverse por la zona." },
+            { lugar:"🛒 Walmart Supercenter (Vineland Ave)", distancia:"~10 min en Uber desde Disney", como:"Uber/Lyft: ~8–14$. Sin transporte Disney.", consejo:"Imprescindible para el botiquín del viaje: protector solar, repelente, medicinas, snacks y agua a precio normal. El agua dentro de Disney cuesta 4–5$. Aquí compras un pack de 24 botellas por menos de 5$.", extra:"Abre 24h. Perfecto para ir la noche de llegada o el primer día." },
+            { lugar:"🛒 Target (Kissimmee / I-Drive)", distancia:"~15 min en Uber", como:"Uber/Lyft: ~12–18$.", consejo:"Similar a Walmart pero con más ropa y artículos de hogar. También tiene farmacia, snacks y bebidas a buen precio. Si quieres algo de ropa cómoda extra para el viaje, Target es más agradable que Walmart.", extra:"Tiene una sección de souvenirs Disney mucho más barata que en los propios parques." },
+          ].map((r,i) => (
+            <div key={i} style={{ background:"rgba(255,255,255,0.97)", borderRadius:14, padding:"16px 18px", border:"1px solid rgba(240,165,0,0.2)" }}>
+              <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:15, color:"#1a0a2e", marginBottom:4 }}>{r.lugar}</div>
+              <div style={{ fontSize:11, color:"#F0A500", fontWeight:700, marginBottom:8 }}>📍 {r.distancia}</div>
+              <div style={{ background:"rgba(240,165,0,0.08)", borderRadius:8, padding:"8px 12px", fontSize:12.5, color:"#333", fontWeight:600, marginBottom:8 }}>🚗 {r.como}</div>
+              {r.marcas && <div style={{ fontSize:12, color:"#555", marginBottom:8, lineHeight:1.5 }}><strong>Marcas:</strong> {r.marcas}</div>}
+              <div style={{ fontSize:12.5, color:"#333", lineHeight:1.55, marginBottom:6 }}>{r.consejo}</div>
+              {r.extra && <div style={{ background:"#fffbf0", borderRadius:8, padding:"8px 12px", fontSize:12, color:"#a07000", fontWeight:600 }}>⭐ {r.extra}</div>}
+            </div>
+          ))}
+
+          <div style={{ background:"rgba(43,188,212,0.08)", borderRadius:14, padding:"14px 16px", border:"1px solid rgba(43,188,212,0.2)" }}>
+            <div style={{ fontSize:12, color:"#1a8fa8", fontWeight:800, marginBottom:6 }}>💡 Consejo general para salir de Disney</div>
+            <div style={{ fontSize:12.5, color:"#333", lineHeight:1.55 }}>
+              Uber y Lyft son las opciones más cómodas para salir del resort. Coge el Uber desde la parada designada de tu hotel (no en la puerta principal — hay zonas específicas de recogida). La app de My Disney Experience te indica la ubicación de recogida de tu hotel.<br/><br/>
+              <strong>Coste estimado Uber desde AoA/Pop Century:</strong> Outlets Vineland ~10–14$ · Walmart ~10–12$ · I-Drive Outlets ~22–26$
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
 // COMPONENTE: Tiempo Orlando
 // ═══════════════════════════════════════════════════════
 function TiempoOrlando() {
@@ -2488,6 +2741,7 @@ export default function Portal() {
   const allTabs = esOrlando ? [
     { id:"reserva",      label:"🏰 Mi Reserva",          soloCompleta: false, soloReserva: false, soloPref: true  },
     { id:"atracciones",  label:"🎢 Planificador",         soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"traslados",    label:"🚌 Traslados",            soloCompleta: false, soloReserva: false, soloPref: true  },
     { id:"tiempo",       label:"🌤️ Tiempo",               soloCompleta: false, soloReserva: false, soloPref: true  },
     { id:"guia-parque",  label:"🗺️ Guía Universal",       soloCompleta: false, soloReserva: false, soloPref: true  },
     { id:"asistente",    label:"🪄 Moli",                 soloCompleta: false, soloReserva: false, soloPref: true  },
@@ -2686,6 +2940,9 @@ export default function Portal() {
 
             {/* TAB: ATRACCIONES — París o Universal */}
             {activeTab==="atracciones" && (esOrlando ? <PlanificadorUniversal /> : <PlanificadorAtracciones cliente={cliente} />)}
+
+            {/* TAB: TRASLADOS — solo Orlando */}
+            {activeTab==="traslados" && esOrlando && <PlanificadorTraslados />}
 
             {/* TAB: TIEMPO — París u Orlando */}
             {activeTab==="tiempo" && (esOrlando ? <TiempoOrlando /> : <TiempoDLP cliente={cliente} />)}
