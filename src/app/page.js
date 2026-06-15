@@ -2147,6 +2147,270 @@ function TiempoDLP({cliente}) {
 // ═══════════════════════════════════════════════════════
 // PORTAL PRINCIPAL
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// COMPONENTE: Tiempo Orlando
+// ═══════════════════════════════════════════════════════
+function TiempoOrlando() {
+  const [tiempo, setTiempo] = useState(null);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=28.3772&longitude=-81.5707&current=temperature_2m,weathercode,windspeed_10m,precipitation,relative_humidity_2m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,weathercode&timezone=America/New_York&forecast_days=3&temperature_unit=celsius")
+      .then(r => r.json())
+      .then(d => { setTiempo(d); setCargando(false); })
+      .catch(() => { setError(true); setCargando(false); });
+  }, []);
+
+  const getIcono = (wc) => {
+    if (wc <= 1) return { icon: "☀️", label: "Soleado", tipo: "sol" };
+    if (wc <= 3) return { icon: "⛅", label: "Parcialmente nublado", tipo: "nublado" };
+    if (wc <= 48) return { icon: "☁️", label: "Nublado", tipo: "nublado" };
+    if (wc <= 67) return { icon: "🌧️", label: "Lluvia / Tormenta", tipo: "lluvia" };
+    return { icon: "⛈️", label: "Tormenta eléctrica", tipo: "tormenta" };
+  };
+
+  const getConsejos = (tipo, tmax) => {
+    const base = [];
+    if (tmax >= 33) base.push({ icon: "🥵", txt: "<strong>Calor extremo</strong> — hidratación constante. Refrescos dentro del parque cuestan 4–6$. Lleva una botella reutilizable." });
+    if (tmax >= 28) base.push({ icon: "🧴", txt: "<strong>Protector solar SPF50+</strong> obligatorio. Reaplicar cada 2h. Las colas al sol queman mucho." });
+    if (tipo === "lluvia" || tipo === "tormenta") {
+      base.push({ icon: "⛈️", txt: "<strong>Tormentas de tarde</strong> típicas en Orlando — suelen durar 30–45 min y luego escampa. Planifica comida o descanso interior en ese rato." });
+      base.push({ icon: "🌂", txt: "Lleva chubasquero ligero o poncho. Los del parque cuestan 15$+." });
+      base.push({ icon: "💡", txt: "Las atracciones de exterior (VelociCoaster, Hulk...) cierran con tormenta eléctrica. Aprovecha para hacer las interiores." });
+    }
+    if (tmax >= 28) base.push({ icon: "💧", txt: "Las atracciones de agua son perfectas con este calor — halas por la mañana temprano para no pasar el día mojado." });
+    base.push({ icon: "🕶️", txt: "Gafas de sol y gorra imprescindibles. En julio–agosto las colas al sol son duras." });
+    return base;
+  };
+
+  if (cargando) return <div style={{ textAlign: "center", color: "#7a9aaa", padding: 40 }}>🌤️ Cargando el tiempo de Orlando...</div>;
+  if (error || !tiempo) return <div style={{ textAlign: "center", color: "#f87171", padding: 40 }}>No se pudo cargar el tiempo. Inténtalo de nuevo.</div>;
+
+  const cur = tiempo.current;
+  const daily = tiempo.daily;
+  const icono = getIcono(cur.weathercode);
+  const consejos = getConsejos(icono.tipo, daily.temperature_2m_max[0]);
+  const dias = ["Hoy", "Mañana", "Pasado"];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ background: "linear-gradient(135deg,#1a6aaa,#0d3a6e)", borderRadius: 16, padding: "22px 20px", color: "white" }}>
+        <div style={{ fontSize: 11, opacity: .7, textTransform: "uppercase", letterSpacing: 2, marginBottom: 8 }}>🌴 Orlando, Florida — Ahora mismo</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{ fontSize: 64 }}>{icono.icon}</div>
+          <div>
+            <div style={{ fontFamily: "'Fredoka One',cursive", fontSize: 48, lineHeight: 1 }}>{Math.round(cur.temperature_2m)}°C</div>
+            <div style={{ fontSize: 14, opacity: .85, marginTop: 4 }}>{icono.label}</div>
+            <div style={{ fontSize: 12, opacity: .65, marginTop: 4 }}>💧 Humedad: {cur.relative_humidity_2m}% · 💨 Viento: {Math.round(cur.windspeed_10m)} km/h</div>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+        {dias.map((dia, i) => {
+          const ic = getIcono(daily.weathercode[i]);
+          return (
+            <div key={i} style={{ background: "rgba(255,255,255,0.97)", borderRadius: 12, padding: "14px 12px", textAlign: "center", border: "1px solid rgba(43,188,212,0.2)" }}>
+              <div style={{ fontSize: 11, color: "#7a9aaa", fontWeight: 700, textTransform: "uppercase", marginBottom: 6 }}>{dia}</div>
+              <div style={{ fontSize: 28 }}>{ic.icon}</div>
+              <div style={{ fontSize: 13, color: "#e05000", fontWeight: 800, marginTop: 4 }}>{Math.round(daily.temperature_2m_max[i])}°</div>
+              <div style={{ fontSize: 12, color: "#4a7a8a" }}>{Math.round(daily.temperature_2m_min[i])}°</div>
+              {daily.precipitation_sum[i] > 0 && <div style={{ fontSize: 11, color: "#3b82f6", marginTop: 4 }}>🌧 {daily.precipitation_sum[i].toFixed(1)} mm</div>}
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ background: "rgba(255,255,255,0.97)", borderRadius: 14, padding: "16px 18px", border: "1px solid rgba(43,188,212,0.2)" }}>
+        <div style={{ fontSize: 12, color: "#2BBCD4", fontWeight: 800, textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>💡 Consejos para hoy en los parques</div>
+        {consejos.map((c, i) => (
+          <div key={i} style={{ display: "flex", gap: 10, padding: "8px 0", borderBottom: i < consejos.length - 1 ? "1px dashed #ede8f9" : "none" }}>
+            <span style={{ fontSize: 18, flexShrink: 0 }}>{c.icon}</span>
+            <span style={{ fontSize: 13, color: "#333", lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: c.txt }} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════
+// COMPONENTE: Planificador Universal Orlando
+// ═══════════════════════════════════════════════════════
+const PARQUES_UNIVERSAL = [
+  { id: "3dca483b-3bac-4c8a-81f5-5c52a3dbbbd3", nombre: "Epic Universe",           emoji: "🌌", color: "#5B2D8E" },
+  { id: "267615cc-8943-4a6a-8d3b-f9d366e34f43", nombre: "Islands of Adventure",    emoji: "⚓", color: "#2BBCD4" },
+  { id: "eb3f4560-2383-4a36-9152-6b3c5a305e8e", nombre: "Universal Studios Florida", emoji: "🎬", color: "#F5287A" },
+];
+
+const PRIORIDAD_PARQUE = {
+  "3dca483b-3bac-4c8a-81f5-5c52a3dbbbd3": [
+    { nombre: "Battle at the Ministry", emoji: "⚡", nota: "La más demandada. Primera parada sí o sí." },
+    { nombre: "Mario Kart: Bowser's Challenge", emoji: "🏎️", nota: "Llena en minutos. Hazla al abrir." },
+    { nombre: "Mine-Cart Madness", emoji: "🛤️", nota: "Justo después de Mario Kart." },
+    { nombre: "Stardust Racers", emoji: "🎢", nota: "Antes de mediodía." },
+    { nombre: "Hiccup's Wing Gliders", emoji: "🐉", nota: "Media mañana antes del pico." },
+    { nombre: "Monsters Unchained", emoji: "⚡", nota: "Puede dejarse para la tarde — alta capacidad." },
+  ],
+  "267615cc-8943-4a6a-8d3b-f9d366e34f43": [
+    { nombre: "Hagrid's Motorbike Adventure", emoji: "🏍️", nota: "La más demandada del resort. Puede abrir con retraso." },
+    { nombre: "Jurassic World VelociCoaster", emoji: "💨", nota: "Segunda parada inmediata." },
+    { nombre: "Harry Potter Forbidden Journey", emoji: "🏰", nota: "Antes de mediodía o última hora." },
+    { nombre: "The Incredible Hulk Coaster", emoji: "💚", nota: "Primera hora o usa Single Rider." },
+  ],
+  "eb3f4560-2383-4a36-9152-6b3c5a305e8e": [
+    { nombre: "Escape from Gringotts", emoji: "🔥", nota: "Primera parada — llena en 15 min." },
+    { nombre: "Revenge of the Mummy", emoji: "🧟", nota: "Antes de las 10h o Single Rider." },
+    { nombre: "Minion Blast", emoji: "🟡", nota: "Temprano — popular con familias." },
+  ],
+};
+
+function PlanificadorUniversal() {
+  const [parqueSeleccionado, setParqueSeleccionado] = useState(null);
+  const [tiempos, setTiempos] = useState([]);
+  const [cargando, setCargando] = useState(false);
+  const [error, setError] = useState(false);
+  const [ultimaAct, setUltimaAct] = useState(null);
+
+  const cargarTiempos = async (parqueId) => {
+    setCargando(true); setError(false); setTiempos([]);
+    try {
+      const res = await fetch(`https://api.themeparks.wiki/v1/entity/${parqueId}/live`);
+      const data = await res.json();
+      const atracciones = (data.liveData || [])
+        .filter(a => a.entityType === "ATTRACTION" && a.queue?.STANDBY?.waitTime != null)
+        .sort((a, b) => (b.queue.STANDBY.waitTime || 0) - (a.queue.STANDBY.waitTime || 0));
+      setTiempos(atracciones);
+      setUltimaAct(new Date());
+    } catch {
+      setError(true);
+    }
+    setCargando(false);
+  };
+
+  const seleccionarParque = (p) => {
+    setParqueSeleccionado(p);
+    cargarTiempos(p.id);
+  };
+
+  const getColorFila = (min) => {
+    if (min === null || min === undefined) return "#888";
+    if (min <= 15) return "#2EC866";
+    if (min <= 35) return "#F0A500";
+    if (min <= 60) return "#F5287A";
+    return "#cc0000";
+  };
+
+  const prioridades = parqueSeleccionado ? (PRIORIDAD_PARQUE[parqueSeleccionado.id] || []) : [];
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+      <div style={{ background: "linear-gradient(135deg,#5B2D8E,#F5287A)", borderRadius: 16, padding: "18px 20px", color: "white" }}>
+        <div style={{ fontFamily: "'Fredoka One',cursive", fontSize: 20, marginBottom: 4 }}>🎢 Planificador Universal Orlando</div>
+        <div style={{ fontSize: 12, opacity: .85 }}>Tiempos de espera en tiempo real · Elige tu parque</div>
+      </div>
+
+      {/* Selector de parque */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+        {PARQUES_UNIVERSAL.map(p => (
+          <button key={p.id} onClick={() => seleccionarParque(p)}
+            style={{
+              background: parqueSeleccionado?.id === p.id ? `linear-gradient(135deg,${p.color},${p.color}cc)` : "rgba(255,255,255,0.97)",
+              border: `2px solid ${p.color}`,
+              borderRadius: 12, padding: "14px 10px", cursor: "pointer", fontFamily: "inherit",
+              color: parqueSeleccionado?.id === p.id ? "white" : "#1a0a2e",
+              transition: "all 0.2s",
+            }}>
+            <div style={{ fontSize: 24, marginBottom: 6 }}>{p.emoji}</div>
+            <div style={{ fontSize: 11, fontWeight: 800, lineHeight: 1.3 }}>{p.nombre}</div>
+          </button>
+        ))}
+      </div>
+
+      {parqueSeleccionado && (
+        <>
+          {/* Orden de prioridad */}
+          <div style={{ background: "rgba(255,255,255,0.97)", borderRadius: 14, padding: "16px 18px", border: `2px solid ${parqueSeleccionado.color}33` }}>
+            <div style={{ fontSize: 12, color: parqueSeleccionado.color, fontWeight: 800, textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>
+              ⚡ Hazlas en este orden — las de más cola primero
+            </div>
+            {prioridades.map((a, i) => (
+              <div key={i} style={{ display: "flex", gap: 10, padding: "7px 0", borderBottom: i < prioridades.length - 1 ? "1px dashed #ede8f9" : "none", alignItems: "flex-start" }}>
+                <span style={{ background: parqueSeleccionado.color, color: "white", borderRadius: "50%", width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, flexShrink: 0, marginTop: 1 }}>{i + 1}</span>
+                <span style={{ fontSize: 16, flexShrink: 0 }}>{a.emoji}</span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: "#1a0a2e" }}>{a.nombre}</div>
+                  <div style={{ fontSize: 11, color: "#666" }}>{a.nota}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Tiempos reales */}
+          <div style={{ background: "rgba(255,255,255,0.97)", borderRadius: 14, padding: "16px 18px", border: "1px solid rgba(43,188,212,0.2)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+              <div style={{ fontSize: 12, color: "#2BBCD4", fontWeight: 800, textTransform: "uppercase", letterSpacing: 1 }}>
+                🕐 Tiempos de espera ahora
+              </div>
+              <button onClick={() => cargarTiempos(parqueSeleccionado.id)}
+                style={{ background: "rgba(43,188,212,0.1)", border: "1px solid rgba(43,188,212,0.3)", borderRadius: 8, color: "#2BBCD4", fontSize: 11, padding: "4px 10px", cursor: "pointer", fontFamily: "inherit" }}>
+                🔄 Actualizar
+              </button>
+            </div>
+
+            {ultimaAct && (
+              <div style={{ fontSize: 11, color: "#888", marginBottom: 10 }}>
+                Última actualización: {ultimaAct.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}
+              </div>
+            )}
+
+            {cargando && (
+              <div style={{ textAlign: "center", color: "#7a9aaa", padding: 30 }}>Cargando tiempos reales...</div>
+            )}
+
+            {error && (
+              <div style={{ textAlign: "center", color: "#f87171", padding: 20, fontSize: 13 }}>
+                No se pudieron cargar los tiempos. El parque puede estar cerrado o hay un problema de conexión.
+              </div>
+            )}
+
+            {!cargando && !error && tiempos.length === 0 && (
+              <div style={{ textAlign: "center", color: "#7a9aaa", padding: 20, fontSize: 13 }}>
+                No hay tiempos disponibles ahora mismo. El parque puede estar cerrado.
+              </div>
+            )}
+
+            {!cargando && tiempos.map((a, i) => {
+              const min = a.queue?.STANDBY?.waitTime;
+              const operativa = a.status === "OPERATING";
+              return (
+                <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: i < tiempos.length - 1 ? "1px solid #f3f0fa" : "none" }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: operativa ? "#1a0a2e" : "#aaa" }}>{a.name}</div>
+                    {!operativa && <div style={{ fontSize: 11, color: "#f59e0b" }}>⚠️ {a.status === "DOWN" ? "Avería temporal" : "Cerrada"}</div>}
+                  </div>
+                  <div style={{ fontFamily: "'Fredoka One',cursive", fontSize: 20, color: operativa ? getColorFila(min) : "#aaa", minWidth: 60, textAlign: "right" }}>
+                    {operativa && min != null ? `${min} min` : operativa ? "—" : "🔧"}
+                  </div>
+                </div>
+              );
+            })}
+
+            <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {[["#2EC866", "≤15 min"], ["#F0A500", "16–35 min"], ["#F5287A", "36–60 min"], ["#cc0000", ">60 min"]].map(([c, l]) => (
+                <div key={l} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "#666" }}>
+                  <span style={{ width: 10, height: 10, borderRadius: "50%", background: c, display: "inline-block" }} />{l}
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export default function Portal() {
   const [step, setStep] = useState("login");
   const [dni, setDni] = useState("");
@@ -2209,6 +2473,9 @@ export default function Portal() {
   const pagadoTotal = Math.round((extractNumber(cliente?.PAGADO   || cliente?.Pagado   || "0") + Number.EPSILON) * 100) / 100;
   const totalViaje  = Math.round((extractNumber(cliente?.TOTAL    || cliente?.Total    || cliente?.["Precio total"] || "0") + Number.EPSILON) * 100) / 100;
 
+  // Detectar destino Orlando (columna Y = "Destino")
+  const esOrlando = String(cliente?.Destino || cliente?.["Destino"] || "").toLowerCase().includes("orlando");
+
   const s = {
     page: { minHeight:"100vh", background:"linear-gradient(160deg,#0a1628 0%,#0d2233 40%,#0a1a2e 100%)", fontFamily:"'Nunito', sans-serif" },
     header: { background:"rgba(10,22,40,0.97)", borderBottom:"2px solid #2BBCD4", padding:"14px 24px", display:"flex", alignItems:"center", gap:12, position:"sticky", top:0, zIndex:100 },
@@ -2218,7 +2485,13 @@ export default function Portal() {
   };
 
   // Tabs: si la reserva NO está completa, solo muestra Guías, Asistente (y oculta el resto)
-  const allTabs = [
+  const allTabs = esOrlando ? [
+    { id:"reserva",      label:"🏰 Mi Reserva",          soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"atracciones",  label:"🎢 Planificador",         soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"tiempo",       label:"🌤️ Tiempo",               soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"guia-parque",  label:"🗺️ Guía Universal",       soloCompleta: false, soloReserva: false, soloPref: true  },
+    { id:"asistente",    label:"🪄 Moli",                 soloCompleta: false, soloReserva: false, soloPref: true  },
+  ] : [
     { id:"reserva",     label:"🏰 Mi Reserva",     soloCompleta: false, soloReserva: true,  soloPref: false },
     { id:"atracciones", label:"🎢 Atracciones",     soloCompleta: false, soloReserva: true,  soloPref: false },
     { id:"restaurantes",label:"🍽️ Restaurantes",   soloCompleta: true,  soloReserva: true,  soloPref: false },
@@ -2408,15 +2681,42 @@ export default function Portal() {
               </div>
             )}
 
-            {/* TAB: PLANIFICADOR DE RESTAURANTES */}
-            {activeTab==="restaurantes" && reservaCompleta && <PlanificadorRestaurantes cliente={cliente} />}
+            {/* TAB: PLANIFICADOR DE RESTAURANTES (solo París) */}
+            {activeTab==="restaurantes" && !esOrlando && reservaCompleta && <PlanificadorRestaurantes cliente={cliente} />}
 
-            {activeTab==="atracciones" && <PlanificadorAtracciones cliente={cliente} />}
+            {/* TAB: ATRACCIONES — París o Universal */}
+            {activeTab==="atracciones" && (esOrlando ? <PlanificadorUniversal /> : <PlanificadorAtracciones cliente={cliente} />)}
 
-            {activeTab==="tiempo" && <TiempoDLP cliente={cliente} />}
+            {/* TAB: TIEMPO — París u Orlando */}
+            {activeTab==="tiempo" && (esOrlando ? <TiempoOrlando /> : <TiempoDLP cliente={cliente} />)}
 
             {/* TAB: GUÍAS — accesible para todos */}
             {activeTab==="guia-parque" && !viajeTerminado(cliente) && (() => {
+              // Orlando: mostrar la guía de Universal
+              if (esOrlando) {
+                return (
+                  <div style={{ display:"flex", flexDirection:"column", gap:12 }}>
+                    <div style={{ background:"linear-gradient(135deg,#5B2D8E,#F5287A)", borderRadius:16, padding:"20px 22px", color:"white" }}>
+                      <div style={{ fontFamily:"'Fredoka One',cursive", fontSize:20, marginBottom:4 }}>🗺️ Guía Universal Orlando</div>
+                      <div style={{ fontSize:12, opacity:.85 }}>Epic Universe · Islands of Adventure · Universal Studios Florida</div>
+                    </div>
+                    <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:14, padding:"16px 18px", border:"1px solid rgba(91,45,142,0.2)", fontSize:13, color:"#444", lineHeight:1.6 }}>
+                      <p>La guía completa de Lara con consejos expertos, orden de ataque, sistema de taquillas, varitas interactivas, restaurantes y mucho más.</p>
+                      <a href="/guia_universal_orlando_moli.html" target="_blank" rel="noopener noreferrer"
+                        style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#5B2D8E,#9b59b6)", borderRadius:12, padding:"16px 20px", textDecoration:"none", marginTop:14 }}>
+                        <span style={{ fontSize:24 }}>🎢</span>
+                        <div>
+                          <div style={{ color:"white", fontSize:14, fontWeight:700 }}>Abrir Guía de Universal Orlando</div>
+                          <div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Consejos expertos · Atracciones · Restaurantes · Trucos</div>
+                        </div>
+                        <span style={{ marginLeft:"auto", color:"white", fontSize:18 }}>→</span>
+                      </a>
+                    </div>
+                  </div>
+                );
+              }
+
+              // París: lógica original
               const activo = esPeriodoVisita(cliente);
               const dias = diasParaViaje(cliente);
               return (
