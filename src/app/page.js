@@ -2152,57 +2152,137 @@ function TiempoDLP({cliente}) {
 // ═══════════════════════════════════════════════════════
 
 const LUGARES_WDW = [
-  { id:"mk",    label:"Magic Kingdom",          emoji:"🏰", tipo:"parque" },
-  { id:"epcot", label:"EPCOT",                  emoji:"🌍", tipo:"parque" },
-  { id:"hs",    label:"Hollywood Studios",       emoji:"🎬", tipo:"parque" },
-  { id:"ak",    label:"Animal Kingdom",          emoji:"🦁", tipo:"parque" },
-  { id:"ds",    label:"Disney Springs",          emoji:"🛍️", tipo:"otro"  },
-  { id:"aoa",   label:"Art of Animation",        emoji:"🎨", tipo:"hotel"  },
-  { id:"pop",   label:"Pop Century",             emoji:"🎵", tipo:"hotel"  },
-  { id:"cb",    label:"Caribbean Beach",         emoji:"🌴", tipo:"hotel"  },
-  { id:"riv",   label:"Riviera Resort",          emoji:"✨", tipo:"hotel"  },
-  { id:"cont",  label:"Contemporary Resort",     emoji:"🏨", tipo:"hotel"  },
-  { id:"poly",  label:"Polynesian Village",      emoji:"🌺", tipo:"hotel"  },
-  { id:"gc",    label:"Grand Floridian",         emoji:"👑", tipo:"hotel"  },
-  { id:"bc",    label:"Beach Club / Yacht Club", emoji:"⛵", tipo:"hotel"  },
-  { id:"bw",    label:"BoardWalk Inn",           emoji:"🎡", tipo:"hotel"  },
-  { id:"ttc",   label:"Transportation & Ticket Center", emoji:"🚉", tipo:"otro" },
-  { id:"outlets_v", label:"Outlets Vineland (cerca Disney)", emoji:"🛒", tipo:"fuera" },
-  { id:"outlets_i", label:"Outlets International Drive",     emoji:"🛒", tipo:"fuera" },
-  { id:"walmart",   label:"Walmart / Target",               emoji:"🛒", tipo:"fuera" },
+  // Parques
+  { id:"mk",    label:"Magic Kingdom",               emoji:"🏰", tipo:"parque" },
+  { id:"epcot", label:"EPCOT",                       emoji:"🌍", tipo:"parque" },
+  { id:"hs",    label:"Hollywood Studios",            emoji:"🎬", tipo:"parque" },
+  { id:"ak",    label:"Animal Kingdom",              emoji:"🦁", tipo:"parque" },
+  { id:"ds",    label:"Disney Springs",              emoji:"🛍️", tipo:"otro"  },
+  // Value — Skyliner
+  { id:"aoa",   label:"Art of Animation",            emoji:"🎨", tipo:"value_sky",  trans:"🚡 Skyliner + 🚌 Bus" },
+  { id:"pop",   label:"Pop Century",                 emoji:"🎵", tipo:"value_sky",  trans:"🚡 Skyliner + 🚌 Bus" },
+  // Value — Solo bus
+  { id:"asm",   label:"All-Star Music",              emoji:"🎸", tipo:"value_bus",  trans:"🚌 Solo bus" },
+  { id:"ass",   label:"All-Star Sports",             emoji:"🏈", tipo:"value_bus",  trans:"🚌 Solo bus" },
+  { id:"asm2",  label:"All-Star Movies",             emoji:"🎬", tipo:"value_bus",  trans:"🚌 Solo bus" },
+  // Moderate — Skyliner
+  { id:"cb",    label:"Caribbean Beach",             emoji:"🌴", tipo:"mod_sky",    trans:"🚡 Skyliner + 🚌 Bus" },
+  // Moderate — Bus + Barca
+  { id:"csr",   label:"Coronado Springs",            emoji:"🌵", tipo:"mod_bus",    trans:"🚌 Solo bus" },
+  { id:"pors",  label:"Port Orleans Riverside",      emoji:"🌿", tipo:"mod_bus",    trans:"🚌 Bus + ⛵ Barca a DS" },
+  { id:"pof",   label:"Port Orleans French Quarter", emoji:"🎷", tipo:"mod_bus",    trans:"🚌 Bus + ⛵ Barca a DS" },
+  { id:"fw",    label:"Fort Wilderness",             emoji:"🏕️", tipo:"mod_bus",    trans:"🚌 Bus + ⛵ Barca a MK" },
+  // Deluxe — Monorail
+  { id:"cont",  label:"Contemporary Resort",         emoji:"🏨", tipo:"dlx_mono",  trans:"🚝 Monorail + 🚶 A pie a MK" },
+  { id:"poly",  label:"Polynesian Village",          emoji:"🌺", tipo:"dlx_mono",  trans:"🚝 Monorail + 🚌 Bus" },
+  { id:"gc",    label:"Grand Floridian",             emoji:"👑", tipo:"dlx_mono",  trans:"🚝 Monorail + 🚌 Bus" },
+  // Deluxe — Skyliner
+  { id:"riv",   label:"Riviera Resort",              emoji:"✨", tipo:"dlx_sky",   trans:"🚡 Skyliner + 🚌 Bus" },
+  // Deluxe — Barca + a pie
+  { id:"bc",    label:"Beach Club / Yacht Club",     emoji:"⛵", tipo:"dlx_barca", trans:"⛵ Barca + 🚶 A pie a EPCOT/HS" },
+  { id:"bw",    label:"BoardWalk Inn",               emoji:"🎡", tipo:"dlx_barca", trans:"⛵ Barca + 🚶 A pie a EPCOT/HS" },
+  { id:"wl",    label:"Wilderness Lodge",            emoji:"🌲", tipo:"dlx_barca", trans:"⛵ Barca a MK + 🚌 Bus" },
+  { id:"ak_lodge", label:"Animal Kingdom Lodge",     emoji:"🦒", tipo:"dlx_bus",   trans:"🚌 Solo bus (muy cerca de AK)" },
+  { id:"saratoga", label:"Saratoga Springs",         emoji:"🐎", tipo:"dlx_bus",   trans:"🚌 Bus + ⛵ Barca a DS" },
+  // Swan & Dolphin (no Disney, pero transporte Disney)
+  { id:"swan",  label:"Swan & Dolphin (Marriott)",  emoji:"🦢", tipo:"externo_disney", trans:"⛵ Barca + 🚶 A pie a EPCOT/HS · 🚌 Bus" },
+  // Externos zona Disney
+  { id:"ext_bonnet", label:"Hotel externo zona Disney Springs", emoji:"🏩", tipo:"externo", trans:"🚌 Bus Disney Springs gratuito desde algunos hoteles" },
+  { id:"ext_ird",    label:"Hotel externo I-Drive / Universal", emoji:"🏩", tipo:"externo", trans:"Sin transporte Disney gratuito" },
+  // Fuera
+  { id:"outlets_v",  label:"Outlets Vineland (cerca Disney)",   emoji:"🛒", tipo:"fuera" },
+  { id:"outlets_i",  label:"Outlets International Drive",       emoji:"🛒", tipo:"fuera" },
+  { id:"walmart",    label:"Walmart / Target",                  emoji:"🛒", tipo:"fuera" },
 ];
 
 // Rutas: [origen, destino] => { pasos, tiempo, precio, consejos }
 const RUTAS = {
-  // Art of Animation
-  "aoa-epcot":  { pasos:[{t:"🚡",m:"Skyliner hasta Caribbean Beach (4 min)→ transbordo → EPCOT (11 min)"}], tiempo:"~20 min", precio:"Gratis", nota:"Sal con tiempo en horas punta. Cierra 90 min después del parque." },
-  "aoa-hs":     { pasos:[{t:"🚡",m:"Skyliner directo a Hollywood Studios (4 min desde Pop/AoA, transfer en Caribbean Beach)"}], tiempo:"~15 min", precio:"Gratis", nota:"La forma más rápida. Sin transbordo si vas a HS directamente." },
+  // ── Art of Animation ──
+  "aoa-epcot":  { pasos:[{t:"🚡",m:"Skyliner → Caribbean Beach (4 min, transbordo) → EPCOT International Gateway (11 min)"}], tiempo:"~20 min", precio:"Gratis", nota:"Sal con tiempo en horas punta. Cierra 90 min después del parque. Con tormenta hay buses sustitutivos." },
+  "aoa-hs":     { pasos:[{t:"🚡",m:"Skyliner → Caribbean Beach (transbordo) → Hollywood Studios"}], tiempo:"~15 min", precio:"Gratis", nota:"Más rápido que el bus. Si el Skyliner está cerrado por lluvia, hay bus sustitutivo." },
   "aoa-mk":     { pasos:[{t:"🚌",m:"Bus directo desde parada Art of Animation → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Bus cada 20 min aprox. Sal 45 min antes de querer entrar." },
-  "aoa-ak":     { pasos:[{t:"🚌",m:"Bus directo desde parada Art of Animation → Animal Kingdom"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Bus directo. Frecuencia cada 20 min." },
-  "aoa-ds":     { pasos:[{t:"🚌",m:"Bus directo desde parada Art of Animation → Disney Springs"}], tiempo:"~20 min", precio:"Gratis", nota:"Hay bus directo a Disney Springs desde todos los hoteles." },
-  "aoa-pop":    { pasos:[{t:"🚶",m:"Pasarela peatonal entre Art of Animation y Pop Century (5 min andando)"}], tiempo:"~5 min", precio:"Gratis", nota:"¡Sin transporte necesario! Comparten Hourglass Lake. El paso peatonal cruza el lago." },
-  "aoa-cb":     { pasos:[{t:"🚡",m:"Skyliner desde AoA/Pop → Caribbean Beach (4 min)"}], tiempo:"~5-8 min", precio:"Gratis", nota:"Directo en Skyliner." },
-  // EPCOT
-  "epcot-hs":   { pasos:[{t:"🚡",m:"Skyliner desde EPCOT International Gateway → Hollywood Studios"}], tiempo:"~10 min", precio:"Gratis", nota:"También puedes ir andando (~25 min por el BoardWalk) o en barca desde International Gateway." },
-  "epcot-mk":   { pasos:[{t:"🚝",m:"Monorail desde EPCOT → Transportation & Ticket Center → transbordo → Magic Kingdom"}], tiempo:"~30 min", precio:"Gratis", nota:"Necesitas transbordo en el TTC. Alternativa: bus directo." },
-  "epcot-ak":   { pasos:[{t:"🚌",m:"Bus desde EPCOT → Animal Kingdom"}], tiempo:"~25 min", precio:"Gratis", nota:"No hay transporte directo salvo bus." },
-  "epcot-ds":   { pasos:[{t:"🚌",m:"Bus desde EPCOT → Disney Springs"}], tiempo:"~15-20 min", precio:"Gratis", nota:"Bus directo." },
-  // Magic Kingdom
-  "mk-epcot":   { pasos:[{t:"🚝",m:"Monorail Magic Kingdom → TTC → transbordo monorail EPCOT"}], tiempo:"~30 min", precio:"Gratis", nota:"Alternativa: bus directo desde MK." },
-  "mk-hs":      { pasos:[{t:"🚌",m:"Bus directo Magic Kingdom → Hollywood Studios"}], tiempo:"~25-30 min", precio:"Gratis", nota:"No hay transporte directo más eficiente que el bus entre estos dos parques." },
-  "mk-ak":      { pasos:[{t:"🚌",m:"Bus directo Magic Kingdom → Animal Kingdom"}], tiempo:"~25 min", precio:"Gratis", nota:"Bus directo." },
-  "mk-cont":    { pasos:[{t:"🚶",m:"Se puede ir ANDANDO desde Magic Kingdom al Contemporary Resort (5-10 min)"}], tiempo:"~10 min", precio:"Gratis", nota:"¡El único hotel al que puedes ir andando desde Magic Kingdom!" },
-  "mk-poly":    { pasos:[{t:"🚝",m:"Monorail desde Magic Kingdom → Polynesian Village"}], tiempo:"~5 min", precio:"Gratis", nota:"El monorail para en el Polynesian. Muy cómodo." },
-  "mk-gc":      { pasos:[{t:"🚝",m:"Monorail desde Magic Kingdom → Grand Floridian"}], tiempo:"~5 min", precio:"Gratis", nota:"El monorail para en el Grand Floridian." },
-  // Hollywood Studios
-  "hs-epcot":   { pasos:[{t:"🚡",m:"Skyliner desde Hollywood Studios → EPCOT (International Gateway)"}], tiempo:"~10 min", precio:"Gratis", nota:"Alternativa romántica: barca Friendship boat desde HS (vista al lago, ~15 min)." },
-  "hs-mk":      { pasos:[{t:"🚌",m:"Bus directo Hollywood Studios → Magic Kingdom"}], tiempo:"~25-30 min", precio:"Gratis", nota:"Solo bus entre estos dos." },
-  "hs-ak":      { pasos:[{t:"🚌",m:"Bus directo Hollywood Studios → Animal Kingdom"}], tiempo:"~20 min", precio:"Gratis", nota:"Bus directo." },
-  // Fuera de Disney
-  "aoa-outlets_v":  { pasos:[{t:"🚗",m:"Uber/Lyft desde AoA hasta Vineland Premium Outlets"}], tiempo:"~15-20 min", precio:"~10-15$", nota:"No hay transporte Disney. Uber es la opción más cómoda. Los outlets están muy cerca de Disney." },
-  "mk-outlets_v":   { pasos:[{t:"🚗",m:"Uber/Lyft desde cualquier hotel Disney hasta Vineland Outlets"}], tiempo:"~15-25 min", precio:"~12-20$", nota:"Sin transporte Disney gratuito a los outlets. Uber sale rentable si vais en grupo." },
-  "aoa-walmart":    { pasos:[{t:"🚗",m:"Uber/Lyft hasta el Walmart más cercano (Vineland Ave)"}], tiempo:"~10-15 min", precio:"~8-12$", nota:"Imprescindible para ahorrar en agua, snacks y protector solar. El Walmart de Vineland Ave es el más usado por turistas Disney." },
-  "aoa-outlets_i":  { pasos:[{t:"🚗",m:"Uber/Lyft hasta International Drive Outlets (junto a Universal)"}], tiempo:"~25-30 min", precio:"~20-28$", nota:"Más lejos que Vineland. Solo merece si combináis con visita a I-Drive o Universal." },
+  "aoa-ak":     { pasos:[{t:"🚌",m:"Bus directo Art of Animation → Animal Kingdom"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Bus directo. Frecuencia cada 20 min." },
+  "aoa-ds":     { pasos:[{t:"🚌",m:"Bus directo Art of Animation → Disney Springs"}], tiempo:"~20 min", precio:"Gratis", nota:"Bus directo a Disney Springs desde todos los hoteles Disney." },
+  "aoa-pop":    { pasos:[{t:"🚶",m:"Pasarela peatonal sobre Hourglass Lake entre AoA y Pop Century"}], tiempo:"~5 min", precio:"Gratis", nota:"¡Sin transporte! El único camino peatonal entre dos hoteles Disney. Cruzas el lago." },
+  "aoa-cb":     { pasos:[{t:"🚡",m:"Skyliner desde AoA/Pop → Caribbean Beach (4 min)"}], tiempo:"~5-8 min", precio:"Gratis", nota:"Directo en Skyliner. Muy cómodo." },
+  // ── All-Stars ──
+  "asm-mk":     { pasos:[{t:"🚌",m:"Bus directo All-Star Music → Magic Kingdom"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Los tres All-Stars (Music, Sports, Movies) a veces comparten bus. Si llega el autobús de otro All-Star, sube igualmente — van al mismo destino." },
+  "asm-epcot":  { pasos:[{t:"🚌",m:"Bus directo All-Star Music → EPCOT"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Sin Skyliner — solo bus para todos los parques desde los All-Stars." },
+  "asm-hs":     { pasos:[{t:"🚌",m:"Bus directo All-Star Music → Hollywood Studios"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Bus directo. Sin Skyliner desde los All-Stars." },
+  "asm-ak":     { pasos:[{t:"🚌",m:"Bus directo All-Star Music → Animal Kingdom"}], tiempo:"~15-20 min", precio:"Gratis", nota:"Los All-Stars están muy cerca de Animal Kingdom — una de las rutas más cortas en bus." },
+  "asm-ds":     { pasos:[{t:"🚌",m:"Bus directo All-Star Music → Disney Springs"}], tiempo:"~20-25 min", precio:"Gratis", nota:"Bus directo." },
+  "ass-mk":     { pasos:[{t:"🚌",m:"Bus directo All-Star Sports → Magic Kingdom"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Los tres All-Stars a veces comparten bus entre ellos. Si llegas al All-Star Movies y viene el de Sports, sube." },
+  "ass-epcot":  { pasos:[{t:"🚌",m:"Bus directo All-Star Sports → EPCOT"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Solo bus desde los All-Stars. Sin Skyliner." },
+  "ass-hs":     { pasos:[{t:"🚌",m:"Bus directo All-Star Sports → Hollywood Studios"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Bus directo." },
+  "ass-ak":     { pasos:[{t:"🚌",m:"Bus directo All-Star Sports → Animal Kingdom"}], tiempo:"~15-20 min", precio:"Gratis", nota:"Muy cerca de Animal Kingdom. Ruta corta." },
+  "asm2-mk":    { pasos:[{t:"🚌",m:"Bus directo All-Star Movies → Magic Kingdom"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Los tres All-Stars comparten bus a veces. Si llega antes el de otro All-Star, sube — mismo destino." },
+  "asm2-epcot": { pasos:[{t:"🚌",m:"Bus directo All-Star Movies → EPCOT"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Solo bus. Sin Skyliner." },
+  "asm2-hs":    { pasos:[{t:"🚌",m:"Bus directo All-Star Movies → Hollywood Studios"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Bus directo." },
+  "asm2-ak":    { pasos:[{t:"🚌",m:"Bus directo All-Star Movies → Animal Kingdom"}], tiempo:"~15-20 min", precio:"Gratis", nota:"Muy cerca de Animal Kingdom." },
+  // ── Caribbean Beach ──
+  "cb-epcot":   { pasos:[{t:"🚡",m:"Skyliner desde Caribbean Beach → EPCOT (hub directo, sin transbordo)"}], tiempo:"~10 min", precio:"Gratis", nota:"Caribbean Beach es el hub del Skyliner — la ruta más directa. Sin transbordo." },
+  "cb-hs":      { pasos:[{t:"🚡",m:"Skyliner desde Caribbean Beach → Hollywood Studios"}], tiempo:"~5 min", precio:"Gratis", nota:"Muy rápido. El Skyliner es la mejor opción desde Caribbean Beach." },
+  "cb-aoa":     { pasos:[{t:"🚡",m:"Skyliner Caribbean Beach → Pop Century/AoA (4 min)"}], tiempo:"~5-8 min", precio:"Gratis", nota:"Transbordo en Caribbean Beach. Muy fácil." },
+  "cb-mk":      { pasos:[{t:"🚌",m:"Bus directo Caribbean Beach → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Sin monorail desde Caribbean Beach. Bus directo." },
+  "cb-ak":      { pasos:[{t:"🚌",m:"Bus directo Caribbean Beach → Animal Kingdom"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Bus directo." },
+  // ── Coronado Springs ──
+  "csr-mk":     { pasos:[{t:"🚌",m:"Bus directo Coronado Springs → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"El resort es grande — hay varias paradas internas. Comprueba cuál está más cerca de tu habitación." },
+  "csr-epcot":  { pasos:[{t:"🚌",m:"Bus directo Coronado Springs → EPCOT"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Solo bus. Sin Skyliner." },
+  "csr-hs":     { pasos:[{t:"🚌",m:"Bus directo Coronado Springs → Hollywood Studios"}], tiempo:"~20-30 min", precio:"Gratis", nota:"Bus directo." },
+  "csr-ak":     { pasos:[{t:"🚌",m:"Bus directo Coronado Springs → Animal Kingdom"}], tiempo:"~20-25 min", precio:"Gratis", nota:"Bus directo." },
+  // ── Port Orleans ──
+  "pors-mk":    { pasos:[{t:"🚌",m:"Bus directo Port Orleans Riverside → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Bus directo. El resort es grande — hay varias paradas." },
+  "pors-epcot": { pasos:[{t:"🚌",m:"Bus directo Port Orleans → EPCOT"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Solo bus." },
+  "pors-ds":    { pasos:[{t:"⛵",m:"Barca desde Port Orleans → Disney Springs (~30 min de trayecto por el río)"}], tiempo:"~30-40 min", precio:"Gratis", nota:"La barca es lenta pero muy bonita — por el río Sassagoula. Solo disponible en temporada. Alternativa: bus directo (más rápido)." },
+  // ── Riviera ──
+  "riv-epcot":  { pasos:[{t:"🚡",m:"Skyliner directo Riviera → EPCOT International Gateway (11 min)"}], tiempo:"~12 min", precio:"Gratis", nota:"Parada directa en EPCOT sin transbordo. Una de las mejores conexiones del resort." },
+  "riv-hs":     { pasos:[{t:"🚡",m:"Skyliner Riviera → Caribbean Beach (transbordo) → Hollywood Studios"}], tiempo:"~15 min", precio:"Gratis", nota:"Transbordo en Caribbean Beach. Rápido." },
+  "riv-mk":     { pasos:[{t:"🚌",m:"Bus directo Riviera → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Bus directo." },
+  // ── Contemporary / Monorail ──
+  "cont-mk":    { pasos:[{t:"🚶",m:"A pie desde Contemporary Resort → Magic Kingdom (pasarela directa)"}], tiempo:"~10 min", precio:"Gratis", nota:"¡El único hotel al que puedes ir andando a Magic Kingdom! La pasarela es icónica." },
+  "cont-epcot": { pasos:[{t:"🚝",m:"Monorail Contemporary → TTC (transbordo) → EPCOT"}], tiempo:"~20-25 min", precio:"Gratis", nota:"Monorail con transbordo en TTC. Alternativa: bus directo." },
+  "cont-hs":    { pasos:[{t:"🚌",m:"Bus directo Contemporary → Hollywood Studios"}], tiempo:"~25-30 min", precio:"Gratis", nota:"Bus directo. Sin conexión directa en monorail a HS." },
+  "cont-ak":    { pasos:[{t:"🚌",m:"Bus directo Contemporary → Animal Kingdom"}], tiempo:"~25-30 min", precio:"Gratis", nota:"Bus directo." },
+  "cont-poly":  { pasos:[{t:"🚝",m:"Monorail Contemporary → Polynesian Village (1 parada)"}], tiempo:"~5 min", precio:"Gratis", nota:"Visita rápida al Polynesian para cenar o pasear. Muy fácil en monorail." },
+  "cont-gc":    { pasos:[{t:"🚝",m:"Monorail Contemporary → Grand Floridian (2 paradas)"}], tiempo:"~8 min", precio:"Gratis", nota:"Fácil en monorail." },
+  // ── Polynesian ──
+  "poly-mk":    { pasos:[{t:"🚝",m:"Monorail Polynesian → Magic Kingdom"}], tiempo:"~5 min", precio:"Gratis", nota:"Una parada. También hay barca al TTC desde el Polynesian." },
+  "poly-epcot": { pasos:[{t:"🚝",m:"Monorail Polynesian → TTC (transbordo) → EPCOT"}], tiempo:"~20 min", precio:"Gratis", nota:"Transbordo en TTC necesario." },
+  "poly-gc":    { pasos:[{t:"🚝",m:"Monorail Polynesian → Grand Floridian (1 parada)"}], tiempo:"~5 min", precio:"Gratis", nota:"Ideal para cenar en el Grand Floridian." },
+  // ── Grand Floridian ──
+  "gc-mk":      { pasos:[{t:"🚝",m:"Monorail Grand Floridian → Magic Kingdom"},{t:"🚶",m:"O a pie por la pasarela (15-20 min andando)"}], tiempo:"~5-20 min", precio:"Gratis", nota:"Con monorail en 5 min. O puedes pasear andando por la orilla del lago — muy bonito." },
+  "gc-epcot":   { pasos:[{t:"🚝",m:"Monorail Grand Floridian → TTC (transbordo) → EPCOT"}], tiempo:"~20-25 min", precio:"Gratis", nota:"Transbordo en TTC." },
+  // ── Beach Club / Yacht Club ──
+  "bc-epcot":   { pasos:[{t:"🚶",m:"A pie desde Beach Club/Yacht Club → EPCOT International Gateway (5-10 min andando)"}], tiempo:"~8 min", precio:"Gratis", nota:"La entrada por International Gateway es la trasera de EPCOT (entre Francia y UK). Ideal para cenar en EPCOT World Showcase." },
+  "bc-hs":      { pasos:[{t:"⛵",m:"Barca Friendship desde BoardWalk área → Hollywood Studios"},{t:"🚶",m:"O a pie (~20 min por el lago)"}], tiempo:"~15-20 min", precio:"Gratis", nota:"La barca es preciosa. También puedes ir andando si el tiempo acompaña." },
+  "bc-mk":      { pasos:[{t:"🚌",m:"Bus directo Beach Club → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Bus directo. Sin monorail desde esta zona." },
+  // ── BoardWalk ──
+  "bw-epcot":   { pasos:[{t:"🚶",m:"A pie desde BoardWalk Inn → EPCOT International Gateway (~5 min)"}], tiempo:"~5 min", precio:"Gratis", nota:"¡La más corta de todo WDW al EPCOT! Literalmente a 2 minutos andando." },
+  "bw-hs":      { pasos:[{t:"⛵",m:"Barca Friendship desde BoardWalk → Hollywood Studios"},{t:"🚶",m:"O a pie (~20 min)"}], tiempo:"~15 min", precio:"Gratis", nota:"La barca sale desde el embarcadero del BoardWalk. Muy pintoresco." },
+  // ── Wilderness Lodge ──
+  "wl-mk":      { pasos:[{t:"⛵",m:"Barca desde Wilderness Lodge → Magic Kingdom"}], tiempo:"~20 min", precio:"Gratis", nota:"La barca es el transporte estrella del Wilderness Lodge — vista preciosa al Magic Kingdom. También hay bus." },
+  // ── Animal Kingdom Lodge ──
+  "ak_lodge-ak":{ pasos:[{t:"🚌",m:"Bus directo AK Lodge → Animal Kingdom (muy corto)"}], tiempo:"~10-15 min", precio:"Gratis", nota:"La ventaja principal de este hotel: es el más cercano a Animal Kingdom. El bus tarda muy poco." },
+  "ak_lodge-mk":{ pasos:[{t:"🚌",m:"Bus directo AK Lodge → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Bus directo. Solo bus para todos los parques desde AK Lodge." },
+  // ── Saratoga Springs ──
+  "saratoga-ds":{ pasos:[{t:"🚶",m:"A pie desde Saratoga Springs → Disney Springs (~10-15 min)"},{t:"⛵",m:"O barca desde el embarcadero"}], tiempo:"~10-15 min", precio:"Gratis", nota:"El hotel más cercano a Disney Springs. Puedes ir andando fácilmente." },
+  "saratoga-mk":{ pasos:[{t:"🚌",m:"Bus directo Saratoga Springs → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Bus directo." },
+  // ── Swan & Dolphin ──
+  "swan-epcot": { pasos:[{t:"🚶",m:"A pie desde Swan/Dolphin → EPCOT International Gateway (~10-15 min)"},{t:"⛵",m:"O barca Friendship"}], tiempo:"~10-15 min", precio:"Gratis", nota:"Aunque no son hoteles Disney, tienen acceso a transporte Disney gratuito." },
+  "swan-hs":    { pasos:[{t:"⛵",m:"Barca Friendship desde Swan/Dolphin → Hollywood Studios"},{t:"🚶",m:"O a pie (~15-20 min)"}], tiempo:"~15 min", precio:"Gratis", nota:"Barca o caminando. Los dos funcionan bien." },
+  "swan-mk":    { pasos:[{t:"🚌",m:"Bus Disney desde Swan/Dolphin → Magic Kingdom"}], tiempo:"~25-35 min", precio:"Gratis", nota:"Tienen acceso a buses Disney aunque no son hoteles oficiales Disney." },
+  // ── Externos ──
+  "ext_bonnet-ds":  { pasos:[{t:"🚌",m:"Algunos hoteles de la zona Disney Springs ofrecen shuttle gratuito a Disney Springs"}], tiempo:"~10-20 min", precio:"Gratis / consultar hotel", nota:"Hoteles como los de Hotel Plaza Boulevard tienen acceso a buses Disney a los parques. Confirma con tu hotel antes del viaje." },
+  "ext_bonnet-mk":  { pasos:[{t:"🚌",m:"Buses Disney desde algunos hoteles de Hotel Plaza Blvd → parques"}], tiempo:"~20-30 min", precio:"Gratis (hoteles Plaza)", nota:"Los hoteles de Hotel Plaza Boulevard (B Resort, Hilton, DoubleTree...) tienen acceso a buses Disney a los 4 parques." },
+  "ext_ird-mk":     { pasos:[{t:"🚗",m:"Uber/Lyft desde hotel I-Drive → Magic Kingdom"},{t:"🚗",m:"O alquiler de coche + parking de pago"}], tiempo:"~25-35 min", precio:"~15-25$ Uber · Parking: 30$/día", nota:"Desde I-Drive o zona Universal no hay transporte Disney gratuito. Uber o coche de alquiler son las únicas opciones cómodas." },
+  "ext_ird-epcot":  { pasos:[{t:"🚗",m:"Uber/Lyft desde hotel I-Drive → EPCOT"}], tiempo:"~25-30 min", precio:"~15-22$ Uber · Parking: 30$/día", nota:"Sin transporte gratuito desde hoteles externos en I-Drive." },
+  // Fuera
+  "aoa-outlets_v":  { pasos:[{t:"🚗",m:"Uber/Lyft desde AoA → Outlets Vineland"}], tiempo:"~15-20 min", precio:"~10-15$", nota:"No hay transporte Disney. Uber la opción más cómoda desde los hoteles Disney." },
+  "asm-outlets_v":  { pasos:[{t:"🚗",m:"Uber/Lyft desde All-Stars → Outlets Vineland"}], tiempo:"~15-20 min", precio:"~10-15$", nota:"Los All-Stars están cerca de los outlets. Uber económico desde aquí." },
+  "mk-outlets_v":   { pasos:[{t:"🚗",m:"Uber/Lyft desde Magic Kingdom → Outlets Vineland"}], tiempo:"~15-25 min", precio:"~12-20$", nota:"Sin transporte Disney a los outlets. Uber o coche de alquiler." },
+  "aoa-walmart":    { pasos:[{t:"🚗",m:"Uber/Lyft → Walmart Vineland Ave (el más cercano a Disney)"}], tiempo:"~10-15 min", precio:"~8-12$", nota:"Imprescindible para agua, snacks y protector solar a precios normales. Abre 24h." },
+  "asm-walmart":    { pasos:[{t:"🚗",m:"Uber/Lyft → Walmart más cercano"}], tiempo:"~10-15 min", precio:"~8-12$", nota:"Muy cerca desde los All-Stars." },
+  "aoa-outlets_i":  { pasos:[{t:"🚗",m:"Uber/Lyft → Outlets International Drive (junto a Universal)"}], tiempo:"~25-30 min", precio:"~20-28$", nota:"Más lejos. Solo merece combinarlo con visita a I-Drive o Universal." },
 };
 
 // Función para obtener la ruta (bidireccional)
@@ -2229,8 +2309,18 @@ function PlanificadorTraslados() {
 
   const grupos = [
     { label: "🎢 Parques Disney", items: LUGARES_WDW.filter(l => l.tipo === "parque") },
-    { label: "🏨 Hoteles Disney", items: LUGARES_WDW.filter(l => l.tipo === "hotel") },
-    { label: "🛍️ Fuera de Disney", items: LUGARES_WDW.filter(l => l.tipo === "fuera") },
+    { label: "🛍️ Disney Springs", items: LUGARES_WDW.filter(l => l.tipo === "otro") },
+    { label: "🚡 Value con Skyliner", items: LUGARES_WDW.filter(l => l.tipo === "value_sky") },
+    { label: "🚌 All-Stars (solo bus)", items: LUGARES_WDW.filter(l => l.tipo === "value_bus") },
+    { label: "🌴 Moderate con Skyliner", items: LUGARES_WDW.filter(l => l.tipo === "mod_sky") },
+    { label: "🌿 Moderate bus/barca", items: LUGARES_WDW.filter(l => l.tipo === "mod_bus") },
+    { label: "🚝 Deluxe Monorail", items: LUGARES_WDW.filter(l => l.tipo === "dlx_mono") },
+    { label: "🚡 Deluxe Skyliner", items: LUGARES_WDW.filter(l => l.tipo === "dlx_sky") },
+    { label: "⛵ Deluxe Barca/a pie", items: LUGARES_WDW.filter(l => l.tipo === "dlx_barca") },
+    { label: "🏨 Deluxe solo bus", items: LUGARES_WDW.filter(l => l.tipo === "dlx_bus") },
+    { label: "🦢 Swan & Dolphin", items: LUGARES_WDW.filter(l => l.tipo === "externo_disney") },
+    { label: "🏩 Hoteles externos", items: LUGARES_WDW.filter(l => l.tipo === "externo") },
+    { label: "🛒 Fuera de Disney", items: LUGARES_WDW.filter(l => l.tipo === "fuera") },
   ];
 
   return (
