@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Experta Universal Orlando – Los Viajes de Moli</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --morado: #5B2D8E;
+    --rosa: #F5287A;
+    --teal: #2BBCD4;
+    --verde: #2EC866;
+    --dorado: #F0A500;
+    --dark: #1a0a2e;
+    --light: #f7f4ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Nunito', sans-serif; background: var(--light); color: #222; line-height: 1.6; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(140deg, #0d0520 0%, #3a1270 45%, #7b1fa2 75%, #F5287A 100%);
+    padding: 52px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-stars {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(255,255,255,.06) 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,.04) 1px, transparent 1px),
+                radial-gradient(circle at 50% 10%, rgba(255,255,255,.08) 1px, transparent 1px);
+    background-size: 80px 80px, 60px 60px, 40px 40px;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(240,165,0,.2);
+    border: 1.5px solid var(--dorado);
+    border-radius: 20px;
+    padding: 5px 18px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--dorado);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(34px, 8vw, 62px);
+    color: #fff;
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+  .hero h1 em { color: var(--dorado); font-style: normal; }
+  .hero p { color: rgba(255,255,255,.8); font-size: 15px; max-width: 540px; margin: 0 auto 22px; }
+  .hero-logo { font-family: 'Fredoka One', cursive; color: var(--dorado); font-size: 13px; opacity:.85; letter-spacing:1px; }
+
+  /* ── QUICK TIPS CHIPS ── */
+  .chips-wrap {
+    background: white;
+    padding: 20px 20px 16px;
+    border-bottom: 2px solid #ede8f9;
+  }
+  .chips-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #999; margin-bottom: 10px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700;
+    white-space: nowrap;
+  }
+  .chip.p { background:#f0e8ff; color:var(--morado); }
+  .chip.r { background:#fff0f5; color:#b01060; }
+  .chip.t { background:#e8f9fc; color:#1a8fa8; }
+  .chip.g { background:#e8fff3; color:#1a7a45; }
+  .chip.d { background:#fffbf0; color:#a07000; }
+
+  /* ── WRAP ── */
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── SECCIÓN: SISTEMAS (SR, RS, Express) ── */
+  .sistemas-section {
+    background: linear-gradient(135deg, #1a0a2e, #3d1a6e);
+    padding: 36px 20px;
+    margin: 0;
+  }
+  .sistemas-section .stitle {
+    font-family: 'Fredoka One', cursive;
+    color: var(--dorado);
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .sistemas-section .ssub {
+    color: rgba(255,255,255,.55); font-size: 13px; text-align: center; margin-bottom: 26px;
+  }
+  .sistemas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .sistema-card {
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+    padding: 20px 18px;
+  }
+  .sistema-card .sc-icon { font-size: 28px; margin-bottom: 8px; }
+  .sistema-card h3 {
+    font-family: 'Fredoka One', cursive;
+    color: white; font-size: 17px; margin-bottom: 6px;
+  }
+  .sistema-card p { font-size: 13px; color: rgba(255,255,255,.72); line-height: 1.55; }
+  .sistema-card .sc-alert {
+    margin-top: 10px;
+    background: rgba(245,40,122,.15);
+    border-left: 3px solid var(--rosa);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #ffb3d0;
+    font-weight: 700;
+  }
+  .sistema-card .sc-tip {
+    margin-top: 10px;
+    background: rgba(43,188,212,.12);
+    border-left: 3px solid var(--teal);
+    border-radius: 0 8px 8px 0;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #9eeaf5;
+    font-weight: 700;
+  }
+
+  /* ── PARK HEADER ── */
+  .park-section { padding: 32px 0 8px; }
+  .park-header {
+    display: flex; align-items: center; gap: 14px;
+    padding-bottom: 14px;
+    border-bottom: 3px solid;
+    margin-bottom: 22px;
+  }
+  .ph-epic { border-color: var(--morado); }
+  .ph-islands { border-color: var(--teal); }
+  .ph-studios { border-color: var(--rosa); }
+  .park-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; flex-shrink: 0;
+  }
+  .pi-epic { background: linear-gradient(135deg, var(--morado), #9b59b6); }
+  .pi-islands { background: linear-gradient(135deg, var(--teal), #1a8fa8); }
+  .pi-studios { background: linear-gradient(135deg, var(--rosa), #c0145a); }
+  .park-header h2 { font-family: 'Fredoka One', cursive; font-size: 24px; color: #1a0a2e; }
+  .park-sub { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #999; }
+
+  /* ── ORDEN DE ATAQUE (timeline) ── */
+  .orden-section {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 3px 14px rgba(91,45,142,.08);
+    border: 2px solid #ede8f9;
+  }
+  .orden-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 16px;
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 14px;
+  }
+  .orden-timeline { display: flex; flex-direction: column; gap: 0; }
+  .ot-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px dashed #ede8f9;
+  }
+  .ot-item:last-child { border-bottom: none; }
+  .ot-time {
+    font-size: 11px; font-weight: 800; text-transform: uppercase;
+    letter-spacing: .5px; white-space: nowrap;
+    min-width: 52px; padding-top: 2px;
+  }
+  .ot-content { font-size: 13px; color: #333; }
+  .ot-content strong { color: #1a0a2e; }
+  .ot-bullet {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+  }
+
+  /* ── ZONA CARDS ── */
+  .zona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .zona-card {
+    background: white; border-radius: 18px; overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,.07);
+  }
+  .zc-header { padding: 14px 18px 10px; display: flex; align-items: flex-start; gap: 10px; }
+  .zc-emoji { font-size: 30px; flex-shrink: 0; }
+  .zc-tag {
+    font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .8px;
+    border-radius: 6px; padding: 2px 8px; display: inline-block; margin-bottom: 4px;
+  }
+  .zc-header h3 { font-family: 'Fredoka One', cursive; font-size: 17px; color: #1a0a2e; line-height: 1.2; }
+  .zc-body { padding: 2px 18px 16px; }
+
+  /* ── LISTA ATRACCIONES ── */
+  .att-list { list-style: none; margin-bottom: 10px; }
+  .att-list li { display: flex; align-items: flex-start; gap: 7px; padding: 7px 0; border-bottom: 1px solid #f3f0fa; }
+  .att-list li:last-child { border-bottom: none; }
+  .al-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  .al-body { flex: 1; }
+  .al-name { font-size: 13.5px; font-weight: 800; color: #1a0a2e; }
+  .al-desc { font-size: 12px; color: #666; display: block; margin-top: 1px; line-height: 1.45; }
+  .al-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+  .badge {
+    font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .b-must { background:#fff0f5; color:#c0145a; border:1px solid #ffb3d0; }
+  .b-sr   { background:#e8f9fc; color:#1a8fa8; border:1px solid #b0e8f5; }
+  .b-kids { background:#e8fff3; color:#1a7a45; border:1px solid #b0f0c8; }
+  .b-show { background:#fffbf0; color:#a07000; border:1px solid #ffd97a; }
+  .b-warn { background:#fff5f0; color:#b04000; border:1px solid #ffcaaa; }
+  .b-new  { background:#f0e8ff; color:#5B2D8E; border:1px solid #cbb0f5; }
+  .b-p2p  { background:#f5fff0; color:#1a5a1a; border:1px solid #aaeaaa; }
+
+  /* ── SPEECH BUBBLE ── */
+  .bubble {
+    border-radius: 14px 14px 14px 4px;
+    padding: 12px 16px;
+    margin-top: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    display: flex; gap: 9px; align-items: flex-start;
+    line-height: 1.5;
+  }
+  .bubble-icon { font-size: 18px; flex-shrink: 0; }
+  .bub-p  { background:#f0e8ff; color:#4a1f7a; }
+  .bub-r  { background:#fff0f5; color:#a0104a; }
+  .bub-t  { background:#e8f9fc; color:#1a6f88; }
+  .bub-g  { background:#e8fff3; color:#1a6040; }
+  .bub-d  { background:#fffbf0; color:#8a6000; }
+  .bub-red {
+    background:#fff0f0; color:#b00000; border-left: 3px solid #ff4444;
+    border-radius: 0 14px 14px 14px;
+  }
+
+  /* ── SECCIÓN ESPECIAL HOGWARTS EXPRESS ── */
+  .hp-express {
+    background: linear-gradient(135deg, #0d0520, #1a2a60);
+    border-radius: 18px;
+    padding: 22px 20px;
+    margin: 16px 0 24px;
+    border: 1px solid rgba(200,180,255,.2);
+  }
+  .hp-express h3 {
+    font-family: 'Fredoka One', cursive;
+    color: var(--dorado); font-size: 18px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .hp-express-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .hp-train-card {
+    background: rgba(255,255,255,.07);
+    border-radius: 12px; padding: 14px;
+    border: 1px solid rgba(255,255,255,.1);
+  }
+  .hp-train-card .direction {
+    font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 6px;
+  }
+  .hp-train-card p { font-size: 12.5px; color: rgba(255,255,255,.75); line-height: 1.5; }
+  .hp-train-card .route {
+    font-family: 'Fredoka One', cursive; color: white; font-size: 13px; margin-bottom: 6px;
+  }
+
+  /* ── FIRE EFFECT BOX ── */
+  .fire-box {
+    background: linear-gradient(135deg, #ff6b00, #ff3300);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin: 16px 0;
+    display: flex; gap: 14px; align-items: flex-start;
+    color: white;
+  }
+  .fire-box .fi { font-size: 36px; flex-shrink: 0; }
+  .fire-box h4 { font-family: 'Fredoka One', cursive; font-size: 17px; margin-bottom: 4px; }
+  .fire-box p { font-size: 12.5px; opacity: .9; line-height: 1.5; }
+
+  /* ── NOCHE BOX ── */
+  .noche-box {
+    background: linear-gradient(135deg, #0d0520, #2d1060);
+    border-radius: 16px;
+    padding: 18px 20px;
+    margin: 16px 0;
+    display: flex; gap: 14px; align-items: flex-start;
+    border: 1px solid rgba(240,165,0,.3);
+  }
+  .noche-box .ni { font-size: 36px; flex-shrink: 0; }
+  .noche-box h4 { font-family: 'Fredoka One', cursive; font-size: 17px; color: var(--dorado); margin-bottom: 4px; }
+  .noche-box p { font-size: 12.5px; color: rgba(255,255,255,.75); line-height: 1.5; }
+
+  /* ── ESTRATEGIA DÍAS ── */
+  .strat-section {
+    background: linear-gradient(135deg, #1a0a2e, #3d1a6e);
+    padding: 36px 20px;
+  }
+  .strat-section .stitle { font-family:'Fredoka One',cursive; color:var(--dorado); font-size:24px; text-align:center; margin-bottom:4px; }
+  .strat-section .ssub { color:rgba(255,255,255,.5); font-size:13px; text-align:center; margin-bottom:26px; }
+  .strat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; max-width:900px; margin:0 auto; }
+  .strat-card { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:16px; padding:18px 16px; }
+  .strat-card .day { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:var(--dorado); margin-bottom:6px; }
+  .strat-card h3 { font-family:'Fredoka One',cursive; color:white; font-size:16px; margin-bottom:10px; }
+  .strat-card ul { list-style:none; }
+  .strat-card li { color:rgba(255,255,255,.75); font-size:12.5px; padding:4px 0 4px 16px; position:relative; border-bottom:1px solid rgba(255,255,255,.06); }
+  .strat-card li:last-child { border-bottom:none; }
+  .strat-card li::before { content:'→'; position:absolute; left:0; color:var(--teal); font-size:11px; }
+
+  /* ── PRIORIDADES + RESTAURANTES ── */
+  .prior-rest-section {
+    background: white;
+    padding: 36px 20px;
+    border-top: 3px solid #ede8f9;
+    border-bottom: 3px solid #ede8f9;
+  }
+  .prior-rest-section .stitle { font-family:'Fredoka One',cursive; font-size:24px; color:var(--morado); text-align:center; margin-bottom:4px; }
+  .prior-rest-section .ssub { color:#888; font-size:13px; text-align:center; margin-bottom:26px; }
+  .pr-park-block { max-width:900px; margin:0 auto 32px; }
+  .pr-park-title {
+    font-family:'Fredoka One',cursive; font-size:19px;
+    display:flex; align-items:center; gap:10px;
+    padding:10px 14px; border-radius:12px; margin-bottom:14px;
+    color:white;
+  }
+  .pr-park-title.epic   { background:linear-gradient(135deg,var(--morado),#9b59b6); }
+  .pr-park-title.islands{ background:linear-gradient(135deg,var(--teal),#1a8fa8); }
+  .pr-park-title.studios{ background:linear-gradient(135deg,var(--rosa),#c0145a); }
+  .pr-cols { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  /* Prioridades */
+  .pr-prior {
+    background:#f7f4ff; border-radius:14px; padding:16px;
+    border-left:4px solid var(--morado);
+  }
+  .pr-prior.teal  { background:#f0fbfd; border-left-color:var(--teal); }
+  .pr-prior.rosa  { background:#fff5f8; border-left-color:var(--rosa); }
+  .pr-prior h4 { font-family:'Fredoka One',cursive; font-size:14px; color:#1a0a2e; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .pr-prior ol { padding-left:18px; }
+  .pr-prior ol li { font-size:12.5px; color:#333; padding:4px 0; border-bottom:1px dashed #e0d8f5; }
+  .pr-prior ol li:last-child { border-bottom:none; }
+  .pr-prior ol li strong { color:#1a0a2e; }
+  .pr-prior .pr-note { font-size:11.5px; color:#888; margin-top:8px; font-style:italic; }
+  /* Restaurantes */
+  .pr-rest {
+    background:#fff9f0; border-radius:14px; padding:16px;
+    border-left:4px solid var(--dorado);
+  }
+  .pr-rest h4 { font-family:'Fredoka One',cursive; font-size:14px; color:#1a0a2e; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+  .rest-item { padding:6px 0; border-bottom:1px dashed #fde8c0; }
+  .rest-item:last-child { border-bottom:none; }
+  .rest-name { font-size:13px; font-weight:800; color:#1a0a2e; }
+  .rest-type { font-size:10px; font-weight:800; border-radius:5px; padding:1px 6px; margin-left:5px; }
+  .rt-sit  { background:#e8f9fc; color:#1a8fa8; }
+  .rt-cs   { background:#e8fff3; color:#1a7a45; }
+  .rt-snack{ background:#f4eeff; color:#5B2D8E; }
+  .rest-desc { font-size:12px; color:#666; display:block; margin-top:2px; }
+  .qr-box {
+    max-width:900px; margin:0 auto;
+    background:linear-gradient(135deg,#e8fff3,#d0f5e8);
+    border-radius:14px; padding:16px 18px;
+    display:flex; gap:12px; align-items:flex-start;
+    border:2px solid #b0f0c8;
+  }
+  .qr-box .qi { font-size:28px; flex-shrink:0; }
+  .qr-box h4 { font-family:'Fredoka One',cursive; font-size:16px; color:#1a5a3a; margin-bottom:4px; }
+  .qr-box p  { font-size:12.5px; color:#2a6a4a; line-height:1.55; }
+
+  /* ── VARITAS ── */
+  .varitas-section {
+    background: linear-gradient(135deg, #0d0520, #1a0a40, #2d0a60);
+    padding: 36px 20px;
+  }
+  .varitas-section .stitle { font-family:'Fredoka One',cursive; font-size:24px; color:var(--dorado); text-align:center; margin-bottom:4px; }
+  .varitas-section .ssub { color:rgba(255,255,255,.55); font-size:13px; text-align:center; margin-bottom:26px; }
+  .varitas-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; max-width:900px; margin:0 auto 20px; }
+  .varita-card {
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.13);
+    border-radius:16px; padding:18px 16px;
+  }
+  .varita-card .vc-icon { font-size:26px; margin-bottom:8px; }
+  .varita-card h3 { font-family:'Fredoka One',cursive; color:white; font-size:16px; margin-bottom:8px; }
+  .varita-card p { font-size:12.5px; color:rgba(255,255,255,.72); line-height:1.55; }
+  .varita-card .vc-price {
+    margin-top:10px; display:inline-block;
+    background:rgba(240,165,0,.2); border:1px solid var(--dorado);
+    border-radius:8px; padding:4px 10px;
+    font-size:12px; font-weight:800; color:var(--dorado);
+  }
+  .varita-card .vc-alert {
+    margin-top:10px; background:rgba(245,40,122,.15);
+    border-left:3px solid var(--rosa); border-radius:0 8px 8px 0;
+    padding:8px 10px; font-size:12px; color:#ffb3d0; font-weight:700;
+  }
+  .varita-card .vc-tip {
+    margin-top:10px; background:rgba(43,188,212,.12);
+    border-left:3px solid var(--teal); border-radius:0 8px 8px 0;
+    padding:8px 10px; font-size:12px; color:#9eeaf5; font-weight:700;
+  }
+  .ubicaciones-list { list-style:none; margin-top:10px; }
+  .ubicaciones-list li {
+    font-size:12.5px; color:rgba(255,255,255,.75);
+    padding:5px 0; border-bottom:1px solid rgba(255,255,255,.07);
+    display:flex; gap:8px; align-items:flex-start;
+  }
+  .ubicaciones-list li:last-child { border-bottom:none; }
+  .ubicaciones-list .ul-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+  .ubicaciones-list .ul-name { font-weight:800; color:white; font-size:13px; }
+  .ubicaciones-list .ul-desc { color:rgba(255,255,255,.6); font-size:12px; display:block; }
+
+  /* ── FAMILIAS ── */
+  .familias-section {
+    background: linear-gradient(135deg, #f0fff8, #e8f9fc);
+    padding: 36px 20px;
+    border-top: 3px solid #b0f0d0;
+    border-bottom: 3px solid #b0f0d0;
+  }
+  .familias-section .stitle { font-family:'Fredoka One',cursive; font-size:24px; color:var(--verde); text-align:center; margin-bottom:4px; }
+  .familias-section .ssub { color:#559977; font-size:13px; text-align:center; margin-bottom:26px; }
+  .familias-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; max-width:900px; margin:0 auto 20px; }
+  .fam-card { background:white; border-radius:16px; padding:18px 16px; box-shadow:0 2px 10px rgba(46,200,102,.1); border-left:4px solid; }
+  .fam-card.verde { border-left-color:var(--verde); }
+  .fam-card.teal  { border-left-color:var(--teal); }
+  .fam-card.rosa  { border-left-color:var(--rosa); }
+  .fam-card.dorado{ border-left-color:var(--dorado); }
+  .fam-card .fc-icon { font-size:26px; margin-bottom:8px; }
+  .fam-card h3 { font-family:'Fredoka One',cursive; font-size:16px; color:#1a0a2e; margin-bottom:6px; }
+  .fam-card p { font-size:12.5px; color:#444; line-height:1.55; }
+  .playground-list { list-style:none; margin-top:8px; }
+  .playground-list li { font-size:12.5px; padding:5px 0; border-bottom:1px solid #f0f0f0; display:flex; gap:7px; align-items:flex-start; }
+  .playground-list li:last-child { border-bottom:none; }
+  .playground-list .pl-icon { font-size:14px; flex-shrink:0; margin-top:1px; }
+  .playground-list .pl-name { font-weight:800; color:#1a0a2e; font-size:13px; }
+  .playground-list .pl-desc { color:#666; font-size:12px; display:block; }
+
+  /* ── LOCKERS ── */
+  .lockers-section {
+    background: white;
+    padding: 36px 20px;
+    border-top: 3px solid #ede8f9;
+    border-bottom: 3px solid #ede8f9;
+  }
+  .lockers-section .stitle {
+    font-family: 'Fredoka One', cursive;
+    font-size: 24px;
+    color: var(--morado);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .lockers-section .ssub {
+    color: #888; font-size: 13px; text-align: center; margin-bottom: 26px;
+  }
+  .lockers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    max-width: 900px;
+    margin: 0 auto 20px;
+  }
+  .locker-card {
+    border-radius: 16px;
+    padding: 18px 16px;
+    border: 2px solid;
+  }
+  .lc-free   { background:#e8fff3; border-color:#b0f0c8; }
+  .lc-paid   { background:#fff5f0; border-color:#ffc0a0; }
+  .lc-epic   { background:#f0e8ff; border-color:#cbb0f5; }
+  .lc-trick  { background:#e8f9fc; border-color:#b0e8f5; }
+  .locker-card .lc-icon { font-size:26px; margin-bottom:8px; }
+  .locker-card h3 { font-family:'Fredoka One',cursive; font-size:16px; margin-bottom:6px; color:#1a0a2e; }
+  .locker-card p { font-size:12.5px; color:#444; line-height:1.55; }
+  .locker-card .lc-dim {
+    margin-top: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #888;
+  }
+  .locker-warning {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ── FOOTER ── */
+  .footer { background: #0d0520; text-align:center; padding:28px 20px; }
+  .footer p { color:rgba(255,255,255,.4); font-size:12px; }
+  .footer strong { color:var(--dorado); }
+
+  .divider { height:1px; background:linear-gradient(to right,transparent,#d0c0f0,transparent); margin:8px 0; }
+  .spacer { height: 8px; }
+
+  @media(max-width:600px) {
+    .zona-grid, .sistemas-grid, .strat-grid { grid-template-columns:1fr; }
+    .hp-express-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-stars"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🎢 Guía Experta · Agente Oficial</div>
+    <h1>Universal Orlando<br><em>como una experta</em></h1>
+    <p>Epic Universe · Islands of Adventure · Universal Studios Florida<br>Estrategia real, orden de ataque, trucos de agente</p>
+    <div class="hero-logo">✨ losviajesdemoli.com</div>
+  </div>
+</div>
+
+<!-- CHIPS RÁPIDOS -->
+<div class="chips-wrap">
+  <div class="chips-label">Lo primero que tienes que saber</div>
+  <div class="chips">
+    <span class="chip p">⏰ Llega cuanto antes — en Epic, los primeros en cola son los primeros en entrar</span>
+    <span class="chip r">📱 App Universal imprescindible</span>
+    <span class="chip t">🎟️ Park-to-Park = 2 parques mismo día</span>
+    <span class="chip g">🏨 Hotel on-site = Early Entry + Express gratis</span>
+    <span class="chip d">🌙 Quédate hasta el cierre — la noche es otro parque</span>
+    <span class="chip p">💧 Atracciones de agua por la mañana</span>
+  </div>
+</div>
+
+<!-- SISTEMAS CLAVE -->
+<div class="sistemas-section">
+  <div class="stitle">🧠 Los 3 sistemas que debes dominar</div>
+  <p class="ssub">Conocerlos marca la diferencia entre un día con colas de 2h y un día perfecto</p>
+  <div class="sistemas-grid">
+
+    <div class="sistema-card">
+      <div class="sc-icon">👤</div>
+      <h3>Single Rider</h3>
+      <p>Cola separada para quien acepta ir solo en el vehículo — no importa si vas en grupo. En atracciones con 4 asientos por fila, la espera puede ser <strong>hasta 5 veces más corta</strong> que la cola estándar.</p>
+      <div class="sc-tip">✅ Úsalo en: Hagrid's, VelociCoaster, Gringotts, Battle at the Ministry, Monsters Unchained</div>
+      <div class="sc-alert">⚠️ No funciona con niños pequeños — separáis el grupo. Y ojo: en Epic Universe la fila de Single Rider también se ha masificado — comprueba tiempos antes de entrar.</div>
+    </div>
+
+    <div class="sistema-card">
+      <div class="sc-icon">🔄</div>
+      <h3>Rider Switch</h3>
+      <p>Cuando un miembro del grupo no puede subir (bebé, talla baja, miedo...), el adulto que espera con el niño recibe un pase para subir directamente después, <strong>sin hacer cola de nuevo</strong>. </p>
+      <div class="sc-tip">✅ Pídelo al team member en la entrada de la atracción. No tienes que esperar a que salga el grupo.</div>
+      <div class="sc-alert">⚠️ Solo funciona en atracciones con requisito de talla mínima. Úsalo siempre que alguien del grupo no pueda subir.</div>
+    </div>
+
+    <div class="sistema-card">
+      <div class="sc-icon">⚡</div>
+      <h3>Universal Express Pass</h3>
+      <p>Salta la cola estándar en la mayoría de atracciones. Se compra aparte. El precio sube según la demanda del día — puede agotarse.</p>
+      <div class="sc-tip">🏨 Los hoteles on-site premiere (Hard Rock, Royal Pacific, Portofino Bay) lo incluyen ilimitado — a veces sale más rentable que comprar el pase.</div>
+      <div class="sc-alert">⚠️ Epic Universe tiene su propio Express Pass. No es válido el de Studios o Islands. Confirma al comprar cuántos parques incluye.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EPIC UNIVERSE -->
+<div class="wrap">
+  <div class="park-section">
+    <div class="park-header ph-epic">
+      <div class="park-icon pi-epic">🌌</div>
+      <div>
+        <div class="park-sub">Nuevo · Abierto mayo 2025 · 5 mundos</div>
+        <h2>Epic Universe</h2>
+      </div>
+    </div>
+
+    <!-- ORDEN DE ATAQUE EPIC -->
+    <div class="orden-section">
+      <div class="orden-title" style="color:var(--morado)">🗺️ Orden de ataque — Epic Universe</div>
+      <div class="bubble bub-p" style="margin-bottom:14px;">
+        <div class="bubble-icon">🏨</div>
+        <div><strong>Early Park Entry solo para hoteles on-site de Universal.</strong> Si te alojas en Hard Rock, Royal Pacific, Portofino Bay, Aventura o Cabana Bay (estos dos últimos solo algunos parques), puedes entrar 1 hora antes que el público general. Si no te alojas en hotel Universal, <strong>no hay Early Entry en Epic</strong> — pero cuanto antes llegues a la cola de entrada, antes accedes cuando abran las puertas. Lo ideal: llegar a la cola al menos 30 min antes de la apertura oficial.</div>
+      </div>
+      <div class="orden-timeline">
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--dorado)"></div>
+          <div class="ot-time" style="color:var(--dorado)">Apertura</div>
+          <div class="ot-content"><strong>Ve directo a tu mundo prioritario.</strong> Si es Super Nintendo World → Mario Kart o Mine Cart Madness. Si es Dark Universe → Monsters Unchained. Las colas son cortísimas en esa primera hora.</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--rosa)"></div>
+          <div class="ot-time" style="color:var(--rosa)">9h – 12h</div>
+          <div class="ot-content"><strong>Atracciones de alta demanda.</strong> Hiccup's Wing Gliders, Battle at the Ministry, Stardust Racers. Aprovecha Single Rider si el grupo se puede separar.</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--teal)"></div>
+          <div class="ot-time" style="color:var(--teal)">12h – 15h</div>
+          <div class="ot-content"><strong>Pico de colas.</strong> Descansa en Celestial Park, come, explora tiendas temáticas (valen la pena aunque no compres), muévete entre mundos a pie.</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--verde)"></div>
+          <div class="ot-time" style="color:var(--verde)">15h – 18h</div>
+          <div class="ot-content"><strong>Colas bajan.</strong> Repite lo que más gustó. Shows en Isle of Berk. Recorre Harry Potter Ministry con calma para ver todos los detalles (vale la pena tarde).</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--morado)"></div>
+          <div class="ot-time" style="color:var(--morado)">Noche</div>
+          <div class="ot-content"><strong>Dark Universe + Celestial Park de noche.</strong> El parque se transforma con niebla, iluminación dramática y música. No te vayas antes del show nocturno.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOCHE BOX EPIC -->
+    <div class="noche-box">
+      <div class="ni">🌙</div>
+      <div>
+        <h4>Epic Universe de noche — es otro parque</h4>
+        <p>La iluminación cambia completamente al caer el sol. Dark Universe con niebla y luces violetas es absolutamente brutal. Celestial Park en modo nocturno con el show de luz y agua es de los momentos más bonitos que verás en un parque temático. <strong>Planifica quedarte hasta el cierre al menos una noche.</strong></p>
+      </div>
+    </div>
+
+    <!-- ZONAS EPIC -->
+    <div class="zona-grid">
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">✨</div>
+          <div>
+            <span class="zc-tag" style="background:#f0e8ff;color:#5B2D8E;">Hub central · Entrada</span>
+            <h3>Celestial Park</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🎢</span>
+              <div class="al-body">
+                <div class="al-name">Stardust Racers</div>
+                <span class="al-desc">Montaña rusa doble de lanzamiento que alcanza 100 km/h. Compites contra el otro tren. Impresionante de noche.</span>
+                <div class="al-badges"><span class="badge b-must">IMPERDIBLE</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🎡</span>
+              <div class="al-body">
+                <div class="al-name">Constellation Carousel</div>
+                <span class="al-desc">Carrusel astronómico con temática de constelaciones. Sin Single Rider. Para toda la familia.</span>
+                <div class="al-badges"><span class="badge b-kids">Familia</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-p">
+            <div class="bubble-icon">💡</div>
+            <div>Celestial Park es tu zona de descanso entre mundos. Está pensado para pasear, comer y recargar energía. No hay que "hacer nada" aquí — solo disfrutarlo.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🧙</div>
+          <div>
+            <span class="zc-tag" style="background:#fff0f5;color:#b01060;">Harry Potter · Nuevo</span>
+            <h3>Ministry of Magic</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">⚡</span>
+              <div class="al-body">
+                <div class="al-name">Battle at the Ministry</div>
+                <span class="al-desc">Simulador inmersivo con tecnología de última generación. El juicio de Umbridge. Una de las atracciones más avanzadas del mundo. La cola temática también vale la pena — verás los taquillones de los aurores.</span>
+                <div class="al-badges"><span class="badge b-must">LA MEJOR DE HP EPIC</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🎪</span>
+              <div class="al-body">
+                <div class="al-name">Le Cirque Arcanus</div>
+                <span class="al-desc">Espectáculo en vivo. Inspirado en Los Crímenes de Grindelwald. Imprescindible para fans de Animales Fantásticos.</span>
+                <div class="al-badges"><span class="badge b-show">Show en vivo</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-r">
+            <div class="bubble-icon">🗺️</div>
+            <div>Esta zona recrea el París mágico y el Londres del Ministerio a la vez. Dedica tiempo a explorar — está llena de detalles que solo ves si caminas despacio. Mejor por la tarde.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🎮</div>
+          <div>
+            <span class="zc-tag" style="background:#e8fff3;color:#1a7a45;">Nintendo · Nuevo</span>
+            <h3>Super Nintendo World</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🏎️</span>
+              <div class="al-body">
+                <div class="al-name">Mario Kart: Bowser's Challenge</div>
+                <span class="al-desc">Realidad aumentada con karts reales. Lanzas caparazones de verdad. Una de las mejores atracciones del mundo. Cola larga — hazla AL ABRIR.</span>
+                <div class="al-badges"><span class="badge b-must">PRIMERA PARADA</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🛤️</span>
+              <div class="al-body">
+                <div class="al-name">Mine Cart Madness (Donkey Kong)</div>
+                <span class="al-desc">Montaña rusa con sistema de raíles innovador único en el mundo. Primera del género. Si tienes early entry y eres fan de Nintendo, empieza aquí.</span>
+                <div class="al-badges"><span class="badge b-must">TOP</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🦕</span>
+              <div class="al-body">
+                <div class="al-name">Yoshi's Adventure</div>
+                <span class="al-desc">Paseo tranquilo montado en Yoshi. Sin Single Rider. Para niños pequeños, sin límite de talla.</span>
+                <div class="al-badges"><span class="badge b-kids">Peques</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-g">
+            <div class="bubble-icon">🕹️</div>
+            <div>Compra la <strong>Power-Up Band</strong> para jugar misiones interactivas por todo el mundo Nintendo. Los niños se vuelven locos — suman puntos durante horas. Hay tiendas exclusivas que merece entrar aunque no compres.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🐉</div>
+          <div>
+            <span class="zc-tag" style="background:#e8f9fc;color:#1a8fa8;">Cómo Entrenar tu Dragón · Nuevo</span>
+            <h3>Isle of Berk</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🦅</span>
+              <div class="al-body">
+                <div class="al-name">Hiccup's Wing Gliders</div>
+                <span class="al-desc">Montaña rusa de vuelo — sientes que vas montado en Chimuelo. Sensación única. Hazla a media mañana antes del pico.</span>
+                <div class="al-badges"><span class="badge b-must">IMPERDIBLE</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">💧</span>
+              <div class="al-body">
+                <div class="al-name">Fyre Drill</div>
+                <span class="al-desc">Atracción acuática interactiva. Sal sin ropa de cambio y te mojas. Sin Single Rider.</span>
+                <div class="al-badges"><span class="badge b-warn">Te mojas</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🌀</span>
+              <div class="al-body">
+                <div class="al-name">Dragon Racer's Rally</div>
+                <span class="al-desc">Atracción aérea tipo Sky Fly. Sin Single Rider. Para toda la familia.</span>
+                <div class="al-badges"><span class="badge b-kids">Familia</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🎭</span>
+              <div class="al-body">
+                <div class="al-name">The Untrainable Dragon</div>
+                <span class="al-desc">Espectáculo teatral en vivo con marionetas gigantes y efectos especiales. El show principal del parque. Emotivo incluso para adultos.</span>
+                <div class="al-badges"><span class="badge b-show">Show en vivo</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-t">
+            <div class="bubble-icon">📸</div>
+            <div>Para foto con Chimuelo (Toothless) las colas son larguísimas. Ve justo al abrir o inmediatamente después de un show de The Untrainable Dragon, cuando la gente sale del teatro.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🧟</div>
+          <div>
+            <span class="zc-tag" style="background:#f0e8ff;color:#3d1a6e;">Monstruos clásicos · Terror</span>
+            <h3>Dark Universe</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">⚡</span>
+              <div class="al-body">
+                <div class="al-name">Monsters Unchained: Frankenstein</div>
+                <span class="al-desc">La joya del parque. Atracción de terror inmersiva con tecnología exclusiva. Impresionante de día, brutal de noche.</span>
+                <div class="al-badges"><span class="badge b-must">LA MÁS DEMANDADA</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🐺</span>
+              <div class="al-body">
+                <div class="al-name">Curse of the Werewolf</div>
+                <span class="al-desc">Montaña rusa giratoria de adrenalina. Complementa perfectamente a Frankenstein.</span>
+                <div class="al-badges"><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="fire-box" style="margin-top:10px;">
+            <div class="fi">🔥</div>
+            <div>
+              <h4>¡El molino de Dark Universe se incendia!</h4>
+              <p>En la zona de monstruos hay un molino que echa llamas reales cada cierto tiempo de forma automática — sin horario fijo. Si ves humo, párate cerca. <strong>De noche con la niebla y las luces el efecto es brutal.</strong></p>
+            </div>
+          </div>
+          <div class="bubble bub-p" style="margin-top:10px;">
+            <div class="bubble-icon">🌙</div>
+            <div><strong>Dark Universe de noche es otro nivel.</strong> La niebla, la iluminación violeta y roja, la música... es el mundo más transformador de todo el parque cuando se hace de noche. Guarda energía para visitarlo al cierre. No te vayas sin cruzar los portales interdimensionales de noche.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- fin zona-grid Epic -->
+  </div><!-- fin park-section Epic -->
+
+  <div class="divider"></div>
+
+  <!-- ISLANDS OF ADVENTURE -->
+  <div class="park-section">
+    <div class="park-header ph-islands">
+      <div class="park-icon pi-islands">⚓</div>
+      <div>
+        <div class="park-sub">El parque de las atracciones más intensas de Florida</div>
+        <h2>Islands of Adventure</h2>
+      </div>
+    </div>
+
+    <!-- ORDEN DE ATAQUE ISLANDS -->
+    <div class="orden-section">
+      <div class="orden-title" style="color:var(--teal)">🗺️ Orden de ataque — Islands of Adventure</div>
+      <div class="orden-timeline">
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--dorado)"></div>
+          <div class="ot-time" style="color:var(--dorado)">Apertura</div>
+          <div class="ot-content"><strong>Directo a Hagrid's o VelociCoaster — elige uno.</strong> Ambas se llenan en los primeros 20 min. Entra en sentido contrario a las agujas del reloj (hacia Marvel) para llegar antes a Jurassic World.</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--rosa)"></div>
+          <div class="ot-time" style="color:var(--rosa)">9h – 12h</div>
+          <div class="ot-content"><strong>Hulk, Spider-Man, las de agua</strong> si hace calor. Usa Single Rider en VelociCoaster si la fila estándar supera los 60 min.</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--teal)"></div>
+          <div class="ot-time" style="color:var(--teal)">12h – 15h</div>
+          <div class="ot-content"><strong>Hogsmeade con tranquilidad.</strong> Toma una Butterbeer, explora las tiendas, lanza hechizos con la varita interactiva. Las colas de atracciones están en pico.</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--verde)"></div>
+          <div class="ot-time" style="color:var(--verde)">15h – cierre</div>
+          <div class="ot-content"><strong>Forbidden Journey + repaso.</strong> Las colas bajan. Cena en Mythos (reserva desde la app). Seuss Landing si vais con peques cansados.</div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- HOGWARTS EXPRESS -->
+    <div class="hp-express">
+      <h3>🚂 Hogwarts Express — lo que DEBES saber</h3>
+      <div class="hp-express-grid">
+        <div class="hp-train-card">
+          <div class="direction">Sentido A →</div>
+          <div class="route">Hogsmeade (Islands) → King's Cross (Studios)</div>
+          <p>Verás a Harry, Ron y Hermione mientras el tren avanza. Escenas fuera de la ventana y en los compartimentos. Diferentes personajes según el recorrido.</p>
+        </div>
+        <div class="hp-train-card">
+          <div class="direction">← Sentido B</div>
+          <div class="route">King's Cross (Studios) → Hogsmeade (Islands)</div>
+          <p>El viaje es <strong>completamente diferente</strong> — otras escenas, otros personajes. No es lo mismo en ambos sentidos. Merece la pena hacer los dos.</p>
+        </div>
+      </div>
+      <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+        <div class="bubble bub-red" style="margin:0">
+          <div class="bubble-icon">🎟️</div>
+          <div><strong>Requiere entrada Park-to-Park obligatoriamente.</strong> Con entrada de un solo parque NO puedes subir — te dejarán pasar la puerta del andén pero no podrás embarcar. Confirma el tipo de entrada antes de ir.</div>
+        </div>
+        <div class="bubble bub-t" style="margin:0">
+          <div class="bubble-icon">💡</div>
+          <div>No hay reserva de asiento — es por orden de llegada. La cola se mueve muy rápido porque hay mucha capacidad. No suele tener cola larga excepto primera hora. Caben cochecitos.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ZONAS ISLANDS -->
+    <div class="zona-grid">
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🦸</div>
+          <div>
+            <span class="zc-tag" style="background:#fff5f0;color:#b04000;">Marvel</span>
+            <h3>Marvel Super Hero Island</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🎢</span>
+              <div class="al-body">
+                <div class="al-name">The Incredible Hulk Coaster</div>
+                <span class="al-desc">Lanzamiento de 0 a 96 km/h en 2 segundos. Rugido atronador. Clásico absoluto desde 1999.</span>
+                <div class="al-badges"><span class="badge b-must">CLÁSICO</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🕷️</span>
+              <div class="al-body">
+                <div class="al-name">The Amazing Adventures of Spider-Man</div>
+                <span class="al-desc">Simulador 4D con efectos físicos. Para toda la familia. Talla mínima 102 cm.</span>
+                <div class="al-badges"><span class="badge b-kids">Familia</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-r">
+            <div class="bubble-icon">⚡</div>
+            <div>Hulk tiene Single Rider y la cola suele ser muy inferior. Si no te importa ir separado del grupo, te ahorras 30–60 min.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🦕</div>
+          <div>
+            <span class="zc-tag" style="background:#e8fff3;color:#1a7a45;">Jurassic World</span>
+            <h3>Jurassic World</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">💨</span>
+              <div class="al-body">
+                <div class="al-name">Jurassic World VelociCoaster</div>
+                <span class="al-desc">Considerada una de las mejores montañas rusas del mundo. 4 inversiones, 2 lanzamientos, 155 km/h. Solo adultos (min. 130 cm). Hazla AL ABRIR o última hora.</span>
+                <div class="al-badges"><span class="badge b-must">LA MÁS INTENSA</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🚣</span>
+              <div class="al-body">
+                <div class="al-name">Jurassic Park River Adventure</div>
+                <span class="al-desc">⚠️ Cerrada para renovación hasta finales de 2026. Comprueba estado antes de tu viaje.</span>
+                <div class="al-badges"><span class="badge b-warn">Cerrada 2026</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🦖</span>
+              <div class="al-body">
+                <div class="al-name">Raptor Encounter</div>
+                <span class="al-desc">Encuentro con una velociraptor de tamaño real. Foto en vivo. Consulta horario en la app — son sesiones. Llega 15 min antes.</span>
+                <div class="al-badges"><span class="badge b-show">Sesiones horarias</span></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🦉</div>
+          <div>
+            <span class="zc-tag" style="background:#fff0f5;color:#b01060;">Harry Potter · Hogsmeade</span>
+            <h3>The Wizarding World</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🏍️</span>
+              <div class="al-body">
+                <div class="al-name">Hagrid's Magical Creatures Motorbike Adventure</div>
+                <span class="al-desc">Considerada por miles de visitantes la mejor montaña rusa de Universal. Lanzamientos, caída libre, criaturitas mágicas, retroceso... narrativa perfecta. Puede tener 90–120 min de cola. Puede arrancar con retraso por la mañana.</span>
+                <div class="al-badges"><span class="badge b-must">LA MEJOR DE IOA</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🏰</span>
+              <div class="al-body">
+                <div class="al-name">Harry Potter and the Forbidden Journey</div>
+                <span class="al-desc">Simulador dentro del Castillo de Hogwarts. La cola temática es impresionante — pasa por los despachos, el invernadero y la sala de los retratos. No te saltes la cola incluso si puedes.</span>
+                <div class="al-badges"><span class="badge b-must">IMPERDIBLE</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🦅</span>
+              <div class="al-body">
+                <div class="al-name">Flight of the Hippogriff</div>
+                <span class="al-desc">Montaña rusa familiar junior. Vistas al castillo de Hogwarts. Talla mínima 91 cm.</span>
+                <div class="al-badges"><span class="badge b-kids">Familia</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-r">
+            <div class="bubble-icon">🍺</div>
+            <div>La <strong>Butterbeer</strong> fría (frozen en verano) en Three Broomsticks es obligatoria. Compra la varita interactiva en Ollivanders para lanzar hechizos — hay más de 12 puntos en Hogsmeade. El mapa viene con la varita.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🏛️</div>
+          <div>
+            <span class="zc-tag" style="background:#fffbf0;color:#a07000;">Restaurantes · Calma</span>
+            <h3>The Lost Continent</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🍽️</span>
+              <div class="al-body">
+                <div class="al-name">Mythos Restaurant</div>
+                <span class="al-desc">Elegido repetidamente el mejor restaurante dentro de un parque temático del mundo. Cocina mediterránea / internacional. Reserva imprescindible desde la app de Universal.</span>
+                <div class="al-badges"><span class="badge b-must">EL MEJOR DEL PARQUE</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-d">
+            <div class="bubble-icon">😌</div>
+            <div>Zona perfecta para el descanso de mediodía. Poca afluencia, ambientación increíble. Si Mythos está lleno, acércate igualmente — suele haber cancelaciones de última hora en la app.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- fin zona-grid Islands -->
+  </div><!-- fin park-section Islands -->
+
+  <div class="divider"></div>
+
+  <!-- UNIVERSAL STUDIOS FLORIDA -->
+  <div class="park-section">
+    <div class="park-header ph-studios">
+      <div class="park-icon pi-studios">🎬</div>
+      <div>
+        <div class="park-sub">Cine, Harry Potter Diagon Alley, Shows</div>
+        <h2>Universal Studios Florida</h2>
+      </div>
+    </div>
+
+    <!-- ORDEN DE ATAQUE STUDIOS -->
+    <div class="orden-section">
+      <div class="orden-title" style="color:var(--rosa)">🗺️ Orden de ataque — Universal Studios Florida</div>
+      <div class="orden-timeline">
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--dorado)"></div>
+          <div class="ot-time" style="color:var(--dorado)">Apertura</div>
+          <div class="ot-content"><strong>Directo a Escape from Gringotts.</strong> Es la atracción con más cola de este parque. Llena en los primeros 15 min. Usa Single Rider si la cola supera 50 min.</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--rosa)"></div>
+          <div class="ot-time" style="color:var(--rosa)">9h – 12h</div>
+          <div class="ot-content"><strong>Hogwarts Express hacia Hogsmeade</strong> (si tienes Park-to-Park). Después, Revenge of the Mummy y Hollywood Rip Ride Rockit (hasta sep. 2025).</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--teal)"></div>
+          <div class="ot-time" style="color:var(--teal)">12h – 15h</div>
+          <div class="ot-content"><strong>Springfield para comer.</strong> Duff Beer en el Moe's Tavern. Los Simpsons Ride tiene Single Rider — úsalo si hay cola.</div>
+        </div>
+        <div class="ot-item">
+          <div class="ot-bullet" style="background:var(--verde)"></div>
+          <div class="ot-time" style="color:var(--verde)">Tarde</div>
+          <div class="ot-content"><strong>Shows y atracciones de capacidad alta.</strong> Universal Horror Make-Up Show, Fast & Furious, MIB. Poca cola porque mucha gente sale a media tarde.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="zona-grid">
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🪄</div>
+          <div>
+            <span class="zc-tag" style="background:#fff0f5;color:#b01060;">Harry Potter · Diagon Alley</span>
+            <h3>Diagon Alley</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🔥</span>
+              <div class="al-body">
+                <div class="al-name">Escape from Gringotts</div>
+                <span class="al-desc">Multisensorial dentro de la mina de gringotts. Una de las mejores de todo el resort. Dragón de fuego en la entrada — echa llamas reales cada pocos minutos.</span>
+                <div class="al-badges"><span class="badge b-must">PRIMERA PARADA</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🚂</span>
+              <div class="al-body">
+                <div class="al-name">Hogwarts Express → Hogsmeade</div>
+                <span class="al-desc">Sale desde King's Cross. La entrada es un muro de ladrillos — atraviesa con seguridad. Experiencia diferente al sentido contrario.</span>
+                <div class="al-badges"><span class="badge b-p2p">Park-to-Park obligatorio</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-r">
+            <div class="bubble-icon">🐉</div>
+            <div>El dragón encima de la entrada de Gringotts echa llamas reales cada varios minutos. Si ves humo, para y espera — la gente que lo sabe siempre se queda a verlo. <strong>De noche es el momento más épico.</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🍩</div>
+          <div>
+            <span class="zc-tag" style="background:#fffbf0;color:#a07000;">Los Simpsons</span>
+            <h3>Springfield</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🎢</span>
+              <div class="al-body">
+                <div class="al-name">The Simpsons Ride</div>
+                <span class="al-desc">Simulador con Homer y familia. Humor en cada escena. Capacidad muy alta = colas cortas normalmente.</span>
+                <div class="al-badges"><span class="badge b-kids">Familia</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+          </ul>
+          <div class="bubble bub-d">
+            <div class="bubble-icon">🍺</div>
+            <div>Come en el Moe's Tavern. Pide la Duff Beer. La ambientación es tan buena que vale la pena aunque no seas fan de la serie. Buena opción para el almuerzo sin grandes esperas.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🎬</div>
+          <div>
+            <span class="zc-tag" style="background:#fff5f0;color:#b04000;">Hollywood · Shows</span>
+            <h3>Hollywood</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🧟</span>
+              <div class="al-body">
+                <div class="al-name">Revenge of the Mummy</div>
+                <span class="al-desc">Montaña rusa indoor oscura con sorpresas, fuego y trampas. Clásico del parque. Velocidad e inversiones en la oscuridad.</span>
+                <div class="al-badges"><span class="badge b-must">CLÁSICO</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🎭</span>
+              <div class="al-body">
+                <div class="al-name">Universal Horror Make-Up Show</div>
+                <span class="al-desc">Espectáculo en vivo sobre efectos especiales de terror. Divertidísimo. Capacidad alta, pocas colas. Apto para toda la familia (no da miedo de verdad).</span>
+                <div class="al-badges"><span class="badge b-show">Show · Sin colas</span></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">👽</div>
+          <div>
+            <span class="zc-tag" style="background:#f0e8ff;color:#5B2D8E;">Sci-Fi · Familia</span>
+            <h3>Men in Black + Fast & Furious</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li>
+              <span class="al-icon">🔫</span>
+              <div class="al-body">
+                <div class="al-name">Men in Black: Alien Attack</div>
+                <span class="al-desc">Shooter competitivo contra otros visitantes. Puntuación en tiempo real. Ideal para repetir.</span>
+                <div class="al-badges"><span class="badge b-kids">Familia</span><span class="badge b-sr">Single Rider ✓</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="al-icon">🚗</span>
+              <div class="al-body">
+                <div class="al-name">Fast & Furious: Supercharged</div>
+                <span class="al-desc">Simulador de persecución grupal. Muy espectacular. Alta capacidad = poca cola. Perfecto para la tarde.</span>
+                <div class="al-badges"><span class="badge b-kids">Poca cola</span></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div><!-- fin zona-grid Studios -->
+  </div><!-- fin park-section Studios -->
+
+</div><!-- fin wrap -->
+
+<!-- ESTRATEGIA POR DÍAS -->
+<div class="strat-section">
+  <div class="stitle">🗓️ Cómo distribuir los días</div>
+  <p class="ssub">Para un viaje de 4–5 días — ajusta según tu ritmo y prioridades</p>
+  <div class="strat-grid">
+    <div class="strat-card">
+      <div class="day">Día 1</div>
+      <h3>Epic Universe</h3>
+      <ul>
+        <li>Sin hotel Universal: llega a la cola al menos 30 min antes de la apertura</li>
+        <li>Con hotel on-site: aprovecha el Early Entry de 1 hora</li>
+        <li>Elige tu mundo: Nintendo o Dark Universe primero</li>
+        <li>Mario Kart o Mine Cart a primera hora</li>
+        <li>Mediodía en Celestial Park</li>
+        <li>Harry Potter Ministry por la tarde</li>
+        <li>Dark Universe de noche — molino en llamas + portales</li>
+        <li>Quédate para ver el parque de noche</li>
+      </ul>
+    </div>
+    <div class="strat-card">
+      <div class="day">Día 2</div>
+      <h3>Islands of Adventure</h3>
+      <ul>
+        <li>Directo a Hagrid's al abrir</li>
+        <li>VelociCoaster antes de que llegue la gente</li>
+        <li>Hulk + Spider-Man a media mañana</li>
+        <li>Hogwarts Express si tienes Park-to-Park</li>
+        <li>Cena en Mythos (reserva anticipada)</li>
+        <li>Hogsmeade de noche — Butterbeer y ambiente mágico</li>
+      </ul>
+    </div>
+    <div class="strat-card">
+      <div class="day">Día 3</div>
+      <h3>Universal Studios Florida</h3>
+      <ul>
+        <li>Primero: Escape from Gringotts</li>
+        <li>Dragón de la entrada de día y de noche</li>
+        <li>Hogwarts Express hacia Hogsmeade</li>
+        <li>Springfield para comer (Duff Beer)</li>
+        <li>Mummy + MIB por la tarde sin colas</li>
+        <li>Horror Make-Up Show al caer la tarde</li>
+      </ul>
+    </div>
+    <div class="strat-card">
+      <div class="day">Día 4–5</div>
+      <h3>Repaso + Extras</h3>
+      <ul>
+        <li>Repite las atracciones favoritas</li>
+        <li>Volcano Bay si hace calor</li>
+        <li>Vuelve a Epic Universe solo de noche</li>
+        <li>Fotos con personajes con calma</li>
+        <li>CityWalk para cenar y compras finales</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- PRIORIDADES + RESTAURANTES -->
+<div class="prior-rest-section">
+  <div class="stitle">🎯 Qué hacer primero — y dónde comer</div>
+  <p class="ssub">Las atracciones con más cola son siempre las primeras paradas del día. Cuanto más esperes, más cola acumulas.</p>
+
+  <!-- EPIC UNIVERSE -->
+  <div class="pr-park-block">
+    <div class="pr-park-title epic">🌌 Epic Universe — orden de prioridad</div>
+    <div class="pr-cols">
+      <div class="pr-prior">
+        <h4>⚡ Hazlas PRIMERO — siempre con cola larga</h4>
+        <ol>
+          <li><strong>Battle at the Ministry</strong> — la de Harry Potter llena en minutos desde la apertura. Si tienes Early Entry (hotel on-site), empieza aquí. Si no, es tu primera parada en cuanto abran las puertas.</li>
+          <li><strong>Mario Kart: Bowser's Challenge</strong> — segunda en llenarse. La multitud corre directa a Nintendo World.</li>
+          <li><strong>Mine-Cart Madness</strong> — llena a media mañana. Hazla justo después de Mario Kart.</li>
+          <li><strong>Stardust Racers</strong> — la más visible de Celestial Park, se llena rápido.</li>
+          <li><strong>Hiccup's Wing Gliders</strong> — a media mañana aún tiene filas manejables. Después, se dispara.</li>
+        </ol>
+        <p class="pr-note">Monsters Unchained y Curse of the Werewolf pueden dejarse para la tarde — aunque muy demandadas, tienen más capacidad y la espera baja antes.</p>
+      </div>
+      <div class="pr-rest">
+        <h4>🍽️ Dónde comer en Epic Universe</h4>
+        <div class="rest-item">
+          <span class="rest-name">Atlantic <span class="rest-type rt-sit">Mesa</span></span>
+          <span class="rest-desc">Mariscos y surf & turf en Celestial Park. El mejor restaurante del parque. Vistas impresionantes. Reserva anticipada imprescindible.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Blue Dragon Pan-Asian <span class="rest-type rt-sit">Mesa</span></span>
+          <span class="rest-desc">Cocina china, japonesa y tailandesa auténtica. Uno de los mejor valorados de 2025. Reserva también.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Café L'Air de la Sirène <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Ministry of Magic. Croissants, crepes de Butterbeer y sándwiches parisinos. Muy bonito por dentro.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Mead Hall <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Isle of Berk. Los conos de mac & cheese se han vuelto virales. También brochetas y platos de inspiración nórdica.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Das Stakehaus / Burning Blade Tavern <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Dark Universe. Ambiente de mansión victoriana. Crepes de Butterbeer de Crêpe de la Sirène también disponibles cerca.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Toadstool Cafe <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Nintendo World. Temática de Toad. Muy popular con niños. Para el clásico tema de esperar o llegar pronto.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ISLANDS OF ADVENTURE -->
+  <div class="pr-park-block">
+    <div class="pr-park-title islands">⚓ Islands of Adventure — orden de prioridad</div>
+    <div class="pr-cols">
+      <div class="pr-prior teal">
+        <h4>⚡ Hazlas PRIMERO — siempre con cola larga</h4>
+        <ol>
+          <li><strong>Hagrid's Magical Creatures Motorbike</strong> — la más demandada de todo el resort. Puede llegar a 2–3h de cola. Empieza aquí sí o sí. ⚠️ Puede abrir con retraso.</li>
+          <li><strong>Jurassic World VelociCoaster</strong> — segunda parada inmediata. Con Early Entry puedes hacerla en bucle hasta que el parque abra del todo.</li>
+          <li><strong>Harry Potter and the Forbidden Journey</strong> — llena en la primera hora pero se vacía algo a última hora del día.</li>
+          <li><strong>The Incredible Hulk Coaster</strong> — muy popular. Hazla a primera hora o usa Single Rider.</li>
+        </ol>
+        <p class="pr-note">Spider-Man, Flight of the Hippogriff y las atracciones de agua pueden dejarse para después — tienen más capacidad o menos demanda.</p>
+      </div>
+      <div class="pr-rest">
+        <h4>🍽️ Dónde comer en Islands of Adventure</h4>
+        <div class="rest-item">
+          <span class="rest-name">Mythos Restaurant <span class="rest-type rt-sit">Mesa</span></span>
+          <span class="rest-desc">Elegido varias veces el mejor restaurante de parque temático del mundo. Cocina mediterránea. Reserva desde la app de Universal. Si está lleno, busca cancelaciones.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Confisco Grille <span class="rest-type rt-sit">Mesa</span></span>
+          <span class="rest-desc">En Port of Entry, nada más entrar. Cocina ecléctica: americana, asiática, mediterránea. Muy infravalorado. Buen plan para evitar colas de restaurante.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Three Broomsticks <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Hogsmeade. Pollo asado, fish & chips, Butterbeer. Ambiente totalmente temático. Terraza con vistas al castillo de Hogwarts.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Thunder Falls Terrace <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Jurassic Park. Vistas a la caída de agua del río. Pollo, costillas y ensaladas. Buena relación calidad-precio.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Circus McGurkus <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Seuss Landing. Pasta, pizza y sándwiches. Perfecto para familias con peques. Muy poca cola a mediodía.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- UNIVERSAL STUDIOS FLORIDA -->
+  <div class="pr-park-block" style="margin-bottom:20px;">
+    <div class="pr-park-title studios">🎬 Universal Studios Florida — orden de prioridad</div>
+    <div class="pr-cols">
+      <div class="pr-prior rosa">
+        <h4>⚡ Hazlas PRIMERO — siempre con cola larga</h4>
+        <ol>
+          <li><strong>Harry Potter and the Escape from Gringotts</strong> — la más solicitada del parque. Llena en los primeros 15 min. Empieza aquí o acabarás esperando 90 min o más.</li>
+          <li><strong>Revenge of the Mummy</strong> — segunda con más demanda. Hazla antes de las 10h o usa Single Rider.</li>
+          <li><strong>Hollywood Rip Ride Rockit</strong> — si está operativa, llena rápido por su visibilidad.</li>
+          <li><strong>Minion Blast</strong> — muy popular con familias y tiene capacidad limitada. Mejor temprano.</li>
+        </ol>
+        <p class="pr-note">Fast & Furious, MIB y los shows (Horror Make-Up Show) tienen alta capacidad — se pueden dejar para la tarde sin problema.</p>
+      </div>
+      <div class="pr-rest">
+        <h4>🍽️ Dónde comer en Universal Studios Florida</h4>
+        <div class="rest-item">
+          <span class="rest-name">Lombard's Seafood Grille <span class="rest-type rt-sit">Mesa</span></span>
+          <span class="rest-desc">El restaurante #1 valorado de Studios en 2025. Mariscos y platos de temporada. En San Francisco. Una sorpresa muy agradable.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Leaky Cauldron <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Diagon Alley. Fish & chips, Bangers & Mash, Fisherman's Pie. Comida de pub inglés auténtica y bien ejecutada. De lo mejor del parque.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Louie's Italian Restaurant <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">Pasta fresca y pizzas. Sorprendentemente bueno para ser un parque temático. En Production Central.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Moe's Tavern / Fast Food Blvd <span class="rest-type rt-cs">Comida rápida</span></span>
+          <span class="rest-desc">En Springfield. Duff Beer, Krusty Burger, Bumblebee Man's Tacos, Cletus' Chicken Shack... Comida temática muy divertida. Buena relación calidad-precio.</span>
+        </div>
+        <div class="rest-item">
+          <span class="rest-name">Finnegan's Bar & Grill <span class="rest-type rt-sit">Mesa</span></span>
+          <span class="rest-desc">En la zona de New York. Pub irlandés con menú de pub y cerveza de barril. Buena opción para una pausa tranquila.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR EN COMIDA RÁPIDA -->
+  <div class="qr-box">
+    <div class="qi">📱</div>
+    <div>
+      <h4>Pide desde la mesa con el código QR — sin cola en el mostrador</h4>
+      <p>En la mayoría de restaurantes de comida rápida de Universal Studios Florida, Islands of Adventure y Epic Universe puedes <strong>pedir directamente desde tu mesa escaneando el QR</strong> del menú. El pedido llega a tu sitio sin que tengas que hacer cola en el mostrador. En Epic Universe además puedes elegir mesa primero y luego pedir — el sistema funciona especialmente bien allí. <strong>Hazlo siempre que puedas: ahorra entre 15 y 30 minutos</strong> en las horas pico. Ten a mano el móvil con datos o usa la WiFi gratuita del parque.</p>
+    </div>
+  </div>
+</div>
+
+<!-- VARITAS HARRY POTTER -->
+<div class="varitas-section">
+  <div class="stitle">🪄 Varitas interactivas — la guía completa</div>
+  <p class="ssub">Una de las experiencias más especiales de Universal · Funciona en los 3 mundos de Harry Potter</p>
+  <div class="varitas-grid">
+
+    <div class="varita-card">
+      <div class="vc-icon">✨</div>
+      <h3>Cómo funcionan</h3>
+      <p>Con la varita interactiva puedes lanzar hechizos reales en más de 40 ubicaciones repartidas entre los tres mundos de Harry Potter. Cada punto está marcado por un <strong>medallón de bronce en el suelo</strong>. Te colocas en la posición indicada, haces el gesto correcto con la muñeca y ocurre la magia — escotillas que se abren, fuentes que salpican, libros que vuelan, criaturas que reaccionan...</p>
+      <p style="margin-top:8px;">El mapa con todas las ubicaciones viene dentro de la caja de la varita. Hay <strong>libros de hechizos en el suelo</strong> en algunas ubicaciones para enseñarte el gesto exacto.</p>
+      <div class="vc-tip">💡 Truco: En Knockturn Alley (Diagon Alley) pasa el mapa bajo una luz ultravioleta — aparecen símbolos secretos con hechizos ocultos.</div>
+    </div>
+
+    <div class="varita-card">
+      <div class="vc-icon">🪄</div>
+      <h3>Tipos de varita y precios</h3>
+      <p><strong>2ª Generación Interactiva</strong> (nueva desde marzo 2025) — La más avanzada. La punta se ilumina y vibra cuando el hechizo sale bien. Conectada a la app. Requiere batería AAAA (incluida, reemplazable gratis en cualquier tienda).</p>
+      <span class="vc-price">~85 $</span>
+      <p style="margin-top:10px;"><strong>1ª Generación Interactiva</strong> — La clásica. Funciona en todas las ubicaciones pero sin luz ni vibración. Se usan en el show de Ollivanders.</p>
+      <span class="vc-price">~65–69 $</span>
+      <p style="margin-top:10px;"><strong>Varita decorativa</strong> — Sin magia interactiva. Solo de exhibición.</p>
+      <span class="vc-price">~55 $</span>
+      <div class="vc-alert">⚠️ No se puede actualizar la 1ª gen a 2ª gen — son incompatibles. Si quieres las nuevas funciones, hay que comprar una nueva.</div>
+    </div>
+
+    <div class="varita-card">
+      <div class="vc-icon">🏰</div>
+      <h3>Dónde comprarlas</h3>
+      <ul class="ubicaciones-list">
+        <li>
+          <span class="ul-icon">⚓</span>
+          <div><span class="ul-name">Ollivanders — Hogsmeade (Islands)</span><span class="ul-desc">La tienda icónica. Incluye show del elegido de la varita.</span></div>
+        </li>
+        <li>
+          <span class="ul-icon">🎬</span>
+          <div><span class="ul-name">Ollivanders — Diagon Alley (Studios)</span><span class="ul-desc">También con show. La mayor selección de modelos.</span></div>
+        </li>
+        <li>
+          <span class="ul-icon">🌌</span>
+          <div><span class="ul-name">Cosme Acajor Baguettes Magique — Place Cachée (Epic)</span><span class="ul-desc">La tienda parisina del Ministry of Magic. Caja de tres lados exclusiva. Varita exclusiva de Epic Universe.</span></div>
+        </li>
+        <li>
+          <span class="ul-icon">🛍️</span>
+          <div><span class="ul-name">Tiendas de entrada de cada parque</span><span class="ul-desc">También disponibles en CityWalk. Menos selección pero sin cola.</span></div>
+        </li>
+      </ul>
+      <div class="vc-tip">✅ Las varitas funcionan también en Universal Hollywood y Universal Japón. Las baterías se reponen gratis para siempre en cualquier tienda Ollivanders.</div>
+    </div>
+
+    <div class="varita-card">
+      <div class="vc-icon">🗺️</div>
+      <h3>Dónde lanzar hechizos — por parque</h3>
+      <ul class="ubicaciones-list">
+        <li>
+          <span class="ul-icon">⚓</span>
+          <div><span class="ul-name">Hogsmeade — Islands of Adventure</span><span class="ul-desc">~12 ubicaciones. Fuentes, escaparates, figuras de Hogwarts, ruecas y cohetes en Zonko's...</span></div>
+        </li>
+        <li>
+          <span class="ul-icon">🎬</span>
+          <div><span class="ul-name">Diagon Alley — Universal Studios</span><span class="ul-desc">~16 ubicaciones. Skull en Knockturn Alley, cielo nocturno controlable, criaturas mágicas...</span></div>
+        </li>
+        <li>
+          <span class="ul-icon">🌌</span>
+          <div><span class="ul-name">Ministry of Magic — Epic Universe</span><span class="ul-desc">14 ubicaciones nuevas. Aventura para encontrar la Piedra Filosofal, interactuar con Niffler y Deminviso (Demiguise).</span></div>
+        </li>
+      </ul>
+      <p style="font-size:12px; color:rgba(255,255,255,.6); margin-top:8px;">Total: más de 40 ubicaciones entre los tres mundos. Una familia puede pasarse horas buscándolas todas.</p>
+    </div>
+
+    <div class="varita-card">
+      <div class="vc-icon">📱</div>
+      <h3>La app — Universal Play</h3>
+      <p>Con la varita de 2ª generación puedes conectarla a la app gratuita de Universal Orlando Resort. Dentro, en el menú "Wizarding World" está la función <strong>Universal Play</strong>.</p>
+      <p style="margin-top:8px;">Escanea el código de barras de la caja de la varita para activarla. La app te permite:</p>
+      <ul style="margin-top:8px; padding-left:16px; font-size:12.5px; color:rgba(255,255,255,.7);">
+        <li style="padding:3px 0;">Elegir tu casa de Hogwarts y tu Patronus</li>
+        <li style="padding:3px 0;">Ver qué hechizos has lanzado y cuáles te faltan</li>
+        <li style="padding:3px 0;">Seguir aventuras temáticas por los mundos</li>
+        <li style="padding:3px 0;">Competir en la Copa de las Casas</li>
+        <li style="padding:3px 0;">Desbloquear retos ocultos en el parque</li>
+      </ul>
+      <div class="vc-alert">⚠️ Los hechizos solo se sincronizan con la app si la varita vibra al castear — si la varita no vibra, el hechizo no se registra. Activa el Bluetooth y la ubicación.</div>
+    </div>
+
+    <div class="varita-card">
+      <div class="vc-icon">🎭</div>
+      <h3>Show de Ollivanders — no te lo saltes</h3>
+      <p>En Hogsmeade y Diagon Alley hay un show gratuito de Ollivanders en el que el mago elige a un visitante del público para que la varita lo elija a él. Dura unos 10 minutos y es una de las experiencias más emotivas del parque — sobre todo para niños fans de la saga.</p>
+      <p style="margin-top:8px;">Las sesiones son continuas. La cola puede ser de 45–85 min. <strong>Solo una persona por grupo participa</strong> — el resto observa.</p>
+      <div class="vc-tip">💡 Llega con poca antelación — no es necesario esperar la cola entera. Si el show empieza pronto, el team member te dice cuánto falta.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FAMILIAS CON PEQUES -->
+<div class="familias-section">
+  <div class="stitle">👶 Universal con bebés y niños pequeños</div>
+  <p class="ssub">Parques de juego, salas de lactancia, Child Swap y todo lo que necesitas saber</p>
+  <div class="familias-grid">
+
+    <div class="fam-card verde">
+      <div class="fc-icon">🔄</div>
+      <h3>Child Swap / Baby Swap — cómo funciona</h3>
+      <p>Si alguien no puede subir (bebé, talla insuficiente, miedo), <strong>todo el grupo entra en cola juntos</strong>. Al llegar al área de embarque, el adulto que se queda con el pequeño espera en la sala de Child Swap — temática y con aire acondicionado. Cuando el primer adulto sale, el que esperaba sube directamente sin volver a hacer cola.</p>
+      <p style="margin-top:8px; font-size:12px; color:#1a6040; font-weight:700;">✅ Disponible en TODAS las atracciones de Studios, Islands y Epic Universe que tienen requisito de talla. Pídelo al team member en la entrada.</p>
+      <p style="margin-top:6px; font-size:12px; color:#666;">Las salas de espera están temáticas con la atracción — en Harry Potter ponen películas de la saga mientras esperas.</p>
+    </div>
+
+    <div class="fam-card teal">
+      <div class="fc-icon">🤱</div>
+      <h3>Salas de lactancia y bebés</h3>
+      <p>Los tres parques tienen <strong>centros de atención familiar</strong> con sala de lactancia privada, cambiadores, agua caliente para biberones y zona de descanso.</p>
+      <ul class="playground-list" style="margin-top:10px;">
+        <li>
+          <span class="pl-icon">🎬</span>
+          <div><span class="pl-name">Universal Studios Florida</span><span class="pl-desc">Junto al área de Lost & Found, a la derecha de la entrada principal.</span></div>
+        </li>
+        <li>
+          <span class="pl-icon">⚓</span>
+          <div><span class="pl-name">Islands of Adventure</span><span class="pl-desc">Primera estación de primeros auxilios, junto a Guest Relations en la entrada.</span></div>
+        </li>
+        <li>
+          <span class="pl-icon">🌌</span>
+          <div><span class="pl-name">Epic Universe</span><span class="pl-desc">Family Care Center junto al portal de The Wizarding World of Harry Potter – Ministry of Magic.</span></div>
+        </li>
+      </ul>
+      <p style="margin-top:8px; font-size:12px; color:#1a6040; font-weight:700;">✅ Todos los baños tienen cambiadores. En ubicaciones selectas hay baños familiares más amplios y privados.</p>
+    </div>
+
+    <div class="fam-card rosa">
+      <div class="fc-icon">🎠</div>
+      <h3>Parques de juego y zonas infantiles</h3>
+      <ul class="playground-list">
+        <li>
+          <span class="pl-icon">🦕</span>
+          <div>
+            <span class="pl-name">Camp Jurassic — Islands of Adventure</span>
+            <span class="pl-desc">El más subestimado de Universal. Laberinto gigante con cuevas, puentes colgantes, redes de escalada, cañones de agua de dinosaurio y toboganes. Sin límite de talla. Los adultos también se enganchan. Tiene entrada y salida única — no pierdas a los niños.</span>
+          </div>
+        </li>
+        <li>
+          <span class="pl-icon">🌈</span>
+          <div>
+            <span class="pl-name">If I Ran the Zoo + Me Ship, The Olive — Islands</span>
+            <span class="pl-desc">Zonas de juego en Seuss Landing y Toon Lagoon. Peques sin talla mínima. Salpica un poco.</span>
+          </div>
+        </li>
+        <li>
+          <span class="pl-icon">🐉</span>
+          <div>
+            <span class="pl-name">Viking Training Camp — Epic Universe (Isle of Berk)</span>
+            <span class="pl-desc">Zona de juego temática de Cómo Entrenar tu Dragón. Perfecta mientras los mayores hacen Hiccup's Wing Gliders.</span>
+          </div>
+        </li>
+        <li>
+          <span class="pl-icon">🎮</span>
+          <div>
+            <span class="pl-name">DreamWorks Land — Universal Studios Florida</span>
+            <span class="pl-desc">La zona más nueva para peques. Personajes de Shrek, Trolls y Kung Fu Panda. Atracciones, encuentros con personajes y zonas de juego interactivas. Diseñada para niños de 3 a 8 años.</span>
+          </div>
+        </li>
+        <li>
+          <span class="pl-icon">🌟</span>
+          <div>
+            <span class="pl-name">Fievel's Playland — Universal Studios Florida</span>
+            <span class="pl-desc">Parque de juego gigante inspirado en Fievel. Toboganes, zonas de salpicadura y estructuras de escalada a escala de ratón. Sin talla mínima.</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="fam-card dorado">
+      <div class="fc-icon">🎡</div>
+      <h3>Atracciones sin talla mínima — para ir todos</h3>
+      <ul class="playground-list">
+        <li><span class="pl-icon">🐱</span><div><span class="pl-name">The Cat in the Hat</span><span class="pl-desc">Islands · Paseo narrativo Seuss. Sin límite de talla.</span></div></li>
+        <li><span class="pl-icon">🎠</span><div><span class="pl-name">Caro-Seuss-el</span><span class="pl-desc">Islands · Carrusel de personajes Seuss. Sin límite.</span></div></li>
+        <li><span class="pl-icon">🐟</span><div><span class="pl-name">One Fish Two Fish Red Fish Blue Fish</span><span class="pl-desc">Islands · Vuelo giratorio controlado por el niño. Sin límite.</span></div></li>
+        <li><span class="pl-icon">🦕</span><div><span class="pl-name">Yoshi's Adventure</span><span class="pl-desc">Epic Universe · Paseo tranquilo en Yoshi. Sin límite de talla. Muy popular con peques.</span></div></li>
+        <li><span class="pl-icon">🚂</span><div><span class="pl-name">Hogwarts Express</span><span class="pl-desc">Islands ↔ Studios · Caben cochecitos. Sin límite de talla. Park-to-Park obligatorio.</span></div></li>
+        <li><span class="pl-icon">🎪</span><div><span class="pl-name">Shows en vivo</span><span class="pl-desc">Le Cirque Arcanus, The Untrainable Dragon, Horror Make-Up Show. Perfectos con peques.</span></div></li>
+      </ul>
+      <div class="bubble bub-g" style="margin-top:10px;">
+        <div class="bubble-icon">💡</div>
+        <div>Los niños menores de 3 años entran gratis. Los cochecitos están permitidos en la mayoría de zonas pero no en las colas de las atracciones — hay aparcacochecitos en la entrada de cada ride.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- LOCKERS -->
+<div class="lockers-section">
+  <div class="stitle">🎒 El sistema de taquillas — lo que nadie te explica</div>
+  <p class="ssub">Una de las diferencias más grandes con Disney. Hay que guardar la mochila antes de subir a muchas atracciones</p>
+  <div class="lockers-grid">
+
+    <div class="locker-card lc-free">
+      <div class="lc-icon">✅</div>
+      <h3>Taquillas de atracción — GRATIS</h3>
+      <p>Justo antes de la entrada a la mayoría de atracciones intensas hay taquillas gratuitas. Se usan solo mientras montas en la atracción. El tiempo libre es automático — calculan la cola actual + duración del ride con margen.</p>
+      <div class="lc-dim">Tamaño: 35 cm ancho × 14 cm alto × 43 cm fondo</div>
+      <p style="margin-top:8px; font-size:12px; color:#b04000; font-weight:700;">⚠️ Son pequeñas. Una mochila grande no cabe. Si no cierra la puerta, tienes que pagar la taquilla grande.</p>
+    </div>
+
+    <div class="locker-card lc-paid">
+      <div class="lc-icon">💰</div>
+      <h3>Taquillas de día — De pago</h3>
+      <p>Para guardar cosas todo el día sin arrastrarlo todo. En Studios e Islands: ~4–5$ las primeras 90 min, luego 3$ cada 30 min adicionales (máx 25$/día). En Epic Universe: 15$ tamaño estándar, 20$ tamaño familia, todo el día.</p>
+      <div class="lc-dim">Tamaño grande: 30 cm × 33 cm × 43 cm</div>
+      <p style="margin-top:8px; font-size:12px; color:#1a6040; font-weight:700;">✅ Si el ride se rompe mientras esperas en cola y superas el tiempo gratis, un team member puede anular el cobro extra.</p>
+    </div>
+
+    <div class="locker-card lc-epic">
+      <div class="lc-icon">🤳</div>
+      <h3>Epic Universe — Reconocimiento facial</h3>
+      <p>Las taquillas de Epic funcionan diferente. Al entrar al parque ya escanean tu cara con el ticket. Luego en cada taquilla solo miras a la cámara — se abre sola. Sin papelitos, sin ticket que perder.</p>
+      <p style="margin-top:8px;">También puedes usar el ticket físico si prefieres. Si el sistema no te reconoce (luz cambiada, gafas nuevas…), avisa a un team member — te lo abren con descripción de tus pertenencias.</p>
+      <div class="lc-dim" style="color:#5B2D8E;">✨ Las taquillas de Epic son MÁS GRANDES que las de Studios e Islands</div>
+    </div>
+
+    <div class="locker-card lc-trick">
+      <div class="lc-icon">💡</div>
+      <h3>El truco del riñonero — ahorra tiempo y dinero</h3>
+      <p>La mayoría de atracciones permiten llevar un riñonero (fanny pack) en la cintura si no interfiere con el arnés. Así evitas las taquillas completamente durante todo el día.</p>
+      <p style="margin-top:8px; font-size:12px; font-weight:700; color:#b04000;">⛔ Atracciones con detector de metales — aquí SÍ hay que vaciarse todo:<br>Hulk Coaster · VelociCoaster · Stardust Racers (Epic)<br>Ni monedas, ni llaves, ni móvil en el bolsillo.</p>
+      <p style="margin-top:8px; font-size:12px; color:#1a6040; font-weight:700;">✅ El riñonero DEBE ir en la cintura, no cruzado en el pecho.</p>
+    </div>
+
+  </div>
+  <div class="locker-warning">
+    <div class="bubble bub-red" style="margin:0">
+      <div class="bubble-icon">🔴</div>
+      <div><strong>Consejo clave para tus clientes:</strong> Recomiéndales que lleven lo mínimo al parque — riñonero con móvil, cartera y lo esencial. Si llevan mochila grande, que la dejen en la taquilla de día al entrar al parque y ya. Intentar usar la taquilla gratis de cada atracción con una mochila grande es el error más habitual — hace perder tiempo y puede generar cobros inesperados.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Guía creada por <strong>Lara · Los Viajes de Moli</strong> · Agente Oficial Disney y Universal</p>
+  <p style="margin-top:6px;"><strong>losviajesdemoli.com</strong> · @losviajesdemoli</p>
+  <p style="margin-top:8px; opacity:.5; font-size:11px;">Información actualizada junio 2026 · Algunos datos pueden cambiar por parte de Universal</p>
+</div>
+
+</body>
+</html>
