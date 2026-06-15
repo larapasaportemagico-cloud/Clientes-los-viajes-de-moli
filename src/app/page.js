@@ -674,6 +674,32 @@ Super Hero Station abierta de 17:00 a 22:00h para todos. Sin superhéroes en per
 CONTACTO:
 lara@pasaportemagico.com`;
 
+const SYSTEM_ASISTENTE_ORLANDO = `Eres MOLI, la asistente virtual de LOS VIAJES DE MOLI especializada en viajes a Orlando.
+
+Tu saludo inicial debe ser:
+"✨ Hola, soy Moli, tu asistente de Los Viajes de Moli para Orlando.
+
+Estoy aquí para ayudarte con dudas sobre Walt Disney World y Universal Orlando: parques, atracciones, Lightning Lane, traslados, restaurantes y mucho más.
+
+Cuéntame qué necesitas 🪄"
+
+IMPORTANTE — LÍMITES DE CONOCIMIENTO:
+Responde EXCLUSIVAMENTE sobre los temas que aparecen en las guías de Orlando de Los Viajes de Moli:
+- Walt Disney World: Magic Kingdom, EPCOT, Hollywood Studios, Animal Kingdom, sistema Lightning Lane (Multi Pass, Single Pass, Premier Pass), app My Disney Experience, restaurantes por parque, estrategia de días.
+- Universal Orlando: Epic Universe, Islands of Adventure, Universal Studios Florida, sistema de taquillas (lockers), Single Rider, Rider Switch, Express Pass, Hogwarts Express, varitas interactivas, planificador de atracciones.
+- Traslados en WDW: buses Disney, Skyliner, monorail, barcas, traslados a hoteles específicos (Art of Animation, All-Stars, Caribbean Beach, Coronado Springs, Port Orleans, Contemporary, Polynesian, Grand Floridian, Beach Club, Wilderness Lodge, Animal Kingdom Lodge, Saratoga Springs, Riviera, Swan & Dolphin), Uber para salir del resort, outlets Vineland, Walmart, Target.
+- Consejos generales de Orlando: tiempo (calor, tormentas de tarde), protector solar, hidratación, ropa de cambio para atracciones de agua, llegar antes de apertura.
+
+NO MEZCLES NUNCA con información de Disneyland Paris, Disneyland California, Disney Cruise Line ni ningún otro destino Disney.
+Si el cliente pregunta por algo fuera del scope de Orlando, responde: "Para ese destino contacta directamente con Lara en lara@pasaportemagico.com — ella te ayudará encantada."
+
+DATOS DEL CLIENTE:
+{DATOS_CLIENTE}
+
+CONTACTO:
+lara@pasaportemagico.com`;
+
+
 // ═══════════════════════════════════════════════════════
 // CALENDARIO HORARIOS ESTIMADOS DISNEYLAND PARIS 2026
 // ═══════════════════════════════════════════════════════
@@ -2783,7 +2809,7 @@ export default function Portal() {
         // Si no tiene reserva completa, abrir directamente en la tab de Moli
         setActiveTab(tieneReservaCompleta(result.datos) ? "reserva" : "asistente");
         setChatLoading(true);
-        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)) }) });
+        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: (String(result.datos?.Destino||"").toLowerCase().includes("orlando") ? SYSTEM_ASISTENTE_ORLANDO : SYSTEM_ASISTENTE).replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)) }) });
         const chatData = await chatRes.json();
         setMessages([{ role:"assistant", content: chatData.content?.[0]?.text || "✨ Hola, soy Moli, tu hada madrina de Los Viajes de Moli. ¿En qué puedo ayudarte?" }]);
         setChatLoading(false);
@@ -2805,7 +2831,7 @@ export default function Portal() {
     setChatInput("");
     setChatLoading(true);
     try {
-      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(cliente)) }) });
+      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: (String(cliente?.Destino||"").toLowerCase().includes("orlando") ? SYSTEM_ASISTENTE_ORLANDO : SYSTEM_ASISTENTE).replace("{DATOS_CLIENTE}", JSON.stringify(cliente)) }) });
       const data = await res.json();
       setMessages(prev => [...prev, { role:"assistant", content: data.content?.[0]?.text || "Error al responder." }]);
     } catch { setMessages(prev => [...prev, { role:"assistant", content:"Error de conexión." }]); }
@@ -3048,13 +3074,22 @@ export default function Portal() {
                       <div style={{ fontSize:12, opacity:.85 }}>Epic Universe · Islands of Adventure · Universal Studios Florida</div>
                     </div>
                     <div style={{ background:"rgba(255,255,255,0.97)", borderRadius:14, padding:"16px 18px", border:"1px solid rgba(91,45,142,0.2)", fontSize:13, color:"#444", lineHeight:1.6 }}>
-                      <p>La guía completa de Lara con consejos expertos, orden de ataque, sistema de taquillas, varitas interactivas, restaurantes y mucho más.</p>
+                      <p>Las guías completas de Lara con consejos expertos, orden de ataque, Lightning Lane, traslados, restaurantes y mucho más.</p>
                       <a href="/guia_universal_orlando_moli.html" target="_blank" rel="noopener noreferrer"
                         style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#5B2D8E,#9b59b6)", borderRadius:12, padding:"16px 20px", textDecoration:"none", marginTop:14 }}>
                         <span style={{ fontSize:24 }}>🎢</span>
                         <div>
-                          <div style={{ color:"white", fontSize:14, fontWeight:700 }}>Abrir Guía de Universal Orlando</div>
-                          <div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Consejos expertos · Atracciones · Restaurantes · Trucos</div>
+                          <div style={{ color:"white", fontSize:14, fontWeight:700 }}>Guía de Universal Orlando</div>
+                          <div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Epic Universe · Islands · Studios · Trucos de agente</div>
+                        </div>
+                        <span style={{ marginLeft:"auto", color:"white", fontSize:18 }}>→</span>
+                      </a>
+                      <a href="/guia_wdw_moli.html" target="_blank" rel="noopener noreferrer"
+                        style={{ display:"flex", alignItems:"center", gap:12, background:"linear-gradient(135deg,#003580,#0057b8)", borderRadius:12, padding:"16px 20px", textDecoration:"none", marginTop:10 }}>
+                        <span style={{ fontSize:24 }}>🏰</span>
+                        <div>
+                          <div style={{ color:"white", fontSize:14, fontWeight:700 }}>Guía de Walt Disney World</div>
+                          <div style={{ color:"rgba(255,255,255,.7)", fontSize:12 }}>Magic Kingdom · EPCOT · Hollywood Studios · Animal Kingdom</div>
                         </div>
                         <span style={{ marginLeft:"auto", color:"white", fontSize:18 }}>→</span>
                       </a>
@@ -3261,7 +3296,7 @@ export default function Portal() {
                   <div ref={bottomRef} />
                 </div>
                 <div style={{ padding:"8px 12px", borderTop:"1px solid rgba(43,188,212,0.1)", display:"flex", gap:6, overflowX:"auto" }}>
-                  {["¿Qué incluye mi plan?","¿Cuánto cuesta cambiar de plan?","¿Cuánto me falta pagar?","¿Qué necesito para el viaje?"].map((q,i) => (
+                  {(esOrlando ? ["¿Qué hago primero en Magic Kingdom?","¿Necesito Lightning Lane?","¿Cómo funciona el Skyliner?","¿Qué comer en EPCOT?"] : ["¿Qué incluye mi plan?","¿Cuánto cuesta cambiar de plan?","¿Cuánto me falta pagar?","¿Qué necesito para el viaje?"]).map((q,i) => (
                     <button key={i} onClick={() => setChatInput(q)} style={{ background:"rgba(43,188,212,0.1)", border:"1px solid rgba(43,188,212,0.2)", borderRadius:20, padding:"5px 12px", color:"#2BBCD4", fontSize:11, cursor:"pointer", whiteSpace:"nowrap", fontFamily:"inherit" }}>{q}</button>
                   ))}
                 </div>
