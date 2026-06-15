@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Walt Disney World — Los Viajes de Moli</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --morado:#5B2D8E; --rosa:#F5287A; --teal:#2BBCD4;
+    --verde:#2EC866; --dorado:#F0A500; --dark:#0d0520; --light:#f7f4ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--light);color:#222;line-height:1.6;}
+
+  /* HERO */
+  .hero{background:linear-gradient(140deg,#001a40 0%,#003580 45%,#0057b8 75%,#F5287A 100%);padding:52px 24px 60px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'✨🏰🌍🎬🦁⭐🎡🌟';position:absolute;inset:0;font-size:20px;letter-spacing:14px;opacity:.12;display:flex;align-items:center;justify-content:center;}
+  .hero-badge{display:inline-block;background:rgba(240,165,0,.2);border:1.5px solid var(--dorado);border-radius:20px;padding:5px 18px;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dorado);margin-bottom:18px;}
+  .hero h1{font-family:'Fredoka One',cursive;font-size:clamp(32px,7vw,58px);color:#fff;line-height:1.05;margin-bottom:14px;}
+  .hero h1 em{color:var(--dorado);font-style:normal;}
+  .hero p{color:rgba(255,255,255,.8);font-size:15px;max-width:540px;margin:0 auto 22px;}
+  .hero-logo{font-family:'Fredoka One',cursive;color:var(--dorado);font-size:13px;opacity:.85;letter-spacing:1px;}
+
+  /* CHIPS */
+  .chips-wrap{background:white;padding:18px 20px 14px;border-bottom:2px solid #ede8f9;}
+  .chips-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#999;margin-bottom:10px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;font-size:12.5px;font-weight:700;white-space:nowrap;}
+  .chip.p{background:#f0e8ff;color:var(--morado);}
+  .chip.r{background:#fff0f5;color:#b01060;}
+  .chip.t{background:#e8f9fc;color:#1a8fa8;}
+  .chip.g{background:#e8fff3;color:#1a7a45;}
+  .chip.d{background:#fffbf0;color:#a07000;}
+
+  /* LIGHTNING LANE */
+  .ll-section{background:linear-gradient(135deg,#001a40,#003580);padding:36px 20px;}
+  .ll-section .stitle{font-family:'Fredoka One',cursive;font-size:24px;color:var(--dorado);text-align:center;margin-bottom:4px;}
+  .ll-section .ssub{color:rgba(255,255,255,.55);font-size:13px;text-align:center;margin-bottom:26px;}
+  .ll-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;max-width:900px;margin:0 auto;}
+  .ll-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:16px;padding:18px 16px;}
+  .ll-card .lc-icon{font-size:28px;margin-bottom:8px;}
+  .ll-card h3{font-family:'Fredoka One',cursive;color:white;font-size:16px;margin-bottom:6px;}
+  .ll-card p{font-size:12.5px;color:rgba(255,255,255,.72);line-height:1.55;}
+  .ll-card .lc-price{margin-top:10px;display:inline-block;background:rgba(240,165,0,.2);border:1px solid var(--dorado);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:800;color:var(--dorado);}
+  .ll-card .lc-tip{margin-top:10px;background:rgba(43,188,212,.12);border-left:3px solid var(--teal);border-radius:0 8px 8px 0;padding:8px 10px;font-size:12px;color:#9eeaf5;font-weight:700;}
+  .ll-card .lc-alert{margin-top:10px;background:rgba(245,40,122,.15);border-left:3px solid var(--rosa);border-radius:0 8px 8px 0;padding:8px 10px;font-size:12px;color:#ffb3d0;font-weight:700;}
+
+  /* WRAP */
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+
+  /* PARK HEADER */
+  .park-section{padding:32px 0 8px;}
+  .park-header{display:flex;align-items:center;gap:14px;padding-bottom:14px;border-bottom:3px solid;margin-bottom:22px;}
+  .ph-mk{border-color:#003580;}
+  .ph-hs{border-color:#cc0000;}
+  .ph-ep{border-color:#2EC866;}
+  .ph-ak{border-color:#5B2D8E;}
+  .park-icon{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+  .pi-mk{background:linear-gradient(135deg,#003580,#0057b8);}
+  .pi-hs{background:linear-gradient(135deg,#cc0000,#8b0000);}
+  .pi-ep{background:linear-gradient(135deg,#2EC866,#1a7a45);}
+  .pi-ak{background:linear-gradient(135deg,#5B2D8E,#3d1a6e);}
+  .park-header h2{font-family:'Fredoka One',cursive;font-size:24px;color:#1a0a2e;}
+  .park-sub{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#999;}
+
+  /* ORDEN ATAQUE */
+  .orden-section{background:white;border-radius:18px;padding:20px;margin-bottom:22px;box-shadow:0 3px 14px rgba(0,0,80,.07);border:2px solid #e0e8f9;}
+  .orden-title{font-family:'Fredoka One',cursive;font-size:16px;display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+  .ot-item{display:flex;gap:12px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed #e0e8f9;}
+  .ot-item:last-child{border-bottom:none;}
+  .ot-time{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;min-width:52px;padding-top:2px;}
+  .ot-bullet{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .ot-content{font-size:13px;color:#333;}
+  .ot-content strong{color:#1a0a2e;}
+
+  /* ZONAS */
+  .zona-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;margin-bottom:24px;}
+  .zona-card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,.07);}
+  .zc-header{padding:14px 18px 10px;display:flex;align-items:flex-start;gap:10px;}
+  .zc-emoji{font-size:30px;flex-shrink:0;}
+  .zc-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;border-radius:6px;padding:2px 8px;display:inline-block;margin-bottom:4px;}
+  .zc-header h3{font-family:'Fredoka One',cursive;font-size:17px;color:#1a0a2e;line-height:1.2;}
+  .zc-body{padding:2px 18px 16px;}
+  .att-list{list-style:none;margin-bottom:10px;}
+  .att-list li{display:flex;align-items:flex-start;gap:7px;padding:7px 0;border-bottom:1px solid #f3f0fa;}
+  .att-list li:last-child{border-bottom:none;}
+  .al-icon{font-size:15px;flex-shrink:0;margin-top:1px;}
+  .al-body{flex:1;}
+  .al-name{font-size:13.5px;font-weight:800;color:#1a0a2e;}
+  .al-desc{font-size:12px;color:#666;display:block;margin-top:1px;line-height:1.45;}
+  .al-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+  .badge{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;white-space:nowrap;}
+  .b-must{background:#fff0f5;color:#c0145a;border:1px solid #ffb3d0;}
+  .b-ll{background:#e8f0ff;color:#003580;border:1px solid #b0c8f5;}
+  .b-kids{background:#e8fff3;color:#1a7a45;border:1px solid #b0f0c8;}
+  .b-show{background:#fffbf0;color:#a07000;border:1px solid #ffd97a;}
+  .b-new{background:#f0e8ff;color:#5B2D8E;border:1px solid #cbb0f5;}
+  .b-warn{background:#fff5f0;color:#b04000;border:1px solid #ffcaaa;}
+
+  /* BUBBLE */
+  .bubble{border-radius:14px 14px 14px 4px;padding:12px 16px;margin-top:10px;font-size:12.5px;font-weight:700;display:flex;gap:9px;align-items:flex-start;line-height:1.5;}
+  .bubble-icon{font-size:18px;flex-shrink:0;}
+  .bub-p{background:#f0e8ff;color:#4a1f7a;}
+  .bub-r{background:#fff0f5;color:#a0104a;}
+  .bub-t{background:#e8f9fc;color:#1a6f88;}
+  .bub-g{background:#e8fff3;color:#1a6040;}
+  .bub-d{background:#fffbf0;color:#8a6000;}
+  .bub-b{background:#e8f0ff;color:#00287a;}
+  .bub-red{background:#fff0f0;color:#b00000;border-left:3px solid #ff4444;border-radius:0 14px 14px 14px;}
+
+  /* ESTRATEGIA */
+  .strat-section{background:linear-gradient(135deg,#001a40,#003580);padding:36px 20px;}
+  .strat-section .stitle{font-family:'Fredoka One',cursive;color:var(--dorado);font-size:24px;text-align:center;margin-bottom:4px;}
+  .strat-section .ssub{color:rgba(255,255,255,.5);font-size:13px;text-align:center;margin-bottom:26px;}
+  .strat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;max-width:900px;margin:0 auto;}
+  .strat-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:18px 16px;}
+  .strat-card .day{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--dorado);margin-bottom:6px;}
+  .strat-card h3{font-family:'Fredoka One',cursive;color:white;font-size:16px;margin-bottom:10px;}
+  .strat-card ul{list-style:none;}
+  .strat-card li{color:rgba(255,255,255,.75);font-size:12.5px;padding:4px 0 4px 16px;position:relative;border-bottom:1px solid rgba(255,255,255,.06);}
+  .strat-card li:last-child{border-bottom:none;}
+  .strat-card li::before{content:'→';position:absolute;left:0;color:var(--teal);font-size:11px;}
+
+  /* RESTAURANTES */
+  .rest-section{background:white;padding:36px 20px;border-top:3px solid #ede8f9;}
+  .rest-section .stitle{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dorado);text-align:center;margin-bottom:4px;}
+  .rest-section .ssub{color:#888;font-size:13px;text-align:center;margin-bottom:26px;}
+  .rest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;max-width:900px;margin:0 auto;}
+  .rest-card{border-radius:14px;padding:16px;border:2px solid;}
+  .rc-mk{background:#f0f5ff;border-color:#b0c8f5;}
+  .rc-hs{background:#fff5f5;border-color:#f5b0b0;}
+  .rc-ep{background:#f0fff5;border-color:#b0f0c8;}
+  .rc-ak{background:#f5f0ff;border-color:#cbb0f5;}
+  .rc-ds{background:#fffbf0;border-color:#ffd97a;}
+  .rest-card h4{font-family:'Fredoka One',cursive;font-size:15px;color:#1a0a2e;margin-bottom:10px;}
+  .rest-item{padding:6px 0;border-bottom:1px dashed rgba(0,0,0,.08);}
+  .rest-item:last-child{border-bottom:none;}
+  .rest-name{font-size:13px;font-weight:800;color:#1a0a2e;}
+  .rest-type{font-size:10px;font-weight:800;border-radius:5px;padding:1px 6px;margin-left:5px;}
+  .rt-sit{background:#e8f9fc;color:#1a8fa8;}
+  .rt-cs{background:#e8fff3;color:#1a7a45;}
+  .rest-desc{font-size:12px;color:#666;display:block;margin-top:2px;}
+
+  /* FOOTER */
+  .footer{background:#0d0520;text-align:center;padding:28px 20px;}
+  .footer p{color:rgba(255,255,255,.4);font-size:12px;}
+  .footer strong{color:var(--dorado);}
+  .divider{height:1px;background:linear-gradient(to right,transparent,#d0c0f0,transparent);margin:8px 0;}
+
+  @media(max-width:600px){.zona-grid,.ll-grid,.strat-grid,.rest-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">🏰 Guía Experta · Agente Oficial</div>
+  <h1>Walt Disney World<br><em>como una experta</em></h1>
+  <p>Magic Kingdom · EPCOT · Hollywood Studios · Animal Kingdom<br>Lightning Lane, estrategia real y consejos de agente</p>
+  <div class="hero-logo">✨ losviajesdemoli.com</div>
+</div>
+
+<!-- CHIPS -->
+<div class="chips-wrap">
+  <div class="chips-label">Lo primero que tienes que saber</div>
+  <div class="chips">
+    <span class="chip p">⏰ Llega 30 min antes de la apertura</span>
+    <span class="chip r">📱 App My Disney Experience imprescindible</span>
+    <span class="chip t">⚡ Lightning Lane — lee la guía antes de comprar</span>
+    <span class="chip g">🏨 Hotel Disney = Early Entry 30 min antes</span>
+    <span class="chip d">🌙 Los shows nocturnos son imprescindibles</span>
+    <span class="chip p">🎢 MK el primer día — siempre</span>
+  </div>
+</div>
+
+<!-- LIGHTNING LANE -->
+<div class="ll-section">
+  <div class="stitle">⚡ Sistema Lightning Lane — entiéndelo antes de comprar</div>
+  <p class="ssub">El antiguo FastPass+ ya no existe · Ahora hay tres tipos de pase de pago</p>
+  <div class="ll-grid">
+
+    <div class="ll-card">
+      <div class="lc-icon">🎟️</div>
+      <h3>Lightning Lane Multi Pass</h3>
+      <p>Sustituto del antiguo Genie+. Permite reservar hora de entrada rápida para más de 40 atracciones, de una en una. Hay que reservar desde las 7:00h en la app. Las mejores horas se agotan rapidísimo.</p>
+      <span class="lc-price">~25–35$ / persona / día</span>
+      <div class="lc-tip">✅ Reserva las 3 selecciones anticipadas para primeras horas del día. Empieza por el día más lejano de tu estancia.</div>
+      <div class="lc-alert">⚠️ NO incluye las atracciones más populares de cada parque (Tron, Rise of the Resistance...) — esas son Single o Premier.</div>
+    </div>
+
+    <div class="ll-card">
+      <div class="lc-icon">🎯</div>
+      <h3>Lightning Lane Single Pass</h3>
+      <p>Para las 1–2 atracciones más demandadas de cada parque que no entran en el Multi Pass. Se compra por atracción suelta. Precio varía según demanda del día.</p>
+      <span class="lc-price">~15–25$ / persona / atracción</span>
+      <div class="lc-tip">✅ Compra en MK: Tron Lightcycle o Seven Dwarfs Mine Train. En HS: Rise of the Resistance. En EPCOT: Guardians of the Galaxy.</div>
+      <div class="lc-alert">⚠️ Se ponen a la venta a las 7:00h. Se agotan en minutos en días de alta demanda. Ten la app lista.</div>
+    </div>
+
+    <div class="ll-card">
+      <div class="lc-icon">👑</div>
+      <h3>Lightning Lane Premier Pass</h3>
+      <p>El pase premium. Acceso sin reserva de hora a TODAS las atracciones con Lightning Lane de un parque durante un día. Sin planificación, sin estrés de reservar horas.</p>
+      <span class="lc-price">~119–449$ / persona / día</span>
+      <div class="lc-tip">✅ Disponible para todos desde enero 2025. Merece la pena en temporada alta cuando los Single Pass están agotados.</div>
+      <div class="lc-alert">⚠️ El precio varía muchísimo según la fecha. Comprueba en la app antes de decidir si merece vs Multi+Single.</div>
+    </div>
+
+    <div class="ll-card">
+      <div class="lc-icon">📱</div>
+      <h3>App My Disney Experience</h3>
+      <p>La herramienta fundamental del viaje. Tiempos de espera en tiempo real, reserva de Lightning Lane, reservas de restaurantes, check-in online en hotel, mapa interactivo y fotos de PhotoPass.</p>
+      <div class="lc-tip">✅ Descárgala antes de salir de España. Crea tu cuenta y vincula tu reserva para tenerlo todo listo.</div>
+      <div class="lc-tip" style="margin-top:6px;">✅ A las 7:00h en punto abre la compra de Lightning Lane. Ten el pago configurado de antemano.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PARQUES -->
+<div class="wrap">
+
+  <!-- MAGIC KINGDOM -->
+  <div class="park-section">
+    <div class="park-header ph-mk">
+      <div class="park-icon pi-mk">🏰</div>
+      <div>
+        <div class="park-sub">El más icónico · Primer día siempre · Cierra tarde con fuegos</div>
+        <h2>Magic Kingdom</h2>
+      </div>
+    </div>
+
+    <div class="orden-section">
+      <div class="orden-title" style="color:#003580">🗺️ Orden de ataque — Magic Kingdom</div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--dorado)"></div>
+        <div class="ot-time" style="color:var(--dorado)">7:00h</div>
+        <div class="ot-content"><strong>Compra Lightning Lane</strong> en la app. Single Pass para Tron o Seven Dwarfs Mine Train antes de que se agoten.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:#003580"></div>
+        <div class="ot-time" style="color:#003580">Apertura</div>
+        <div class="ot-content"><strong>Directo a Tomorrowland → TRON Lightcycle.</strong> Es la más demandada. Si no tienes Lightning Lane, hazla al abrir. Luego Seven Dwarfs Mine Train.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--rosa)"></div>
+        <div class="ot-time" style="color:var(--rosa)">9h–12h</div>
+        <div class="ot-content"><strong>Tiana's Bayou Adventure, Haunted Mansion, Jungle Cruise.</strong> Usa Lightning Lane Multi Pass para Peter Pan's Flight — siempre tiene cola desproporcionada.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--teal)"></div>
+        <div class="ot-time" style="color:var(--teal)">12h–15h</div>
+        <div class="ot-content"><strong>Desfile Festival of Fantasy a las 15h</strong> — ocupa Main Street. Busca sitio 30 min antes. Aprovecha el pico de colas para comer con aire acondicionado.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--verde)"></div>
+        <div class="ot-time" style="color:var(--verde)">Noche</div>
+        <div class="ot-content"><strong>Show "Happily Ever After" fuegos artificiales frente al castillo.</strong> El momento más mágico de WDW. Busca sitio en Main Street 45 min antes. No te lo pierdas.</div>
+      </div>
+    </div>
+
+    <div class="zona-grid">
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🚀</div>
+          <div>
+            <span class="zc-tag" style="background:#e8f0ff;color:#003580;">Tomorrowland</span>
+            <h3>Tomorrowland</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">⚡</span><div class="al-body"><div class="al-name">TRON Lightcycle / Run</div><span class="al-desc">La montaña rusa más rápida de WDW. Exterior, lanzamiento, posición horizontal tipo moto. La más demandada del parque.</span><div class="al-badges"><span class="badge b-must">PRIMERA PARADA</span><span class="badge b-ll">Single Pass</span></div></div></li>
+            <li><span class="al-icon">🌌</span><div class="al-body"><div class="al-name">Space Mountain</div><span class="al-desc">Montaña rusa indoor clásica en la oscuridad. Icónica desde 1975. Sin Lightning Lane Single — hazla temprano.</span><div class="al-badges"><span class="badge b-must">CLÁSICO</span></div></div></li>
+            <li><span class="al-icon">🤖</span><div class="al-body"><div class="al-name">Buzz Lightyear Space Ranger Spin</div><span class="al-desc">Shooter familiar. Sin grandes esperas. Buena para rellenar huecos.</span><div class="al-badges"><span class="badge b-kids">Familia</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🏔️</div>
+          <div>
+            <span class="zc-tag" style="background:#fff0e8;color:#a03000;">Frontierland</span>
+            <h3>Frontierland</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">⛵</span><div class="al-body"><div class="al-name">Tiana's Bayou Adventure</div><span class="al-desc">Sustituta de Splash Mountain. Aventura en barca por los bayous de Nueva Orleans. Te mojas al final. Muy popular desde 2024.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span><span class="badge b-warn">Te mojas</span></div></div></li>
+            <li><span class="al-icon">🎸</span><div class="al-body"><div class="al-name">Big Thunder Mountain Railroad</div><span class="al-desc">"La montaña rusa más desenfrenada del Lejano Oeste". Familiar pero divertida. Cola razonable a última hora.</span><div class="al-badges"><span class="badge b-must">CLÁSICO</span></div></div></li>
+          </ul>
+          <div class="bubble bub-d"><div class="bubble-icon">💡</div><div>Big Thunder Mountain tiene Lightning Lane Multi Pass — úsalo si la cola supera 40 min.</div></div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🦁</div>
+          <div>
+            <span class="zc-tag" style="background:#fff0f0;color:#800000;">Adventureland</span>
+            <h3>Adventureland</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🌿</span><div class="al-body"><div class="al-name">Jungle Cruise</div><span class="al-desc">Crucero con animales animatrónicos y humor. Clásico de 1971 renovado. Media hora de cola habitual — coge Lightning Lane.</span><div class="al-badges"><span class="badge b-kids">Familia</span></div></div></li>
+            <li><span class="al-icon">🏴‍☠️</span><div class="al-body"><div class="al-name">Pirates of the Caribbean</div><span class="al-desc">El original, el clásico. Sin grandes esperas. Perfecto para el mediodía con calor.</span><div class="al-badges"><span class="badge b-must">CLÁSICO</span><span class="badge b-kids">Familia</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🏰</div>
+          <div>
+            <span class="zc-tag" style="background:#f0e8ff;color:#5B2D8E;">Fantasyland</span>
+            <h3>Fantasyland</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">⛏️</span><div class="al-body"><div class="al-name">Seven Dwarfs Mine Train</div><span class="al-desc">La montaña rusa más popular de Fantasyland. Cabinas que se balancean. Cola siempre enorme — Lightning Lane Single o madrugar.</span><div class="al-badges"><span class="badge b-must">TOP</span><span class="badge b-ll">Single Pass</span></div></div></li>
+            <li><span class="al-icon">🧚</span><div class="al-body"><div class="al-name">Peter Pan's Flight</div><span class="al-desc">Volar sobre Londres de noche. La atracción más buscada por familias. Cola desproporcionada — imprescindible el Lightning Lane.</span><div class="al-badges"><span class="badge b-kids">Familia</span><span class="badge b-ll">Multi Pass</span></div></div></li>
+            <li><span class="al-icon">👻</span><div class="al-body"><div class="al-name">Haunted Mansion</div><span class="al-desc">La mansión encantada clásica. Oscura pero no da miedo real. Apta para niños a partir de 5–6 años.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span></div></div></li>
+          </ul>
+          <div class="bubble bub-p"><div class="bubble-icon">👑</div><div>Para encuentros con princesas en el Castillo de Cenicienta (Princess Fairytale Hall) hay que reservar con semanas de antelación en la app My Disney Experience desde España.</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- HOLLYWOOD STUDIOS -->
+  <div class="park-section">
+    <div class="park-header ph-hs">
+      <div class="park-icon pi-hs">🎬</div>
+      <div>
+        <div class="park-sub">Star Wars · Indiana Jones · Shows épicos</div>
+        <h2>Hollywood Studios</h2>
+      </div>
+    </div>
+
+    <div class="orden-section">
+      <div class="orden-title" style="color:#cc0000">🗺️ Orden de ataque — Hollywood Studios</div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--dorado)"></div>
+        <div class="ot-time" style="color:var(--dorado)">7:00h</div>
+        <div class="ot-content"><strong>Lightning Lane Single:</strong> Rise of the Resistance — se agota en minutos. Es lo primero que debes comprar.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:#cc0000"></div>
+        <div class="ot-time" style="color:#cc0000">Apertura</div>
+        <div class="ot-content"><strong>Directo a Slinky Dog Dash</strong> — la segunda más demandada después de Rise. Hacerla al abrir con poca cola.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--rosa)"></div>
+        <div class="ot-time" style="color:var(--rosa)">9h–12h</div>
+        <div class="ot-content"><strong>Tower of Terror y Millennium Falcon:</strong> Smugglers Run. Indiana Jones Stunt Show a las 12h — llega 20 min antes.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--teal)"></div>
+        <div class="ot-time" style="color:var(--teal)">Tarde</div>
+        <div class="ot-content"><strong>Galaxy's Edge (Star Wars):</strong> Reserva Oga's Cantina para tomar algo con ambientación única. Fotos con personajes Star Wars.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--morado)"></div>
+        <div class="ot-time" style="color:var(--morado)">Noche</div>
+        <div class="ot-content"><strong>Fantasmic! show nocturno</strong> frente al lago. Impresionante. Busca sitio 30 min antes o reserva cena con vista incluida.</div>
+      </div>
+    </div>
+
+    <div class="zona-grid">
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">⭐</div>
+          <div>
+            <span class="zc-tag" style="background:#1a0a2e;color:#ffd700;">Star Wars · Galaxy's Edge</span>
+            <h3>Galaxy's Edge</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🚀</span><div class="al-body"><div class="al-name">Star Wars: Rise of the Resistance</div><span class="al-desc">La atracción más inmersiva de todos los parques Disney. Tecnología única. Tiempos de 60–120 min. Lightning Lane Single imprescindible.</span><div class="al-badges"><span class="badge b-must">LA MEJOR DE HS</span><span class="badge b-ll">Single Pass</span></div></div></li>
+            <li><span class="al-icon">🛸</span><div class="al-body"><div class="al-name">Millennium Falcon: Smugglers Run</div><span class="al-desc">Pilota el Halcón Milenario. Interactiva en equipo — cada persona tiene un rol. Cola moderada.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span></div></div></li>
+          </ul>
+          <div class="bubble bub-b"><div class="bubble-icon">🍺</div><div>Oga's Cantina es un bar temático Star Wars — bebidas con personajes y ambiente brutal. Hay que reservar con semanas de antelación. Sin reserva es casi imposible entrar.</div></div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🧸</div>
+          <div>
+            <span class="zc-tag" style="background:#fff5e8;color:#a05000;">Toy Story Land</span>
+            <h3>Toy Story Land</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🐕</span><div class="al-body"><div class="al-name">Slinky Dog Dash</div><span class="al-desc">La montaña rusa familiar más popular del parque. Sin grandes alturas ni inversiones — ideal para niños. Cola siempre alta.</span><div class="al-badges"><span class="badge b-must">PRIMERA PARADA</span><span class="badge b-kids">Familia</span></div></div></li>
+            <li><span class="al-icon">🎯</span><div class="al-body"><div class="al-name">Toy Story Mania!</div><span class="al-desc">Shooter 4D con juegos de feria. Muy popular con niños. Hazla a última hora.</span><div class="al-badges"><span class="badge b-kids">Familia</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🗼</div>
+          <div>
+            <span class="zc-tag" style="background:#f0e8ff;color:#5B2D8E;">Hollywood Blvd · Sunset</span>
+            <h3>Hollywood Blvd & Sunset</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">⚡</span><div class="al-body"><div class="al-name">Twilight Zone Tower of Terror</div><span class="al-desc">Ascensor de caída libre. 13 pisos. Una de las mejores del mundo. Efecto psicológico brutal porque no sabes cuándo vas a caer.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span></div></div></li>
+            <li><span class="al-icon">🎸</span><div class="al-body"><div class="al-name">Rock 'n' Roller Coaster (Aerosmith)</div><span class="al-desc">Lanzamiento en la oscuridad a 88 km/h con música de Aerosmith. Inversiones. Solo adultos.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span></div></div></li>
+            <li><span class="al-icon">🎬</span><div class="al-body"><div class="al-name">Indiana Jones Epic Stunt Spectacular</div><span class="al-desc">Show en vivo de pirotecnia y efectos reales. Espectacular. Llega 20 min antes. Alta capacidad — pocas colas.</span><div class="al-badges"><span class="badge b-show">Show en vivo</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- EPCOT -->
+  <div class="park-section">
+    <div class="park-header ph-ep">
+      <div class="park-icon pi-ep">🌍</div>
+      <div>
+        <div class="park-sub">Cultura del mundo · Gastronomía · Festival internacional</div>
+        <h2>EPCOT</h2>
+      </div>
+    </div>
+
+    <div class="orden-section">
+      <div class="orden-title" style="color:#1a7a45">🗺️ Orden de ataque — EPCOT</div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--dorado)"></div>
+        <div class="ot-time" style="color:var(--dorado)">7:00h</div>
+        <div class="ot-content"><strong>Lightning Lane Single:</strong> Guardians of the Galaxy Cosmic Rewind — la más demandada, agotada antes de las 7:05h.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:#1a7a45"></div>
+        <div class="ot-time" style="color:#1a7a45">Apertura</div>
+        <div class="ot-content"><strong>Directo a Test Track</strong> — segunda más demandada. Luego Frozen Ever After a primera hora.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--rosa)"></div>
+        <div class="ot-time" style="color:var(--rosa)">10h–14h</div>
+        <div class="ot-content"><strong>World Showcase abre a las 11h.</strong> Visita país a país. Come algo en cada pabellón — el Food & Wine Festival (otoño) es épico.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--morado)"></div>
+        <div class="ot-time" style="color:var(--morado)">Noche</div>
+        <div class="ot-content"><strong>Harmonious / Luminous show nocturno acuático</strong> en el lago del World Showcase. Uno de los mejores shows nocturnos de todos los parques Disney.</div>
+      </div>
+    </div>
+
+    <div class="zona-grid">
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🚀</div>
+          <div>
+            <span class="zc-tag" style="background:#e8f0ff;color:#003580;">World Discovery</span>
+            <h3>World Discovery</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🌌</span><div class="al-body"><div class="al-name">Guardians of the Galaxy: Cosmic Rewind</div><span class="al-desc">Montaña rusa invertida con música pop. La primera de Disney que gira 360°. Probablemente la mejor de EPCOT. Lightning Lane Single siempre agotado.</span><div class="al-badges"><span class="badge b-must">LA MEJOR DE EPCOT</span><span class="badge b-ll">Single Pass</span></div></div></li>
+            <li><span class="al-icon">🚗</span><div class="al-body"><div class="al-name">Test Track</div><span class="al-desc">Diseñas tu propio coche y lo sometes a pruebas extremas de velocidad. Clásico renovado. Segunda más demandada.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span></div></div></li>
+            <li><span class="al-icon">🌍</span><div class="al-body"><div class="al-name">Spaceship Earth (la bola)</div><span class="al-desc">El viaje por la historia de la comunicación humana. Dentro de la bola icónica. Cola corta — perfecta para el mediodía.</span><div class="al-badges"><span class="badge b-kids">Toda la familia</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">❄️</div>
+          <div>
+            <span class="zc-tag" style="background:#e8f9fc;color:#1a8fa8;">World Nature / Frozen</span>
+            <h3>World Nature</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🏔️</span><div class="al-body"><div class="al-name">Frozen Ever After</div><span class="al-desc">Navegación en barca por Arendelle. Muy popular con familias. Cola siempre alta. Coge Lightning Lane si supera 45 min.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span><span class="badge b-kids">Familia</span></div></div></li>
+            <li><span class="al-icon">🌊</span><div class="al-body"><div class="al-name">Soarin' Around the World</div><span class="al-desc">Vuelo virtual sobre paisajes del mundo. Sensación de volar. Huele a naranja al pasar por California. Buena capacidad.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span><span class="badge b-kids">Familia</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🌎</div>
+          <div>
+            <span class="zc-tag" style="background:#fffbf0;color:#a07000;">World Showcase</span>
+            <h3>World Showcase — 11 países</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🇲🇽</span><div class="al-body"><div class="al-name">México — Gran Fiesta Tour + La Cava del Tequila</div><span class="al-desc">Paseo en barca dentro de la pirámide. El bar La Cava del Tequila es uno de los más buscados — reserva mesa.</span></div></li>
+            <li><span class="al-icon">🇳🇴</span><div class="al-body"><div class="al-name">Norway — Pabellón de Frozen</div><span class="al-desc">Tienda de Frozen, restaurante Akershus con princesas. El pabellón más concurrido del World Showcase.</span></div></li>
+            <li><span class="al-icon">🇫🇷</span><div class="al-body"><div class="al-name">Francia — Remy's Ratatouille Adventure</div><span class="al-desc">La atracción más buscada del World Showcase. Encogido como Remy corriendo por el restaurante. Lightning Lane Multi recomendado.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span><span class="badge b-ll">Multi Pass</span></div></div></li>
+          </ul>
+          <div class="bubble bub-d"><div class="bubble-icon">🍽️</div><div>World Showcase abre a las 11h. Cada pabellón tiene comida auténtica. Come algo en 2–3 países distintos — es una de las experiencias más únicas de WDW.</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ANIMAL KINGDOM -->
+  <div class="park-section">
+    <div class="park-header ph-ak">
+      <div class="park-icon pi-ak">🦁</div>
+      <div>
+        <div class="park-sub">Pandora · Avatar · Naturaleza · Cierra pronto</div>
+        <h2>Animal Kingdom</h2>
+      </div>
+    </div>
+
+    <div class="orden-section">
+      <div class="orden-title" style="color:#5B2D8E">🗺️ Orden de ataque — Animal Kingdom</div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--dorado)"></div>
+        <div class="ot-time" style="color:var(--dorado)">7:00h</div>
+        <div class="ot-content"><strong>Lightning Lane Single:</strong> Avatar Flight of Passage — la más demandada del parque y una de las mejores del mundo.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:#5B2D8E"></div>
+        <div class="ot-time" style="color:#5B2D8E">Apertura</div>
+        <div class="ot-content"><strong>Directo a Kilimanjaro Safaris</strong> — los animales están más activos a primera hora de la mañana. Segunda parada: Na'vi River Journey.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--rosa)"></div>
+        <div class="ot-time" style="color:var(--rosa)">Mediodía</div>
+        <div class="ot-content"><strong>Expedition Everest</strong> y recorrido por Dinoland. Shows: Festival of the Lion King, Flights of Wonder. Reserva con antelación.</div>
+      </div>
+      <div class="ot-item">
+        <div class="ot-bullet" style="background:var(--teal)"></div>
+        <div class="ot-time" style="color:var(--teal)">Importante</div>
+        <div class="ot-content"><strong>Animal Kingdom cierra pronto</strong> — normalmente entre 17h y 20h según temporada. Planifica salir antes del cierre para evitar el colapso de buses.</div>
+      </div>
+    </div>
+
+    <div class="zona-grid">
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🌿</div>
+          <div>
+            <span class="zc-tag" style="background:#1a0a2e;color:#00d4ff;">Pandora — The World of Avatar</span>
+            <h3>Pandora</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🐉</span><div class="al-body"><div class="al-name">Avatar Flight of Passage</div><span class="al-desc">Montas un ikran (banshee) y vuelas sobre Pandora. La mejor atracción de Animal Kingdom y posiblemente de todo WDW. Tiempos de 2h sin Lightning Lane.</span><div class="al-badges"><span class="badge b-must">LA MEJOR DE AK</span><span class="badge b-ll">Single Pass</span></div></div></li>
+            <li><span class="al-icon">🛶</span><div class="al-body"><div class="al-name">Na'vi River Journey</div><span class="al-desc">Barca tranquila por el bosque bioluminiscente de Pandora. Preciosa. Hazla de noche si el parque cierra tarde — la bioluminiscencia es espectacular.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span><span class="badge b-kids">Familia</span></div></div></li>
+          </ul>
+          <div class="bubble bub-p"><div class="bubble-icon">🌙</div><div>Pandora de noche es uno de los momentos más mágicos de WDW. La bioluminiscencia de las plantas se activa al oscurecer — completamente diferente al día.</div></div>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🦒</div>
+          <div>
+            <span class="zc-tag" style="background:#e8fff3;color:#1a7a45;">Africa</span>
+            <h3>Africa</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🐘</span><div class="al-body"><div class="al-name">Kilimanjaro Safaris</div><span class="al-desc">Safari real en un vehículo abierto. Jirafas, elefantes, leones, rinocerontes... Los animales son reales. Primera hora — más activos y menos calor.</span><div class="al-badges"><span class="badge b-must">PRIMERA PARADA</span><span class="badge b-kids">Toda la familia</span></div></div></li>
+            <li><span class="al-icon">🦁</span><div class="al-body"><div class="al-name">Festival of the Lion King</div><span class="al-desc">Show en vivo acrobático. El mejor show en vivo de Animal Kingdom. Reserva anticipada muy recomendable.</span><div class="al-badges"><span class="badge b-show">Show en vivo</span><span class="badge b-must">IMPERDIBLE</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="zona-card">
+        <div class="zc-header">
+          <div class="zc-emoji">🏔️</div>
+          <div>
+            <span class="zc-tag" style="background:#f0e8ff;color:#5B2D8E;">Asia</span>
+            <h3>Asia</h3>
+          </div>
+        </div>
+        <div class="zc-body">
+          <ul class="att-list">
+            <li><span class="al-icon">🏔️</span><div class="al-body"><div class="al-name">Expedition Everest</div><span class="al-desc">Montaña rusa hacia atrás y hacia delante con el Yeti. La más intensa de Animal Kingdom. Hazla en las primeras horas.</span><div class="al-badges"><span class="badge b-must">IMPERDIBLE</span></div></div></li>
+            <li><span class="al-icon">🌊</span><div class="al-body"><div class="al-name">Kali River Rapids</div><span class="al-desc">Río de rápidos. Sales empapado. Solo en verano — en invierno el agua está fría.</span><div class="al-badges"><span class="badge b-warn">Te mojas</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- fin wrap -->
+
+<!-- ESTRATEGIA -->
+<div class="strat-section">
+  <div class="stitle">🗓️ Distribución recomendada de días</div>
+  <p class="ssub">Para un viaje de 5–7 días en Walt Disney World</p>
+  <div class="strat-grid">
+    <div class="strat-card">
+      <div class="day">Día 1</div>
+      <h3>Magic Kingdom</h3>
+      <ul>
+        <li>7:00h: Lightning Lane Single (Tron o 7 Dwarfs)</li>
+        <li>TRON Lightcycle al abrir</li>
+        <li>Seven Dwarfs Mine Train</li>
+        <li>Desfile Festival of Fantasy (15h)</li>
+        <li>Noche: Happily Ever After (fuegos)</li>
+      </ul>
+    </div>
+    <div class="strat-card">
+      <div class="day">Día 2</div>
+      <h3>Hollywood Studios</h3>
+      <ul>
+        <li>7:00h: Lightning Lane Rise of Resistance</li>
+        <li>Slinky Dog Dash al abrir</li>
+        <li>Tower of Terror + Rock 'n' Roller</li>
+        <li>Indiana Jones Show (mediodía)</li>
+        <li>Noche: Fantasmic! show acuático</li>
+      </ul>
+    </div>
+    <div class="strat-card">
+      <div class="day">Día 3</div>
+      <h3>EPCOT</h3>
+      <ul>
+        <li>7:00h: Lightning Lane Guardians</li>
+        <li>Test Track al abrir</li>
+        <li>Frozen Ever After</li>
+        <li>World Showcase desde las 11h</li>
+        <li>Noche: Luminous show acuático</li>
+      </ul>
+    </div>
+    <div class="strat-card">
+      <div class="day">Día 4</div>
+      <h3>Animal Kingdom</h3>
+      <ul>
+        <li>7:00h: Lightning Lane Avatar Flight</li>
+        <li>Kilimanjaro Safaris al abrir</li>
+        <li>Na'vi River Journey</li>
+        <li>Festival of the Lion King</li>
+        <li>⚠️ Cierra pronto — sal sin esperar</li>
+      </ul>
+    </div>
+    <div class="strat-card">
+      <div class="day">Día 5–7</div>
+      <h3>Repaso + Extras</h3>
+      <ul>
+        <li>Repite los parques favoritos</li>
+        <li>Disney Springs: cenas y compras</li>
+        <li>Blizzard Beach / Typhoon Lagoon</li>
+        <li>Outlets Vineland (Uber, 15 min)</li>
+        <li>Walmart: compras antes de volver</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- RESTAURANTES -->
+<div class="rest-section">
+  <div class="stitle">🍽️ Restaurantes recomendados por parque</div>
+  <p class="ssub">Reserva con semanas de antelación en la app My Disney Experience · Mesa = Table Service</p>
+  <div class="rest-grid">
+
+    <div class="rest-card rc-mk">
+      <h4>🏰 Magic Kingdom</h4>
+      <div class="rest-item">
+        <span class="rest-name">Be Our Guest <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Dentro del Castillo de la Bestia. El restaurante más solicitado de MK. Cena tipo francesa. Reserva con meses de antelación.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">Cinderella's Royal Table <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Dentro del Castillo de Cenicienta con princesas. La reserva más difícil de WDW. Abre reservas 60 días antes a las 6:00h Orlando.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">Pecos Bill Tall Tale Inn <span class="rest-type rt-cs">Comida rápida</span></span>
+        <span class="rest-desc">Burgers y nachos en Frontierland. Fiable, rápido y con buena relación calidad-precio.</span>
+      </div>
+    </div>
+
+    <div class="rest-card rc-hs">
+      <h4>🎬 Hollywood Studios</h4>
+      <div class="rest-item">
+        <span class="rest-name">Sci-Fi Dine-In Theater <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Comes dentro de un cine drive-in de los años 50 viendo cortos de ciencia ficción. Ambiente único. Burgers y perritos.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">50's Prime Time Café <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Comida americana de los años 50. Los camareros hacen de madre regañona. Muy divertido para familias.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">Oga's Cantina <span class="rest-type rt-sit">Bar</span></span>
+        <span class="rest-desc">Bar temático Star Wars con bebidas únicas (alchólicas y sin alcohol). Ambiente brutal. Reserva imprescindible.</span>
+      </div>
+    </div>
+
+    <div class="rest-card rc-ep">
+      <h4>🌍 EPCOT</h4>
+      <div class="rest-item">
+        <span class="rest-name">Le Cellier (Canadá) <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">El mejor filete de todo WDW. Ambiente de bodega canadiense. Una de las reservas más solicitadas de EPCOT.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">La Hacienda de San Ángel (México) <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Vistas al lago del World Showcase. Cocina mexicana auténtica. Perfecta para ver el show nocturno Luminous desde la mesa.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">Space 220 <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Restaurante "en el espacio" con vistas simuladas a la Tierra. Una experiencia visual única. Muy reservado.</span>
+      </div>
+    </div>
+
+    <div class="rest-card rc-ak">
+      <h4>🦁 Animal Kingdom</h4>
+      <div class="rest-item">
+        <span class="rest-name">Tiffins <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">El restaurante de mayor nivel de Animal Kingdom. Cocina de fusión internacional. Vistas al lago.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">Satu'li Canteen (Pandora) <span class="rest-type rt-cs">Comida rápida</span></span>
+        <span class="rest-desc">Comida rápida temática de Avatar. Bowls personalizables. Sorprendentemente buena para ser comida rápida.</span>
+      </div>
+    </div>
+
+    <div class="rest-card rc-ds">
+      <h4>🛍️ Disney Springs</h4>
+      <div class="rest-item">
+        <span class="rest-name">The BOATHOUSE <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Mariscos y filetes junto al lago. Vistas preciosas. Una de las mejores opciones de Disney Springs.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">STK Orlando <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Steakhouse moderno con DJ por las noches. Buen ambiente. Para cenar sin niños o con adolescentes.</span>
+      </div>
+      <div class="rest-item">
+        <span class="rest-name">Wolfgang Puck Bar & Grill <span class="rest-type rt-sit">Mesa</span></span>
+        <span class="rest-desc">Cocina americana moderna. Menos solicitado que otros — más fácil conseguir mesa. Calidad alta.</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Guía creada por <strong>Lara · Los Viajes de Moli</strong> · Agente Oficial Disney y Universal</p>
+  <p style="margin-top:6px;"><strong>losviajesdemoli.com</strong> · @losviajesdemoli</p>
+  <p style="margin-top:8px;opacity:.5;font-size:11px;">Información actualizada junio 2026 · Sujeta a cambios por parte de Walt Disney World</p>
+</div>
+
+</body>
+</html>
