@@ -2812,7 +2812,8 @@ export default function Portal() {
         // Si no tiene reserva completa, abrir directamente en la tab de Moli
         setActiveTab(tieneReservaCompleta(result.datos) ? "reserva" : "asistente");
         setChatLoading(true);
-        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)) }) });
+        const systemPrompt = String(result.datos?.Destino||"").toLowerCase().includes("orlando") ? SYSTEM_ASISTENTE_ORLANDO : SYSTEM_ASISTENTE;
+        const chatRes = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages:[{ role:"user", content:"Hola, acabo de entrar a mi portal" }], system: systemPrompt.replace("{DATOS_CLIENTE}", JSON.stringify(result.datos)) }) });
         const chatData = await chatRes.json();
         setMessages([{ role:"assistant", content: chatData.content?.[0]?.text || "✨ Hola, soy Moli, tu hada madrina de Los Viajes de Moli. ¿En qué puedo ayudarte?" }]);
         setChatLoading(false);
@@ -2834,7 +2835,8 @@ export default function Portal() {
     setChatInput("");
     setChatLoading(true);
     try {
-      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: SYSTEM_ASISTENTE.replace("{DATOS_CLIENTE}", JSON.stringify(cliente)) }) });
+      const systemPromptChat = String(cliente?.Destino||"").toLowerCase().includes("orlando") ? SYSTEM_ASISTENTE_ORLANDO : SYSTEM_ASISTENTE;
+      const res = await fetch("/api/chat", { method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ messages: newMessages.map(m => ({ role:m.role, content:m.content })), system: systemPromptChat.replace("{DATOS_CLIENTE}", JSON.stringify(cliente)) }) });
       const data = await res.json();
       setMessages(prev => [...prev, { role:"assistant", content: data.content?.[0]?.text || "Error al responder." }]);
     } catch { setMessages(prev => [...prev, { role:"assistant", content:"Error de conexión." }]); }
